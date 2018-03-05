@@ -1,5 +1,10 @@
 export class Product{
-  description:string;
+  private description:string;
+
+  constructor(
+    description:string){
+      this.description = description;
+  }
 
   GetDescription():string{
     return this.description

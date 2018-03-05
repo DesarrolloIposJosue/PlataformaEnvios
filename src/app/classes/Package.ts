@@ -4,6 +4,18 @@ export class Package{
   private destinationAddress:string;
   private idParcel:string;
 
+  constructor(
+    status:string,
+    originAddress:string,
+    destinationAddress:string,
+    idParcel:string){
+      this.status = status;
+      this.originAddress = originAddress;
+      this.destinationAddress = destinationAddress;
+      this.idParcel = idParcel;
+  }
+
+
   GetStatus():string{
     return this.status;
   }

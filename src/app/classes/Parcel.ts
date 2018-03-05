@@ -1,5 +1,10 @@
 export class Parcel{
-  name:string;
+  private name:string;
+
+  constructor(
+    name:string){
+      this.name = name;
+  }
 
   GetName():string{
     return this.name;

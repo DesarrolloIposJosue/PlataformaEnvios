@@ -1,8 +1,26 @@
 export class Client{
-  name:string;
-  password:string;
-  username:string;
-  type:number;
+  /*constructor(
+      public id: string,
+      public name: string,
+      public username: string,
+      public email: string
+   ) {}*/
+
+  private name:string;
+  private password:string;
+  private username:string;
+  private type:number;
+
+  constructor(
+    name:string,
+    password:string,
+    username:string,
+    type:number){
+      this.name = name;
+      this.password = password;
+      this.username = username;
+      this.type = type;
+  }
 
   GetName():string{
     return this.name;
@@ -35,5 +53,5 @@ export class Client{
   SetType(_type:number){
     this.type = _type;
   }
-  
+
 }

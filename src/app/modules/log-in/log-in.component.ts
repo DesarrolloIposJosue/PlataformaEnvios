@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ClientService } from '../../services/client-service/client.service';
+import { Client } from '../../classes/client';
+
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   selector: 'app-log-in',
@@ -6,8 +10,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./log-in.component.css']
 })
 export class LogInComponent implements OnInit {
-
-  constructor() { }
+  clients;
+  constructor(private clientService: ClientService) {
+    //clientService.getUsers().subscribe(p=>this.clients = p);
+  }
 
   ngOnInit() {
   }

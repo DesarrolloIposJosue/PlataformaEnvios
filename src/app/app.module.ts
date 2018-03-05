@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AgmCoreModule } from '@agm/core';
 import { FormControl, FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
 
 
 //APP_ROUTES
@@ -21,6 +23,7 @@ import { AddClientComponent } from './modules/add-client/add-client.component';
 import { AddProductComponent } from './modules/add-product/add-product.component';
 
 //Services
+import { ClientService } from './services/client-service/client.service';
 
 //Pipes
 
@@ -43,16 +46,15 @@ import { AddProductComponent } from './modules/add-product/add-product.component
     APP_ROUTING,
     FormsModule,
     ReactiveFormsModule,
+    HttpModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyChvFc0BNQDufcLXZBnNTsKq4caaLlX3eA',
       libraries: ["places"]
     }),
-
-  ],
-  providers: [
-
   ],
 
-  bootstrap: [AppComponent]
+  providers: [ ClientService],
+
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

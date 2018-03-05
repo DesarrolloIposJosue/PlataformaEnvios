@@ -1,6 +1,13 @@
 export class Cost{
-  price:number;
-  type:number;
+  private price:number;
+  private type:number;
+
+  constructor(
+    price:number,
+    type:number){
+      this.price = price;
+      this.type = type;
+  }
 
   GetPrice():number{
     return this.price;

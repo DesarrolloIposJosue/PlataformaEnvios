@@ -1,7 +1,16 @@
 export class Client{
-  name:string;
-  password:string;
-  username:string;
+  private name:string;
+  private password:string;
+  private username:string;
+
+  constructor(
+    name:string,
+    password:string,
+    username:string){
+      this.name = name;
+      this.password = password;
+      this.username = username;
+  }
 
   GetName():string{
     return this.name;
