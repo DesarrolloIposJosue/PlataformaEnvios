@@ -17,6 +17,8 @@ import { QuotationComponent } from './modules/quotation/quotation.component';
 import { TrackingComponent } from './modules/tracking/tracking.component';
 import { LogInComponent } from './modules/log-in/log-in.component';
 import { GoogleMapsComponent } from './modules/google-maps/google-maps.component';
+import { AddClientComponent } from './modules/add-client/add-client.component';
+import { AddProductComponent } from './modules/add-product/add-product.component';
 
 //Services
 
@@ -31,7 +33,9 @@ import { GoogleMapsComponent } from './modules/google-maps/google-maps.component
     QuotationComponent,
     TrackingComponent,
     LogInComponent,
-    GoogleMapsComponent
+    GoogleMapsComponent,
+    AddClientComponent,
+    AddProductComponent
   ],
   imports: [
     BrowserModule,
