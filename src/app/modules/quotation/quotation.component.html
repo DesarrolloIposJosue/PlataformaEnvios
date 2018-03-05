@@ -1,0 +1,66 @@
+<div class="row blue lighten-5">
+    <form class="col s12 m12 l12 blue lighten-5">
+      <h5 class="blue lighten-2 s12 m12 l12">Recorrido</h5>
+      <div class="row">
+        <div class="input-field col s12 m6 l6">
+          <i class="material-icons prefix">location_city</i>
+          <input id="origin_city" type="text" class="validate">
+          <label for="origin_city">Ciudad origen</label>
+        </div>
+        <div class="input-field col s12 m6 l6">
+          <i class="material-icons prefix">local_post_office</i>
+          <input id="postal_code_origin" type="text" class="validate">
+          <label for="postal_code_origin">C.P. Origen</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m6 l6">
+          <i class="material-icons prefix">location_city</i>
+          <input id="dest_city" type="text" class="validate">
+          <label for="dest_city">Ciudad destino</label>
+        </div>
+        <div class="input-field col s12 m6 l6">
+          <i class="material-icons prefix">local_post_office</i>
+          <input id="postal_code_dest" type="text" class="validate">
+          <label for="postal_code_dest">C.P. Destino</label>
+        </div>
+      </div>
+      <h5 class="blue lighten-2">Tipo</h5>
+      <div class="row radio-buttons">
+          <p class="col s6 m6 l6 ">
+            <input class="with-gap" name="group1" type="radio" id="test1" />
+            <label for="test1">Sobre</label>
+          </p>
+          <p class="col s6 m6 l6">
+            <input class="with-gap" name="group1" type="radio" id="test2" />
+            <label for="test2">Paquete</label>
+          </p>
+      </div>
+      <h5 class="blue lighten-2">Características</h5>
+      <div class="row">
+        <div class="input-field col s12 m6 l6">
+          <input id="weight" type="text" class="validate">
+          <label for="weight">Peso (kg)</label>
+        </div>
+        <div class="input-field col s12 m6 l6">
+          <input id="large" type="text" class="validate">
+          <label for="large">Largo (cm)</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m6 l6">
+          <input id="width" type="text" class="validate">
+          <label for="width">Ancho (cm)</label>
+        </div>
+        <div class="input-field col s12 m6 l6">
+          <input id="high" type="text" class="validate">
+          <label for="high">Alto (cm)</label>
+        </div>
+      </div>
+      <div class="row">
+        <button click class="btn offset-s4 s4 waves-effect waves-light  blue accent-3" name="action">Cotizar
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+    </form>
+  </div>
