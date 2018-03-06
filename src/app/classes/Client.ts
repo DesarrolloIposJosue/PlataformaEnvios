@@ -1,12 +1,10 @@
 export class Client{
-  /*constructor(
-      public id: string,
-      public name: string,
-      public username: string,
-      public email: string
-   ) {}*/
+  public id: string;
+  public name: string;
+  public username: string;
+  public email: string;
 
-  private name:string;
+  /*private name:string;
   private password:string;
   private username:string;
   private type:number;
@@ -52,6 +50,6 @@ export class Client{
 
   SetType(_type:number){
     this.type = _type;
-  }
+  }*/
 
 }

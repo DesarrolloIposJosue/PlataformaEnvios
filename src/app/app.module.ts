@@ -24,6 +24,7 @@ import { AddProductComponent } from './modules/add-product/add-product.component
 
 //Services
 import { ClientService } from './services/client-service/client.service';
+import { AuthService } from './services/auth-service/auth.service';
 
 //Pipes
 
@@ -53,7 +54,10 @@ import { ClientService } from './services/client-service/client.service';
     }),
   ],
 
-  providers: [ ClientService],
+  providers: [
+    ClientService,
+    AuthService
+  ],
 
   bootstrap: [AppComponent],
 })

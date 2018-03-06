@@ -1,21 +1,25 @@
 <div class="row blue accent-1 main">
-  <form class="col s12 offset-m4 offset-l4 m4 l4 blue lighten-5">
+  <form name="form" (ngSubmit)="login()" #f="ngForm" novalidate class="col s12 offset-m4 offset-l4 m4 l4 blue lighten-5">
     <h5 class="s12 m12 l12">Inicio de sesión</h5>
     <div class="row">
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10">
         <i class="material-icons prefix">account_circle</i>
-        <input id="username" type="text" class="validate">
+        <input id="username" name="username" [(ngModel)]="model.email" #username="ngModel" type="text" class="validate" required>
         <label for="username">Usuario</label>
       </div>
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10">
         <i class="material-icons prefix">local_post_office</i>
-        <input id="password" type="password" class="validate">
+        <input id="password" name="password" [(ngModel)]="model.username" #password="ngModel" type="password" class="validate" required>
         <label for="password">Contraseña</label>
       </div>
       <div class="row col offset-s1 s10 offset-m1 m10 offset-l1 l10 right-align">
-        <button click class="btn waves-effect waves-light blue accent-3" name="action">Iniciar sesión
-        </button>
+        <button [disabled]="loading" class="btn waves-effect waves-light blue accent-3">Iniciar sesión</button>
       </div>
+      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
     </div>
   </form>
 </div>
+
+<!--<div *ngFor="let item of clients">
+  <p>{{item.id}} {{item.name}} {{item.email}} {{item.username}}</p>
+</div>-->
