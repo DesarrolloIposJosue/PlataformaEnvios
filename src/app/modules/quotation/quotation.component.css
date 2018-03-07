@@ -44,3 +44,8 @@
    .radio-buttons label{
      color: #000;
    }
+
+   form{
+     margin-top: 5%;
+     margin-bottom: 5%;
+   }

@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+import { ClientService } from '../../services/client-service/client.service';
+import { Client } from '../../classes/Client';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   selector: 'app-add-client',
@@ -7,9 +11,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddClientComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router, private clientService: ClientService) { }
+
+  client: Array<Client>;
+  borrado: EventEmitter<Client> = new EventEmitter<Client>();
+  modificado: EventEmitter<Client> = new EventEmitter<Client>();
 
   ngOnInit() {
+
   }
 
 }

@@ -3,6 +3,7 @@ import "materialize-css";
 import "angular2-materialize";
 import { MaterializeAction, MaterializeDirective } from 'angular2-materialize';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../services/auth-service/auth.service';
 
 declare var $: any;
 
@@ -16,7 +17,8 @@ export class NavbarComponent implements OnInit {
   constructor(
     private el: ElementRef,
     private _actRouter: ActivatedRoute,
-    private _router: Router
+    private _router: Router,
+    private authorizationService:AuthService
   ) {
 
   }
@@ -51,6 +53,10 @@ export class NavbarComponent implements OnInit {
 
    goGoogleMaps(){
      this._router.navigate(['/google-maps']);
+   }
+
+   goAuth(){
+     this.authorizationService.login();
    }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { ClientService } from '../../services/client-service/client.service';
@@ -15,6 +15,9 @@ export class LogInComponent implements OnInit {
   model: Client = new Client();
   error = '';
   loading: boolean = false;
+  // @Input() client: Array<Client>;        Sirven para obtener y pasar información del componente padre al hijo
+  // @Output() borrado: EventEmitter<Client>=new EventEmitter<Client>();
+  // @Output() modificado: EventEmitter<Client>=new EventEmitter<Client>();
 
   clients: Array<Client> = [];
   constructor(
@@ -26,7 +29,7 @@ export class LogInComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.logout();
+
     /*this.clientService.getClients().subscribe(data =>{
       this.clients = data;
       console.log(this.clients);
@@ -34,24 +37,6 @@ export class LogInComponent implements OnInit {
   }
 
   login(){
-    this.loading = true;
-    this.authService.login(this.model).subscribe(result => {
-      if(result === true){
-        this.router.navigate(['/']);
-      }else{
-        this.error = 'Credenciales incorrectas';
-        this.loading = false;
-      }
-    }, e=>{
-      this.error = 'Credenciales incorrectas';
-      this.loading = false;
-    });
-}
-
-  crear(model: Client){
-    this.clientService.addClient(model).subscribe(data =>{
-      this.clients.push(data);
-    });
+    console.log("Holis");
   }
-
 }
