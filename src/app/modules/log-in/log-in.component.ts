@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth-service/auth.service';
 import { ClientService } from '../../services/client-service/client.service';
 import { Client } from '../../classes/Client';
 import { Observable } from 'rxjs/Rx';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-log-in',
@@ -36,7 +37,9 @@ export class LogInComponent implements OnInit {
     });*/
   }
 
-  login(){
+  login(forma:NgForm){
+    console.log(forma);
     console.log("Holis");
+    this.loading = true;
   }
 }

@@ -1,20 +1,25 @@
-
-  <nav>
-    <div class="nav-wrapper">
-      <a [routerLink]="[routeName]" class="brand-logo" id="logo-l">Envíos </a>
-      <a (click)="openSideNav()" materialize="sideNav" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-      <ul class="right hide-on-med-and-down" id="links-l">
-        <li><a (click)="goHome()">Inicio</a></li>
-        <li><a (click)="goQuotation()">Cotizaciones</a></li>
-        <li><a (click)="goLogIn()">Inicio de sesión</a></li>
-        <li><a (click)="goGoogleMaps()">Google Maps</a></li>
-        <li><a (click)="goAuth()">PruebaAuthService</a></li>
-      </ul>
-      <ul materialize="sideNav" class="side-nav" id="mobile-demo">
-        <li><a (click)="goHome()"><i class="material-icons icon-blue">home</i>Inicio</a></li>
-        <li><a (click)="goQuotation()"><i class="material-icons icon-blue">attach_money</i>Cotizaciones</a></li>
-        <li><a (click)="goLogIn()"><i class="material-icons icon-blue">account_circle</i>Inicio de sesión</a></li>
-        <li><a (click)="goGoogleMaps()">Google Maps</a></li>
-      </ul>
-    </div>
-  </nav>
+<nav>
+  <div class="nav-wrapper">
+    <a [routerLink]="['home']" class="brand-logo" id="logo-l">Envíos </a>
+    <a (click)="openSideNav()" materialize="sideNav" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+    <ul class="right hide-on-med-and-down" id="links-l">
+      <li><a routerLink="active" [routerLink]="['home']">Inicio</a></li>
+      <li><a routerLink="active" [routerLink]="['quotation']">Cotizaciones</a></li>
+      <li><a routerLink="active" [routerLink]="['log-in']">Inicio de sesión</a></li>
+      <li><a routerLink="active" [routerLink]="['google-maps']">Google Maps</a></li>      
+      <li routerLink="active"><a (click)="logOut()">CerrarSesion</a></li>
+    </ul>
+    <ul materialize="sideNav" class="side-nav" id="mobile-demo">
+      <li><a (click)="goHome()"><i class="material-icons icon-blue">home</i>Inicio</a></li>
+      <li><a (click)="goQuotation()"><i class="material-icons icon-blue">attach_money</i>Cotizaciones</a></li>
+      <li><a (click)="goLogIn()"><i class="material-icons icon-blue">account_circle</i>Inicio de sesión</a></li>
+      <li><a (click)="goGoogleMaps()"><i class="material-icons icon-blue">map</i>Google Maps</a></li>
+    </ul>
+  </div>
+</nav>
+<ul materialize="dropdown" id="dropdown1" class="dropdown-content">
+  <li><a href="#!">Crear</a></li>
+  <li><a href="#!">Modificar</a></li>
+  <li class="divider"></li>
+  <li><a href="#!">Eliminar</a></li>
+</ul>

@@ -3,6 +3,7 @@ import "materialize-css";
 import "angular2-materialize";
 import { MaterializeAction, MaterializeDirective } from 'angular2-materialize';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth-service/auth.service';
 
 declare var $: any;
@@ -23,6 +24,11 @@ export class NavbarComponent implements OnInit {
 
   }
 
+  dropDownActions = new EventEmitter<any | MaterializeAction>();
+    openDropDown(){
+      this.dropDownActions.emit({ action: "dropdown", params: ['show']});
+    }
+
   sideNavActions = new EventEmitter<any | MaterializeAction>();
      openSideNav() {
          this.sideNavActions.emit({ action: "sideNav", params: ['show'] });
@@ -33,30 +39,40 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     $(this.el.nativeElement).find('.button-collapse').sideNav();
+    $(this.el.nativeElement).find('.dropdown-button').dropdown();
   }
 
   goHome() {
        this._router.navigate(['/home']);
+       this.closeSideNav();
    }
 
    goQuotation() {
        this._router.navigate(['/quotation']);
+       this.closeSideNav();
    }
 
    goTracking() {
        this._router.navigate(['/tracking']);
+       this.closeSideNav();
    }
 
    goLogIn() {
        this._router.navigate(['/log-in']);
+       this.closeSideNav();
    }
 
    goGoogleMaps(){
+     this.closeSideNav();
      this._router.navigate(['/google-maps']);
    }
 
-   goAuth(){
+   /*goAuth(){
      this.authorizationService.login();
    }
+
+   logOut(){
+     this.authorizationService.logout();
+   }*/
 
 }

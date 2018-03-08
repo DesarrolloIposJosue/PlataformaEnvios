@@ -25,6 +25,7 @@ import { AddProductComponent } from './modules/add-product/add-product.component
 //Services
 import { ClientService } from './services/client-service/client.service';
 import { AuthService } from './services/auth-service/auth.service';
+import { AuthGuardService } from './services/auth-guard-service/auth-guard.service';
 
 //Pipes
 
@@ -46,6 +47,7 @@ import { AuthService } from './services/auth-service/auth.service';
     MaterializeModule,
     APP_ROUTING,
     FormsModule,
+    RouterModule,
     ReactiveFormsModule,
     HttpModule,
     AgmCoreModule.forRoot({
@@ -56,7 +58,8 @@ import { AuthService } from './services/auth-service/auth.service';
 
   providers: [
     ClientService,
-    AuthService
+    AuthService,
+    AuthGuardService
   ],
 
   bootstrap: [AppComponent],
