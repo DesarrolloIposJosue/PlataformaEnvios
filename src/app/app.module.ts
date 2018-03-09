@@ -26,6 +26,9 @@ import { AddProductComponent } from './modules/add-product/add-product.component
 import { ClientService } from './services/client-service/client.service';
 import { AuthService } from './services/auth-service/auth.service';
 import { AuthGuardService } from './services/auth-guard-service/auth-guard.service';
+import { MainPageAdminComponent } from './modules/main-page-admin/main-page-admin.component';
+import { MainPageClientAdminComponent } from './modules/main-page-client-admin/main-page-client-admin.component';
+import { MainPageClientComponent } from './modules/main-page-client/main-page-client.component';
 
 //Pipes
 
@@ -40,7 +43,10 @@ import { AuthGuardService } from './services/auth-guard-service/auth-guard.servi
     LogInComponent,
     GoogleMapsComponent,
     AddClientComponent,
-    AddProductComponent
+    AddProductComponent,
+    MainPageAdminComponent,
+    MainPageClientAdminComponent,
+    MainPageClientComponent
   ],
   imports: [
     BrowserModule,

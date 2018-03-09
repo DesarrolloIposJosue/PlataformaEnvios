@@ -14,8 +14,8 @@ const APP_ROUTES: Routes = [
   { path: 'tracking', component: TrackingComponent, canActivate:[ AuthGuardService ] },
   { path: 'log-in', component: LogInComponent },
   { path: 'google-maps', component: GoogleMapsComponent },
-  { path: 'add-product', component: AddProductComponent, canActivate:[ AuthGuardService ] },
-  { path: 'add-client', component: AddClientComponent, canActivate:[ AuthGuardService ] },
+  { path: 'add-product', component: AddProductComponent, },
+  { path: 'add-client', component: AddClientComponent,},
   { path: '**', pathMatch: 'full', redirectTo: 'home' }
 ];
 

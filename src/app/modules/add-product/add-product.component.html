@@ -1,3 +1,77 @@
-<p>
-  add-product works!
-</p>
+
+<div class="row  main">
+  <form name="form" (ngSubmit)="addProduct(forma)" #forma="ngForm" novalidate class="col s12 offset-m4 offset-l4 m4 l4 blue lighten-5">
+    <h5 class="s12 m12 l12">Registrar nuevo producto</h5>
+    <div class="row">
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': parcel.errors?.required && parcel.touched}">
+
+        <select materialize="material_select" [materializeSelectOptions]="options" name="parcel" ngModel required #parcel="ngModel">
+          <option value="" disabled selected>Elija una opción</option>
+          <option value="1">DHL</option>
+          <option value="2">RedPack</option>
+          <option value="3">Estafeta</option>
+          <option value="3">FedEx</option>
+        </select>
+        <label>Paquetería</label>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': productName.errors?.required && productName.touched}">
+        <i class="material-icons prefix">local_grocery_store</i>
+        <input id="productName" name="productName" ngModel #productName="ngModel" type="text" class="validate" minlength="6" required>
+        <label for="productName">Nombre producto</label>
+        <p *ngIf="productName.errors?.required&&productName.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="productName.errors?.minlength&&productName.touched">
+          Por lo menos escriba {{productName.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': password.errors?.required && password.touched}">
+        <i class="material-icons prefix">font_download</i>
+        <input id="description" name="description" ngModel #description="ngModel" type="text" class="validate" minlength="6" required>
+        <label for="description">Descripcion</label>
+        <p *ngIf="description.errors?.required&&description.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="description.errors?.minlength&&description.touched">
+          Por lo menos escriba {{description.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': priceOne.errors?.required && priceOne.touched}">
+        <i class="material-icons prefix">attach_money</i>
+        <input id="priceOne" name="priceOne" ngModel #priceOne="ngModel" type="number" class="validate" required>
+        <label for="priceOne">Precio 1</label>
+        <p *ngIf="priceOne.errors?.required&&priceOne.touched">
+          *Este campo es requerido.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': priceTwo.errors?.required && priceTwo.touched}">
+        <i class="material-icons prefix">attach_money</i>
+        <input id="priceTwo" name="priceTwo" ngModel #priceTwo="ngModel" type="number" class="validate" >
+        <label for="priceTwo">Precio 2</label>
+        <p *ngIf="priceTwo.errors?.required&&priceTwo.touched">
+          *Este campo es requerido.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': priceThree.errors?.required && priceThree.touched}">
+        <i class="material-icons prefix">attach_money</i>
+        <input id="priceThree" name="priceThree" ngModel #priceThree="ngModel" type="number" class="validate" >
+        <label for="priceThree">Precio 3</label>
+        <p *ngIf="priceThree.errors?.required&&priceThree.touched">
+          *Este campo es requerido.
+        </p>
+      </div>
+
+      <div class="row col offset-s1 s10 offset-m1 m10 offset-l1 l10 center-align">
+        <button [disabled]="loading" class="btn waves-effect waves-light blue accent-3">Guardar</button>
+      </div>
+      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+    </div>
+  </form>
+</div>

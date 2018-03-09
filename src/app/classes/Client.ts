@@ -1,26 +1,15 @@
 export class Client{
-  public id: string;
+  /*public id: string;
   public name: string;
   public username: string;
-  public email: string;
+  public email: string;*/
+  public id: number;
+  public name:string;
+  public password:string;
+  public username:string;
+  public type:number;
 
-  /*private name:string;
-  private password:string;
-  private username:string;
-  private type:number;
-
-  constructor(
-    name:string,
-    password:string,
-    username:string,
-    type:number){
-      this.name = name;
-      this.password = password;
-      this.username = username;
-      this.type = type;
-  }
-
-  GetName():string{
+  /*GetName():string{
     return this.name;
   }
 

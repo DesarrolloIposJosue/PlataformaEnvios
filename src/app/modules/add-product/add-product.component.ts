@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Product } from '../../classes/Product';
 
 @Component({
   selector: 'app-add-product',
@@ -10,6 +12,10 @@ export class AddProductComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  addProduct(forma:NgForm){
+
   }
 
 }

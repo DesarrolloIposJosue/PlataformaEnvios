@@ -6,8 +6,8 @@
       <li><a routerLink="active" [routerLink]="['home']">Inicio</a></li>
       <li><a routerLink="active" [routerLink]="['quotation']">Cotizaciones</a></li>
       <li><a routerLink="active" [routerLink]="['log-in']">Inicio de sesión</a></li>
-      <li><a routerLink="active" [routerLink]="['google-maps']">Google Maps</a></li>      
-      <li routerLink="active"><a (click)="logOut()">CerrarSesion</a></li>
+      <li><a routerLink="active" [routerLink]="['google-maps']">Google Maps</a></li>
+      <li *ngIf="" routerLink="active"><a (click)="logOut()">CerrarSesion</a></li>
     </ul>
     <ul materialize="sideNav" class="side-nav" id="mobile-demo">
       <li><a (click)="goHome()"><i class="material-icons icon-blue">home</i>Inicio</a></li>

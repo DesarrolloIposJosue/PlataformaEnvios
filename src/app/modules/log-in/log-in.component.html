@@ -3,16 +3,30 @@
   <form name="form" (ngSubmit)="login(forma)" #forma="ngForm" novalidate class="col s12 offset-m4 offset-l4 m4 l4 blue lighten-5">
     <h5 class="s12 m12 l12">Inicio de sesión</h5>
     <div class="row">
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10">
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': username.errors?.required && username.touched}">
         <i class="material-icons prefix">account_circle</i>
-        <input id="username" name="username" [(ngModel)]="model.email" #username="ngModel" type="text" class="validate" required>
+        <input id="username" name="username" ngModel #username="ngModel" type="text" class="validate" minlength="6" required>
         <label for="username">Usuario</label>
+        <p *ngIf="username.errors?.required&&username.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="username.errors?.minlength&&username.touched">
+          Por lo menos escriba {{username.errors.minlength.requiredLength}} caracteres.
+        </p>
       </div>
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10">
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': password.errors?.required && password.touched}">
         <i class="material-icons prefix">font_download</i>
-        <input id="password" name="password" [(ngModel)]="model.username" #password="ngModel" type="password" class="validate" required>
+        <input id="password" name="password" ngModel #password="ngModel" type="password" class="validate" minlength="6" required>
         <label for="password">Contraseña</label>
+        <p *ngIf="password.errors?.required&&password.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="password.errors?.minlength&&password.touched">
+          Por lo menos escriba {{password.errors.minlength.requiredLength}} caracteres.
+        </p>
       </div>
+
       <div class="row col offset-s1 s10 offset-m1 m10 offset-l1 l10 center-align">
         <button [disabled]="loading" class="btn waves-effect waves-light blue accent-3">Iniciar sesión</button>
       </div>
@@ -20,7 +34,3 @@
     </div>
   </form>
 </div>
-
-<!--<div *ngFor="let item of clients">
-  <p>{{item.id}} {{item.name}} {{item.email}} {{item.username}}</p>
-</div>-->

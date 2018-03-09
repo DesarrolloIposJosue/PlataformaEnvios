@@ -1,7 +1,10 @@
 export class Product{
-  private description:string;
+  public parcel:string;
+  public productName:string;
+  public description:string;
+  public prices:number[];
 
-  constructor(
+  /*constructor(
     description:string){
       this.description = description;
   }
@@ -12,5 +15,5 @@ export class Product{
 
   SetDescription(_description:string){
     this.description = _description;
-  }
+  }*/
 }
