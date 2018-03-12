@@ -1,10 +1,18 @@
 export class Package{
-  private status:string;
-  private originAddress:string;
-  private destinationAddress:string;
-  private idParcel:string;
+  public id:number;
+  public status:string;
+  public originAddress:string;
+  public postCodeOrigin:number;
+  public destinationAddress:string;
+  public postCodeDest:number;
+  public kindPackage: number;
+  public weight:number;
+  public large:number;
+  public width:number;
+  public high:number;
+  public idParcel:number;
 
-  constructor(
+  /*constructor(
     status:string,
     originAddress:string,
     destinationAddress:string,
@@ -46,6 +54,6 @@ export class Package{
 
   SetIdParcel(_idParcel:string){
     this.idParcel = _idParcel;
-  }
+  }*/
 
 }

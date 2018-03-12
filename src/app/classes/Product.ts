@@ -1,4 +1,5 @@
 export class Product{
+  public id: number;
   public parcel:string;
   public productName:string;
   public description:string;

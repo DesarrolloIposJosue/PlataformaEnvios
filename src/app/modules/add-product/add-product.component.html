@@ -5,7 +5,6 @@
     <div class="row">
 
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': parcel.errors?.required && parcel.touched}">
-
         <select materialize="material_select" [materializeSelectOptions]="options" name="parcel" ngModel required #parcel="ngModel">
           <option value="" disabled selected>Elija una opción</option>
           <option value="1">DHL</option>
@@ -28,7 +27,7 @@
         </p>
       </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': password.errors?.required && password.touched}">
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': description.errors?.required && description.touched}">
         <i class="material-icons prefix">font_download</i>
         <input id="description" name="description" ngModel #description="ngModel" type="text" class="validate" minlength="6" required>
         <label for="description">Descripcion</label>
@@ -70,7 +69,7 @@
       <div class="row col offset-s1 s10 offset-m1 m10 offset-l1 l10 center-align">
         <button [disabled]="loading" class="btn waves-effect waves-light blue accent-3">Guardar</button>
       </div>
-      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+      <!--<div *ngIf="error" class="alert alert-danger">{{error}}</div>-->
 
     </div>
   </form>

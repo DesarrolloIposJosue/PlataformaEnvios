@@ -26,6 +26,25 @@
      color: #bbdefb;
    }
 
+   .input-field input[type=number]:focus + label {
+     color: #000;
+   }
+   /* label underline focus color */
+   .input-field input[type=number]:focus {
+     border-bottom: 1px solid #2962ff;
+     box-shadow: 0 1px 0 0 #2962ff;
+   }
+   /* valid color */
+   .input-field input[type=number].valid {
+     border-bottom: 1px solid #2962ff;
+     box-shadow: 0 1px 0 0 #2962ff;
+   }
+   /* invalid color */
+   .input-field input[type=number].invalid {
+     border-bottom: 1px solid #2962ff;
+     box-shadow: 0 1px 0 0 #2962ff;
+   }
+
    [type="radio"].with-gap:checked + label:before {
    border-radius: 50%;
    border: 2px solid #0277bd; }
@@ -49,3 +68,10 @@
      margin-top: 5%;
      margin-bottom: 5%;
    }
+
+   input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        /* display: none; <- Crashes Chrome on hover */
+        -webkit-appearance: none;
+        margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+    }

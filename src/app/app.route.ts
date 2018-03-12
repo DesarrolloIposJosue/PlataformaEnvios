@@ -10,7 +10,7 @@ import { AuthGuardService } from './services/auth-guard-service/auth-guard.servi
 
 const APP_ROUTES: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: 'quotation', component: QuotationComponent, canActivate:[ AuthGuardService ] },
+  { path: 'quotation', component: QuotationComponent, },
   { path: 'tracking', component: TrackingComponent, canActivate:[ AuthGuardService ] },
   { path: 'log-in', component: LogInComponent },
   { path: 'google-maps', component: GoogleMapsComponent },

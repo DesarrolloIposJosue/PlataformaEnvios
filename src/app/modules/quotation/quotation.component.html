@@ -1,66 +1,131 @@
-<div class="row ">
-    <form class="col s12 m12 l12 blue lighten-5">
+<div class="row container">
+    <form name="form" (ngSubmit)="addQuotation(forma)" #forma="ngForm" novalidate class="col s12 m12 l12 blue lighten-5">
       <h5 class="blue lighten-2 s12 m12 l12">Recorrido</h5>
+
       <div class="row">
-        <div class="input-field col s12 m6 l6">
+        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': origin_city.errors?.required && origin_city.touched}">
           <i class="material-icons prefix">location_city</i>
-          <input id="origin_city" type="text" class="validate">
+          <input id="origin_city" name="origin_city" type="text" ngModel #origin_city="ngModel" class="validate" minlength="6" required>
           <label for="origin_city">Ciudad origen</label>
         </div>
-        <div class="input-field col s12 m6 l6">
+        <p *ngIf="origin_city.errors?.required&&origin_city.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="origin_city.errors?.minlength&&origin_city.touched">
+          Por lo menos escriba {{origin_city.errors.minlength.requiredLength}} caracteres.
+        </p>
+
+        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': postal_code_origin.errors?.required && postal_code_origin.touched}">
           <i class="material-icons prefix">local_post_office</i>
-          <input id="postal_code_origin" type="text" class="validate">
+          <input id="postal_code_origin" name="postal_code_origin" type="number" ngModel #postal_code_origin="ngModel" class="validate" minlength="5" required>
           <label for="postal_code_origin">C.P. Origen</label>
         </div>
+        <p *ngIf="postal_code_origin.errors?.required&&postal_code_origin.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="postal_code_origin.errors?.minlength&&postal_code_origin.touched">
+          Por lo menos escriba {{postal_code_origin.errors.minlength.requiredLength}} caracteres.
+        </p>
       </div>
+
       <div class="row">
-        <div class="input-field col s12 m6 l6">
+        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': dest_city.errors?.required && dest_city.touched}">
           <i class="material-icons prefix">location_city</i>
-          <input id="dest_city" type="text" class="validate">
+          <input id="dest_city" name="dest_city" type="text" ngModel #dest_city="ngModel" class="validate" minlength="6" required>
           <label for="dest_city">Ciudad destino</label>
         </div>
-        <div class="input-field col s12 m6 l6">
+        <p *ngIf="dest_city.errors?.required&&dest_city.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="dest_city.errors?.minlength&&dest_city.touched">
+          Por lo menos escriba {{dest_city.errors.minlength.requiredLength}} caracteres.
+        </p>
+
+        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': postal_code_dest.errors?.required && postal_code_dest.touched}">
           <i class="material-icons prefix">local_post_office</i>
-          <input id="postal_code_dest" type="text" class="validate">
+          <input id="postal_code_dest" name="postal_code_dest" type="number" ngModel #postal_code_dest="ngModel" class="validate" minlength="5" required>
           <label for="postal_code_dest">C.P. Destino</label>
         </div>
+        <p *ngIf="postal_code_dest.errors?.required&&postal_code_dest.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="postal_code_dest.errors?.minlength&&postal_code_dest.touched">
+          Por lo menos escriba {{postal_code_dest.errors.minlength.requiredLength}} caracteres.
+        </p>
       </div>
+
       <h5 class="blue lighten-2">Tipo</h5>
-      <div class="row radio-buttons">
+
+      <div class="row radio-buttons" [ngClass]="{'has-danger': kindPackage.errors?.required && kindPackage.touched}">
           <p class="col s6 m6 l6 ">
-            <input class="with-gap" name="group1" type="radio" id="test1" />
+            <input class="with-gap" value="1" ngModel #kindPackage="ngModel" name="kindPackage" type="radio" id="test1" />
             <label for="test1">Sobre</label>
           </p>
           <p class="col s6 m6 l6">
-            <input class="with-gap" name="group1" type="radio" id="test2" />
+            <input class="with-gap" value="2" ngModel #kindPackage="ngModel" name="kindPackage" type="radio" id="test2" />
             <label for="test2">Paquete</label>
           </p>
       </div>
+      <p *ngIf="kindPackage.errors?.required&&kindPackage.touched">
+        *Este campo es requerido.
+      </p>
+
       <h5 class="blue lighten-2">Características</h5>
+
       <div class="row">
-        <div class="input-field col s12 m6 l6">
-          <input id="weight" type="text" class="validate">
+        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': weight.errors?.required && weight.touched}">
+          <input id="weight" name="weight" type="number" ngModel #weight="ngModel" class="validate" minlength="1" required>
           <label for="weight">Peso (kg)</label>
         </div>
-        <div class="input-field col s12 m6 l6">
-          <input id="large" type="text" class="validate">
+        <p *ngIf="weight.errors?.required&&weight.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="weight.errors?.minlength&&weight.touched">
+          Por lo menos escriba {{weight.errors.minlength.requiredLength}} digito.
+        </p>
+
+        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': large.errors?.required && large.touched}">
+          <input id="large" name="large" type="number" ngModel #large="ngModel" class="validate" minlength="2" required>
           <label for="large">Largo (cm)</label>
         </div>
+        <p *ngIf="large.errors?.required&&large.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="large.errors?.minlength&&large.touched">
+          Por lo menos escriba {{large.errors.minlength.requiredLength}} digitos.
+        </p>
+
       </div>
+
       <div class="row">
-        <div class="input-field col s12 m6 l6">
-          <input id="width" type="text" class="validate">
+        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': width.errors?.required && width.touched}">
+          <input id="width" name="width" type="number" ngModel #width="ngModel" class="validate" minlength="2" required>
           <label for="width">Ancho (cm)</label>
         </div>
-        <div class="input-field col s12 m6 l6">
-          <input id="high" type="text" class="validate">
+        <p *ngIf="width.errors?.required&&width.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="width.errors?.minlength&&width.touched">
+          Por lo menos escriba {{width.errors.minlength.requiredLength}} digitos.
+        </p>
+
+        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': high.errors?.required && high.touched}">
+          <input id="high" name="high" type="number" ngModel #high="ngModel" class="validate" minlength="6" required>
           <label for="high">Alto (cm)</label>
         </div>
+        <p *ngIf="high.errors?.required&&high.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="high.errors?.minlength&&high.touched">
+          Por lo menos escriba {{high.errors.minlength.requiredLength}} digitos.
+        </p>
       </div>
+
       <div class="row center-align">
-        <button click class="btn offset-s4 s4 waves-effect waves-light  blue accent-3" name="action">Cotizar
+        <button [disabled]="loading" class="btn offset-s4 s4 waves-effect waves-light  blue accent-3">Cotizar
           <i class="material-icons right">send</i>
         </button>
       </div>
+
     </form>
   </div>

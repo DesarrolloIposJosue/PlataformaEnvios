@@ -9,13 +9,25 @@ import { Product } from '../../classes/Product';
 })
 export class AddProductComponent implements OnInit {
 
+  loading:boolean;
+
   constructor() { }
 
   ngOnInit() {
   }
 
   addProduct(forma:NgForm){
+    console.log(forma);
 
+    const clientData: Product = {
+      id: 0,
+      parcel: forma.controls["parcel"].value,
+      productName: forma.controls["productName"].value,
+      description: forma.controls["description"].value,
+      prices: [forma.controls["priceOne"].value, forma.controls["priceTwo"].value, forma.controls["priceThree"].value]
+    }
+    console.log(clientData);
+    this.loading = true;
   }
 
 }
