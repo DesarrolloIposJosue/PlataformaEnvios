@@ -1,11 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserLogged } from '../../classes/UserLogged';
 import 'rxjs/add/operator/filter';
 import * as auth0 from 'auth0-js';
 
 @Injectable()
 export class AuthService {
   public userProfile: any;
+
+  public userLogged:UserLogged;
+
+  public validateUser(){
+
+  }
+
+  public setUserLogged(){
+
+  }
+
+  public closeSession(){
+
+  }
 
   auth0 = new auth0.WebAuth({
     clientID: 'B3M2TY5qTxb71NXH21IysawS6Dhn7RxT',
@@ -20,6 +35,8 @@ export class AuthService {
 
   public login(): void {
     this.auth0.authorize();
+    this.userLogged.getStatus();
+    this.userLogged.setStatus(true);
   }
 
   public handleAuthentication(): void {

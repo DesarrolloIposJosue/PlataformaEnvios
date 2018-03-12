@@ -7,9 +7,9 @@ export class Package{
   public postCodeDest:number;
   public kindPackage: number;
   public weight:number;
-  public large:number;
+  public long:number;
   public width:number;
-  public high:number;
+  public hight:number;
   public idParcel:number;
 
   /*constructor(

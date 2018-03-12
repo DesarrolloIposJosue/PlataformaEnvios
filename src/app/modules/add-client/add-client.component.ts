@@ -32,7 +32,10 @@ export class AddClientComponent implements OnInit {
     const clientData: Client = {
       id: 0,
       name: forma.controls["name"].value,
+      lastname: forma.controls["lastname"].value,
       password: forma.controls["password"].value,
+      address: forma.controls["address"].value,
+      email: forma.controls["email"].value,
       username: forma.controls["username"].value,
       type: forma.controls["clientType"].value
     }

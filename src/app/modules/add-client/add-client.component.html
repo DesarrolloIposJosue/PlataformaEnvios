@@ -1,8 +1,56 @@
-
+<div class="container">
 <div class="row  main">
-  <form name="form" (ngSubmit)="saveClient(forma)" #forma="ngForm" novalidate class="col s12 offset-m4 offset-l4 m4 l4 blue lighten-5">
+  <form name="form" (ngSubmit)="saveClient(forma)" #forma="ngForm" novalidate class="col s12 offset-m2 offset-l2 m8 l8 blue lighten-5">
     <h5 class="s12 m12 l12">Registrar nuevo cliente</h5>
     <div class="row">
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': name.errors?.required && name.touched}">
+        <i class="material-icons prefix">account_circle</i>
+        <input id="name" name="name" ngModel #name="ngModel" type="text" class="validate" minlength="3" required>
+        <label for="name">Nombre del cliente</label>
+        <p *ngIf="name.errors?.required&&name.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="name.errors?.minlength&&name.touched">
+          Por lo menos escriba {{name.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': lastname.errors?.required && lastname.touched}">
+        <i class="material-icons prefix">account_circle</i>
+        <input id="lastname" name="lastname" ngModel #lastname="ngModel" type="text" class="validate" minlength="3" required>
+        <label for="lastname">Apellido del cliente</label>
+        <p *ngIf="lastname.errors?.required&&lastname.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="lastname.errors?.minlength&&lastname.touched">
+          Por lo menos escriba {{lastname.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': address.errors?.required && address.touched}">
+        <i class="material-icons prefix">location_city</i>
+        <input id="address" name="address" ngModel #address="ngModel" type="text" class="validate" minlength="5" required>
+        <label for="address">Dirección del cliente</label>
+        <p *ngIf="address.errors?.required&&address.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="address.errors?.minlength&&address.touched">
+          Por lo menos escriba {{address.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': email.errors?.required && email.touched}">
+        <i class="material-icons prefix">email</i>
+        <input id="email" name="email" ngModel #email="ngModel" type="text" class="validate" minlength="5" required>
+        <label for="email">Correo electrónico</label>
+        <p *ngIf="email.errors?.required&&email.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="email.errors?.minlength&&email.touched">
+          Por lo menos escriba {{email.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
 
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': username.errors?.required && username.touched}">
         <i class="material-icons prefix">assignment_ind</i>
@@ -28,18 +76,6 @@
         </p>
       </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': name.errors?.required && name.touched}">
-        <i class="material-icons prefix">account_circle</i>
-        <input id="name" name="name" ngModel #name="ngModel" type="text" class="validate" minlength="10" required>
-        <label for="name">Nombre del cliente</label>
-        <p *ngIf="name.errors?.required&&name.touched">
-          *Este campo es requerido.
-        </p>
-        <p *ngIf="name.errors?.minlength&&name.touched">
-          Por lo menos escriba {{name.errors.minlength.requiredLength}} caracteres.
-        </p>
-      </div>
-
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': clientType.errors?.required && clientType.touched}">
         <select materialize="material_select" [materializeSelectOptions]="options" name="clientType" ngModel required #clientType="ngModel">
           <option class="blue-text text-darken-4" value="" disabled selected>Elija una opción</option>
@@ -57,4 +93,5 @@
 
     </div>
   </form>
+</div>
 </div>

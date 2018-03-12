@@ -5,6 +5,9 @@ export class Client{
   public email: string;*/
   public id: number;
   public name:string;
+  public lastname:string;
+  public address:string;
+  public email:string;
   public password:string;
   public username:string;
   public type:number;

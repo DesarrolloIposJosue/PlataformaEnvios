@@ -39,9 +39,9 @@ export class QuotationComponent implements OnInit {
       postCodeDest: forma.controls["postal_code_dest"].value,
       kindPackage: forma.controls["kindPackage"].value,
       weight: forma.controls["weight"].value,
-      large: forma.controls["large"].value,
+      long: forma.controls["long"].value,
       width: forma.controls["width"].value,
-      high: forma.controls["high"].value,
+      hight: forma.controls["hight"].value,
       idParcel: 0
     }
     console.log(quotationData);

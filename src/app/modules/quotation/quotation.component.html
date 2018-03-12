@@ -84,15 +84,15 @@
           Por lo menos escriba {{weight.errors.minlength.requiredLength}} digito.
         </p>
 
-        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': large.errors?.required && large.touched}">
-          <input id="large" name="large" type="number" ngModel #large="ngModel" class="validate" minlength="2" required>
-          <label for="large">Largo (cm)</label>
+        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': long.errors?.required && long.touched}">
+          <input id="long" name="long" type="number" ngModel #long="ngModel" class="validate" minlength="2" required>
+          <label for="long">Largo (cm)</label>
         </div>
-        <p *ngIf="large.errors?.required&&large.touched">
+        <p *ngIf="long.errors?.required&&long.touched">
           *Este campo es requerido.
         </p>
-        <p *ngIf="large.errors?.minlength&&large.touched">
-          Por lo menos escriba {{large.errors.minlength.requiredLength}} digitos.
+        <p *ngIf="long.errors?.minlength&&long.touched">
+          Por lo menos escriba {{long.errors.minlength.requiredLength}} digitos.
         </p>
 
       </div>
@@ -109,15 +109,15 @@
           Por lo menos escriba {{width.errors.minlength.requiredLength}} digitos.
         </p>
 
-        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': high.errors?.required && high.touched}">
-          <input id="high" name="high" type="number" ngModel #high="ngModel" class="validate" minlength="6" required>
-          <label for="high">Alto (cm)</label>
+        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': hight.errors?.required && hight.touched}">
+          <input id="hight" name="hight" type="number" ngModel #hight="ngModel" class="validate" minlength="2" required>
+          <label for="hight">Alto (cm)</label>
         </div>
-        <p *ngIf="high.errors?.required&&high.touched">
+        <p *ngIf="hight.errors?.required&&hight.touched">
           *Este campo es requerido.
         </p>
-        <p *ngIf="high.errors?.minlength&&high.touched">
-          Por lo menos escriba {{high.errors.minlength.requiredLength}} digitos.
+        <p *ngIf="hight.errors?.minlength&&hight.touched">
+          Por lo menos escriba {{hight.errors.minlength.requiredLength}} digitos.
         </p>
       </div>
 
