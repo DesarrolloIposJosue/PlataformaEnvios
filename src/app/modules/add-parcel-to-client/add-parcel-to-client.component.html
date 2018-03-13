@@ -1,0 +1,106 @@
+<div class="container">
+<div class="row  main">
+  <form name="form" (ngSubmit)="saveClient(forma)" #forma="ngForm" novalidate class="col s12 offset-m2 offset-l2 m8 l8 blue lighten-5">
+    <h5 class="s12 m12 l12">Asignar paqueterías a cliente</h5>
+
+    <div class="row">
+
+      <!-- Formulario RedPack -->
+
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <p>
+          <input (click)="checkRedPack()" type="checkbox" id="test5" />
+          <label for="test5">RedPack</label>
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': usernameRedPack.errors?.required && usernameRedPack.touched}" *ngIf="redPackForm">
+        <i class="material-icons prefix">account_circle</i>
+        <input id="usernameRedPack" name="usernameRedPack" ngModel #usernameRedPack="ngModel" type="text" class="validate" minlength="3" >
+        <label for="usernameRedPack">Nombre de usuario RedPack</label>
+        <p *ngIf="usernameRedPack.errors?.required&&usernameRedPack.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="usernameRedPack.errors?.minlength&&usernameRedPack.touched">
+          Por lo menos escriba {{usernameRedPack.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': passwordRedPack.errors?.required && passwordRedPack.touched}" *ngIf="redPackForm">
+        <i class="material-icons prefix">account_circle</i>
+        <input id="passwordRedPack" name="passwordRedPack" ngModel #passwordRedPack="ngModel" type="text" class="validate" minlength="3" >
+        <label for="passwordRedPack">Contraseña usuario RedPack</label>
+        <p *ngIf="passwordRedPack.errors?.required&&passwordRedPack.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="passwordRedPack.errors?.minlength&&passwordRedPack.touched">
+          Por lo menos escriba {{passwordRedPack.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <!-- Formulario DHL -->
+
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <p>
+          <input (click)="checkDHL()" type="checkbox" id="test6" />
+          <label for="test6">DHL</label>
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': usernameDHL.errors?.required && usernameDHL.touched}" *ngIf="dhlForm">
+        <i class="material-icons prefix">account_circle</i>
+        <input id="usernameDHL" name="usernameDHL" ngModel #usernameDHL="ngModel" type="text" class="validate" minlength="3" >
+        <label for="usernameDHL">Nombre de usuario DHL</label>
+        <p *ngIf="usernameDHL.errors?.required&&usernameDHL.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="usernameDHL.errors?.minlength&&usernameDHL.touched">
+          Por lo menos escriba {{usernameDHL.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': passwordDHL.errors?.required && passwordDHL.touched}" *ngIf="dhlForm">
+        <i class="material-icons prefix">account_circle</i>
+        <input id="passwordDHL" name="passwordDHL" ngModel #passwordDHL="ngModel" type="text" class="validate" minlength="3" >
+        <label for="passwordDHL">Contraseña usuario DHL</label>
+        <p *ngIf="passwordDHL.errors?.required&&passwordDHL.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="passwordDHL.errors?.minlength&&passwordDHL.touched">
+          Por lo menos escriba {{passwordDHL.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <!-- Formulario FedEx-->
+
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <p>
+          <input (click)="checkFedEx()" type="checkbox" id="test7" />
+          <label for="test7">FedEx</label>
+        </p>
+      </div>
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="fedExForm">
+        HOLIS FedEx
+      </div>
+
+      <!-- Formulario Estafeta -->
+
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <p>
+          <input (click)="checkEstafeta()" type="checkbox" id="test8" />
+          <label for="test8">Estafeta</label>
+        </p>
+      </div>
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="estafetaForm">
+        HOLIS Estafeta
+      </div>      
+
+      <div class="row col offset-s1 s10 offset-m1 m10 offset-l1 l10 center-align">
+        <button [disabled]="loading" class="btn waves-effect waves-light blue accent-3">Guardar</button>
+      </div>
+      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+    </div>
+  </form>
+</div>
+</div>

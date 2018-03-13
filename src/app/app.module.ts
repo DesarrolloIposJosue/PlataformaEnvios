@@ -29,6 +29,7 @@ import { AuthGuardService } from './services/auth-guard-service/auth-guard.servi
 import { MainPageAdminComponent } from './modules/main-page-admin/main-page-admin.component';
 import { MainPageClientAdminComponent } from './modules/main-page-client-admin/main-page-client-admin.component';
 import { MainPageClientComponent } from './modules/main-page-client/main-page-client.component';
+import { AddParcelToClientComponent } from './modules/add-parcel-to-client/add-parcel-to-client.component';
 
 //Pipes
 
@@ -46,7 +47,8 @@ import { MainPageClientComponent } from './modules/main-page-client/main-page-cl
     AddProductComponent,
     MainPageAdminComponent,
     MainPageClientAdminComponent,
-    MainPageClientComponent
+    MainPageClientComponent,
+    AddParcelToClientComponent
   ],
   imports: [
     BrowserModule,
