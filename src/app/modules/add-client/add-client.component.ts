@@ -18,10 +18,11 @@ export class AddClientComponent implements OnInit {
   constructor(
     private router: Router,
     private clientService: ClientService,
-    private el: ElementRef,
+    private el: ElementRef
   ) { }
 
   loading:boolean;
+  private formInvalid: boolean = false;
 
   ngOnInit() {
 
@@ -29,18 +30,30 @@ export class AddClientComponent implements OnInit {
 
   saveClient(forma:NgForm){
     console.log(forma);
-    const clientData: Client = {
-      id: 0,
-      name: forma.controls["name"].value,
-      lastname: forma.controls["lastname"].value,
-      password: forma.controls["password"].value,
-      address: forma.controls["address"].value,
-      email: forma.controls["email"].value,
-      username: forma.controls["username"].value,
-      type: forma.controls["clientType"].value
+    if(forma.controls["name"].value == ""
+    || forma.controls["lastname"].value == ""
+    || forma.controls["password"].value == ""
+    ||  forma.controls["address"].value == ""
+    || forma.controls["email"].value == ""
+    || forma.controls["username"].value == ""
+    || forma.controls["clientType"].value == "" ){
+      this.formInvalid = true;
+      console.log("Error");
+    }else{
+      const clientData: Client = {
+        id: 0,
+        name: forma.controls["name"].value,
+        lastname: forma.controls["lastname"].value,
+        password: forma.controls["password"].value,
+        address: forma.controls["address"].value,
+        email: forma.controls["email"].value,
+        username: forma.controls["username"].value,
+        type: forma.controls["clientType"].value
+      }
+      console.log(clientData);
+      this.formInvalid = false;
+      this.loading = true;
     }
-    console.log(clientData);
-    this.loading = true;
   }
 
 }

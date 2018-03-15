@@ -16,19 +16,23 @@
 }
 /* valid color */
 .input-field input[type=text].valid {
-  border-bottom: 1px solid #2962ff;
-  box-shadow: 0 1px 0 0 #2962ff;
+  border-bottom: 1px solid #1b5e20  ;
+  box-shadow: 0 1px 0 0 #1b5e20  ;
 }
 /* invalid color */
 .input-field input[type=text].invalid {
-  border-bottom: 1px solid #2962ff;
-  box-shadow: 0 1px 0 0 #2962ff;
+  border-bottom: 1px solid #b71c1c ;
+  box-shadow: 0 1px 0 0 #b71c1c ;
 }
 
 .input-field .prefix.active {
   color: #2962ff;
 }
 
+.checkbox-blue[type="checkbox"].filled-in:checked + label:after{
+     border: 2px solid #2962ff;
+     background-color: #2962ff;
+}
 
 /* password */
 .input-field input[type=password]:focus + label {
@@ -41,13 +45,13 @@
 }
 /* valid color */
 .input-field input[type=password].valid {
-  border-bottom: 1px solid #2962ff;
-  box-shadow: 0 1px 0 0 #2962ff;
+  border-bottom: 1px solid #1b5e20  ;
+  box-shadow: 0 1px 0 0 #1b5e20  ;
 }
 /* invalid color */
 .input-field input[type=password].invalid {
-  border-bottom: 1px solid #2962ff;
-  box-shadow: 0 1px 0 0 #2962ff;
+  border-bottom: 1px solid #b71c1c;
+  box-shadow: 0 1px 0 0 #b71c1c;
 }
 
 .select-wrapper ul li>span {

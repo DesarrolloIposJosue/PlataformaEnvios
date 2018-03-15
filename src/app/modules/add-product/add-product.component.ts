@@ -10,6 +10,7 @@ import { Product } from '../../classes/Product';
 export class AddProductComponent implements OnInit {
 
   loading:boolean;
+  private invalidForm:boolean = false;
 
   constructor() { }
 
@@ -19,15 +20,26 @@ export class AddProductComponent implements OnInit {
   addProduct(forma:NgForm){
     console.log(forma);
 
-    const clientData: Product = {
-      id: 0,
-      parcel: forma.controls["parcel"].value,
-      productName: forma.controls["productName"].value,
-      description: forma.controls["description"].value,
-      prices: [forma.controls["priceOne"].value, forma.controls["priceTwo"].value, forma.controls["priceThree"].value]
+    if(forma.controls["parcel"].value == ""
+    || forma.controls["productName"].value == ""
+    || forma.controls["description"].value == ""
+    || forma.controls["priceOne"].value == ""
+    || forma.controls["priceTwo"].value == ""
+    || forma.controls["priceThree"].value == ""){
+      this.invalidForm = true;
+    }else{
+      this.invalidForm = false;
+      const clientData: Product = {
+        id: 0,
+        parcel: forma.controls["parcel"].value,
+        productName: forma.controls["productName"].value,
+        description: forma.controls["description"].value,
+        prices: [forma.controls["priceOne"].value, forma.controls["priceTwo"].value, forma.controls["priceThree"].value]
+      }
+      console.log(clientData);
+      this.loading = true;
     }
-    console.log(clientData);
-    this.loading = true;
+
   }
 
 }

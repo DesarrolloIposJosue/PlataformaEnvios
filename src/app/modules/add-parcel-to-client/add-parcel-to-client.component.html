@@ -1,6 +1,6 @@
 <div class="container">
 <div class="row  main">
-  <form name="form" (ngSubmit)="saveClient(forma)" #forma="ngForm" novalidate class="col s12 offset-m2 offset-l2 m8 l8 blue lighten-5">
+  <form name="form" (ngSubmit)="assignParcel(forma)" #forma="ngForm" novalidate class="col s12 offset-m2 offset-l2 m8 l8 teal lighten-5">
     <h5 class="s12 m12 l12">Asignar paqueterías a cliente</h5>
 
     <div class="row">
@@ -9,7 +9,7 @@
 
       <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
         <p>
-          <input (click)="checkRedPack()" type="checkbox" id="test5" />
+          <input (click)="checkRedPack()" class="filled-in checkbox-blue" type="checkbox" id="test5" />
           <label for="test5">RedPack</label>
         </p>
       </div>
@@ -28,7 +28,7 @@
 
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': passwordRedPack.errors?.required && passwordRedPack.touched}" *ngIf="redPackForm">
         <i class="material-icons prefix">account_circle</i>
-        <input id="passwordRedPack" name="passwordRedPack" ngModel #passwordRedPack="ngModel" type="text" class="validate" minlength="3" >
+        <input id="passwordRedPack" name="passwordRedPack" ngModel #passwordRedPack="ngModel" type="password" class="validate" minlength="3" >
         <label for="passwordRedPack">Contraseña usuario RedPack</label>
         <p *ngIf="passwordRedPack.errors?.required&&passwordRedPack.touched">
           *Este campo es requerido.
@@ -42,7 +42,7 @@
 
       <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
         <p>
-          <input (click)="checkDHL()" type="checkbox" id="test6" />
+          <input (click)="checkDHL()" class="filled-in checkbox-blue" type="checkbox" id="test6" />
           <label for="test6">DHL</label>
         </p>
       </div>
@@ -61,7 +61,7 @@
 
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': passwordDHL.errors?.required && passwordDHL.touched}" *ngIf="dhlForm">
         <i class="material-icons prefix">account_circle</i>
-        <input id="passwordDHL" name="passwordDHL" ngModel #passwordDHL="ngModel" type="text" class="validate" minlength="3" >
+        <input id="passwordDHL" name="passwordDHL" ngModel #passwordDHL="ngModel" type="password" class="validate" minlength="3" >
         <label for="passwordDHL">Contraseña usuario DHL</label>
         <p *ngIf="passwordDHL.errors?.required&&passwordDHL.touched">
           *Este campo es requerido.
@@ -75,28 +75,77 @@
 
       <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
         <p>
-          <input (click)="checkFedEx()" type="checkbox" id="test7" />
+          <input (click)="checkFedEx()" class="filled-in checkbox-blue" type="checkbox" id="test7" />
           <label for="test7">FedEx</label>
         </p>
       </div>
-      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="fedExForm">
-        HOLIS FedEx
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': usernameFedEx.errors?.required && usernameFedEx.touched}" *ngIf="fedExForm">
+        <i class="material-icons prefix">account_circle</i>
+        <input id="usernameFedEx" name="usernameFedEx" ngModel #usernameFedEx="ngModel" type="text" class="validate" minlength="3" >
+        <label for="usernameFedEx">Nombre de usuario FedEx</label>
+        <p *ngIf="usernameFedEx.errors?.required&&usernameFedEx.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="usernameFedEx.errors?.minlength&&usernameFedEx.touched">
+          Por lo menos escriba {{usernameFedEx.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': passwordFedEx.errors?.required && passwordFedEx.touched}" *ngIf="fedExForm">
+        <i class="material-icons prefix">account_circle</i>
+        <input id="passwordFedEx" name="passwordFedEx" ngModel #passwordFedEx="ngModel" type="password" class="validate" minlength="3" >
+        <label for="passwordFedEx">Contraseña usuario FedEx</label>
+        <p *ngIf="passwordFedEx.errors?.required&&passwordFedEx.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="passwordFedEx.errors?.minlength&&passwordFedEx.touched">
+          Por lo menos escriba {{passwordFedEx.errors.minlength.requiredLength}} caracteres.
+        </p>
       </div>
 
       <!-- Formulario Estafeta -->
 
       <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
         <p>
-          <input (click)="checkEstafeta()" type="checkbox" id="test8" />
+          <input (click)="checkEstafeta()" class="filled-in checkbox-blue" type="checkbox" id="test8" />
           <label for="test8">Estafeta</label>
         </p>
       </div>
-      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="estafetaForm">
-        HOLIS Estafeta
-      </div>      
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': usernameEstafeta.errors?.required && usernameEstafeta.touched}" *ngIf="estafetaForm">
+        <i class="material-icons prefix">account_circle</i>
+        <input id="usernameEstafeta" name="usernameEstafeta" ngModel #usernameEstafeta="ngModel" type="text" class="validate" minlength="3" >
+        <label for="usernameEstafeta">Nombre de usuario Estafeta</label>
+        <p *ngIf="usernameEstafeta.errors?.required&&usernameEstafeta.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="usernameEstafeta.errors?.minlength&&usernameEstafeta.touched">
+          Por lo menos escriba {{usernameEstafeta.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': passwordEstafeta.errors?.required && passwordEstafeta.touched}" *ngIf="estafetaForm">
+        <i class="material-icons prefix">account_circle</i>
+        <input id="passwordEstafeta" name="passwordEstafeta" ngModel #passwordEstafeta="ngModel" type="password" class="validate" minlength="3" >
+        <label for="passwordEstafeta">Contraseña usuario Estafeta</label>
+        <p *ngIf="passwordEstafeta.errors?.required&&passwordEstafeta.touched">
+          *Este campo es requerido.
+        </p>
+        <p *ngIf="passwordEstafeta.errors?.minlength&&passwordEstafeta.touched">
+          Por lo menos escriba {{passwordEstafeta.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <!--Boton envia -->
+
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="errorParcelData">
+        <p>
+          Error en el formulario falta llenar algunos campos.
+        </p>
+      </div>
 
       <div class="row col offset-s1 s10 offset-m1 m10 offset-l1 l10 center-align">
-        <button [disabled]="loading" class="btn waves-effect waves-light blue accent-3">Guardar</button>
+        <button [disabled]="loading" class="btn waves-effect  blue accent-3">Guardar</button>
       </div>
       <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 

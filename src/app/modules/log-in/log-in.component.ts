@@ -16,6 +16,7 @@ export class LogInComponent implements OnInit {
   //model: Client = new Client();
   error = '';
   loading: boolean = false;
+  private invalidForm = false;
   // @Input() client: Array<Client>;        Sirven para obtener y pasar información del componente padre al hijo
   // @Output() borrado: EventEmitter<Client>=new EventEmitter<Client>();
   // @Output() modificado: EventEmitter<Client>=new EventEmitter<Client>();
@@ -38,11 +39,18 @@ export class LogInComponent implements OnInit {
   }
 
   login(forma:NgForm){
-    const logInData: LogIn = {
-      username: forma.controls["username"].value,
-      password: forma.controls["password"].value
+    if(forma.controls["username"].value == ""
+    || forma.controls["password"].value == ""
+    ){
+      this.invalidForm = true;
+    }else{
+      this.invalidForm = false;
+      const logInData: LogIn = {
+        username: forma.controls["username"].value,
+        password: forma.controls["password"].value
+      }
+      console.log(logInData);
+      this.loading = true;
     }
-    console.log(logInData);
-    this.loading = true;
   }
 }
