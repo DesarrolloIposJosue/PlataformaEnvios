@@ -53,9 +53,9 @@ export class LogInComponent implements OnInit {
         password: forma.controls["password"].value
       }
       this.loading = true;
-      this.clientService.getUserLogged(logInData.username,logInData.password).subscribe(data => {
-            //this.user  = data;
-            console.log(data);
+      this.clientService.getUserLogged(logInData.username, logInData.password).subscribe(data => {
+            this.user  = data;
+            console.log(this.user);
         });;
       //Realiza la autentifiacion
       /*if(true){

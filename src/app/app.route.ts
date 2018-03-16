@@ -18,7 +18,7 @@ const APP_ROUTES: Routes = [
   { path: 'add-product', component: AddProductComponent, },
   { path: 'add-client', component: AddClientComponent,},
   { path: 'add-parcel-to-client', component: AddParcelToClientComponent, },
-  { path: '**', pathMatch: 'full', redirectTo: 'home' }
+  { path: '**', pathMatch: 'full', redirectTo: 'log-in' }
 ];
 
 export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES);

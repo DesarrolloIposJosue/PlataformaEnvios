@@ -35,16 +35,16 @@ export class ClientService {
     }
 
     getUserLogged(username:string, password:string){
+      console.log(username);
+      console.log(password);
       var operation:string = this.apiBase + 'validateUser';
-      let params = new URLSearchParams();
-      params.append("UserName", username);
-      params.append("Password", password);
-      //console.log("Operacion");
-      //console.log(operation);
-      //console.log(params);
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      return this.http.get(operation, { headers: headers, search: params }).map((res:Response) => res.json())
+      let myHeaders = new Headers();
+      myHeaders.set('Content-Type', 'application/json');
+      let myParams: URLSearchParams = new URLSearchParams();
+      myParams.set('UserName', username);
+      myParams.set('Password', password);
+      let options = new RequestOptions({ headers: myHeaders, search: myParams });
+      return this.http.get(operation, options).map((res:Response) => res.json())
       /*var headers = new Headers();
       let url="http://bi-pos.servebeer.com:8080/WSGombar/Gombar.svc/validateUser";
       headers.append('Content-Type', 'application/json');*/
