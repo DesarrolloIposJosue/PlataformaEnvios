@@ -1,7 +1,7 @@
 
 <div class="row  main">
   <form name="form" (ngSubmit)="login(forma)" #forma="ngForm" novalidate class="col s12 offset-m4 offset-l4 m4 l4 blue lighten-5">
-    <h5 class="s12 m12 l12">Inicio de sesión</h5>
+    <h5 class="s10 m10 l10 offset-s1 offset-m1 offset-l1">Inicio de sesión</h5>
     <div class="row">
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': username.errors?.required && username.touched}">
         <i class="material-icons prefix">account_circle</i>
@@ -17,7 +17,7 @@
 
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': password.errors?.required && password.touched}">
         <i class="material-icons prefix">font_download</i>
-        <input id="password" name="password" ngModel #password="ngModel" type="password" class="validate" minlength="6" required>
+        <input id="password" name="password" ngModel #password="ngModel" type="password" class="validate" minlength="4" required>
         <label for="password">Contraseña</label>
         <p class="red-text text-darken-4" *ngIf="password.errors?.required&&password.touched">
           *Este campo es requerido.

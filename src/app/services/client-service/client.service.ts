@@ -8,6 +8,7 @@ import '../../rxjs/index';
 @Injectable()
 export class ClientService {
 
+  private apiBase = 'http://bi-pos.servebeer.com:8080/WSGombar/Gombar.svc/';
   private apiURL = 'https://jsonplaceholder.typicode.com/';
 
   constructor(private http: Http) { }
@@ -18,7 +19,38 @@ export class ClientService {
           .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }*/
 
-    getClients(): Observable<Client[]>{
+
+    isLogged(): Promise<boolean>{
+      if(typeof(Storage) !== 'undefined'){
+        if(sessionStorage.getItem('User')){
+          return Promise.resolve(true);
+        }
+      }
+      return Promise.resolve(false);
+    }
+
+    createAuthorizationHeader(headers: Headers) {
+      headers.append('Authorization', 'Basic ' +
+        btoa('username:password'));
+    }
+
+    getUserLogged(username:string, password:string){
+      var operation:string = this.apiBase + 'validateUser';
+      let params = new URLSearchParams();
+      params.append("UserName", username);
+      params.append("Password", password);
+      //console.log("Operacion");
+      //console.log(operation);
+      //console.log(params);
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      return this.http.get(operation, { headers: headers, search: params }).map((res:Response) => res.json())
+      /*var headers = new Headers();
+      let url="http://bi-pos.servebeer.com:8080/WSGombar/Gombar.svc/validateUser";
+      headers.append('Content-Type', 'application/json');*/
+    }
+
+    /*getClients(): Observable<Client[]>{
       return this.http.get(this.getUrl('users'), this.getOptions()).map(this.getDatos).catch(this.error);
     }
 
@@ -54,6 +86,6 @@ export class ClientService {
       let auth = new Headers({'Authorization': 'Bearer ' + sessionStorage.getItem('token')});
       let options = new RequestOptions({ headers: auth});
       return options;
-    }
+    }*/
 
 }

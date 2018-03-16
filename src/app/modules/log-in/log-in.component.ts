@@ -16,6 +16,7 @@ export class LogInComponent implements OnInit {
   //model: Client = new Client();
   error = '';
   loading: boolean = false;
+  private user:any;
   private invalidForm = false;
   // @Input() client: Array<Client>;        Sirven para obtener y pasar información del componente padre al hijo
   // @Output() borrado: EventEmitter<Client>=new EventEmitter<Client>();
@@ -31,7 +32,11 @@ export class LogInComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.clientService.isLogged().then((result:boolean) => {
+      if(result){
+        this.router.navigate(['/home']);
+      }
+    })
     /*this.clientService.getClients().subscribe(data =>{
       this.clients = data;
       console.log(this.clients);
@@ -47,8 +52,18 @@ export class LogInComponent implements OnInit {
         username: forma.controls["username"].value,
         password: forma.controls["password"].value
       }
-      console.log(logInData);
       this.loading = true;
+      this.clientService.getUserLogged(logInData.username,logInData.password).subscribe(data => {
+            //this.user  = data;
+            console.log(data);
+        });;
+      //Realiza la autentifiacion
+      /*if(true){
+        if(typeof (Storage) !== 'undefined'){
+          sessionStorage.setItem('User', logInData.username);
+        }
+        this.router.navigate(['/home']);
+      }*/
     }
   }
 }
