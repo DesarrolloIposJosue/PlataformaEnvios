@@ -30,13 +30,7 @@ export class AddClientComponent implements OnInit {
 
   saveClient(forma:NgForm){
     console.log(forma);
-    if(forma.controls["name"].value == ""
-    || forma.controls["lastname"].value == ""
-    || forma.controls["password"].value == ""
-    ||  forma.controls["address"].value == ""
-    || forma.controls["email"].value == ""
-    || forma.controls["username"].value == ""
-    || forma.controls["clientType"].value == "" ){
+    if(!forma.valid){
       this.formInvalid = true;
       console.log("Error");
     }else{

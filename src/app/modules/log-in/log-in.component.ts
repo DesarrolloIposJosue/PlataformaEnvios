@@ -39,9 +39,7 @@ export class LogInComponent implements OnInit {
   }
 
   login(forma:NgForm){
-    if(forma.controls["username"].value == ""
-    || forma.controls["password"].value == ""
-    ){
+    if(!forma.valid){
       this.invalidForm = true;
     }else{
       this.invalidForm = false;

@@ -20,12 +20,7 @@ export class AddProductComponent implements OnInit {
   addProduct(forma:NgForm){
     console.log(forma);
 
-    if(forma.controls["parcel"].value == ""
-    || forma.controls["productName"].value == ""
-    || forma.controls["description"].value == ""
-    || forma.controls["priceOne"].value == ""
-    || forma.controls["priceTwo"].value == ""
-    || forma.controls["priceThree"].value == ""){
+    if(!forma.valid){
       this.invalidForm = true;
     }else{
       this.invalidForm = false;

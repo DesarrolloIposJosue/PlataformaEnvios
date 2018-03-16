@@ -12,6 +12,7 @@ export class QuotationComponent implements OnInit {
 
   profile: any;
   loading:boolean;
+  private invalidForm:boolean = false;
 
   constructor(private auth: AuthService) { }
 
@@ -27,25 +28,29 @@ export class QuotationComponent implements OnInit {
   }
 
   addQuotation(forma:NgForm){
-    console.log("Entre");
-    console.log(forma);
+    console.log("Es válido?");
+    console.log(forma.valid);
 
-    const quotationData: Package = {
-      id: 0,
-      status: "iniciado",
-      originAddress: forma.controls["origin_city"].value,
-      postCodeOrigin: forma.controls["postal_code_origin"].value,
-      destinationAddress: forma.controls["dest_city"].value,
-      postCodeDest: forma.controls["postal_code_dest"].value,
-      kindPackage: forma.controls["kindPackage"].value,
-      weight: forma.controls["weight"].value,
-      long: forma.controls["long"].value,
-      width: forma.controls["width"].value,
-      hight: forma.controls["hight"].value,
-      idParcel: 0
+    if(!forma.valid){
+          this.invalidForm = true;
+    }else{
+      this.invalidForm = false;
+      const quotationData: Package = {
+        id: 0,
+        status: "iniciado",
+        originAddress: forma.controls["origin_city"].value,
+        postCodeOrigin: forma.controls["postal_code_origin"].value,
+        destinationAddress: forma.controls["dest_city"].value,
+        postCodeDest: forma.controls["postal_code_dest"].value,
+        kindPackage: forma.controls["kindPackage"].value,
+        weight: forma.controls["weight"].value,
+        long: forma.controls["long"].value,
+        width: forma.controls["width"].value,
+        hight: forma.controls["hight"].value,
+        idParcel: 0
+      }
+      console.log(quotationData);
+      this.loading = true;
     }
-    console.log(quotationData);
-    this.loading = true;
   }
-
 }
