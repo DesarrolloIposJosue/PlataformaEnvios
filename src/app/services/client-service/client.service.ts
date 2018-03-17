@@ -22,10 +22,19 @@ export class ClientService {
 
     isLogged(): Promise<boolean>{
       if(typeof(Storage) !== 'undefined'){
-        if(sessionStorage.getItem('User')){
+        if(sessionStorage.getItem('UserName')){
+          console.log(sessionStorage.getItem('UserName'));
           return Promise.resolve(true);
         }
       }
+      return Promise.resolve(false);
+    }
+
+    logOut(): Promise<boolean>{
+      sessionStorage.clear();
+      sessionStorage.removeItem('UserName');
+      console.log("Entre");
+      console.log(sessionStorage.getItem('UserName'));
       return Promise.resolve(false);
     }
 
@@ -38,11 +47,14 @@ export class ClientService {
       console.log(username);
       console.log(password);
       var operation:string = this.apiBase + 'validateUser';
+
+      // Headers
       let myHeaders = new Headers();
       myHeaders.set('Content-Type', 'application/json');
+      // Body or Search
       let myParams: URLSearchParams = new URLSearchParams();
-      myParams.set('UserName', username);
-      myParams.set('Password', password);
+      myHeaders.set('UserName', username);
+      myHeaders.set('Password', password);
       let options = new RequestOptions({ headers: myHeaders, search: myParams });
       return this.http.get(operation, options).map((res:Response) => res.json())
       /*var headers = new Headers();

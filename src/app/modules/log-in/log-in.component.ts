@@ -18,17 +18,14 @@ export class LogInComponent implements OnInit {
   loading: boolean = false;
   private user:any;
   private invalidForm = false;
-  // @Input() client: Array<Client>;        Sirven para obtener y pasar información del componente padre al hijo
-  // @Output() borrado: EventEmitter<Client>=new EventEmitter<Client>();
-  // @Output() modificado: EventEmitter<Client>=new EventEmitter<Client>();
+  private petitionError = false;
 
-  //clients: Array<Client> = [];
   constructor(
     private router:Router,
     private clientService: ClientService,
     private authService: AuthService
   ) {
-    //clientService.getUsers().subscribe(p=>this.clients = p);
+
   }
 
   ngOnInit() {
@@ -37,10 +34,6 @@ export class LogInComponent implements OnInit {
         this.router.navigate(['/home']);
       }
     })
-    /*this.clientService.getClients().subscribe(data =>{
-      this.clients = data;
-      console.log(this.clients);
-    });*/
   }
 
   login(forma:NgForm){
@@ -53,10 +46,23 @@ export class LogInComponent implements OnInit {
         password: forma.controls["password"].value
       }
       this.loading = true;
-      this.clientService.getUserLogged(logInData.username, logInData.password).subscribe(data => {
-            this.user  = data;
-            console.log(this.user);
-        });;
+      this.clientService.getUserLogged(logInData.username, logInData.password).subscribe(
+        (successResponse) => {
+            if(!successResponse.address){
+              this.loading = false;
+              this.petitionError = true;
+            }else{
+              if(typeof (Storage) !== 'undefined'){
+                sessionStorage.setItem('UserName', logInData.username);
+                sessionStorage.setItem('Address', successResponse.address);
+              }
+              this.router.navigate(['/home']);
+            }
+        },
+        (errorResponse) => {
+          console.log('Error al hacer el request');
+        }
+      );
       //Realiza la autentifiacion
       /*if(true){
         if(typeof (Storage) !== 'undefined'){

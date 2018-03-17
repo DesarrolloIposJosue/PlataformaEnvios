@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, EventEmitter } from '@angular/core';
 import "materialize-css";
 import "angular2-materialize";
+import { ClientService } from '../../services/client-service/client.service';
 import { MaterializeAction, MaterializeDirective } from 'angular2-materialize';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
@@ -19,7 +20,8 @@ export class NavbarComponent implements OnInit {
     private el: ElementRef,
     private _actRouter: ActivatedRoute,
     private _router: Router,
-    private authorizationService:AuthService
+    private authorizationService:AuthService,
+    private clientService:ClientService
   ) {
 
   }
@@ -67,12 +69,9 @@ export class NavbarComponent implements OnInit {
      this._router.navigate(['/google-maps']);
    }
 
-   /*goAuth(){
-     this.authorizationService.login();
-   }
-
    logOut(){
-     this.authorizationService.logout();
-   }*/
+     this._router.navigate(['/log-in']);
+     this.clientService.logOut();
+   }
 
 }

@@ -33,6 +33,13 @@
         </p>
       </div>
 
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="petitionError">
+        <p class="red-text text-darken-4">
+          Error! Los datos registrados son erróneos.
+        </p>
+      </div>
+
+
       <div class="row col offset-s1 s10 offset-m1 m10 offset-l1 l10 center-align">
         <button [disabled]="loading" class="btn waves-effect  blue accent-3">Iniciar sesión</button>
       </div>
