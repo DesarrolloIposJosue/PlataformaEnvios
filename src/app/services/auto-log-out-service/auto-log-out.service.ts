@@ -1,31 +1,24 @@
-import { Component } from '@angular/core';
-import { ClientService } from './services/client-service/client.service';
+import { Injectable } from '@angular/core';
+import { ClientService } from '../client-service/client.service';
 import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
 import { ActivatedRoute, Router } from '@angular/router';
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
-})
-export class AppComponent {
+@Injectable()
+export class AutoLogOutService {
   idleState = 'Not started.';
   timedOut = false;
   lastPing?: Date = null;
-  title = 'app';
-
   constructor(
     private idle: Idle,
     private keepalive: Keepalive,
     public clientService: ClientService,
     private _actRouter: ActivatedRoute,
     private _router: Router
-  ) {}
-      // sets an idle timeout of 280 seconds, for testing purposes.
-    /*idle.setIdle(10);
+  ) {
+    idle.setIdle(240);
     // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
-    idle.setTimeout(20);
+    idle.setTimeout(60);
     // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
@@ -53,7 +46,7 @@ export class AppComponent {
     });
 
     // sets the ping interval to 15 seconds
-    keepalive.interval(15);
+    keepalive.interval(30);
 
     keepalive.onPing.subscribe(() => this.lastPing = new Date());
 
@@ -64,6 +57,11 @@ export class AppComponent {
     this.idle.watch();
     this.idleState = 'Started.';
     this.timedOut = false;
-  }*/
+  }
 
+  stop(){
+    this.idleState = 'Timed out!';
+    console.log(this.idleState);
+    this.timedOut = true;
+  }
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ViewEncapsulation } from '@angular/core';
 import { ClientService } from '../../services/client-service/client.service';
-import { Client } from '../../classes/Client';
+import { User } from '../../classes/Client';
 import { Observable } from 'rxjs/Rx';
 import { NgForm } from '@angular/forms';
 
@@ -23,6 +23,7 @@ export class AddClientComponent implements OnInit {
 
   loading:boolean;
   private formInvalid: boolean = false;
+  private errorCreateUser: boolean = false;
 
   ngOnInit() {
 
@@ -34,19 +35,30 @@ export class AddClientComponent implements OnInit {
       this.formInvalid = true;
       console.log("Error");
     }else{
-      const clientData: Client = {
+      const clientData: User = {
         id: 0,
         name: forma.controls["name"].value,
-        lastname: forma.controls["lastname"].value,
+        lastName: forma.controls["lastname"].value,
+        userName: forma.controls["username"].value,
         password: forma.controls["password"].value,
         address: forma.controls["address"].value,
         email: forma.controls["email"].value,
-        username: forma.controls["username"].value,
-        type: forma.controls["clientType"].value
+        typeId: forma.controls["clientType"].value
       }
       console.log(clientData);
       this.formInvalid = false;
       this.loading = true;
+      this.clientService.addClient(clientData).subscribe(jsonData => {
+            console.log(jsonData.CreateNewUserResult);
+            var checkUser = jsonData;
+            if (jsonData.CreateNewUserResult == "SUCCESS: User Created") {
+              console.log("Se creó correctamente");
+              this.router.navigate(['/home']);
+            } else {
+                this.loading = false;
+                this.errorCreateUser = true;
+            }
+        });
     }
   }
 

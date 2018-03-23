@@ -6,6 +6,8 @@ import { AgmCoreModule } from '@agm/core';
 import { FormControl, FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive'; // this includes the core NgIdleModule but includes keepalive providers for easy wireup
+import { MomentModule } from 'angular2-moment'; // optional, provides moment-style pipes for date formatting
 
 
 //APP_ROUTES
@@ -30,6 +32,7 @@ import { MainPageAdminComponent } from './modules/main-page-admin/main-page-admi
 import { MainPageClientAdminComponent } from './modules/main-page-client-admin/main-page-client-admin.component';
 import { MainPageClientComponent } from './modules/main-page-client/main-page-client.component';
 import { AddParcelToClientComponent } from './modules/add-parcel-to-client/add-parcel-to-client.component';
+import { AutoLogOutService } from './services/auto-log-out-service/auto-log-out.service';
 
 //Pipes
 
@@ -58,6 +61,9 @@ import { AddParcelToClientComponent } from './modules/add-parcel-to-client/add-p
     RouterModule,
     ReactiveFormsModule,
     HttpModule,
+    HttpClientModule,
+    MomentModule,
+    NgIdleKeepaliveModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyChvFc0BNQDufcLXZBnNTsKq4caaLlX3eA',
       libraries: ["places"]
@@ -67,7 +73,8 @@ import { AddParcelToClientComponent } from './modules/add-parcel-to-client/add-p
   providers: [
     ClientService,
     AuthService,
-    AuthGuardService
+    AuthGuardService,
+    AutoLogOutService
   ],
 
   bootstrap: [AppComponent],

@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
-import { Client } from "../../classes/Client";
+import { User } from "../../classes/Client";
 import '../../rxjs/index';
 
 
 @Injectable()
 export class ClientService {
-
+  private userLogged:boolean;
   private apiBase = 'http://bi-pos.servebeer.com:8080/WSGombar/Gombar.svc/';
-  private apiURL = 'https://jsonplaceholder.typicode.com/';
 
   constructor(private http: Http) { }
 
@@ -24,24 +23,28 @@ export class ClientService {
       if(typeof(Storage) !== 'undefined'){
         if(sessionStorage.getItem('UserName')){
           console.log(sessionStorage.getItem('UserName'));
+          this.userLogged = true;
           return Promise.resolve(true);
         }
       }
+      this.userLogged = false;
       return Promise.resolve(false);
+    }
+
+    isAuthenticated():boolean{
+      return this.userLogged;
     }
 
     logOut(): Promise<boolean>{
       sessionStorage.clear();
       sessionStorage.removeItem('UserName');
-      console.log("Entre");
-      console.log(sessionStorage.getItem('UserName'));
       return Promise.resolve(false);
     }
 
-    createAuthorizationHeader(headers: Headers) {
+    /*createAuthorizationHeader(headers: Headers) {
       headers.append('Authorization', 'Basic ' +
         btoa('username:password'));
-    }
+    }*/
 
     getUserLogged(username:string, password:string){
       console.log(username);
@@ -57,47 +60,23 @@ export class ClientService {
       myHeaders.set('Password', password);
       let options = new RequestOptions({ headers: myHeaders, search: myParams });
       return this.http.get(operation, options).map((res:Response) => res.json())
-      /*var headers = new Headers();
-      let url="http://bi-pos.servebeer.com:8080/WSGombar/Gombar.svc/validateUser";
-      headers.append('Content-Type', 'application/json');*/
     }
 
-    /*getClients(): Observable<Client[]>{
-      return this.http.get(this.getUrl('users'), this.getOptions()).map(this.getDatos).catch(this.error);
-    }
+    //Add client method
+    addClient(client:User){
+      console.log(client);
+      var operation:string = this.apiBase + 'CreateNewUser';
+      // Headers
+      let myHeaders = new Headers();
+      const User:User = client;
+      console.log(sessionStorage.getItem('UserName'));
+      // Body or Search
+      let myParams: URLSearchParams = new URLSearchParams();
+      myHeaders.set('UserName', sessionStorage.getItem('UserName'));
+      myHeaders.set('Password', sessionStorage.getItem('Password'));
+      let options = new RequestOptions({search: myParams });
 
-    addClient(model: Client): Observable<Client>{
-      return this.http.post(this.getUrl('users'), model, this.getOptions()).map(this.getDatos).catch(this.error);
+      return this.http.post(operation,  JSON.stringify(User), options).map((res:Response) => res.json());
     }
-
-    updateClient(model: Client){
-      return this.http.put(this.getUrl('users'), model, this.getOptions()).catch(this.error);
-    }
-
-    removeClient(model: Client){
-      return this.http.delete(this.getUrl('users') + '/' + model.id, this.getOptions()).catch(this.error);
-    }
-
-    private error(error:any){
-      let msg = (error.message) ? error.message : 'Error desconocido';
-      console.error(msg);
-      return Observable.throw(msg);
-    }
-
-    private getDatos(data: Response){
-      console.log(data);
-      let datos = data.json();
-      return datos || [];
-    }
-
-    private getUrl(modelo: String){
-      return this.apiURL + modelo;
-    }
-
-    private getOptions(): RequestOptions{
-      let auth = new Headers({'Authorization': 'Bearer ' + sessionStorage.getItem('token')});
-      let options = new RequestOptions({ headers: auth});
-      return options;
-    }*/
 
 }

@@ -1,16 +1,16 @@
-export class Client{
+export class User{
   /*public id: string;
   public name: string;
   public username: string;
   public email: string;*/
   public id: number;
   public name:string;
-  public lastname:string;
+  public lastName:string;
+  public userName:string;
+  public password:string;
   public address:string;
   public email:string;
-  public password:string;
-  public username:string;
-  public type:number;
+  public typeId:number;
 
   /*GetName():string{
     return this.name;

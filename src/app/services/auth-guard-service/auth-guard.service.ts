@@ -1,21 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate } from "@angular/router";
-import { AuthService } from '../auth-service/auth.service';
+import { ClientService } from '../client-service/client.service';
 
 @Injectable()
 export class AuthGuardService implements CanActivate{
 
-  constructor( private auth:AuthService ) { }
+  constructor( private clientService:ClientService ) { }
 
   canActivate(next:ActivatedRouteSnapshot, state:RouterStateSnapshot):boolean{
     console.log(next);
-    if(this.auth.isAuthenticated()){
-      console.log("Entro el guard");
+    if(this.clientService.isAuthenticated()){
       return true;
     }else{
-      console.error("Usuario no autentificado");
       return false;
     }
   }
-
 }

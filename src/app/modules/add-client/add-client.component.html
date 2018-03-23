@@ -1,4 +1,9 @@
 <div class="container">
+  <p><strong>{{idleState}}</strong></p>
+  <p *ngIf="lastPing"><small>Last keepalive ping <strong>{{lastPing | amTimeAgo}}</strong></small></p>
+  <button (click)="reset()" *ngIf="timedOut">Restart</button>
+
+
 <div class="row  main">
   <form name="form" (ngSubmit)="saveClient(forma)" #forma="ngForm" novalidate class="col s12 offset-m2 offset-l2 m8 l8 blue lighten-5">
     <h5 class="s12 m12 l12">Registrar nuevo cliente</h5>
@@ -42,7 +47,7 @@
 
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': email.errors?.required && email.touched}">
         <i class="material-icons prefix">email</i>
-        <input id="email" name="email" ngModel #email="ngModel" type="text" class="validate" minlength="5" required>
+        <input id="email" name="email" ngModel #email="ngModel" type="email" class="validate" minlength="5" required>
         <label for="email">Correo electrónico</label>
         <p class="red-text text-darken-4" *ngIf="email.errors?.required&&email.touched">
           *Este campo es requerido.
@@ -89,6 +94,12 @@
       <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="formInvalid">
         <p class="red-text text-darken-4">
           Error en el formulario falta llenar alguno de los campos.
+        </p>
+      </div>
+
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="errorCreateUser">
+        <p class="red-text text-darken-4">
+          Error al crear el usuario, no pudo completarse el registro.
         </p>
       </div>
 

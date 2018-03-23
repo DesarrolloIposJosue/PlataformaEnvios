@@ -11,13 +11,13 @@ import { AuthGuardService } from './services/auth-guard-service/auth-guard.servi
 
 const APP_ROUTES: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: 'quotation', component: QuotationComponent, },
+  { path: 'quotation', component: QuotationComponent, canActivate:[ AuthGuardService ]},
   { path: 'tracking', component: TrackingComponent, canActivate:[ AuthGuardService ] },
   { path: 'log-in', component: LogInComponent },
-  { path: 'google-maps', component: GoogleMapsComponent, },
-  { path: 'add-product', component: AddProductComponent, },
-  { path: 'add-client', component: AddClientComponent,},
-  { path: 'add-parcel-to-client', component: AddParcelToClientComponent, },
+  { path: 'google-maps', component: GoogleMapsComponent, canActivate:[ AuthGuardService ]},
+  { path: 'add-product', component: AddProductComponent, canActivate:[ AuthGuardService ]},
+  { path: 'add-client', component: AddClientComponent, },
+  { path: 'add-parcel-to-client', component: AddParcelToClientComponent, canActivate:[ AuthGuardService ]},
   { path: '**', pathMatch: 'full', redirectTo: 'log-in' }
 ];
 

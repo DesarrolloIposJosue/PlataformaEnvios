@@ -1,7 +1,7 @@
 
 <div class="row  main">
-  <form name="form" (ngSubmit)="login(forma)" #forma="ngForm" novalidate class="col s12 offset-m4 offset-l4 m4 l4 blue lighten-5">
-    <h5 class="s10 m10 l10 offset-s1 offset-m1 offset-l1">Inicio de sesión</h5>
+  <form name="form" (ngSubmit)="login(forma)" #forma="ngForm" novalidate class="col s10 offset-s1 offset-m4 offset-l4 m4 l4 blue lighten-5">
+    <h5 class=" s8 m10 l10 offset-s2 offset-m1 offset-l1">Inicio de sesión</h5>
     <div class="row">
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': username.errors?.required && username.touched}">
         <i class="material-icons prefix">account_circle</i>

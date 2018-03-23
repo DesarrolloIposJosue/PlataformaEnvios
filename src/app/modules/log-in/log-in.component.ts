@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { ClientService } from '../../services/client-service/client.service';
+import { AutoLogOutService } from '../../services/auto-log-out-service/auto-log-out.service';
 import { LogIn } from '../../classes/LogIn';
 import { Observable } from 'rxjs/Rx';
 import { NgForm } from '@angular/forms';
@@ -23,9 +24,10 @@ export class LogInComponent implements OnInit {
   constructor(
     private router:Router,
     private clientService: ClientService,
-    private authService: AuthService
+    private authService: AuthService,
+    private autoLogOut: AutoLogOutService
   ) {
-
+    autoLogOut.stop();
   }
 
   ngOnInit() {
@@ -54,22 +56,19 @@ export class LogInComponent implements OnInit {
             }else{
               if(typeof (Storage) !== 'undefined'){
                 sessionStorage.setItem('UserName', logInData.username);
+                sessionStorage.setItem('Password', logInData.password);
                 sessionStorage.setItem('Address', successResponse.address);
               }
+              this.petitionError = false;
               this.router.navigate(['/home']);
             }
         },
         (errorResponse) => {
           console.log('Error al hacer el request');
+          this.loading = false;
+          this.petitionError = true;
         }
       );
-      //Realiza la autentifiacion
-      /*if(true){
-        if(typeof (Storage) !== 'undefined'){
-          sessionStorage.setItem('User', logInData.username);
-        }
-        this.router.navigate(['/home']);
-      }*/
     }
   }
 }

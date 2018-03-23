@@ -20,11 +20,11 @@ export class NavbarComponent implements OnInit {
     private el: ElementRef,
     private _actRouter: ActivatedRoute,
     private _router: Router,
-    private authorizationService:AuthService,
     private clientService:ClientService
   ) {
-
   }
+
+  private userLogged:boolean = false;
 
   dropDownActions = new EventEmitter<any | MaterializeAction>();
     openDropDown(){
@@ -42,6 +42,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     $(this.el.nativeElement).find('.button-collapse').sideNav();
     $(this.el.nativeElement).find('.dropdown-button').dropdown();
+
   }
 
   goHome() {
@@ -67,6 +68,16 @@ export class NavbarComponent implements OnInit {
    goGoogleMaps(){
      this.closeSideNav();
      this._router.navigate(['/google-maps']);
+   }
+
+   goAddClient(){
+     this.closeSideNav();
+     this._router.navigate(['/add-client']);
+   }
+
+   goAddParcelClient(){
+     this.closeSideNav();
+     this._router.navigate(['/add-parcel-to-client']);
    }
 
    logOut(){
