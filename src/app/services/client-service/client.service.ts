@@ -7,7 +7,7 @@ import '../../rxjs/index';
 
 @Injectable()
 export class ClientService {
-  private userLogged:boolean;
+  private userLogged:boolean = false;
   private apiBase = 'http://bi-pos.servebeer.com:8080/WSGombar/Gombar.svc/';
 
   constructor(private http: Http) { }
@@ -22,7 +22,6 @@ export class ClientService {
     isLogged(): Promise<boolean>{
       if(typeof(Storage) !== 'undefined'){
         if(sessionStorage.getItem('UserName')){
-          console.log(sessionStorage.getItem('UserName'));
           this.userLogged = true;
           return Promise.resolve(true);
         }
@@ -47,8 +46,6 @@ export class ClientService {
     }*/
 
     getUserLogged(username:string, password:string){
-      console.log(username);
-      console.log(password);
       var operation:string = this.apiBase + 'validateUser';
 
       // Headers
@@ -64,19 +61,17 @@ export class ClientService {
 
     //Add client method
     addClient(client:User){
-      console.log(client);
       var operation:string = this.apiBase + 'CreateNewUser';
       // Headers
       let myHeaders = new Headers();
       const User:User = client;
-      console.log(sessionStorage.getItem('UserName'));
       // Body or Search
       let myParams: URLSearchParams = new URLSearchParams();
       myHeaders.set('UserName', sessionStorage.getItem('UserName'));
       myHeaders.set('Password', sessionStorage.getItem('Password'));
       let options = new RequestOptions({search: myParams });
 
-      return this.http.post(operation,  JSON.stringify(User), options).map((res:Response) => res.json());
+      return this.http.post(operation, JSON.stringify(User), options).map((res:Response) => res.json());
     }
 
 }

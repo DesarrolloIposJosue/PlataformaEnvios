@@ -50,6 +50,7 @@ export class LogInComponent implements OnInit {
       this.loading = true;
       this.clientService.getUserLogged(logInData.username, logInData.password).subscribe(
         (successResponse) => {
+            console.log(successResponse);
             if(!successResponse.address){
               this.loading = false;
               this.petitionError = true;
@@ -57,7 +58,7 @@ export class LogInComponent implements OnInit {
               if(typeof (Storage) !== 'undefined'){
                 sessionStorage.setItem('UserName', logInData.username);
                 sessionStorage.setItem('Password', logInData.password);
-                sessionStorage.setItem('Address', successResponse.address);
+                sessionStorage.setItem('Type', successResponse.typeId);
               }
               this.petitionError = false;
               this.router.navigate(['/home']);

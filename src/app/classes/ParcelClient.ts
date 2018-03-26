@@ -1,4 +1,4 @@
 export class ParcelClient{
-  usernames:string;
-  passwords:string;
+  username:string;
+  password:string;
 }

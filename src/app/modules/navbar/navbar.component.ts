@@ -77,7 +77,7 @@ export class NavbarComponent implements OnInit {
 
    goAddParcelClient(){
      this.closeSideNav();
-     this._router.navigate(['/add-parcel-to-client']);
+     this._router.navigate(['/select-client-to-edit-parcel']);
    }
 
    logOut(){

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ParcelClient } from '../../classes/ParcelClient';
+import { Router } from '@angular/router';
+import { ViewEncapsulation } from '@angular/core';
+import { ParcelService } from '../../services/parcel-service/parcel.service';
+import { User_Parcel } from '../../classes/UserParcel';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   selector: 'app-add-parcel-to-client',
@@ -17,62 +21,77 @@ export class AddParcelToClientComponent implements OnInit {
   public estafetaForm:boolean = false;
 
   public errorParcelData:boolean = false;
+  public errorAddParcelsToClient:boolean = false;
 
-  constructor() { }
+  constructor(
+    private parcelService:ParcelService,
+    private router:Router
+  ) {
+    console.log(sessionStorage.getItem('UserNameNewUser'));
+    console.log(sessionStorage.getItem('PasswordNewUser'));
+  }
 
   assignParcel(forma:NgForm){
 
-    var parcInfo:ParcelClient[] = [];
-    var parcInfoInd:ParcelClient = new ParcelClient;
+    var parcInfo:User_Parcel[] = [];
+    var parcInfoInd:User_Parcel = new User_Parcel;
 
     if(this.redPackForm){
-      parcInfoInd = new ParcelClient;
+      parcInfoInd = new User_Parcel;
       if(forma.controls["passwordRedPack"].value == "" || forma.controls["usernameRedPack"].value == ""){
         console.log("Faltan valores");
         this.errorParcelData = true;
       }else{
         this.errorParcelData = false;
-        parcInfoInd.usernames = forma.controls["usernameRedPack"].value;
-        parcInfoInd.passwords = forma.controls["passwordRedPack"].value;
+        parcInfoInd.parcelId = 2;
+        parcInfoInd.userId = 0;
+        parcInfoInd.username = forma.controls["usernameRedPack"].value;
+        parcInfoInd.password = forma.controls["passwordRedPack"].value;
         parcInfo.push(parcInfoInd);
       }
     }
 
     if(this.fedExForm){
-      parcInfoInd = new ParcelClient;
+      parcInfoInd = new User_Parcel;
       if(forma.controls["passwordFedEx"].value == "" || forma.controls["usernameFedEx"].value == ""){
         console.log("Faltan valores");
         this.errorParcelData = true;
       }else{
         this.errorParcelData = false;
-        parcInfoInd.usernames = forma.controls["usernameFedEx"].value;
-        parcInfoInd.passwords = forma.controls["passwordFedEx"].value;
+        parcInfoInd.parcelId = 3;
+        parcInfoInd.userId = 0;
+        parcInfoInd.username = forma.controls["usernameFedEx"].value;
+        parcInfoInd.password = forma.controls["passwordFedEx"].value;
         parcInfo.push(parcInfoInd);
       }
     }
 
     if(this.dhlForm){
-      parcInfoInd = new ParcelClient;
+      parcInfoInd = new User_Parcel;
       if(forma.controls["passwordDHL"].value == "" || forma.controls["usernameDHL"].value == ""){
         console.log("Faltan valores");
         this.errorParcelData = true;
       }else{
         this.errorParcelData = false;
-        parcInfoInd.usernames = forma.controls["usernameDHL"].value;
-        parcInfoInd.passwords = forma.controls["passwordDHL"].value;
+        parcInfoInd.parcelId = 1;
+        parcInfoInd.userId = 0;
+        parcInfoInd.username = forma.controls["usernameDHL"].value;
+        parcInfoInd.password = forma.controls["passwordDHL"].value;
         parcInfo.push(parcInfoInd);
       }
     }
 
     if(this.estafetaForm){
-      parcInfoInd = new ParcelClient;
+      parcInfoInd = new User_Parcel;
       if(forma.controls["passwordEstafeta"].value == "" || forma.controls["usernameEstafeta"].value == ""){
         console.log("Faltan valores");
         this.errorParcelData = true;
       }else{
         this.errorParcelData = false;
-        parcInfoInd.usernames = forma.controls["usernameEstafeta"].value;
-        parcInfoInd.passwords = forma.controls["passwordEstafeta"].value;
+        parcInfoInd.parcelId = 4;
+        parcInfoInd.userId = 0;
+        parcInfoInd.username = forma.controls["usernameEstafeta"].value;
+        parcInfoInd.password = forma.controls["passwordEstafeta"].value;
         parcInfo.push(parcInfoInd);
       }
     }
@@ -80,6 +99,17 @@ export class AddParcelToClientComponent implements OnInit {
     if(!this.errorParcelData){
       //Entra a enviar
       this.loading = true;
+      this.parcelService.addParcelToClient(parcInfo).subscribe(jsonData => {
+            console.log(jsonData);
+            var checkUser = jsonData;
+            if (jsonData == "SUCCESS: Parcels assigned to User") {
+              console.log("Se creó correctamente");
+              this.router.navigate(['/home']);
+            } else {
+                this.loading = false;
+                this.errorAddParcelsToClient = true;
+            }
+        });
     }else{
       console.log("No puede guardar");
     }

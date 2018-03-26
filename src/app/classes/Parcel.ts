@@ -1,7 +1,8 @@
 export class Parcel{
+  private id:number;
   private name:string;
 
-  constructor(
+  /*constructor(
     name:string){
       this.name = name;
   }
@@ -12,5 +13,5 @@ export class Parcel{
 
   SetName(_name:string){
     this.name = _name;
-  }
+  }*/
 }

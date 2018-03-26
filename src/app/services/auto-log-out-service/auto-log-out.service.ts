@@ -24,11 +24,9 @@ export class AutoLogOutService {
 
     idle.onIdleEnd.subscribe(() => {
       this.idleState = 'No longer idle.';
-      console.log("Lo reinicio?");
     });
 
     idle.onTimeout.subscribe(() => {
-      console.log("Se acabo el tiempo prro");
       this.idleState = 'Timed out!';
       this.timedOut = true;
       clientService.logOut();
@@ -37,11 +35,9 @@ export class AutoLogOutService {
 
     idle.onIdleStart.subscribe(() => {
       this.idleState = 'You\'ve gone idle!';
-      console.log("Holis");
     });
 
     idle.onTimeoutWarning.subscribe((countdown) => {
-      console.log("Te voa sacar prro");
       this.idleState = 'You will time out in ' + countdown + ' seconds!';
     });
 
@@ -61,7 +57,6 @@ export class AutoLogOutService {
 
   stop(){
     this.idleState = 'Timed out!';
-    console.log(this.idleState);
     this.timedOut = true;
   }
 }

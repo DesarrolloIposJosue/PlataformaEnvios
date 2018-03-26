@@ -8,7 +8,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive'; // this includes the core NgIdleModule but includes keepalive providers for easy wireup
 import { MomentModule } from 'angular2-moment'; // optional, provides moment-style pipes for date formatting
-
+import { MainPageAdminComponent } from './modules/main-page-admin/main-page-admin.component';
+import { MainPageClientAdminComponent } from './modules/main-page-client-admin/main-page-client-admin.component';
+import { MainPageClientComponent } from './modules/main-page-client/main-page-client.component';
+import { AddParcelToClientComponent } from './modules/add-parcel-to-client/add-parcel-to-client.component';
+import { SelectClientEditParcelComponent } from './modules/select-client-edit-parcel/select-client-edit-parcel.component';
 
 //APP_ROUTES
 import { APP_ROUTING } from './app.route';
@@ -28,11 +32,8 @@ import { AddProductComponent } from './modules/add-product/add-product.component
 import { ClientService } from './services/client-service/client.service';
 import { AuthService } from './services/auth-service/auth.service';
 import { AuthGuardService } from './services/auth-guard-service/auth-guard.service';
-import { MainPageAdminComponent } from './modules/main-page-admin/main-page-admin.component';
-import { MainPageClientAdminComponent } from './modules/main-page-client-admin/main-page-client-admin.component';
-import { MainPageClientComponent } from './modules/main-page-client/main-page-client.component';
-import { AddParcelToClientComponent } from './modules/add-parcel-to-client/add-parcel-to-client.component';
 import { AutoLogOutService } from './services/auto-log-out-service/auto-log-out.service';
+import { ParcelService } from './services/parcel-service/parcel.service';
 
 //Pipes
 
@@ -51,7 +52,8 @@ import { AutoLogOutService } from './services/auto-log-out-service/auto-log-out.
     MainPageAdminComponent,
     MainPageClientAdminComponent,
     MainPageClientComponent,
-    AddParcelToClientComponent
+    AddParcelToClientComponent,
+    SelectClientEditParcelComponent
   ],
   imports: [
     BrowserModule,
@@ -74,7 +76,8 @@ import { AutoLogOutService } from './services/auto-log-out-service/auto-log-out.
     ClientService,
     AuthService,
     AuthGuardService,
-    AutoLogOutService
+    AutoLogOutService,
+    ParcelService
   ],
 
   bootstrap: [AppComponent],

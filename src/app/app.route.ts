@@ -7,6 +7,7 @@ import { GoogleMapsComponent } from './modules/google-maps/google-maps.component
 import { AddClientComponent } from './modules/add-client/add-client.component';
 import { AddProductComponent } from './modules/add-product/add-product.component';
 import { AddParcelToClientComponent } from './modules/add-parcel-to-client/add-parcel-to-client.component';
+import { SelectClientEditParcelComponent } from './modules/select-client-edit-parcel/select-client-edit-parcel.component';
 import { AuthGuardService } from './services/auth-guard-service/auth-guard.service';
 
 const APP_ROUTES: Routes = [
@@ -18,7 +19,9 @@ const APP_ROUTES: Routes = [
   { path: 'add-product', component: AddProductComponent, canActivate:[ AuthGuardService ]},
   { path: 'add-client', component: AddClientComponent, },
   { path: 'add-parcel-to-client', component: AddParcelToClientComponent, canActivate:[ AuthGuardService ]},
-  { path: '**', pathMatch: 'full', redirectTo: 'log-in' }
+  { path: 'select-client-to-edit-parcel', component: SelectClientEditParcelComponent, canActivate:[ AuthGuardService ]},
+  { path: '', pathMatch: 'full', redirectTo: 'log-in' },
+  { path: '**', component: LogInComponent }
 ];
 
 export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES);

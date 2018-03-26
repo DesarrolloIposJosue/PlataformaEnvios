@@ -8,7 +8,6 @@ export class AuthGuardService implements CanActivate{
   constructor( private clientService:ClientService ) { }
 
   canActivate(next:ActivatedRouteSnapshot, state:RouterStateSnapshot):boolean{
-    console.log(next);
     if(this.clientService.isAuthenticated()){
       return true;
     }else{

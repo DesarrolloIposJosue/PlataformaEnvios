@@ -23,7 +23,6 @@ export class AddClientComponent implements OnInit {
 
   loading:boolean;
   private formInvalid: boolean = false;
-  private errorCreateUser: boolean = false;
 
   ngOnInit() {
 
@@ -49,14 +48,14 @@ export class AddClientComponent implements OnInit {
       this.formInvalid = false;
       this.loading = true;
       this.clientService.addClient(clientData).subscribe(jsonData => {
-            console.log(jsonData.CreateNewUserResult);
+            console.log(jsonData);
             var checkUser = jsonData;
-            if (jsonData.CreateNewUserResult == "SUCCESS: User Created") {
+            if (jsonData == "SUCCESS: User Created") {
               console.log("Se creó correctamente");
-              this.router.navigate(['/home']);
+              sessionStorage.setItem('NewUserName', forma.controls["username"].value);
+              this.router.navigate(['/add-parcel-to-client']);
             } else {
                 this.loading = false;
-                this.errorCreateUser = true;
             }
         });
     }
