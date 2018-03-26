@@ -1,5 +1,12 @@
 .main{
-  margin-top: 5%;
+  /*margin-top: 5%;*/
+  background-color: azure;
+  background-position: center;
+  height: 100%;
+  opacity: 0.8;
+  /*background-color: #ffff;*/
+  /*background-position: center top;
+  background-attachment: fixed;*/
 }
 
 .input-field label {
@@ -52,6 +59,7 @@
 
 form{
   margin-bottom: 5%;
+  margin-top: 5%;
 }
 
 button{

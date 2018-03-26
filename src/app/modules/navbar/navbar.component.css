@@ -1,10 +1,21 @@
 nav{
-  background-color: #1565c0;
+  background-color: #f44336;
   color: #FFFFFF;
-  font-size:
+  --font-size:
 }
 
 #logo-l{
+
+}
+
+.navImgae
+{
+ 
+  height: auto;
+  width: auto;
+  max-height: 72px;
+  max-width: 250px;
+  padding-bottom: 5%;
 }
 
 #links-l {
