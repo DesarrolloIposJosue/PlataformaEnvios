@@ -69,8 +69,9 @@ export class ClientService {
       let myParams: URLSearchParams = new URLSearchParams();
       myHeaders.set('UserName', sessionStorage.getItem('UserName'));
       myHeaders.set('Password', sessionStorage.getItem('Password'));
-      let options = new RequestOptions({search: myParams });
-
+      myHeaders.set('UserId', sessionStorage.getItem('Id'));
+      let options = new RequestOptions({ headers: myHeaders, search: myParams });
+      
       return this.http.post(operation, JSON.stringify(User), options).map((res:Response) => res.json());
     }
 

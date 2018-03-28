@@ -59,6 +59,8 @@ export class LogInComponent implements OnInit {
                 sessionStorage.setItem('UserName', logInData.username);
                 sessionStorage.setItem('Password', logInData.password);
                 sessionStorage.setItem('Type', successResponse.typeId);
+                sessionStorage.setItem('Id', successResponse.id);
+                
               }
               this.petitionError = false;
               this.router.navigate(['/home']);

@@ -48,7 +48,7 @@ export class AddClientComponent implements OnInit {
       this.formInvalid = false;
       this.loading = true;
       this.clientService.addClient(clientData).subscribe(jsonData => {
-            console.log(jsonData);
+            console.log("Panamez: "+jsonData);
             var checkUser = jsonData;
             if (jsonData == "SUCCESS: User Created") {
               console.log("Se creó correctamente");

@@ -35,7 +35,7 @@ $('.carousel').carousel({
 autoplay()   
 function autoplay() {
   $('.carousel').carousel('next');
-  setTimeout(autoplay, 8500);
+  setTimeout(autoplay, 4500);
 }
 
     this.clientService.isLogged().then((result:boolean) => {
