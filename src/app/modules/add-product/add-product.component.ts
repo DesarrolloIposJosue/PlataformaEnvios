@@ -4,6 +4,7 @@ import { Product } from '../../classes/Product';
 import { Router } from '@angular/router';
 import { ViewEncapsulation, ViewChild, AfterViewChecked } from '@angular/core';
 import { ProductService } from '../../services/product-service/product.service';
+import { ParcelService } from '../../services/parcel-service/parcel.service';
 import { Observable } from 'rxjs/Rx';
 
 @Component({
@@ -19,30 +20,40 @@ export class AddProductComponent implements OnInit {
   constructor(
     private router: Router,
     private productService: ProductService,
+    private parcelService: ParcelService,
     private el: ElementRef
-  ) { }
+  ) {
+      console.log(this.productService.productEdit);
+  }
 
   ngOnInit() {
+      console.log(this.productService.productEdit);
+      console.log("A ver");
+      console.log(this.parcelService.productEdit);
+      console.log(this.productService.operation);
   }
 
   addProduct(forma:NgForm){
     console.log(forma);
 
     if(!forma.valid){
+      console.log("Holis");
       this.invalidForm = true;
     }else{
       this.invalidForm = false;
-      const productData: Product = {
-        id: 0,
-        parcelId: forma.controls["parcel"].value,
-        name: forma.controls["productName"].value,
-        description: forma.controls["description"].value,
-        kg: forma.controls["weight"].value,
-        factor: forma.controls["factor"].value
-      }
-      console.log(productData);
+      console.log("Holiwiws");
+
       this.loading = true;
       if(this.productService.operation == 0){
+        const productData: Product = {
+          id: 0,
+          parcelId: forma.controls["parcel"].value,
+          name: forma.controls["productName"].value,
+          description: forma.controls["description"].value,
+          kg: forma.controls["weight"].value,
+          factor: forma.controls["factor"].value
+        }
+        console.log(productData);
         this.productService.addProduct(productData).subscribe(jsonData => {
               console.log("Panamez: "+jsonData);
               var checkUser = jsonData;
@@ -54,9 +65,10 @@ export class AddProductComponent implements OnInit {
               }
           });
       }else if(this.productService.operation == 1){
+        console.log(this.productService.productEdit);
         const updateProductData:Product = {
-          id: this.productService.productEdit.id,
-          parcelId: forma.controls["parcel"].value,
+          id: this.parcelService.productEdit.id,
+          parcelId: this.parcelService.productEdit.parcelId,
           name: forma.controls["productName"].value,
           description: forma.controls["description"].value,
           kg: forma.controls["weight"].value,

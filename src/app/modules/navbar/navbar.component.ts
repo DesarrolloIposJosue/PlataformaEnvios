@@ -17,7 +17,11 @@ declare var $:any;
   styleUrls: ['./navbar.component.css']
 })
 
+
+
 export class NavbarComponent implements OnInit {
+  private typeUser:string;
+
   constructor(
     private el: ElementRef,
     private _actRouter: ActivatedRoute,
@@ -25,6 +29,8 @@ export class NavbarComponent implements OnInit {
     private clientService:ClientService,
     private productService:ProductService
   ) {
+      this.typeUser = sessionStorage.getItem('Type');
+      console.log(this.typeUser);
   }
 
   private userLogged:boolean = false;
@@ -58,10 +64,12 @@ export class NavbarComponent implements OnInit {
    goQuotation() {
        this._router.navigate(['/quotation']);
        this.closeSideNav();
+       this.closeSideNav();
    }
 
    goTracking() {
        this._router.navigate(['/tracking']);
+       this.closeSideNav();
        this.closeSideNav();
    }
 

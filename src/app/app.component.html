@@ -4,7 +4,7 @@
 
 <router-outlet></router-outlet>
 
-<footer class="page-footer" class="footer-design">
+<footer *ngIf="clientService.isAuthenticated()" class="page-footer" class="footer-design">
   <div class="container">
     <div class="row">
       <div class="col l6 s12">

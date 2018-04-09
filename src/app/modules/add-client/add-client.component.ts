@@ -45,20 +45,20 @@ export class AddClientComponent implements OnInit {
       this.formInvalid = true;
       console.log("Error");
     }else{
-      const clientData: User = {
-        id: 0,
-        name: forma.controls["name"].value,
-        lastName: forma.controls["lastname"].value,
-        userName: forma.controls["username"].value,
-        password: forma.controls["password"].value,
-        address: forma.controls["address"].value,
-        email: forma.controls["email"].value,
-        typeId: forma.controls["clientType"].value
-      }
-      console.log(clientData);
       this.formInvalid = false;
       this.loading = true;
       if(this.clientService.operation == 0){
+        const clientData: User = {
+          id: 0,
+          name: forma.controls["name"].value,
+          lastName: forma.controls["lastname"].value,
+          userName: forma.controls["username"].value,
+          password: forma.controls["password"].value,
+          address: forma.controls["address"].value,
+          email: forma.controls["email"].value,
+          typeId: forma.controls["clientType"].value
+        }
+        console.log(clientData);
         this.clientService.addClient(clientData).subscribe(jsonData => {
               console.log("Panamez: "+jsonData);
               var checkUser = jsonData;
@@ -71,6 +71,7 @@ export class AddClientComponent implements OnInit {
               }
           });
       }else if(this.clientService.operation == 1){
+
         const updateClientData:User = {
           id: this.clientService.userEdit.id,
           name: forma.controls["name"].value,

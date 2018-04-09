@@ -1,5 +1,5 @@
 
-<div class="row  main">
+<div *ngIf="this.productService.operation == 0" class="row  main">
   <form name="form" (ngSubmit)="addProduct(forma)" #forma="ngForm" novalidate class="col s10 offset-s1 offset-m4 offset-l4 m4 l4 blue lighten-5">
     <h5 class="s12 m12 l12">Registrar nuevo producto</h5>
     <div class="row">
@@ -50,6 +50,64 @@
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': factor.errors?.required && factor.touched}">
         <input id="factor" name="factor" ngModel #factor="ngModel" type="number" class="validate" >
         <label for="factor">Factor</label>
+        <p class="red-text text-darken-4" *ngIf="factor.errors?.required&&factor.touched">
+          *Este campo es requerido.
+        </p>
+      </div>
+
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="invalidForm">
+        <p class="red-text text-darken-4">
+          Error en el formulario falta llenar alguno de los campos
+        </p>
+      </div>
+
+      <div class="row col offset-s1 s10 offset-m1 m10 offset-l1 l10 center-align">
+        <button [disabled]="loading" class="btn waves-effect blue accent-3">Guardar</button>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<div *ngIf="this.productService.operation == 1" class="row  main">
+  <form name="form" (ngSubmit)="addProduct(forma)" #forma="ngForm" novalidate class="col s10 offset-s1 offset-m4 offset-l4 m4 l4 blue lighten-5">
+    <h5 class="s12 m12 l12">Modificar producto</h5>
+    <div class="row">
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': productName.errors?.required && productName.touched}">
+        <i class="material-icons prefix">local_grocery_store</i>
+        <input id="productName" placeholder="{{this.parcelService.productEdit.name}}" value="{{this.parcelService.productEdit.name}}" name="productName" [ngModel]="this.parcelService.productEdit.name" #productName="ngModel" type="text" class="validate" minlength="6" required>
+        <label class="active" for="productName">Nombre producto</label>
+        <p class="red-text text-darken-4" *ngIf="productName.errors?.required&&productName.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="productName.errors?.minlength&&productName.touched">
+          Por lo menos escriba {{productName.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': description.errors?.required && description.touched}">
+        <i class="material-icons prefix">font_download</i>
+        <input id="description" placeholder="{{this.parcelService.productEdit.description}}" value="{{this.parcelService.productEdit.description}}" name="description" [ngModel]="this.parcelService.productEdit.description" #description="ngModel" type="text" class="validate" minlength="6" required>
+        <label class="active" for="description">Descripcion</label>
+        <p class="red-text text-darken-4" *ngIf="description.errors?.required&&description.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="description.errors?.minlength&&description.touched">
+          Por lo menos escriba {{description.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': weight.errors?.required && weight.touched}">
+        <input id="weight" name="weight" placeholder="{{this.parcelService.productEdit.kg}}" value="{{this.parcelService.productEdit.kg}}" [ngModel]="this.parcelService.productEdit.kg" #weight="ngModel" type="number" class="validate" required>
+        <label class="active" for="weight">Peso</label>
+        <p class="red-text text-darken-4" *ngIf="weight.errors?.required&&weight.touched">
+          *Este campo es requerido.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': factor.errors?.required && factor.touched}">
+        <input id="factor" name="factor" placeholder="{{this.parcelService.productEdit.factor}}" value="{{this.parcelService.productEdit.factor}}" [ngModel]="this.parcelService.productEdit.factor" #factor="ngModel" type="number" class="validate" >
+        <label class="active" for="factor">Factor</label>
         <p class="red-text text-darken-4" *ngIf="factor.errors?.required&&factor.touched">
           *Este campo es requerido.
         </p>

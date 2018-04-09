@@ -23,9 +23,11 @@ export class SelectProductEditComponent implements OnInit {
   private petitionError = false;
   private dataProducts:any[] = [];
   private response:any;
+  private qtyProducts:number = 0;
 
   constructor(
     private parcelService:ParcelService,
+    private productService:ProductService,
     private router: Router,
     private el: ElementRef
   ) { }
@@ -47,12 +49,16 @@ export class SelectProductEditComponent implements OnInit {
           }else{
             var productArray = successResponse;
             this.response = successResponse;
+            this.qtyProducts = productArray.length;
             this.dataProducts = [];
             for (var i = 0; i < productArray.length; i++) {
               //console.log(countryArray[i].name);
-              this.dataProducts[productArray[i].name] = null; //countryArray[i].flag or null
+              console.log(productArray[i].name);
+              this.dataProducts[productArray[i].name] = null;
             }
+
             this.petitionError = false;
+            console.log(this.dataProducts);
             $(this.el.nativeElement).find('input.autocomplete').autocomplete({
               data: this.dataProducts,
               limit: 5
@@ -86,7 +92,8 @@ export class SelectProductEditComponent implements OnInit {
           this.parcelService.productEdit.kg = this.response[i].kg;
           this.parcelService.productEdit.name = this.response[i].name;
           this.parcelService.productEdit.parcelId = this.response[i].parcelId;
-          this.parcelService.operation = 1;
+          this.productService.operation = 1;
+          console.log(this.parcelService.productEdit);
           this.router.navigate(['/add-product']);
         }else{
           this.loading = false;
