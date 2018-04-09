@@ -2,12 +2,14 @@ import { Component, ElementRef, OnInit, EventEmitter } from '@angular/core';
 import "materialize-css";
 import "angular2-materialize";
 import { ClientService } from '../../services/client-service/client.service';
+import { ProductService } from '../../services/product-service/product.service';
 import { MaterializeAction, MaterializeDirective } from 'angular2-materialize';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth-service/auth.service';
 
-declare var $: any;
+declare var jQuery:any;
+declare var $:any;
 
 @Component({
   selector: 'app-navbar',
@@ -20,7 +22,8 @@ export class NavbarComponent implements OnInit {
     private el: ElementRef,
     private _actRouter: ActivatedRoute,
     private _router: Router,
-    private clientService:ClientService
+    private clientService:ClientService,
+    private productService:ProductService
   ) {
   }
 
@@ -42,7 +45,9 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     $(this.el.nativeElement).find('.button-collapse').sideNav();
     $(this.el.nativeElement).find('.dropdown-button').dropdown();
-
+    $('.dropdown-trigger').dropdown({
+      hover: false
+    });
   }
 
   goHome() {
@@ -72,12 +77,29 @@ export class NavbarComponent implements OnInit {
 
    goAddClient(){
      this.closeSideNav();
+     this.clientService.operation = 0;
      this._router.navigate(['/add-client']);
    }
 
    goAddParcelClient(){
      this.closeSideNav();
      this._router.navigate(['/select-client-to-edit-parcel']);
+   }
+
+   goEditClient(){
+     this.closeSideNav();
+     this._router.navigate(['/select-client-to-edit']);
+   }
+
+   goAddProduct(){
+     this.closeSideNav();
+     this.productService.operation = 0;
+     this._router.navigate(['/add-product']);
+   }
+
+   goEditProduct(){
+     this.closeSideNav();
+     this._router.navigate(['/select-product-to-edit']);
    }
 
    logOut(){

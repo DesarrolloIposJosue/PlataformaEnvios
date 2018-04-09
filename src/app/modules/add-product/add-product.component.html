@@ -9,7 +9,7 @@
           <option value="" disabled selected>Elija una opción</option>
           <option value="1">DHL</option>
           <option value="2">RedPack</option>
-          <option value="3">Estafeta</option>
+          <option value="4">Estafeta</option>
           <option value="3">FedEx</option>
         </select>
         <label>Paquetería</label>
@@ -39,29 +39,18 @@
         </p>
       </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': priceOne.errors?.required && priceOne.touched}">
-        <i class="material-icons prefix">attach_money</i>
-        <input id="priceOne" name="priceOne" ngModel #priceOne="ngModel" type="number" class="validate" required>
-        <label for="priceOne">Precio 1</label>
-        <p class="red-text text-darken-4" *ngIf="priceOne.errors?.required&&priceOne.touched">
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': weight.errors?.required && weight.touched}">
+        <input id="weight" name="weight" ngModel #weight="ngModel" type="number" class="validate" required>
+        <label for="weight">Peso</label>
+        <p class="red-text text-darken-4" *ngIf="weight.errors?.required&&weight.touched">
           *Este campo es requerido.
         </p>
       </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': priceTwo.errors?.required && priceTwo.touched}">
-        <i class="material-icons prefix">attach_money</i>
-        <input id="priceTwo" name="priceTwo" ngModel #priceTwo="ngModel" type="number" class="validate" >
-        <label for="priceTwo">Precio 2</label>
-        <p class="red-text text-darken-4" *ngIf="priceTwo.errors?.required&&priceTwo.touched">
-          *Este campo es requerido.
-        </p>
-      </div>
-
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': priceThree.errors?.required && priceThree.touched}">
-        <i class="material-icons prefix">attach_money</i>
-        <input id="priceThree" name="priceThree" ngModel #priceThree="ngModel" type="number" class="validate" >
-        <label for="priceThree">Precio 3</label>
-        <p class="red-text text-darken-4" *ngIf="priceThree.errors?.required&&priceThree.touched">
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': factor.errors?.required && factor.touched}">
+        <input id="factor" name="factor" ngModel #factor="ngModel" type="number" class="validate" >
+        <label for="factor">Factor</label>
+        <p class="red-text text-darken-4" *ngIf="factor.errors?.required&&factor.touched">
           *Este campo es requerido.
         </p>
       </div>

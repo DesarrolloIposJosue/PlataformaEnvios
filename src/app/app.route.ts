@@ -9,6 +9,9 @@ import { AddProductComponent } from './modules/add-product/add-product.component
 import { AddParcelToClientComponent } from './modules/add-parcel-to-client/add-parcel-to-client.component';
 import { SelectClientEditParcelComponent } from './modules/select-client-edit-parcel/select-client-edit-parcel.component';
 import { AuthGuardService } from './services/auth-guard-service/auth-guard.service';
+import { SelectClientEditComponent } from './modules/select-client-edit/select-client-edit.component';
+import { SelectProductEditComponent } from './modules/select-product-edit/select-product-edit.component';
+import { RateComponent } from './modules/rate/rate.component';
 
 const APP_ROUTES: Routes = [
   { path: 'home', component: HomeComponent },
@@ -20,6 +23,9 @@ const APP_ROUTES: Routes = [
   { path: 'add-client', component: AddClientComponent, },
   { path: 'add-parcel-to-client', component: AddParcelToClientComponent, canActivate:[ AuthGuardService ]},
   { path: 'select-client-to-edit-parcel', component: SelectClientEditParcelComponent, canActivate:[ AuthGuardService ]},
+  { path: 'select-client-to-edit', component: SelectClientEditComponent, canActivate:[AuthGuardService]},
+  { path: 'select-product-to-edit', component: SelectProductEditComponent, canActivate:[AuthGuardService]},
+  { path: 'show-rate', component: RateComponent, canActivate:[AuthGuardService]},
   { path: '', pathMatch: 'full', redirectTo: 'log-in' },
   { path: '**', component: LogInComponent }
 ];

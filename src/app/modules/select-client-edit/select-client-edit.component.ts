@@ -8,11 +8,12 @@ declare var jQuery:any;
 declare var $:any;
 
 @Component({
-  selector: 'app-select-client-edit-parcel',
-  templateUrl: './select-client-edit-parcel.component.html',
-  styleUrls: ['./select-client-edit-parcel.component.css']
+  selector: 'app-select-client-edit',
+  templateUrl: './select-client-edit.component.html',
+  styleUrls: ['./select-client-edit.component.css']
 })
-export class SelectClientEditParcelComponent implements OnInit {
+export class SelectClientEditComponent implements OnInit {
+
   error = '';
   loading: boolean = false;
   private user:any;
@@ -30,6 +31,7 @@ export class SelectClientEditParcelComponent implements OnInit {
   ngOnInit() {
     this.clientService.getUsersByUserID().subscribe(
       (successResponse) => {
+        console.log(successResponse);
           if(!successResponse){
             this.loading = false;
             this.petitionError = true;
@@ -58,21 +60,28 @@ export class SelectClientEditParcelComponent implements OnInit {
   }
 
   selectClient(forma:NgForm){
+    console.log("entre");
     var element = <HTMLInputElement>document.getElementById("userData");
     if(!forma.valid){
       this.invalidForm = true;
-      console.log("Testing: 1");
     }else{
       this.invalidForm = false;
-      this.loading = true;
-
+      this.loading = true;      
       for(var i = 0; i < this.response.length; i++){
         var userNameLastName = this.response[i].name + " " + this.response[i].lastName;
-        console.log("Testing: 2: "+ userNameLastName);
         if(element.value == userNameLastName){
-          sessionStorage.setItem('NewUserName', this.response[i].userName);
-          console.log("Testing: " +  this.response[i].userName);
-          this.router.navigate(['/add-parcel-to-client']);
+          this.clientService.userEdit.address = this.response[i].address;
+          this.clientService.userEdit.email = this.response[i].email;
+          this.clientService.userEdit.id = this.response[i].id;
+          this.clientService.userEdit.lastName = this.response[i].lastName;
+          this.clientService.userEdit.name = this.response[i].name;
+          this.clientService.userEdit.password = this.response[i].password;
+          this.clientService.userEdit.typeId = this.response[i].typeId;
+          this.clientService.userEdit.userName = this.response[i].userName;
+          this.clientService.operation = 1;
+          this.router.navigate(['/add-client']);
+        }else{
+          this.loading = false;
         }
       }
     }

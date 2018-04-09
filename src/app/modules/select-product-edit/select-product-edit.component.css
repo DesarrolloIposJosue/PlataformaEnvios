@@ -1,10 +1,12 @@
-::-webkit-input-placeholder { /* WebKit browsers */
-    color:    black;
-     opacity: 1 !important;
-}
-
 .main{
-  margin-top: 5%;
+  /*margin-top: 5%;*/
+  background-color: azure;
+  background-position: center;
+  height: 100%;
+  opacity: 0.8;
+  /*background-color: #ffff;*/
+  /*background-position: center top;
+  background-attachment: fixed;*/
 }
 
 .input-field label {
@@ -21,13 +23,13 @@
 }
 /* valid color */
 .input-field input[type=text].valid {
-  border-bottom: 1px solid #1b5e20  ;
-  box-shadow: 0 1px 0 0 #1b5e20  ;
+  border-bottom: 1px solid #1b5e20;
+  box-shadow: 0 1px 0 0 #1b5e20;
 }
 /* invalid color */
 .input-field input[type=text].invalid {
-  border-bottom: 1px solid #b71c1c ;
-  box-shadow: 0 1px 0 0 #b71c1c ;
+  border-bottom: 1px solid #b71c1c;
+  box-shadow: 0 1px 0 0 #b71c1c;
 }
 
 .input-field .prefix.active {
@@ -46,8 +48,8 @@
 }
 /* valid color */
 .input-field input[type=password].valid {
-  border-bottom: 1px solid #1b5e20  ;
-  box-shadow: 0 1px 0 0 #1b5e20  ;
+  border-bottom: 1px solid #1b5e20;
+  box-shadow: 0 1px 0 0 #1b5e20;
 }
 /* invalid color */
 .input-field input[type=password].invalid {
@@ -55,32 +57,9 @@
   box-shadow: 0 1px 0 0 #b71c1c;
 }
 
-/* email */
-.input-field input[type=email]:focus + label {
-  color: #000;
-}
-/* label underline focus color */
-.input-field input[type=email]:focus {
-  border-bottom: 1px solid #2962ff;
-  box-shadow: 0 1px 0 0 #2962ff;
-}
-/* valid color */
-.input-field input[type=email].valid {
-  border-bottom: 1px solid #1b5e20  ;
-  box-shadow: 0 1px 0 0 #1b5e20  ;
-}
-/* invalid color */
-.input-field input[type=email].invalid {
-  border-bottom: 1px solid #b71c1c;
-  box-shadow: 0 1px 0 0 #b71c1c;
-}
-
-.select-wrapper ul li>span {
-    color: #2962ff;
-}
-
 form{
   margin-bottom: 5%;
+  margin-top: 5%;
 }
 
 button{
@@ -89,5 +68,5 @@ button{
 
 h5{
   margin-top: 5%;
-  margin-bottom: 5%;
+  margin-bottom: 10%;
 }

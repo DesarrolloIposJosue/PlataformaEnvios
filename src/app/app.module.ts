@@ -34,6 +34,11 @@ import { AuthService } from './services/auth-service/auth.service';
 import { AuthGuardService } from './services/auth-guard-service/auth-guard.service';
 import { AutoLogOutService } from './services/auto-log-out-service/auto-log-out.service';
 import { ParcelService } from './services/parcel-service/parcel.service';
+import { ProductService } from './services/product-service/product.service';
+import { RateService } from './services/rate-service/rate.service';
+import { SelectClientEditComponent } from './modules/select-client-edit/select-client-edit.component';
+import { RateComponent } from './modules/rate/rate.component';
+import { SelectProductEditComponent } from './modules/select-product-edit/select-product-edit.component';
 
 //Pipes
 
@@ -53,7 +58,10 @@ import { ParcelService } from './services/parcel-service/parcel.service';
     MainPageClientAdminComponent,
     MainPageClientComponent,
     AddParcelToClientComponent,
-    SelectClientEditParcelComponent
+    SelectClientEditParcelComponent,
+    SelectClientEditComponent,
+    RateComponent,
+    SelectProductEditComponent
   ],
   imports: [
     BrowserModule,
@@ -77,7 +85,9 @@ import { ParcelService } from './services/parcel-service/parcel.service';
     AuthService,
     AuthGuardService,
     AutoLogOutService,
-    ParcelService
+    ParcelService,
+    ProductService,
+    RateService
   ],
 
   bootstrap: [AppComponent],

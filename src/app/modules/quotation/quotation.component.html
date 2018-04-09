@@ -5,7 +5,7 @@
       <div class="row">
         <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': origin_city.errors?.required && origin_city.touched}">
           <i class="material-icons prefix">location_city</i>
-          <input id="origin_city" name="origin_city" ngControl="origin_city" type="text" ngModel #origin_city="ngModel" class="validate" minlength="6" required>
+          <input id="origin_city" name="origin_city" ngControl="origin_city" type="text" ngModel #origin_city="ngModel" class="validate" minlength="5" required>
           <label for="origin_city">Ciudad origen</label>
           <p class="red-text text-darken-4" *ngIf="origin_city.errors?.required&&origin_city.touched">
             *Este campo es requerido.
@@ -18,7 +18,7 @@
 
         <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': postal_code_origin.errors?.required && postal_code_origin.touched}">
           <i class="material-icons prefix">local_post_office</i>
-          <input id="postal_code_origin" name="postal_code_origin" type="number" ngModel #postal_code_origin="ngModel" class="validate" minlength="5" maxlength="8" required>
+          <input id="postal_code_origin" name="postal_code_origin" type="number" min="0" ngModel #postal_code_origin="ngModel" class="validate" pattern=".{5,}" required>
           <label for="postal_code_origin">C.P. Origen</label>
           <p class="red-text text-darken-4" *ngIf="postal_code_origin.errors?.required&&postal_code_origin.touched">
             *Este campo es requerido.
@@ -45,7 +45,7 @@
 
         <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': postal_code_dest.errors?.required && postal_code_dest.touched}">
           <i class="material-icons prefix">local_post_office</i>
-          <input id="postal_code_dest" name="postal_code_dest" type="number" ngModel #postal_code_dest="ngModel" class="validate" minlength="5" maxlength="8" required>
+          <input id="postal_code_dest" name="postal_code_dest" type="number" min="0" ngModel #postal_code_dest="ngModel" class="validate" pattern=".{5,}" maxlength="8" required>
           <label for="postal_code_dest">C.P. Destino</label>
           <p class="red-text text-darken-4" *ngIf="postal_code_dest.errors?.required&&postal_code_dest.touched">
             *Este campo es requerido.
@@ -73,7 +73,7 @@
 
       <div class="row">
         <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': weight.errors?.required && weight.touched}">
-          <input id="weight" name="weight" type="number" ngModel #weight="ngModel" class="validate" minlength="1" maxlength="5" required>
+          <input id="weight" name="weight" type="number" min="0" ngModel #weight="ngModel" class="validate" pattern=".{1,5}" required>
           <label for="weight">Peso (kg)</label>
           <p class="red-text text-darken-4" *ngIf="weight.errors?.required&&weight.touched">
             *Este campo es requerido.
@@ -84,7 +84,7 @@
         </div>
 
         <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': long.errors?.required && long.touched}">
-          <input id="long" name="long" type="number" ngModel #long="ngModel" class="validate" minlength="1" maxlength="6" required>
+          <input id="long" name="long" type="number" min="0" ngModel #long="ngModel" class="validate" pattern=".{1,6}" required>
           <label for="long">Largo (cm)</label>
           <p class="red-text text-darken-4" *ngIf="long.errors?.required&&long.touched">
             *Este campo es requerido.
@@ -98,7 +98,7 @@
 
       <div class="row">
         <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': width.errors?.required && width.touched}">
-          <input id="width" name="width" type="number" ngModel #width="ngModel" class="validate" minlength="1" maxlength="6" required>
+          <input id="width" name="width" type="number" min="0" ngModel #width="ngModel" class="validate" pattern=".{1,6}" required>
           <label for="width">Ancho (cm)</label>
           <p class="red-text text-darken-4" *ngIf="width.errors?.required&&width.touched">
             *Este campo es requerido.
@@ -109,7 +109,7 @@
         </div>
 
         <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': hight.errors?.required && hight.touched}">
-          <input id="hight" name="hight" type="number" ngModel #hight="ngModel" class="validate" minlength="1" maxlength="6" required>
+          <input id="hight" name="hight" type="number" min="0" ngModel #hight="ngModel" class="validate" pattern=".{1,6}" required>
           <label for="hight">Alto (cm)</label>
           <p class="red-text text-darken-4" *ngIf="hight.errors?.required&&hight.touched">
             *Este campo es requerido.
@@ -124,6 +124,18 @@
       <div class="col offset-s1 s12 offset-m1 m12 offset-l1 l12" *ngIf="invalidForm">
         <p class="red-text text-darken-4">
           Error en el formulario falta llenar alguno de los campos.
+        </p>
+      </div>
+
+      <div class="col offset-s1 s12 offset-m1 m12 offset-l1 l12" *ngIf="invalidNumber">
+        <p class="red-text text-darken-4">
+          Error en el formulario, los números deben ser positivos.
+        </p>
+      </div>
+
+      <div class="col offset-s1 s12 offset-m1 m12 offset-l1 l12" *ngIf="invalidPC">
+        <p class="red-text text-darken-4">
+          Error en el formulario, los códigos postales deben ser mínimo de 5 dígitos.
         </p>
       </div>
 

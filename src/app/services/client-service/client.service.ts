@@ -9,6 +9,8 @@ import '../../rxjs/index';
 export class ClientService {
   private userLogged:boolean = false;
   private apiBase = 'http://bi-pos.servebeer.com:8080/WSGombar/Gombar.svc/';
+  public userEdit:User = new User;
+  public operation:number = 0; //0 Create, 1 Edit
 
   constructor(private http: Http) { }
 
@@ -71,8 +73,33 @@ export class ClientService {
       myHeaders.set('Password', sessionStorage.getItem('Password'));
       myHeaders.set('UserId', sessionStorage.getItem('Id'));
       let options = new RequestOptions({ headers: myHeaders, search: myParams });
-      
+
       return this.http.post(operation, JSON.stringify(User), options).map((res:Response) => res.json());
     }
 
+    getUsersByUserID(){
+      var operation:string = this.apiBase + 'GetUsersByUserId';
+      // Headers
+      let myHeaders = new Headers();
+      // Body or Search
+      let myParams: URLSearchParams = new URLSearchParams();
+      myHeaders.set('UserId', sessionStorage.getItem('Id'));
+      let options = new RequestOptions({ headers: myHeaders, search: myParams });
+
+      return this.http.get(operation, options).map((res:Response) => res.json());
+    }
+
+    updateClient(client:User){
+      var operation:string = this.apiBase + 'UpdateUserInfo';
+      console.log(client);
+      // Headers
+      let myHeaders = new Headers();
+      const User:User = client;
+      // Body or Search
+      myHeaders.set('UserName', sessionStorage.getItem('UserName'));
+      myHeaders.set('Password', sessionStorage.getItem('Password'));
+      let options = new RequestOptions({ headers: myHeaders});
+
+      return this.http.put(operation, JSON.stringify(User), options).map((res:Response) => res.json());
+    }
 }

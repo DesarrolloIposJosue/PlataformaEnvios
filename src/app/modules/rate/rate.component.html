@@ -1,0 +1,27 @@
+<div class="container teal lighten-5">
+  <!-- Page Content goes here -->
+  <h3 *ngIf="noDelivery">No hay paqueterías disponibles</h3>
+  <div class="row" *ngFor="let rate of this.rateService.dataProducts, let i = index">
+    <div class="col s12 offset-m2 m8 offset-l2 l8">
+      <div class="card horizontal">
+        <div class="card-image">
+          <img *ngIf="rate.parcelId == 4" src="../../assets/estafeta-logo.png">
+          <img *ngIf="rate.parcelId == 3" src="../../assets/Logo-FedEx.png">
+          <img *ngIf="rate.parcelId == 2" src="../../assets/redpac-logo.png">
+          <img *ngIf="rate.parcelId == 1" src="../../assets/dhl-logo.png">
+        </div>
+        <div class="card-stacked">
+          <div class="card-content">
+            <p>{{rate.description}}</p>
+            <div class="card-action hide-on-small-only offset-m1 m10 offset-l1 l10 center-align">
+              <a class="btn center blue accent-3"><i class="material-icons right">send</i>Enviar</a>
+            </div>
+            <div class="card-action show-on-small hide-on-med-and-up offset-s1 s10 center-align">
+              <a class="btn center blue accent-3">Enviar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+   </div>
+</div>
