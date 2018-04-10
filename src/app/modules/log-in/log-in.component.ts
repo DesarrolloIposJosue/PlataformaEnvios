@@ -50,7 +50,6 @@ export class LogInComponent implements OnInit {
       this.loading = true;
       this.clientService.getUserLogged(logInData.username, logInData.password).subscribe(
         (successResponse) => {
-            console.log(successResponse);
             if(!successResponse.address){
               this.loading = false;
               this.petitionError = true;
@@ -60,14 +59,13 @@ export class LogInComponent implements OnInit {
                 sessionStorage.setItem('Password', logInData.password);
                 sessionStorage.setItem('Type', successResponse.typeId);
                 sessionStorage.setItem('Id', successResponse.id);
-                
+
               }
               this.petitionError = false;
               this.router.navigate(['/home']);
             }
         },
         (errorResponse) => {
-          console.log('Error al hacer el request');
           this.loading = false;
           this.petitionError = true;
         }

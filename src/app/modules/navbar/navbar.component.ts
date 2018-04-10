@@ -30,7 +30,6 @@ export class NavbarComponent implements OnInit {
     private productService:ProductService
   ) {
       this.typeUser = sessionStorage.getItem('Type');
-      console.log(this.typeUser);
   }
 
   private userLogged:boolean = false;

@@ -4,8 +4,10 @@ import { Router } from '@angular/router';
 import { ViewEncapsulation } from '@angular/core';
 import { Product } from '../../classes/Product';
 import { ParcelService } from '../../services/parcel-service/parcel.service';
+import { ProductService } from '../../services/product-service/product.service';
 import { User_Parcel } from '../../classes/UserParcel';
 import { User_Product } from '../../classes/UserProduct';
+import { User_Product_Price } from '../../classes/UserProductPrice';
 import { Observable } from 'rxjs/Rx';
 
 @Component({
@@ -23,14 +25,19 @@ export class AddParcelToClientComponent implements OnInit {
   public estafetaForm:boolean = false;
   private petitionError = false;
   private response:any;
+  private responseProductPrice:any;
   public productsEstafeta:Product[] = [];
+  public productsPrices:User_Product[] = [];
+  public productUserPrice:User_Product_Price[] = [];
+  public userParcel:User_Parcel;
 
   public errorParcelData:boolean = false;
   public errorAddParcelsToClient:boolean = false;
 
   constructor(
     private parcelService:ParcelService,
-    private router:Router
+    private router:Router,
+    private productService: ProductService
   ) {
   }
 
@@ -87,7 +94,6 @@ export class AddParcelToClientComponent implements OnInit {
       if(forma.controls["passwordEstafeta"].value == "" || forma.controls["usernameEstafeta"].value == ""){
         this.errorParcelData = true;
       }else{
-        console.log("Entre");
         parcInfoInd.parcelId = 4;
         parcInfoInd.userId = 0;
         parcInfoInd.username = forma.controls["usernameEstafeta"].value;
@@ -110,7 +116,6 @@ export class AddParcelToClientComponent implements OnInit {
             var checkUser = jsonData;
             if (jsonData == "SUCCESS: Parcels assigned to User") {
               this.parcelService.addProductsToClient(prodUserInfo).subscribe(jsonData2 => {
-                console.log("Response from assign prods: " + jsonData2);
                 if(jsonData2 == "SUCCESS: Products assigned to User")
                 {
                    this.router.navigate(['/home']);
@@ -166,8 +171,6 @@ export class AddParcelToClientComponent implements OnInit {
       let parcelId:number = 4;
       this.parcelService.getProductsByParcel(parcelId).subscribe(
         (successResponse) => {
-          console.log("Success");
-          console.log(successResponse);
             if(!successResponse){
               this.loading = false;
               this.petitionError = true;
@@ -182,6 +185,58 @@ export class AddParcelToClientComponent implements OnInit {
                 );
               }
               this.petitionError = false;
+
+              //Edit
+              if(this.productService.operation == 1){
+                this.productService.getProductsByUser().subscribe(
+                  (responseProducts) =>{
+                      if(!responseProducts){
+                        this.loading = false;
+                        this.petitionError = true;
+                      }else{
+                        var productArray = responseProducts;
+                        this.responseProductPrice = responseProducts;
+                        this.productsPrices = [];
+                        for (var i = 0; i < productArray.length; i++) {
+                          this.productsPrices.push(
+                            new User_Product(productArray[i].userId, productArray[i].productId, productArray[i].amount)
+                          );
+                        }
+
+                        this.productUserPrice = [];
+                        for(var i = 0; i < productArray.length; i++) {
+                          for(var j=0; j < this.productsEstafeta.length; j++){
+                            if(productArray[i].productId == this.productsEstafeta[j].id){
+                              this.productUserPrice.push(
+                                new User_Product_Price(productArray[i].userId, productArray[i].productId, productArray[i].amount, this.productsEstafeta[j].name)
+                              );
+                            }
+                          }
+                        }
+
+                        this.productService.getParcelsFromUser().subscribe(
+                          (responseParcels) =>{
+                            if(!responseParcels){
+                              this.loading = false;
+                              this.petitionError = true;
+                            }else{
+                              var productArray = responseParcels;
+                              this.userParcel = new User_Parcel();
+                              for (var i = 0; i < productArray.length; i++) {
+                                if(productArray[i].parcelId == parcelId){
+                                  this.userParcel.password = productArray[i].password;
+                                  this.userParcel.username = productArray[i].username;
+                                }
+                              }
+                            }
+                          }
+                        );
+                        this.petitionError = false;
+                      }
+
+                  }
+                );
+              }
             }
         }
       );

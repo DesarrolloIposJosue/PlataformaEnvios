@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClientService } from '../../services/client-service/client.service';
+import { ProductService } from '../../services/product-service/product.service';
 import { Observable } from 'rxjs/Rx';
 import { NgForm } from '@angular/forms';
 
@@ -24,7 +25,8 @@ export class SelectClientEditParcelComponent implements OnInit {
   constructor(
     private el: ElementRef,
     private router:Router,
-    private clientService:ClientService
+    private clientService:ClientService,
+    private productService:ProductService
   ) { }
 
   ngOnInit() {
@@ -71,7 +73,10 @@ export class SelectClientEditParcelComponent implements OnInit {
         console.log("Testing: 2: "+ userNameLastName);
         if(element.value == userNameLastName){
           sessionStorage.setItem('NewUserName', this.response[i].userName);
+          console.log(this.response[i].id);
+          sessionStorage.setItem('NewUserId', this.response[i].id)
           console.log("Testing: " +  this.response[i].userName);
+          this.productService.operation = 1;
           this.router.navigate(['/add-parcel-to-client']);
         }
       }

@@ -28,25 +28,25 @@ export class ProductService {
     return this.http.post(operation, JSON.stringify(Product), options).map((res:Response) => res.json());
   }
 
-  getProductsByUser(userId:number){
+  getProductsByUser(){
     var operation:string = this.apiBase + 'GetProductsByUser';
     // Headers
     let myHeaders = new Headers();
     // Body or Search
     let myParams: URLSearchParams = new URLSearchParams();
-    myHeaders.set('UserId', userId.toString());
+    myHeaders.set('UserId', sessionStorage.getItem('NewUserId'));
     let options = new RequestOptions({ headers: myHeaders, search: myParams });
 
     return this.http.get(operation, options).map((res:Response) => res.json());
   }
 
-  getParcelsFromUser(userId:number){
+  getParcelsFromUser(){
     var operation:string = this.apiBase + 'GetParcelsFromUser';
     // Headers
     let myHeaders = new Headers();
     // Body or Search
     let myParams: URLSearchParams = new URLSearchParams();
-    myHeaders.set('UserId', userId.toString());
+    myHeaders.set('UserId', sessionStorage.getItem('NewUserId'));
     let options = new RequestOptions({ headers: myHeaders, search: myParams });
 
     return this.http.get(operation, options).map((res:Response) => res.json());

@@ -16,7 +16,7 @@ export class AutoLogOutService {
     private _actRouter: ActivatedRoute,
     private _router: Router
   ) {
-    idle.setIdle(240);
+    idle.setIdle(360);
     // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
     idle.setTimeout(60);
     // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
