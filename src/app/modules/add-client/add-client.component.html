@@ -78,9 +78,9 @@
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': clientType.errors?.required && clientType.touched}">
         <select materialize="material_select" [materializeSelectOptions]="options" name="clientType" ngModel required #clientType="ngModel">
           <option class="blue-text text-darken-4" value="" disabled selected>Elija una opción</option>
-          <option class="blue-text text-darken-4" value="1">Super administrador</option>
-          <option class="blue-text text-darken-4" value="2">Cliente</option>
-          <option class="blue-text text-darken-4" value="3">Subcliente</option>
+          <option *ngIf="this.userType=='1'" class="blue-text text-darken-4" value="1">Super administrador</option>
+          <option *ngIf="this.userType=='1'" class="blue-text text-darken-4" value="2">Cliente</option>
+          <option *ngIf="this.userType=='1' || this.userType=='2'"class="blue-text text-darken-4" value="3">Subcliente</option>
         </select>
         <label>Tipo de cliente</label>
       </div>

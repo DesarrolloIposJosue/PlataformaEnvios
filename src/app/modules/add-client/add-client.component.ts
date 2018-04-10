@@ -19,13 +19,16 @@ export class AddClientComponent implements OnInit {
     private router: Router,
     private clientService: ClientService,
     private el: ElementRef
-  ) { }
+  ) {
+    this.userType = sessionStorage.getItem('Type');
+   }
 
   loading:boolean;
   private formInvalid: boolean = false;
+  private userType: string;
 
   ngOnInit() {
-
+    
   }
 
   /*ngAfterViewChecked() {
