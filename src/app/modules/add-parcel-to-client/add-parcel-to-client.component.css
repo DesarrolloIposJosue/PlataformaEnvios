@@ -25,6 +25,25 @@
   box-shadow: 0 1px 0 0 #b71c1c ;
 }
 
+.input-field input[type=number]:focus + label {
+  color: #000;
+}
+/* label underline focus color */
+.input-field input[type=number]:focus {
+  border-bottom: 1px solid #2962ff;
+  box-shadow: 0 1px 0 0 #2962ff;
+}
+/* valid color */
+.input-field input[type=number].valid {
+  border-bottom: 1px solid #1b5e20;
+  box-shadow: 0 1px 0 0 #1b5e20;
+}
+/* invalid color */
+.input-field input[type=number].invalid {
+  border-bottom: 1px solid #b71c1c;
+  box-shadow: 0 1px 0 0 #b71c1c;
+}
+
 .input-field .prefix.active {
   color: #2962ff;
 }
@@ -74,3 +93,10 @@ h5{
 label{
   color:black;
 }
+
+input::-webkit-outer-spin-button,
+ input::-webkit-inner-spin-button {
+     /* display: none; <- Crashes Chrome on hover */
+     -webkit-appearance: none;
+     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+ }

@@ -136,6 +136,61 @@
           </p>
         </div>
 
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': referenceEstafeta.errors?.required && referenceEstafeta.touched}" *ngIf="estafetaForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="referenceEstafeta" name="referenceEstafeta" ngModel #referenceEstafeta="ngModel" type="text" class="validate" minlength="3" >
+          <label for="referenceEstafeta">Referencia Estafeta</label>
+          <p *ngIf="referenceEstafeta.errors?.required&&referenceEstafeta.touched">
+            *Este campo es requerido.
+          </p>
+          <p *ngIf="referenceEstafeta.errors?.minlength&&referenceEstafeta.touched">
+            Por lo menos escriba {{referenceEstafeta.errors.minlength.requiredLength}} caracteres.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': extAreaEstafeta.errors?.required && extAreaEstafeta.touched}" *ngIf="estafetaForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="extAreaEstafeta" name="extAreaEstafeta" ngModel min="0" #extAreaEstafeta="ngModel" type="number" class="validate" minlength="3" >
+          <label for="extAreaEstafeta">Area extendida Estafeta</label>
+          <p *ngIf="extAreaEstafeta.errors?.required&&extAreaEstafeta.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': porcValDeclEstafeta.errors?.required && porcValDeclEstafeta.touched}" *ngIf="estafetaForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="porcValDeclEstafeta" name="porcValDeclEstafeta" min="0" ngModel value="0" #porcValDeclEstafeta="ngModel" type="number" class="validate" minlength="3" >
+          <label for="porcValDeclEstafeta">Porcentaje valor declarado</label>
+          <p *ngIf="porcValDeclEstafeta.errors?.required&&porcValDeclEstafeta.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': comitionEstafeta.errors?.required && comitionEstafeta.touched}" *ngIf="estafetaForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="comitionEstafeta" name="comitionEstafeta" min="0" ngModel value="0" #comitionEstafeta="ngModel" type="number" class="validate" minlength="3" >
+          <label for="comitionEstafeta">Comisión</label>
+          <p *ngIf="comitionEstafeta.errors?.required&&comitionEstafeta.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="estafetaForm">
+          <p>
+            <input (click)="checkPaidGuidesEstafeta()" class="filled-in checkbox-blue" type="checkbox" id="checkGuidesEstafeta" />
+            <label for="checkGuidesEstafeta">Habilitar guías prepagadas Estafeta</label>
+          </p>
+        </div>
+
+        <div *ngIf="guidesEstafeta" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': qtyGuidesEstafeta.errors?.required && qtyGuidesEstafeta.touched}">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="qtyGuidesEstafeta" name="qtyGuidesEstafeta" min="0" ngModel value="0" #qtyGuidesEstafeta="ngModel" type="number" class="validate" minlength="3" >
+          <label for="qtyGuidesEstafeta">Cantidad de guías</label>
+          <p *ngIf="qtyGuidesEstafeta.errors?.required&&qtyGuidesEstafeta.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
         <div *ngIf="estafetaForm && this.productsEstafeta.length > 0">
           <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsEstafeta, let i = index">
             <input [id]="product.id" [name]="product.name" type="number" class="validate" minlength="3" >

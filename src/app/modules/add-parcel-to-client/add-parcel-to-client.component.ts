@@ -34,6 +34,8 @@ export class AddParcelToClientComponent implements OnInit {
   public errorParcelData:boolean = false;
   public errorAddParcelsToClient:boolean = false;
 
+  private guidesEstafeta:boolean = false;
+
   constructor(
     private parcelService:ParcelService,
     private router:Router,
@@ -42,6 +44,14 @@ export class AddParcelToClientComponent implements OnInit {
   }
 
   assignParcel(forma:NgForm){
+
+    console.log(forma.controls);
+    console.log(forma.controls["extAreaEstafeta"].value);
+    console.log(forma.controls["referenceEstafeta"].value);
+    console.log(forma.controls["porcValDeclEstafeta"].value);
+    console.log(forma.controls["comitionEstafeta"].value);
+    console.log(forma.controls["qtyGuidesEstafeta"].value);
+
 
     var parcInfo:User_Parcel[] = [];
     var parcInfoInd:User_Parcel = new User_Parcel;
@@ -160,6 +170,16 @@ export class AddParcelToClientComponent implements OnInit {
       this.dhlForm = true;
     }else{
         this.dhlForm = false;
+    }
+  }
+
+  checkPaidGuidesEstafeta(){
+    var element = <HTMLInputElement>document.getElementById("test8");
+    element = <HTMLInputElement>document.getElementById("test8");
+    if(element.checked == true){
+      this.guidesEstafeta = true;
+    }else{
+      this.guidesEstafeta = false;
     }
   }
 
