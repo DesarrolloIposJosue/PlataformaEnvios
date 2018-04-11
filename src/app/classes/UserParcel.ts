@@ -3,4 +3,10 @@ export class User_Parcel{
   public parcelId:number;
   public username:string;
   public password:string;
+  public reference:string;
+  public extendedArea:number;
+  public percentageDeclared: number;
+  public commissionDeclared: number;
+  public limitGuides: string;
+  public limitedGuidesNumber: number;
 }
