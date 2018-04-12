@@ -45,13 +45,11 @@ export class AddParcelToClientComponent implements OnInit {
 
   assignParcel(forma:NgForm){
 
-    console.log(forma.controls);
     console.log(forma.controls["extAreaEstafeta"].value);
     console.log(forma.controls["referenceEstafeta"].value);
     console.log(forma.controls["porcValDeclEstafeta"].value);
     console.log(forma.controls["comitionEstafeta"].value);
     console.log(forma.controls["qtyGuidesEstafeta"].value);
-
 
     var parcInfo:User_Parcel[] = [];
     var parcInfoInd:User_Parcel = new User_Parcel;
