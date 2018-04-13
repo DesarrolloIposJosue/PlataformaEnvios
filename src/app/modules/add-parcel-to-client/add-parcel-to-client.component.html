@@ -38,6 +38,68 @@
           </p>
         </div>
 
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': referenceRedPack.errors?.required && referenceRedPack.touched}" *ngIf="redPackForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="referenceRedPack" name="referenceRedPack" ngModel #referenceRedPack="ngModel" type="text" class="validate" minlength="3" >
+          <label for="referenceRedPack">Referencia RedPack</label>
+          <p *ngIf="referenceRedPack.errors?.required&&referenceRedPack.touched">
+            *Este campo es requerido.
+          </p>
+          <p *ngIf="referenceRedPack.errors?.minlength&&referenceRedPack.touched">
+            Por lo menos escriba {{referenceRedPack.errors.minlength.requiredLength}} caracteres.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': extAreaRedPack.errors?.required && extAreaRedPack.touched}" *ngIf="redPackForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="extAreaRedPack" name="extAreaRedPack" placeholder="0" value="0" [ngModel]="0" min="0" #extAreaRedPack="ngModel" min="0" type="number" class="validate" minlength="3" >
+          <label class="active" for="extAreaRedPack">Area extendida RedPack</label>
+          <p *ngIf="extAreaRedPack.errors?.required&&extAreaRedPack.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': porcValDeclRedPack.errors?.required && porcValDeclRedPack.touched}" *ngIf="redPackForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="porcValDeclRedPack" name="porcValDeclRedPack" min="0" placeholder="0" value="0" [ngModel]="0" #porcValDeclRedPack="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="porcValDeclRedPack">Porcentaje valor declarado</label>
+          <p *ngIf="porcValDeclRedPack.errors?.required&&porcValDeclRedPack.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': comitionRedPack.errors?.required && comitionRedPack.touched}" *ngIf="redPackForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="comitionRedPack" name="comitionRedPack" min="0" placeholder="0" value="0" [ngModel]="0" #comitionRedPack="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="comitionRedPack">Comisión</label>
+          <p *ngIf="comitionRedPack.errors?.required&&comitionRedPack.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="redPackForm">
+          <p>
+            <input (click)="checkPaidGuidesRedPack()" class="filled-in checkbox-blue" type="checkbox" id="checkGuidesRedPack" />
+            <label for="checkGuidesRedPack">Habilitar guías prepagadas DHL</label>
+          </p>
+        </div>
+
+        <div *ngIf="redPackForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': qtyGuidesRedPack.errors?.required && qtyGuidesRedPack.touched}">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="qtyGuidesRedPack" name="qtyGuidesRedPack" min="0" placeholder="0" value="0" [ngModel]="0" #qtyGuidesRedPack="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="qtyGuidesRedPack">Cantidad de guías</label>
+          <p *ngIf="qtyGuidesRedPack.errors?.required&&qtyGuidesRedPack.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div *ngIf="redPackForm && this.productsRedPack.length > 0">
+          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsRedPack, let i = index">
+            <input [id]="product.id" [name]="product.name" type="number" class="validate" minlength="3" >
+            <label for="nameProductRedPack">{{product.name}}</label>
+          </div>
+        </div>
+
         <!-- Formulario DHL -->
 
         <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
@@ -71,6 +133,68 @@
           </p>
         </div>
 
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': referenceDHL.errors?.required && referenceDHL.touched}" *ngIf="dhlForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="referenceDHL" name="referenceDHL" ngModel #referenceDHL="ngModel" type="text" class="validate" minlength="3" >
+          <label for="referenceDHL">Referencia DHL</label>
+          <p *ngIf="referenceDHL.errors?.required&&referenceDHL.touched">
+            *Este campo es requerido.
+          </p>
+          <p *ngIf="referenceDHL.errors?.minlength&&referenceDHL.touched">
+            Por lo menos escriba {{referenceDHL.errors.minlength.requiredLength}} caracteres.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': extAreaDHL.errors?.required && extAreaDHL.touched}" *ngIf="dhlForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="extAreaDHL" name="extAreaDHL" placeholder="0" value="0" [ngModel]="0" min="0" #extAreaDHL="ngModel" min="0" type="number" class="validate" minlength="3" >
+          <label class="active" for="extAreaDHL">Area extendida DHL</label>
+          <p *ngIf="extAreaDHL.errors?.required&&extAreaDHL.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': porcValDeclDHL.errors?.required && porcValDeclDHL.touched}" *ngIf="dhlForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="porcValDeclDHL" name="porcValDeclDHL" min="0" placeholder="0" value="0" [ngModel]="0" #porcValDeclDHL="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="porcValDeclDHL">Porcentaje valor declarado</label>
+          <p *ngIf="porcValDeclDHL.errors?.required&&porcValDeclDHL.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': comitionDHL.errors?.required && comitionDHL.touched}" *ngIf="dhlForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="comitionDHL" name="comitionDHL" min="0" placeholder="0" value="0" [ngModel]="0" #comitionDHL="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="comitionDHL">Comisión</label>
+          <p *ngIf="comitionDHL.errors?.required&&comitionDHL.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="dhlForm">
+          <p>
+            <input (click)="checkPaidGuidesDHL()" class="filled-in checkbox-blue" type="checkbox" id="checkGuidesDHL" />
+            <label for="checkGuidesDHL">Habilitar guías prepagadas DHL</label>
+          </p>
+        </div>
+
+        <div *ngIf="dhlForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': qtyGuidesDHL.errors?.required && qtyGuidesDHL.touched}">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="qtyGuidesDHL" name="qtyGuidesDHL" min="0" placeholder="0" value="0" [ngModel]="0" #qtyGuidesDHL="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="qtyGuidesFedEx">Cantidad de guías</label>
+          <p *ngIf="qtyGuidesDHL.errors?.required&&qtyGuidesDHL.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div *ngIf="dhlForm && this.productsDHL.length > 0">
+          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsDHL, let i = index">
+            <input [id]="product.id" [name]="product.name" type="number" class="validate" minlength="3" >
+            <label for="nameProductDHL">{{product.name}}</label>
+          </div>
+        </div>
+
         <!-- Formulario FedEx-->
 
         <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
@@ -101,6 +225,68 @@
           <p *ngIf="passwordFedEx.errors?.minlength&&passwordFedEx.touched">
             Por lo menos escriba {{passwordFedEx.errors.minlength.requiredLength}} caracteres.
           </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': referenceFedEx.errors?.required && referenceFedEx.touched}" *ngIf="fedExForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="referenceFedEx" name="referenceFedEx" ngModel #referenceFedEx="ngModel" type="text" class="validate" minlength="3" >
+          <label for="referenceFedEx">Referencia FedEx</label>
+          <p *ngIf="referenceFedEx.errors?.required&&referenceFedEx.touched">
+            *Este campo es requerido.
+          </p>
+          <p *ngIf="referenceFedEx.errors?.minlength&&referenceFedEx.touched">
+            Por lo menos escriba {{referenceFedEx.errors.minlength.requiredLength}} caracteres.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': extAreaFedEx.errors?.required && extAreaFedEx.touched}" *ngIf="fedExForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="extAreaFedEx" name="extAreaFedEx" placeholder="0" value="0" [ngModel]="0" min="0" #extAreaFedEx="ngModel" min="0" type="number" class="validate" minlength="3" >
+          <label class="active" for="extAreaFedEx">Area extendida FedEx</label>
+          <p *ngIf="extAreaFedEx.errors?.required&&extAreaFedEx.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': porcValDeclFedEx.errors?.required && porcValDeclFedEx.touched}" *ngIf="fedExForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="porcValDeclFedEx" name="porcValDeclFedEx" min="0" placeholder="0" value="0" [ngModel]="0" #porcValDeclFedEx="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="porcValDeclFedEx">Porcentaje valor declarado</label>
+          <p *ngIf="porcValDeclFedEx.errors?.required&&porcValDeclFedEx.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': comitionFedEx.errors?.required && comitionFedEx.touched}" *ngIf="fedExForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="comitionFedEx" name="comitionFedEx" min="0" placeholder="0" value="0" [ngModel]="0" #comitionFedEx="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="comitionFedEx">Comisión</label>
+          <p *ngIf="comitionFedEx.errors?.required&&comitionFedEx.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="fedExForm">
+          <p>
+            <input (click)="checkPaidGuidesFedEx()" class="filled-in checkbox-blue" type="checkbox" id="checkGuidesFedEx" />
+            <label for="checkGuidesFedEx">Habilitar guías prepagadas FedEx</label>
+          </p>
+        </div>
+
+        <div *ngIf="guidesFedEx" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': qtyGuidesFedEx.errors?.required && qtyGuidesFedEx.touched}">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="qtyGuidesFedEx" name="qtyGuidesFedEx" min="0" placeholder="0" value="0" [ngModel]="0" #qtyGuidesFedEx="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="qtyGuidesFedEx">Cantidad de guías</label>
+          <p *ngIf="qtyGuidesFedEx.errors?.required&&qtyGuidesFedEx.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div *ngIf="fedExForm && this.productsFedEx.length > 0">
+          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsFedEx, let i = index">
+            <input [id]="product.id" [name]="product.name" type="number" class="validate" minlength="3" >
+            <label for="nameProductFedEx">{{product.name}}</label>
+          </div>
         </div>
 
         <!-- Formulario Estafeta -->
@@ -150,8 +336,8 @@
 
         <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': extAreaEstafeta.errors?.required && extAreaEstafeta.touched}" *ngIf="estafetaForm">
           <i class="material-icons prefix">account_circle</i>
-          <input id="extAreaEstafeta" name="extAreaEstafeta" ngModel min="0" #extAreaEstafeta="ngModel" type="number" class="validate" minlength="3" >
-          <label for="extAreaEstafeta">Area extendida Estafeta</label>
+          <input id="extAreaEstafeta" name="extAreaEstafeta" placeholder="0" value="0" [ngModel]="0" min="0" #extAreaEstafeta="ngModel" min="0"  #extAreaEstafeta="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="extAreaEstafeta">Area extendida Estafeta</label>
           <p *ngIf="extAreaEstafeta.errors?.required&&extAreaEstafeta.touched">
             *Este campo es requerido.
           </p>
@@ -159,8 +345,8 @@
 
         <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': porcValDeclEstafeta.errors?.required && porcValDeclEstafeta.touched}" *ngIf="estafetaForm">
           <i class="material-icons prefix">account_circle</i>
-          <input id="porcValDeclEstafeta" name="porcValDeclEstafeta" min="0" ngModel value="0" #porcValDeclEstafeta="ngModel" type="number" class="validate" minlength="3" >
-          <label for="porcValDeclEstafeta">Porcentaje valor declarado</label>
+          <input id="porcValDeclEstafeta" name="porcValDeclEstafeta" min="0" placeholder="0" value="0" [ngModel]="0" #porcValDeclEstafeta="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="porcValDeclEstafeta">Porcentaje valor declarado</label>
           <p *ngIf="porcValDeclEstafeta.errors?.required&&porcValDeclEstafeta.touched">
             *Este campo es requerido.
           </p>
@@ -168,8 +354,8 @@
 
         <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': comitionEstafeta.errors?.required && comitionEstafeta.touched}" *ngIf="estafetaForm">
           <i class="material-icons prefix">account_circle</i>
-          <input id="comitionEstafeta" name="comitionEstafeta" min="0" ngModel value="0" #comitionEstafeta="ngModel" type="number" class="validate" minlength="3" >
-          <label for="comitionEstafeta">Comisión</label>
+          <input id="comitionEstafeta" name="comitionEstafeta" min="0" placeholder="0" value="0" [ngModel]="0" #comitionEstafeta="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="comitionEstafeta">Comisión</label>
           <p *ngIf="comitionEstafeta.errors?.required&&comitionEstafeta.touched">
             *Este campo es requerido.
           </p>
@@ -184,8 +370,8 @@
 
         <div *ngIf="guidesEstafeta" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': qtyGuidesEstafeta.errors?.required && qtyGuidesEstafeta.touched}">
           <i class="material-icons prefix">account_circle</i>
-          <input id="qtyGuidesEstafeta" name="qtyGuidesEstafeta" min="0" ngModel value="0" #qtyGuidesEstafeta="ngModel" type="number" class="validate" minlength="3" >
-          <label for="qtyGuidesEstafeta">Cantidad de guías</label>
+          <input id="qtyGuidesEstafeta" name="qtyGuidesEstafeta" min="0" placeholder="0" value="0" [ngModel]="0" #qtyGuidesEstafeta="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="qtyGuidesEstafeta">Cantidad de guías</label>
           <p *ngIf="qtyGuidesEstafeta.errors?.required&&qtyGuidesEstafeta.touched">
             *Este campo es requerido.
           </p>
@@ -194,7 +380,7 @@
         <div *ngIf="estafetaForm && this.productsEstafeta.length > 0">
           <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsEstafeta, let i = index">
             <input [id]="product.id" [name]="product.name" type="number" class="validate" minlength="3" >
-            <label for="usernameRedPack">{{product.name}}</label>
+            <label for="nameProductEstafeta">{{product.name}}</label>
           </div>
         </div>
 
@@ -299,9 +485,10 @@
             <label for="test7">FedEx</label>
           </p>
         </div>
-        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': usernameFedEx.errors?.required && usernameFedEx.touched}" *ngIf="fedExForm">
+
+        <div *ngIf="this.userParcelFedEx && fedExForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': usernameFedEx.errors?.required && usernameFedEx.touched}">
           <i class="material-icons prefix">account_circle</i>
-          <input id="usernameFedEx" name="usernameFedEx" ngModel #usernameFedEx="ngModel" type="text" class="validate" minlength="3" >
+          <input id="usernameFedEx" name="usernameFedEx" placeholder="{{this.userParcelFedEx.username}}" value="{{this.userParcelFedEx.username}}" [ngModel]="this.userParcelFedEx.username" #usernameFedEx="ngModel" type="text" class="validate" minlength="3" >
           <label class="active" for="usernameFedEx">Nombre de usuario FedEx</label>
           <p *ngIf="usernameFedEx.errors?.required&&usernameFedEx.touched">
             *Este campo es requerido.
@@ -311,9 +498,9 @@
           </p>
         </div>
 
-        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': passwordFedEx.errors?.required && passwordFedEx.touched}" *ngIf="fedExForm">
+        <div *ngIf="this.userParcelFedEx && fedExForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': passwordFedEx.errors?.required && passwordFedEx.touched}">
           <i class="material-icons prefix">account_circle</i>
-          <input id="passwordFedEx" name="passwordFedEx" ngModel #passwordFedEx="ngModel" type="password" class="validate" minlength="3" >
+          <input id="passwordFedEx" name="passwordFedEx" placeholder="{{this.userParcelFedEx.password}}" value="{{this.userParcelFedEx.password}}" [ngModel]="this.userParcelFedEx.password" #passwordFedEx="ngModel" type="password" class="validate" minlength="3" >
           <label class="active" for="passwordFedEx">Contraseña usuario FedEx</label>
           <p *ngIf="passwordFedEx.errors?.required&&passwordFedEx.touched">
             *Este campo es requerido.
@@ -321,6 +508,68 @@
           <p *ngIf="passwordFedEx.errors?.minlength&&passwordFedEx.touched">
             Por lo menos escriba {{passwordFedEx.errors.minlength.requiredLength}} caracteres.
           </p>
+        </div>
+
+        <div *ngIf="this.userParcelFedEx && fedExForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': referenceFedEx.errors?.required && referenceFedEx.touched}" >
+          <i class="material-icons prefix">account_circle</i>
+          <input id="referenceFedEx" name="referenceFedEx" placeholder="{{this.userParcelFedEx.reference}}" value="{{this.userParcelFedEx.reference}}" [ngModel]="this.userParcelFedEx.reference" #referenceFedEx="ngModel" type="text" class="validate" minlength="3" >
+          <label class="active" for="referenceFedEx">Referencia FedEx</label>
+          <p *ngIf="referenceFedEx.errors?.required&&referenceFedEx.touched">
+            *Este campo es requerido.
+          </p>
+          <p *ngIf="referenceFedEx.errors?.minlength&&referenceFedEx.touched">
+            Por lo menos escriba {{referenceFedEx.errors.minlength.requiredLength}} caracteres.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': extAreaFedEx.errors?.required && extAreaFedEx.touched}" *ngIf="this.userParcelFedEx && fedExForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="extAreaFedEx" name="extAreaFedEx" placeholder="{{this.userParcelFedEx.extendedArea}}" value="{{this.userParcelFedEx.extendedArea}}" [ngModel]="this.userParcelFedEx.extendedArea" min="0" #extAreaFedEx="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="extAreaFedEx">Area extendida FedEx</label>
+          <p *ngIf="extAreaFedEx.errors?.required&&extAreaFedEx.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': porcValDeclFedEx.errors?.required && porcValDeclFedEx.touched}" *ngIf="this.userParcelFedEx && fedExForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="porcValDeclFedEx" name="porcValDeclFedEx" min="0" placeholder="{{this.userParcelFedEx.percentageDeclared}}" value="{{this.userParcelFedEx.percentageDeclared}}" [ngModel]="this.userParcelFedEx.percentageDeclared" #porcValDeclFedEx="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="porcValDeclFedEx">Porcentaje valor declarado</label>
+          <p *ngIf="porcValDeclFedEx.errors?.required&&porcValDeclFedEx.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': comitionFedEx.errors?.required && comitionFedEx.touched}" *ngIf="this.userParcelFedEx && fedExForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="comitionFedEx" name="comitionFedEx" min="0" placeholder="{{this.userParcelFedEx.commissionDeclared}}" value="{{this.userParcelFedEx.commissionDeclared}}" [ngModel]="this.userParcelFedEx.commissionDeclared" #comitionFedEx="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="comitionFedEx">Comisión</label>
+          <p *ngIf="comitionFedEx.errors?.required&&comitionFedEx.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="fedExForm">
+          <p>
+            <input (click)="checkPaidGuidesFedEx()" class="filled-in checkbox-blue" type="checkbox" id="checkGuidesFedEx" />
+            <label for="checkGuidesFedEx">Habilitar guías prepagadas FedEx</label>
+          </p>
+        </div>
+
+        <div *ngIf="guidesFedEx" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': qtyGuidesFedEx.errors?.required && qtyGuidesFedEx.touched}">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="qtyGuidesFedEx" name="qtyGuidesFedEx" min="0" placeholder="{{this.userParcelFedEx.limitedGuidesNumber}}" value="{{this.userParcelFedEx.limitedGuidesNumber}}" [ngModel]="this.userParcelFedEx.limitedGuidesNumber" #qtyGuidesFedEx="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="qtyGuidesFedEx">Cantidad de guías</label>
+          <p *ngIf="qtyGuidesFedEx.errors?.required&&qtyGuidesFedEx.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div *ngIf="fedExForm && this.productsFedEx.length > 0">
+          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPriceFedEx, let i = index">
+            <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
+            <label class="active" for="usernameFedEx">{{product.name}}</label>
+          </div>
         </div>
 
         <!-- Formulario Estafeta -->
@@ -332,9 +581,9 @@
           </p>
         </div>
 
-        <div *ngIf="this.userParcel && estafetaForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': usernameEstafeta.errors?.required && usernameEstafeta.touched}">
+        <div *ngIf="this.userParcelEstafeta && estafetaForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': usernameEstafeta.errors?.required && usernameEstafeta.touched}">
           <i class="material-icons prefix">account_circle</i>
-          <input id="usernameEstafeta" name="usernameEstafeta" placeholder="{{this.userParcel.username}}" value="{{this.userParcel.username}}" [ngModel]="this.userParcel.username" #usernameEstafeta="ngModel" type="text" class="validate" minlength="3" >
+          <input id="usernameEstafeta" name="usernameEstafeta" placeholder="{{this.userParcelEstafeta.username}}" value="{{this.userParcelEstafeta.username}}" [ngModel]="this.userParcelEstafeta.username" #usernameEstafeta="ngModel" type="text" class="validate" minlength="3" >
           <label class="active" for="usernameEstafeta">Nombre de usuario Estafeta</label>
           <p *ngIf="usernameEstafeta.errors?.required&&usernameEstafeta.touched">
             *Este campo es requerido.
@@ -344,9 +593,9 @@
           </p>
         </div>
 
-        <div *ngIf="this.userParcel && estafetaForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': passwordEstafeta.errors?.required && passwordEstafeta.touched}">
+        <div *ngIf="this.userParcelEstafeta && estafetaForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': passwordEstafeta.errors?.required && passwordEstafeta.touched}">
           <i class="material-icons prefix">account_circle</i>
-          <input id="passwordEstafeta" name="passwordEstafeta" placeholder="{{this.userParcel.password}}" value="{{this.userParcel.password}}" [ngModel]="this.userParcel.password" #passwordEstafeta="ngModel" type="password" class="validate" minlength="3" >
+          <input id="passwordEstafeta" name="passwordEstafeta" placeholder="{{this.userParcelEstafeta.password}}" value="{{this.userParcelEstafeta.password}}" [ngModel]="this.userParcelEstafeta.password" #passwordEstafeta="ngModel" type="password" class="validate" minlength="3" >
           <label class="active" for="passwordEstafeta">Contraseña usuario Estafeta</label>
           <p *ngIf="passwordEstafeta.errors?.required&&passwordEstafeta.touched">
             *Este campo es requerido.
@@ -356,10 +605,65 @@
           </p>
         </div>
 
+        <div *ngIf="this.userParcelEstafeta && estafetaForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': referenceEstafeta.errors?.required && referenceEstafeta.touched}" >
+          <i class="material-icons prefix">account_circle</i>
+          <input id="referenceEstafeta" name="referenceEstafeta" placeholder="{{this.userParcelEstafeta.reference}}" value="{{this.userParcelEstafeta.reference}}" [ngModel]="this.userParcelEstafeta.reference" #referenceEstafeta="ngModel" type="text" class="validate" minlength="3" >
+          <label class="active" for="referenceEstafeta">Referencia Estafeta</label>
+          <p *ngIf="referenceEstafeta.errors?.required&&referenceEstafeta.touched">
+            *Este campo es requerido.
+          </p>
+          <p *ngIf="referenceEstafeta.errors?.minlength&&referenceEstafeta.touched">
+            Por lo menos escriba {{referenceEstafeta.errors.minlength.requiredLength}} caracteres.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': extAreaEstafeta.errors?.required && extAreaEstafeta.touched}" *ngIf="this.userParcelEstafeta && estafetaForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="extAreaEstafeta" name="extAreaEstafeta" placeholder="{{this.userParcelEstafeta.extendedArea}}" value="{{this.userParcelEstafeta.extendedArea}}" [ngModel]="this.userParcelEstafeta.extendedArea" min="0" #extAreaEstafeta="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="extAreaEstafeta">Area extendida Estafeta</label>
+          <p *ngIf="extAreaEstafeta.errors?.required&&extAreaEstafeta.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': porcValDeclEstafeta.errors?.required && porcValDeclEstafeta.touched}" *ngIf="this.userParcelEstafeta && estafetaForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="porcValDeclEstafeta" name="porcValDeclEstafeta" min="0" placeholder="{{this.userParcelEstafeta.percentageDeclared}}" value="{{this.userParcelEstafeta.percentageDeclared}}" [ngModel]="this.userParcelEstafeta.percentageDeclared" #porcValDeclEstafeta="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="porcValDeclEstafeta">Porcentaje valor declarado</label>
+          <p *ngIf="porcValDeclEstafeta.errors?.required&&porcValDeclEstafeta.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': comitionEstafeta.errors?.required && comitionEstafeta.touched}" *ngIf="this.userParcelEstafeta && estafetaForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="comitionEstafeta" name="comitionEstafeta" min="0" placeholder="{{this.userParcelEstafeta.commissionDeclared}}" value="{{this.userParcelEstafeta.commissionDeclared}}" [ngModel]="this.userParcelEstafeta.commissionDeclared" #comitionEstafeta="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="comitionEstafeta">Comisión</label>
+          <p *ngIf="comitionEstafeta.errors?.required&&comitionEstafeta.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="estafetaForm">
+          <p>
+            <input (click)="checkPaidGuidesEstafeta()" class="filled-in checkbox-blue" type="checkbox" id="checkGuidesEstafeta" />
+            <label for="checkGuidesEstafeta">Habilitar guías prepagadas Estafeta</label>
+          </p>
+        </div>
+
+        <div *ngIf="guidesEstafeta" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': qtyGuidesEstafeta.errors?.required && qtyGuidesEstafeta.touched}">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="qtyGuidesEstafeta" name="qtyGuidesEstafeta" min="0" placeholder="{{this.userParcelEstafeta.limitedGuidesNumber}}" value="{{this.userParcelEstafeta.limitedGuidesNumber}}" [ngModel]="this.userParcelEstafeta.limitedGuidesNumber" #qtyGuidesEstafeta="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="qtyGuidesEstafeta">Cantidad de guías</label>
+          <p *ngIf="qtyGuidesEstafeta.errors?.required&&qtyGuidesEstafeta.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
         <div *ngIf="estafetaForm && this.productsEstafeta.length > 0">
-          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPrice, let i = index">
+          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPriceEstafeta, let i = index">
             <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
-            <label class="active" for="usernameRedPack">{{product.name}}</label>
+            <label class="active" for="usernameEstafeat">{{product.name}}</label>
           </div>
         </div>
 
