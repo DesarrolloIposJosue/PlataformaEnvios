@@ -109,6 +109,11 @@ export class NavbarComponent implements OnInit {
      this._router.navigate(['/select-product-to-edit']);
    }
 
+   goAddGuides(){
+     this.closeSideNav();
+     this._router.navigate(['/select-client-to-edit-guides']);
+   }
+
    logOut(){
      this._router.navigate(['/log-in']);
      this.clientService.logOut();

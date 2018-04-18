@@ -22,17 +22,18 @@ export class ParcelService {
     let myHeaders = new Headers();
     const Parcels:User_Parcel[] = parcels;
     // Body or Search
-    console.log(sessionStorage.getItem('NewUserName'));
     let myParams: URLSearchParams = new URLSearchParams();
     myHeaders.set('UserName', sessionStorage.getItem('UserName'));
     myHeaders.set('Password', sessionStorage.getItem('Password'));
     myHeaders.set('NewUserName', sessionStorage.getItem('NewUserName'));
     let options = new RequestOptions({ headers: myHeaders, search: myParams });
-    
+
     return this.http.post(operation,  JSON.stringify(Parcels), options).map((res:Response) => res.json());
   }
 
   getProductsByParcel(parcelId:number){
+    console.log("Dentro de products by parcel");
+    console.log(parcelId);
     var operation:string = this.apiBase + 'GetProductsByParcel';
     // Headers
     let myHeaders = new Headers();

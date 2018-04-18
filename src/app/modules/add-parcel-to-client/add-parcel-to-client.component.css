@@ -53,6 +53,10 @@
      background-color: #2962ff;
 }
 
+.checkbox-blue{
+  margin-top: 2%;
+}
+
 /* password */
 .input-field input[type=password]:focus + label {
   color: #000;

@@ -63,19 +63,15 @@ export class SelectClientEditParcelComponent implements OnInit {
     var element = <HTMLInputElement>document.getElementById("userData");
     if(!forma.valid){
       this.invalidForm = true;
-      console.log("Testing: 1");
     }else{
       this.invalidForm = false;
       this.loading = true;
 
       for(var i = 0; i < this.response.length; i++){
         var userNameLastName = this.response[i].name + " " + this.response[i].lastName;
-        console.log("Testing: 2: "+ userNameLastName);
         if(element.value == userNameLastName){
           sessionStorage.setItem('NewUserName', this.response[i].userName);
-          console.log(this.response[i].id);
-          sessionStorage.setItem('NewUserId', this.response[i].id)
-          console.log("Testing: " +  this.response[i].userName);
+          sessionStorage.setItem('NewUserId', this.response[i].id);
           this.productService.operation = 1;
           this.router.navigate(['/add-parcel-to-client']);
         }

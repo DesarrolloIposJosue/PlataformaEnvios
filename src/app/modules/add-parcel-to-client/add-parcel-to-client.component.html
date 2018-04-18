@@ -84,7 +84,7 @@
           </p>
         </div>
 
-        <div *ngIf="redPackForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': qtyGuidesRedPack.errors?.required && qtyGuidesRedPack.touched}">
+        <div *ngIf="guidesRedPack" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': qtyGuidesRedPack.errors?.required && qtyGuidesRedPack.touched}">
           <i class="material-icons prefix">account_circle</i>
           <input id="qtyGuidesRedPack" name="qtyGuidesRedPack" min="0" placeholder="0" value="0" [ngModel]="0" #qtyGuidesRedPack="ngModel" type="number" class="validate" minlength="3" >
           <label class="active" for="qtyGuidesRedPack">Cantidad de guías</label>
@@ -179,7 +179,7 @@
           </p>
         </div>
 
-        <div *ngIf="dhlForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': qtyGuidesDHL.errors?.required && qtyGuidesDHL.touched}">
+        <div *ngIf="guidesDHL" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': qtyGuidesDHL.errors?.required && qtyGuidesDHL.touched}">
           <i class="material-icons prefix">account_circle</i>
           <input id="qtyGuidesDHL" name="qtyGuidesDHL" min="0" placeholder="0" value="0" [ngModel]="0" #qtyGuidesDHL="ngModel" type="number" class="validate" minlength="3" >
           <label class="active" for="qtyGuidesFedEx">Cantidad de guías</label>
@@ -403,6 +403,7 @@
 </div>
 
 <!-- Editar -->
+<!-- ------------------------------------------------------------------------------------- -->
 
 <div class="container" *ngIf="this.productService.operation == 1">
   <div class="row  main">
@@ -420,9 +421,9 @@
           </p>
         </div>
 
-        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': usernameRedPack.errors?.required && usernameRedPack.touched}" *ngIf="redPackForm">
+        <div *ngIf="this.userParcelRedPack && redPackForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': usernameRedPack.errors?.required && usernameRedPack.touched}">
           <i class="material-icons prefix">account_circle</i>
-          <input id="usernameRedPack" name="usernameRedPack" ngModel #usernameRedPack="ngModel" type="text" class="validate" minlength="3" >
+          <input id="usernameRedPack" name="usernameRedPack" placeholder="{{this.userParcelRedPack.username}}" value="{{this.userParcelRedPack.username}}" [ngModel]="this.userParcelRedPack.username" #usernameRedPack="ngModel" type="text" class="validate" minlength="3" >
           <label class="active" for="usernameRedPack">Nombre de usuario RedPack</label>
           <p *ngIf="usernameRedPack.errors?.required&&usernameRedPack.touched">
             *Este campo es requerido.
@@ -432,9 +433,9 @@
           </p>
         </div>
 
-        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': passwordRedPack.errors?.required && passwordRedPack.touched}" *ngIf="redPackForm">
+        <div *ngIf="this.userParcelRedPack && redPackForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': passwordRedPack.errors?.required && passwordRedPack.touched}">
           <i class="material-icons prefix">account_circle</i>
-          <input id="passwordRedPack" name="passwordRedPack" ngModel #passwordRedPack="ngModel" type="password" class="validate" minlength="3" >
+          <input id="passwordRedPack" name="passwordRedPack" placeholder="{{this.userParcelRedPack.password}}" value="{{this.userParcelRedPack.password}}" [ngModel]="this.userParcelRedPack.password" #passwordRedPack="ngModel" type="password" class="validate" minlength="3" >
           <label class="active" for="passwordRedPack">Contraseña usuario RedPack</label>
           <p *ngIf="passwordRedPack.errors?.required&&passwordRedPack.touched">
             *Este campo es requerido.
@@ -442,6 +443,68 @@
           <p *ngIf="passwordRedPack.errors?.minlength&&passwordRedPack.touched">
             Por lo menos escriba {{passwordRedPack.errors.minlength.requiredLength}} caracteres.
           </p>
+        </div>
+
+        <div *ngIf="this.userParcelRedPack && redPackForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': referenceRedPack.errors?.required && referenceRedPack.touched}" >
+          <i class="material-icons prefix">account_circle</i>
+          <input id="referenceRedPack" name="referenceRedPack" placeholder="{{this.userParcelRedPack.reference}}" value="{{this.userParcelRedPack.reference}}" [ngModel]="this.userParcelRedPack.reference" #referenceRedPack="ngModel" type="text" class="validate" minlength="3" >
+          <label class="active" for="referenceDHL">Referencia RedPack</label>
+          <p *ngIf="referenceRedPack.errors?.required&&referenceRedPack.touched">
+            *Este campo es requerido.
+          </p>
+          <p *ngIf="referenceRedPack.errors?.minlength&&referenceRedPack.touched">
+            Por lo menos escriba {{referenceRedPack.errors.minlength.requiredLength}} caracteres.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': extAreaRedPack.errors?.required && extAreaRedPack.touched}" *ngIf="this.userParcelRedPack && redPackForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="extAreaRedPack" name="extAreaRedPack" placeholder="{{this.userParcelRedPack.extendedArea}}" value="{{this.userParcelRedPack.extendedArea}}" [ngModel]="this.userParcelRedPack.extendedArea" min="0" #extAreaRedPack="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="extAreaRedPack">Area extendida RedPack</label>
+          <p *ngIf="extAreaRedPack.errors?.required&&extAreaRedPack.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': porcValDeclRedPack.errors?.required && porcValDeclRedPack.touched}" *ngIf="this.userParcelRedPack && redPackForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="porcValDeclRedPack" name="porcValDeclRedPack" min="0" placeholder="{{this.userParcelRedPack.percentageDeclared}}" value="{{this.userParcelRedPack.percentageDeclared}}" [ngModel]="this.userParcelRedPack.percentageDeclared" #porcValDeclRedPack="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="porcValDeclRedPack">Porcentaje valor declarado</label>
+          <p *ngIf="porcValDeclRedPack.errors?.required&&porcValDeclRedPack.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': comitionRedPack.errors?.required && comitionRedPack.touched}" *ngIf="this.userParcelRedPack && redPackForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="comitionRedPack" name="comitionRedPack" min="0" placeholder="{{this.userParcelRedPack.commissionDeclared}}" value="{{this.userParcelRedPack.commissionDeclared}}" [ngModel]="this.userParcelRedPack.commissionDeclared" #comitionRedPack="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="comitionRedPack">Comisión</label>
+          <p *ngIf="comitionRedPack.errors?.required&&comitionRedPack.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="redPackForm">
+          <p>
+            <input (click)="checkPaidGuidesRedPack()" class="filled-in checkbox-blue" type="checkbox" id="checkGuidesRedPack" />
+            <label for="checkGuidesRedPack">Habilitar guías prepagadas RedPack</label>
+          </p>
+        </div>
+
+        <div *ngIf="guidesRedPack" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': qtyGuidesRedPack.errors?.required && qtyGuidesRedPack.touched}">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="qtyGuidesRedPack" name="qtyGuidesRedPack" min="0" placeholder="{{this.userParcelRedPack.limitedGuidesNumber}}" value="{{this.userParcelRedPack.limitedGuidesNumber}}" [ngModel]="this.userParcelRedPack.limitedGuidesNumber" #qtyGuidesRedPack="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="qtyGuidesRedPack">Cantidad de guías</label>
+          <p *ngIf="qtyGuidesRedPack.errors?.required&&qtyGuidesRedPack.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div *ngIf="redPackForm && this.productsRedPack.length > 0">
+          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPriceRedPack, let i = index">
+            <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
+            <label class="active" for="usernameRedPack">{{product.name}}</label>
+          </div>
         </div>
 
         <!-- Formulario DHL -->
@@ -453,9 +516,9 @@
           </p>
         </div>
 
-        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': usernameDHL.errors?.required && usernameDHL.touched}" *ngIf="dhlForm">
+        <div *ngIf="this.userParcelDHL && dhlForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': usernameDHL.errors?.required && usernameDHL.touched}">
           <i class="material-icons prefix">account_circle</i>
-          <input id="usernameDHL" name="usernameDHL" ngModel #usernameDHL="ngModel" type="text" class="validate" minlength="3" >
+          <input id="usernameDHL" name="usernameDHL" placeholder="{{this.userParcelDHL.username}}" value="{{this.userParcelDHL.username}}" [ngModel]="this.userParcelDHL.username" #usernameDHL="ngModel" type="text" class="validate" minlength="3" >
           <label class="active" for="usernameDHL">Nombre de usuario DHL</label>
           <p *ngIf="usernameDHL.errors?.required&&usernameDHL.touched">
             *Este campo es requerido.
@@ -465,16 +528,78 @@
           </p>
         </div>
 
-        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': passwordDHL.errors?.required && passwordDHL.touched}" *ngIf="dhlForm">
+        <div *ngIf="this.userParcelDHL && dhlForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': passwordDHL.errors?.required && passwordDHL.touched}">
           <i class="material-icons prefix">account_circle</i>
-          <input id="passwordDHL" name="passwordDHL" ngModel #passwordDHL="ngModel" type="password" class="validate" minlength="3" >
-          <label class="active" for="passwordDHL">Contraseña usuario DHL</label>
+          <input id="passwordDHL" name="passwordDHL" placeholder="{{this.userParcelDHL.password}}" value="{{this.userParcelDHL.password}}" [ngModel]="this.userParcelDHL.password" #passwordDHL="ngModel" type="password" class="validate" minlength="3" >
+          <label class="active" for="passwordDHL">Contraseña usuario FedEx</label>
           <p *ngIf="passwordDHL.errors?.required&&passwordDHL.touched">
             *Este campo es requerido.
           </p>
           <p *ngIf="passwordDHL.errors?.minlength&&passwordDHL.touched">
             Por lo menos escriba {{passwordDHL.errors.minlength.requiredLength}} caracteres.
           </p>
+        </div>
+
+        <div *ngIf="this.userParcelDHL && dhlForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': referenceDHL.errors?.required && referenceDHL.touched}" >
+          <i class="material-icons prefix">account_circle</i>
+          <input id="referenceDHL" name="referenceDHL" placeholder="{{this.userParcelDHL.reference}}" value="{{this.userParcelDHL.reference}}" [ngModel]="this.userParcelDHL.reference" #referenceDHL="ngModel" type="text" class="validate" minlength="3" >
+          <label class="active" for="referenceDHL">Referencia DHL</label>
+          <p *ngIf="referenceDHL.errors?.required&&referenceDHL.touched">
+            *Este campo es requerido.
+          </p>
+          <p *ngIf="referenceDHL.errors?.minlength&&referenceDHL.touched">
+            Por lo menos escriba {{referenceDHL.errors.minlength.requiredLength}} caracteres.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': extAreaDHL.errors?.required && extAreaDHL.touched}" *ngIf="this.userParcelDHL && dhlForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="extAreaDHL" name="extAreaDHL" placeholder="{{this.userParcelDHL.extendedArea}}" value="{{this.userParcelDHL.extendedArea}}" [ngModel]="this.userParcelDHL.extendedArea" min="0" #extAreaDHL="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="extAreaDHL">Area extendida DHL</label>
+          <p *ngIf="extAreaDHL.errors?.required&&extAreaDHL.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': porcValDeclDHL.errors?.required && porcValDeclDHL.touched}" *ngIf="this.userParcelDHL && dhlForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="porcValDeclDHL" name="porcValDeclDHL" min="0" placeholder="{{this.userParcelDHL.percentageDeclared}}" value="{{this.userParcelDHL.percentageDeclared}}" [ngModel]="this.userParcelDHL.percentageDeclared" #porcValDeclDHL="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="porcValDeclDHL">Porcentaje valor declarado</label>
+          <p *ngIf="porcValDeclDHL.errors?.required&&porcValDeclDHL.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': comitionDHL.errors?.required && comitionDHL.touched}" *ngIf="this.userParcelDHL && dhlForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="comitionDHL" name="comitionDHL" min="0" placeholder="{{this.userParcelDHL.commissionDeclared}}" value="{{this.userParcelDHL.commissionDeclared}}" [ngModel]="this.userParcelDHL.commissionDeclared" #comitionDHL="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="comitionDHL">Comisión</label>
+          <p *ngIf="comitionDHL.errors?.required&&comitionDHL.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="dhlForm">
+          <p>
+            <input (click)="checkPaidGuidesDHL()" class="filled-in checkbox-blue" type="checkbox" id="checkGuidesDHL" />
+            <label for="checkGuidesDHL">Habilitar guías prepagadas DHL</label>
+          </p>
+        </div>
+
+        <div *ngIf="guidesDHL" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': qtyGuidesDHL.errors?.required && qtyGuidesDHL.touched}">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="qtyGuidesDHL" name="qtyGuidesDHL" min="0" placeholder="{{this.userParcelDHL.limitedGuidesNumber}}" value="{{this.userParcelDHL.limitedGuidesNumber}}" [ngModel]="this.userParcelDHL.limitedGuidesNumber" #qtyGuidesDHL="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="qtyGuidesDHL">Cantidad de guías</label>
+          <p *ngIf="qtyGuidesDHL.errors?.required&&qtyGuidesDHL.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div *ngIf="dhlForm && this.productsDHL.length > 0">
+          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPriceDHL, let i = index">
+            <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
+            <label class="active" for="usernameDHL">{{product.name}}</label>
+          </div>
         </div>
 
         <!-- Formulario FedEx-->

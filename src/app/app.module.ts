@@ -27,6 +27,10 @@ import { LogInComponent } from './modules/log-in/log-in.component';
 import { GoogleMapsComponent } from './modules/google-maps/google-maps.component';
 import { AddClientComponent } from './modules/add-client/add-client.component';
 import { AddProductComponent } from './modules/add-product/add-product.component';
+import { SelectClientEditComponent } from './modules/select-client-edit/select-client-edit.component';
+import { RateComponent } from './modules/rate/rate.component';
+import { SelectProductEditComponent } from './modules/select-product-edit/select-product-edit.component';
+import { AddGuidesToClientComponent } from './modules/add-guides-to-client/add-guides-to-client.component';
 
 //Services
 import { ClientService } from './services/client-service/client.service';
@@ -36,9 +40,9 @@ import { AutoLogOutService } from './services/auto-log-out-service/auto-log-out.
 import { ParcelService } from './services/parcel-service/parcel.service';
 import { ProductService } from './services/product-service/product.service';
 import { RateService } from './services/rate-service/rate.service';
-import { SelectClientEditComponent } from './modules/select-client-edit/select-client-edit.component';
-import { RateComponent } from './modules/rate/rate.component';
-import { SelectProductEditComponent } from './modules/select-product-edit/select-product-edit.component';
+import { GuidesService } from './services/guides/guides.service';
+import { SelectClientEditGuidesComponent } from './modules/select-client-edit-guides/select-client-edit-guides.component';
+
 
 //Pipes
 
@@ -61,7 +65,9 @@ import { SelectProductEditComponent } from './modules/select-product-edit/select
     SelectClientEditParcelComponent,
     SelectClientEditComponent,
     RateComponent,
-    SelectProductEditComponent
+    SelectProductEditComponent,
+    AddGuidesToClientComponent,
+    SelectClientEditGuidesComponent
   ],
   imports: [
     BrowserModule,
@@ -87,7 +93,8 @@ import { SelectProductEditComponent } from './modules/select-product-edit/select
     AutoLogOutService,
     ParcelService,
     ProductService,
-    RateService
+    RateService,
+    GuidesService
   ],
 
   bootstrap: [AppComponent],

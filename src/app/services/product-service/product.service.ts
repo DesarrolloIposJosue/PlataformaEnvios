@@ -29,6 +29,8 @@ export class ProductService {
   }
 
   getProductsByUser(){
+    console.log("GetProductsByUser");
+    console.log(sessionStorage.getItem('NewUserId'));
     var operation:string = this.apiBase + 'GetProductsByUser';
     // Headers
     let myHeaders = new Headers();
