@@ -29,8 +29,6 @@ export class ProductService {
   }
 
   getProductsByUser(){
-    console.log("GetProductsByUser");
-    console.log(sessionStorage.getItem('NewUserId'));
     var operation:string = this.apiBase + 'GetProductsByUser';
     // Headers
     let myHeaders = new Headers();
@@ -56,7 +54,6 @@ export class ProductService {
 
   updateProduct(product:Product){
     var operation:string = this.apiBase + 'UpdateProduct';
-    console.log(product);
     // Headers
     let myHeaders = new Headers();
     const Product:Product = product;

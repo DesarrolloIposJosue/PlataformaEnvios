@@ -24,6 +24,7 @@ export class SelectClientEditGuidesComponent implements OnInit {
   private petitionError = false;
   private dataUser:any[] = [];
   private guidesUser:User_PrepaidGuides[] = [];
+  private otherGuides:User_PrepaidGuides[] = [];
   private response:any;
 
   private guidesUserFounded:boolean = false;
@@ -47,7 +48,6 @@ export class SelectClientEditGuidesComponent implements OnInit {
             this.response = successResponse;
             this.dataUser = [];
             for (var i = 0; i < userArray.length; i++) {
-              //console.log(countryArray[i].name);
               this.dataUser[userArray[i].name + " " + userArray[i].lastName] = null; //countryArray[i].flag or null
             }
             this.petitionError = false;
@@ -78,28 +78,50 @@ export class SelectClientEditGuidesComponent implements OnInit {
         var userNameLastName = this.response[i].name + " " + this.response[i].lastName;
         if(element.value == userNameLastName){
           this.guidesUserFounded = true;
-          console.log(this.response[i].id);
           this.guideService.selectPrepaidGuidesFromUser(this.response[i].id).subscribe(
             (successResponse) => {
-                console.log(successResponse);
                 if(!successResponse){
                   this.loading = false;
                   this.petitionError = true;
                 }else{
                   var guides = successResponse;
-                  console.log(guides);
                   this.response = successResponse;
                   this.guidesUser = [];
                   for (var i = 0; i < guides.length; i++) {
-                    console.log(guides[i].limitedGuidesNumber);
-                    console.log(guides[i].parcelId);
-                    console.log(guides[i].userId);
-                    console.log(this.guidesUser);
                     this.guidesUser.push(
                         new User_PrepaidGuides(guides[i].userId, guides[i].limitedGuidesNumber, guides[i].parcelId)
                     )
                   }
-                  console.log(this.guidesUser);
+                  /*let checkParcelId:boolean = false;
+                  let userId:number = 0;
+                  let parcelIdActual:number = 0;
+                  for (var i = 1; i < 5; i++){
+                    for(var j = 0; j < guides.length; j++){
+                      if(i == this.guidesUser[j].parcelId){
+                        checkParcelId = false;
+                      }else{
+                        checkParcelId = true;
+                        userId = this.guidesUser[j].parcelId;
+                        parcelIdActual = i;
+                      }
+                    }
+                    if(checkParcelId){
+                      this.otherGuides.push(
+                        new User_PrepaidGuides(userId, 0, parcelIdActual)
+                      )
+                    }
+                  }
+                  for(var i = 0; i< this.guidesUser.length; i++){
+                    for(var j=0; j < this.otherGuides.length; j++){
+                      if(this.guidesUser[i].parcelId == this.otherGuides[j].parcelId){
+                        let parcelIdToSearch:number = this.guidesUser[i].parcelId;
+                        var index = this.otherGuides.indexOf(this.otherGuides[j]);
+                        if (index > -1) {
+                          this.otherGuides.splice(index, 1);
+                        }
+                      }
+                    }
+                  }*/
                   this.petitionError = false;
                 }
             },
@@ -119,17 +141,12 @@ export class SelectClientEditGuidesComponent implements OnInit {
 
     for(var j=0; j<this.guidesUser.length; j++)
     {
-      console.log(this.guidesUser[j].parcelId.toString());
       var elementAux = <HTMLInputElement>document.getElementById(this.guidesUser[j].parcelId.toString());
-      console.log(Number(elementAux.value));
       this.updateUserGuides.push(new User_PrepaidGuides(this.guidesUser[j].userId, Number(elementAux.value), this.guidesUser[j].parcelId));
     }
-    console.log("Entre");
-    console.log(this.updateUserGuides);
     this.guideService.updatePrepaidGuides(this.updateUserGuides).subscribe(
       (successResponse) => {
         var checkUser = successResponse;
-        console.log(successResponse);
         if (successResponse == "SUCCESS: Prepaid Guides Updated.") {
           console.log("Se actualizo correctamente");
           this.router.navigate(['/home']);

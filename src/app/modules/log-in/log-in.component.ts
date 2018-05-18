@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { ClientService } from '../../services/client-service/client.service';
+import { CreateGuideService } from '../../services/create-guide-service/create-guide.service';
+import { User } from '../../classes/Client';
 import { AutoLogOutService } from '../../services/auto-log-out-service/auto-log-out.service';
 import { LogIn } from '../../classes/LogIn';
 import { Observable } from 'rxjs/Rx';
@@ -25,7 +27,8 @@ export class LogInComponent implements OnInit {
     private router:Router,
     private clientService: ClientService,
     private authService: AuthService,
-    private autoLogOut: AutoLogOutService
+    private autoLogOut: AutoLogOutService,
+    private createGuideservice:CreateGuideService
   ) {
     autoLogOut.stop();
   }
@@ -50,11 +53,20 @@ export class LogInComponent implements OnInit {
       this.loading = true;
       this.clientService.getUserLogged(logInData.username, logInData.password).subscribe(
         (successResponse) => {
+          console.log(successResponse);
             if(!successResponse.address){
               this.loading = false;
               this.petitionError = true;
             }else{
               if(typeof (Storage) !== 'undefined'){
+                let user:User = new User(successResponse.id, successResponse.name, successResponse.lastName, successResponse.userName,
+                successResponse.password, successResponse.address, successResponse.email, successResponse.typeId, successResponse.address2,
+              successResponse.colony, successResponse.city, successResponse.state, successResponse.zip, successResponse.country,
+            successResponse.phoneNumber);
+
+                this.createGuideservice.userActual = user;
+                console.log(this.createGuideservice.userActual);
+
                 sessionStorage.setItem('UserName', logInData.username);
                 sessionStorage.setItem('Password', logInData.password);
                 sessionStorage.setItem('Type', successResponse.typeId);

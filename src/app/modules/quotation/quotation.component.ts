@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { NgForm } from '@angular/forms';
 import { Package } from '../../classes/Package';
+import { DataAuxGuide } from '../../classes/DataAuxGuide';
 import { RateService } from '../../services/rate-service/rate.service';
+import { CreateGuideService } from '../../services/create-guide-service/create-guide.service';
 import { Rate } from '../../classes/Rate';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
@@ -25,28 +27,35 @@ export class QuotationComponent implements OnInit {
   private response:any;
   private invalidNumber:boolean = false;
   private invalidPC:boolean = false;
+  private seguro:boolean = false;
+
 
   constructor(
     private auth: AuthService,
     private rateService: RateService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private createGuideService:CreateGuideService
+  ) {
+
+  }
 
   ngOnInit() {
-    //Obtain the info of the user
-    /*if (this.auth.userProfile) {
-      this.profile = this.auth.userProfile;
-    } else {
-      this.auth.getProfile((err, profile) => {
-        this.profile = profile;
-      });
-    }*/
+
+  }
+
+  checkSeguro(){
+    var element = <HTMLInputElement>document.getElementById("seguro");
+    element = <HTMLInputElement>document.getElementById("seguro");
+    if(element.checked == true){
+      this.seguro = true;
+    }else{
+      this.seguro = false;
+    }
   }
 
   addQuotation(forma:NgForm){
-    console.log("Es válido?");
-    console.log(forma.valid);
     this.loading = true;
+    let insurance:number = 0;
 
     if(!forma.valid){
           this.invalidForm = true;
@@ -68,15 +77,25 @@ export class QuotationComponent implements OnInit {
         idParcel: 0
       }
 
-      console.log(quotationData);
+
+      if(forma.controls["insurance"]){
+        insurance = forma.controls["insurance"].value;
+      }else{
+        insurance = 0;
+      }
+
+      let dataAux:DataAuxGuide = new DataAuxGuide(quotationData.postCodeOrigin, quotationData.postCodeDest, quotationData.originAddress,
+      quotationData.destinationAddress, quotationData.kindPackage, quotationData.width, quotationData.long, quotationData.hight,
+      quotationData.weight, insurance);
+
+      this.createGuideService.dataAuxGuide = dataAux;
+
       if(quotationData.postCodeOrigin > 0 && quotationData.postCodeDest > 0 && quotationData.weight > 0
       && quotationData.long > 0 && quotationData.width > 0 && quotationData.hight > 0 &&
       quotationData.postCodeOrigin.toString().length > 4 && quotationData.postCodeDest.toString().length > 4){
         this.invalidNumber = false;
         this.invalidPC = false;
-        this.rateService.getQuotation(quotationData).subscribe(jsonData => {
-          console.log("Panamez: "+jsonData);
-          console.log(jsonData);
+        this.rateService.getQuotation(quotationData, insurance).subscribe(jsonData => {
           if(!jsonData){
             this.loading = false;
             this.petitionError = true;
@@ -88,23 +107,21 @@ export class QuotationComponent implements OnInit {
               this.dataProducts.push(
                 new Rate(rateArray[i].id, rateArray[i].name, rateArray[i].description,
                         rateArray[i].kg, rateArray[i].factor, rateArray[i].parcelId,
-                        rateArray[i].amount, rateArray[i].parcelName));
-
-              /*this.dataProducts[i].amount = rateArray[i].amount;
-              this.dataProducts[i].description = rateArray[i].description;
-              this.dataProducts[i].factor = rateArray[i].factor;
-              this.dataProducts[i].id = rateArray[i].id;
-              this.dataProducts[i].kg = rateArray[i].kg;
-              this.dataProducts[i].name = rateArray[i].name;
-              this.dataProducts[i].parcelId = rateArray[i].parcelId;
-              this.dataProducts[i].parcelName = rateArray[i].parcelName;*/
+                        rateArray[i].amount, rateArray[i].parcelName, rateArray[i].deliveryDateSpecified,
+                         rateArray[i].deliveryDate));
             }
             this.rateService.dataProducts = this.dataProducts;
             this.petitionError = false;
-            console.log(this.rateService.dataProducts);
+            this.createGuideService.city = forma.controls["origin_city"].value;
+            this.createGuideService.destinyCity = forma.controls["dest_city"].value;
+            console.log(this.createGuideService.destinyCity);
+            this.createGuideService.zip = forma.controls["postal_code_origin"].value;
+            console.log(this.createGuideService.zip);
+            this.createGuideService.destinyZip = forma.controls["postal_code_dest"].value;
+            console.log(this.createGuideService.destinyZip);
+            this.createGuideService.packageType = forma.controls["kindPackage"].value;
           }
           this.router.navigate(['/show-rate']);
-
         });
       }else{
         this.invalidForm = true;

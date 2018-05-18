@@ -28,7 +28,7 @@ export class AddClientComponent implements OnInit {
   private userType: string;
 
   ngOnInit() {
-    
+
   }
 
   /*ngAfterViewChecked() {
@@ -59,7 +59,14 @@ export class AddClientComponent implements OnInit {
           password: forma.controls["password"].value,
           address: forma.controls["address"].value,
           email: forma.controls["email"].value,
-          typeId: forma.controls["clientType"].value
+          typeId: forma.controls["clientType"].value,
+          address2: forma.controls["address2"].value,
+          colony: forma.controls["colony"].value,
+          city: forma.controls["city"].value,
+          state: forma.controls["state"].value,
+          zip: forma.controls["zip"].value,
+          country: forma.controls["country"].value,
+          phoneNumber: forma.controls["phoneNumber"].value
         }
         console.log(clientData);
         this.clientService.addClient(clientData).subscribe(jsonData => {
@@ -74,7 +81,7 @@ export class AddClientComponent implements OnInit {
               }
           });
       }else if(this.clientService.operation == 1){
-
+        console.log(this.clientService.userEdit);
         const updateClientData:User = {
           id: this.clientService.userEdit.id,
           name: forma.controls["name"].value,
@@ -84,6 +91,13 @@ export class AddClientComponent implements OnInit {
           address: forma.controls["address"].value,
           email: forma.controls["email"].value,
           typeId: this.clientService.userEdit.typeId,
+          address2: forma.controls["address2"].value,
+          colony: forma.controls["colony"].value,
+          city: forma.controls["city"].value,
+          state: this.clientService.userEdit.state,
+          zip: forma.controls["zip"].value,
+          country: this.clientService.userEdit.country,
+          phoneNumber: forma.controls["phoneNumber"].value
         }
         this.clientService.updateClient(updateClientData).subscribe(jsonData => {
               console.log("Panamez: "+jsonData);

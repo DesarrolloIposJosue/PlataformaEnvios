@@ -1,8 +1,4 @@
 export class User{
-  /*public id: string;
-  public name: string;
-  public username: string;
-  public email: string;*/
   public id: number;
   public name:string;
   public lastName:string;
@@ -11,37 +7,31 @@ export class User{
   public address:string;
   public email:string;
   public typeId:number;
+  public address2:string;
+  public colony:string;
+  public city:string;
+  public state:string;
+  public zip:string;
+  public country:string;
+  public phoneNumber:string;
 
-  /*GetName():string{
-    return this.name;
-  }
-
-  SetName(_name:string){
+  constructor(_id:number, _name:string, _lastName:string, _userName:string, _password:string, _address:string, _email:string,
+  _typeId:number, _address2:string, _colony:string, _city:string, _state:string, _zip:string, _country:string, _phoneNumber:string){
+    this.id = _id;
     this.name = _name;
-  }
-
-  GetPassword():string{
-    return this.password;
-  }
-
-  SetPassword(_password:string){
+    this.lastName = _lastName;
+    this.userName = _userName;
     this.password = _password;
+    this.address = _address;
+    this.email = _email;
+    this.typeId = _typeId;
+    this.address2 = _address2;
+    this.colony = _colony;
+    this.city = _city;
+    this.state = _state;
+    this.zip = _zip;
+    this.country = _country;
+    this.phoneNumber = _phoneNumber; 
   }
-
-  GetUsername():string{
-    return this.username;
-  }
-
-  SetUsername(_username:string){
-    this.username = _username;
-  }
-
-  GetType():number{
-    return this.type;
-  }
-
-  SetType(_type:number){
-    this.type = _type;
-  }*/
 
 }

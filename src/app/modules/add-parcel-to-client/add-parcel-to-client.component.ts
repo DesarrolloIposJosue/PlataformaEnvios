@@ -23,6 +23,8 @@ export class AddParcelToClientComponent implements OnInit {
   public fedExForm:boolean = false;
   public dhlForm:boolean = false;
   public estafetaForm:boolean = false;
+  public paqueteExpressForm:boolean = false;
+
   private petitionError = false;
   private response:any;
   private responseProductPrice:any;
@@ -31,22 +33,19 @@ export class AddParcelToClientComponent implements OnInit {
   public productsDHL:Product[] = [];
   public productsRedPack:Product[] = [];
   public productsFedEx:Product[] = [];
-
-  public productsPricesEstafeta:User_Product[] = [];
-  public productsPricesDHL:User_Product[] = [];
-  public productsPricesFedEx:User_Product[] = [];
-  public productsPricesRedPack:User_Product[] = [];
-
+  public productsPaqueteExpress:Product[] = [];
 
   public productUserPriceEstafeta:User_Product_Price[] = [];
   public productUserPriceDHL:User_Product_Price[] = [];
   public productUserPriceRedPack:User_Product_Price[] = [];
   public productUserPriceFedEx:User_Product_Price[] = [];
+  public productUserPricePaqueteExpress:User_Product_Price[] = [];
 
   public userParcelEstafeta:User_Parcel;
   public userParcelDHL:User_Parcel;
   public userParcelRedPack:User_Parcel;
   public userParcelFedEx:User_Parcel;
+  public userParcelPaqueteExpress:User_Parcel;
 
   public errorParcelData:boolean = false;
   public errorAddParcelsToClient:boolean = false;
@@ -55,350 +54,37 @@ export class AddParcelToClientComponent implements OnInit {
   private guidesRedPack:boolean = false;
   private guidesDHL:boolean = false;
   private guidesFedEx:boolean = false;
+  private guidesPaqueteExpress:boolean = false;
+
+  private loadProductsEstafeta:boolean = false;
+  private loadProductsRedPack:boolean = false;
+  private loadProductsDHL:boolean = false;
+  private loadProductsFedEx:boolean = false;
+  private loadProductsPaqueteExpress:boolean = false;
+
+  private existProductsEstafeta:boolean = false;
+  private existProductsRedPack:boolean = false;
+  private existProductsDHL:boolean = false;
+  private existProductsFedEx:boolean = false;
+  private existProductsPaqueteExpress:boolean = false;
+
+  private errorProductEstafeta:boolean = false;
+  private errorProdPriceEstafeta:boolean = false;
+  private errorProductRedPack:boolean = false;
+  private errorProdPriceRedPack:boolean = false;
+  private errorProductDHL:boolean = false;
+  private errorProdPriceDHL:boolean = false;
+  private errorProductFedEx:boolean = false;
+  private errorProdPriceFedEx:boolean = false;
+  private errorProductPaqueteExpress:boolean = false;
+  private errorProdPricePaqueteExpress:boolean = false;
 
   constructor(
     private parcelService:ParcelService,
     private router:Router,
     private productService: ProductService
   ) {
-    if(this.productService.operation == 1){
-      for(var parcelId=1; parcelId<5; parcelId++){
-        if(parcelId == 1){
-          this.parcelService.getProductsByParcel(1).subscribe(
-            (successResponse) => {
-                if(!successResponse){
-                  this.loading = false;
-                  this.petitionError = true;
-                }else{
-                  var productArray = successResponse;
-                  this.response = successResponse;
-                  this.productsDHL = [];
-                  for (var i = 0; i < productArray.length; i++) {
-                    this.productsDHL.push(
-                      new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
-                              productArray[i].kg, productArray[i].factor)
-                    );
-                  }
-                  this.productService.getProductsByUser().subscribe(
-                    (responseProducts) =>{
-                        if(!responseProducts){
-                          this.loading = false;
-                          this.petitionError = true;
-                        }else{
-                          var productArray = responseProducts;
-                          this.responseProductPrice = responseProducts;
-                          this.productsPricesDHL = [];
-                          for (var i = 0; i < productArray.length; i++) {
-                            this.productsPricesDHL.push(
-                              new User_Product(productArray[i].userId, productArray[i].productId, productArray[i].amount)
-                            );
-                          }
 
-                          this.productUserPriceDHL = [];
-                          for(var i = 0; i < productArray.length; i++) {
-                            for(var j=0; j < this.productsDHL.length; j++){
-                              if(productArray[i].productId == this.productsDHL[j].id){
-                                this.productUserPriceDHL.push(
-                                  new User_Product_Price(productArray[i].userId, productArray[i].productId, productArray[i].amount, this.productsDHL[j].name)
-                                );
-                              }
-                            }
-                          }
-
-                          this.productService.getParcelsFromUser().subscribe(
-                            (responseParcels) =>{
-                              if(!responseParcels){
-                                this.loading = false;
-                                this.petitionError = true;
-                              }else{
-                                var productArray = responseParcels;
-                                console.log("Respuesta");
-                                console.log(responseParcels);
-                                this.userParcelDHL = new User_Parcel();
-                                for (var i = 0; i < productArray.length; i++) {
-
-                                  if(productArray[i].parcelId == 1){
-                                    this.userParcelDHL.userId = productArray[i].userId;
-                                    this.userParcelDHL.parcelId = productArray[i].parcelId;
-                                    this.userParcelDHL.password = productArray[i].password;
-                                    this.userParcelDHL.username = productArray[i].username;
-                                    this.userParcelDHL.commissionDeclared = productArray[i].commissionDeclared;
-                                    this.userParcelDHL.extendedArea = productArray[i].extendedArea;
-                                    this.userParcelDHL.limitGuides = productArray[i].limitGuides;
-                                    if(productArray[i].limitedGuidesNumber > 0){
-                                      this.userParcelDHL.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
-                                    }else{
-                                      this.userParcelDHL.limitedGuidesNumber = 0;
-                                    }
-                                    this.userParcelDHL.percentageDeclared = productArray[i].percentageDeclared;
-                                    this.userParcelDHL.reference = productArray[i].reference;
-                                  }
-                                }
-                                console.log("Que es esto?")
-                                console.log(this.userParcelDHL.username);
-                              }
-                            }
-                          );
-                          this.petitionError = false;
-                        }
-                    }
-                  );
-                  this.petitionError = false;
-                }
-            }
-          );
-
-        }else if(parcelId == 2){
-          this.parcelService.getProductsByParcel(2).subscribe(
-            (successResponse) => {
-                if(!successResponse){
-                  this.loading = false;
-                  this.petitionError = true;
-                }else{
-                  var productArray = successResponse;
-                  this.response = successResponse;
-                  this.productsRedPack = [];
-                  for (var i = 0; i < productArray.length; i++) {
-                    this.productsRedPack.push(
-                      new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
-                              productArray[i].kg, productArray[i].factor)
-                    );
-                  }
-                  this.productService.getProductsByUser().subscribe(
-                    (responseProducts) =>{
-                        if(!responseProducts){
-                          this.loading = false;
-                          this.petitionError = true;
-                        }else{
-                          var productArray = responseProducts;
-                          this.responseProductPrice = responseProducts;
-                          this.productsPricesRedPack = [];
-                          for (var i = 0; i < productArray.length; i++) {
-                            this.productsPricesRedPack.push(
-                              new User_Product(productArray[i].userId, productArray[i].productId, productArray[i].amount)
-                            );
-                          }
-
-                          this.productUserPriceRedPack = [];
-                          console.log("Comparamos");
-                          console.log(productArray);
-                          console.log(this.productsPricesRedPack);
-
-                          for(var i = 0; i < productArray.length; i++) {
-                            for(var j=0; j < this.productsRedPack.length; j++){
-                              console.log(productArray[i].productId == this.productsRedPack[j].id);
-                              if(productArray[i].productId == this.productsRedPack[j].id){
-                                this.productUserPriceRedPack.push(
-                                  new User_Product_Price(productArray[i].userId, productArray[i].productId, productArray[i].amount, this.productsRedPack[j].name)
-                                );
-                              }
-                            }
-                          }
-                          console.log("Cargue?");
-                          console.log(this.productUserPriceRedPack);
-
-                          this.productService.getParcelsFromUser().subscribe(
-                            (responseParcels) =>{
-                              if(!responseParcels){
-                                this.loading = false;
-                                this.petitionError = true;
-                              }else{
-                                var productArray = responseParcels;
-                                this.userParcelRedPack = new User_Parcel();
-                                for (var i = 0; i < productArray.length; i++) {
-                                  if(productArray[i].parcelId == 2){
-                                    this.userParcelRedPack.userId = productArray[i].userId;
-                                    this.userParcelRedPack.parcelId = productArray[i].parcelId;
-                                    this.userParcelRedPack.password = productArray[i].password;
-                                    this.userParcelRedPack.username = productArray[i].username;
-                                    this.userParcelRedPack.commissionDeclared = productArray[i].commissionDeclared;
-                                    this.userParcelRedPack.extendedArea = productArray[i].extendedArea;
-                                    this.userParcelRedPack.limitGuides = productArray[i].limitGuides;
-                                    if(productArray[i].limitedGuidesNumber > 0){
-                                      this.userParcelRedPack.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
-                                    }else{
-                                      this.userParcelRedPack.limitedGuidesNumber = 0;
-                                    }
-                                    this.userParcelRedPack.percentageDeclared = productArray[i].percentageDeclared;
-                                    this.userParcelRedPack.reference = productArray[i].reference;
-                                  }
-                                }
-                                console.log(this.userParcelRedPack.username);
-                              }
-                            }
-                          );
-                          this.petitionError = false;
-                        }
-                    }
-                  );
-                }
-            }
-          );
-
-        }else if(parcelId == 3){
-          this.parcelService.getProductsByParcel(3).subscribe(
-            (successResponse) => {
-                if(!successResponse){
-                  this.loading = false;
-                  this.petitionError = true;
-                }else{
-                  var productArray = successResponse;
-                  this.response = successResponse;
-                  this.productsFedEx = [];
-                  for (var i = 0; i < productArray.length; i++) {
-                    this.productsFedEx.push(
-                      new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
-                              productArray[i].kg, productArray[i].factor)
-                    );
-                  }
-                  this.productService.getProductsByUser().subscribe(
-                    (responseProducts) =>{
-                        if(!responseProducts){
-                          this.loading = false;
-                          this.petitionError = true;
-                        }else{
-                          var productArray = responseProducts;
-                          this.responseProductPrice = responseProducts;
-                          this.productsPricesFedEx = [];
-                          for (var i = 0; i < productArray.length; i++) {
-                            this.productsPricesFedEx.push(
-                              new User_Product(productArray[i].userId, productArray[i].productId, productArray[i].amount)
-                            );
-                          }
-                          this.productUserPriceFedEx = [];
-                          for(var i = 0; i < productArray.length; i++) {
-                            for(var j=0; j < this.productsFedEx.length; j++){
-                              if(productArray[i].productId == this.productsFedEx[j].id){
-                                this.productUserPriceFedEx.push(
-                                  new User_Product_Price(productArray[i].userId, productArray[i].productId, productArray[i].amount, this.productsFedEx[j].name)
-                                );
-                              }
-                            }
-                          }
-                          this.productService.getParcelsFromUser().subscribe(
-                            (responseParcels) =>{
-                              if(!responseParcels){
-                                this.loading = false;
-                                this.petitionError = true;
-                              }else{
-                                var productArray = responseParcels;
-                                this.userParcelFedEx = new User_Parcel();
-                                for (var i = 0; i < productArray.length; i++) {
-                                  if(productArray[i].parcelId == 3){
-                                    this.userParcelFedEx.userId = productArray[i].userId;
-                                    this.userParcelFedEx.parcelId = productArray[i].parcelId;
-                                    this.userParcelFedEx.password = productArray[i].password;
-                                    this.userParcelFedEx.username = productArray[i].username;
-                                    this.userParcelFedEx.commissionDeclared = productArray[i].commissionDeclared;
-                                    this.userParcelFedEx.extendedArea = productArray[i].extendedArea;
-                                    this.userParcelFedEx.limitGuides = productArray[i].limitGuides;
-                                    if(productArray[i].limitedGuidesNumber > 0){
-                                      this.userParcelFedEx.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
-                                    }else{
-                                      this.userParcelFedEx.limitedGuidesNumber = 0;
-                                    }
-                                    this.userParcelFedEx.percentageDeclared = productArray[i].percentageDeclared;
-                                    this.userParcelFedEx.reference = productArray[i].reference;
-                                  }
-                                }
-                                console.log("Qué es esto?");
-                                console.log(this.userParcelFedEx.username);
-                              }
-                            }
-                          );
-                          this.petitionError = false;
-                        }
-                    }
-                  );
-                  this.petitionError = false;
-                }
-            }
-          );
-
-        }else{
-          this.parcelService.getProductsByParcel(4).subscribe(
-            (successResponse) => {
-                if(!successResponse){
-                  this.loading = false;
-                  this.petitionError = true;
-                }else{
-                  var productArray = successResponse;
-                  this.response = successResponse;
-                  this.productsEstafeta = [];
-                  for (var i = 0; i < productArray.length; i++) {
-                    this.productsEstafeta.push(
-                      new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
-                              productArray[i].kg, productArray[i].factor)
-                    );
-                  }
-                  this.productService.getProductsByUser().subscribe(
-                    (responseProducts) =>{
-                        if(!responseProducts){
-                          this.loading = false;
-                          this.petitionError = true;
-                        }else{
-                          var productArray = responseProducts;
-                          this.responseProductPrice = responseProducts;
-                          this.productsPricesEstafeta = [];
-                          for (var i = 0; i < productArray.length; i++) {
-                            this.productsPricesEstafeta.push(
-                              new User_Product(productArray[i].userId, productArray[i].productId, productArray[i].amount)
-                            );
-                          }
-
-                          this.productUserPriceEstafeta = [];
-                          for(var i = 0; i < productArray.length; i++) {
-                            for(var j=0; j < this.productsEstafeta.length; j++){
-                              if(productArray[i].productId == this.productsEstafeta[j].id){
-                                this.productUserPriceEstafeta.push(
-                                  new User_Product_Price(productArray[i].userId, productArray[i].productId, productArray[i].amount, this.productsEstafeta[j].name)
-                                );
-                              }
-                            }
-                          }
-
-                          this.productService.getParcelsFromUser().subscribe(
-                            (responseParcels) =>{
-                              if(!responseParcels){
-                                this.loading = false;
-                                this.petitionError = true;
-                              }else{
-                                var productArray = responseParcels;
-                                this.userParcelEstafeta = new User_Parcel();
-                                for (var i = 0; i < productArray.length; i++) {
-                                  if(productArray[i].parcelId == 4){
-                                    this.userParcelEstafeta.userId = productArray[i].userId;
-                                    this.userParcelEstafeta.parcelId = productArray[i].parcelId;
-                                    this.userParcelEstafeta.password = productArray[i].password;
-                                    this.userParcelEstafeta.username = productArray[i].username;
-                                    this.userParcelEstafeta.commissionDeclared = productArray[i].commissionDeclared;
-                                    this.userParcelEstafeta.extendedArea = productArray[i].extendedArea;
-                                    this.userParcelEstafeta.limitGuides = productArray[i].limitGuides;
-                                    if(productArray[i].limitedGuidesNumber > 0){
-                                      this.userParcelEstafeta.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
-                                    }else{
-                                      this.userParcelEstafeta.limitedGuidesNumber = 0;
-                                    }
-                                    this.userParcelEstafeta.percentageDeclared = productArray[i].percentageDeclared;
-                                    this.userParcelEstafeta.reference = productArray[i].reference;
-                                  }
-                                }
-                                console.log(this.userParcelEstafeta.username);
-                              }
-                            }
-                          );
-                          this.petitionError = false;
-                        }
-                    }
-                  );
-                  this.petitionError = false;
-                }
-            }
-          );
-
-        }
-      }
-    }
   }
 
   assignParcel(forma:NgForm){
@@ -407,8 +93,6 @@ export class AddParcelToClientComponent implements OnInit {
     var parcInfoInd:User_Parcel = new User_Parcel;
     var prodUserInfo:User_Product[] = [];
 
-    console.log(this.redPackForm);
-    console.log(this.fedExForm);
     if(this.redPackForm){
       parcInfoInd = new User_Parcel;
       if(forma.controls["passwordRedPack"].value == "" || forma.controls["usernameRedPack"].value == ""){
@@ -431,14 +115,57 @@ export class AddParcelToClientComponent implements OnInit {
           parcInfoInd.limitedGuidesNumber = 0;
         }
         parcInfo.push(parcInfoInd);
-        console.log("Qué pedo?");
-        console.log(this.productUserPriceRedPack);
-        for(var j=0; j<this.productsRedPack.length; j++)
-        {
-          console.log(this.productsRedPack[j].id.toString());
-          var elementAux = <HTMLInputElement>document.getElementById(this.productsRedPack[j].id.toString());
-          console.log(Number(elementAux.value));
-          prodUserInfo.push(new User_Product(0, this.productsRedPack[j].id, Number(elementAux.value)));
+        //Edit part
+        if(this.productService.operation == 1){
+          if(this.productUserPriceRedPack.length > 0){
+            let counter:number = 0;
+            for(var j=0; j<this.productUserPriceRedPack.length; j++){
+              var elementAux = <HTMLInputElement>document.getElementById(this.productUserPriceRedPack[j].productId.toString());
+              if(Number(elementAux.value) > 0){
+                prodUserInfo.push(new User_Product(0, this.productUserPriceRedPack[j].productId, Number(elementAux.value)));
+                counter++;
+              }else{
+                //Error de producto y no procede a guardar
+                this.errorProdPriceRedPack = true;
+              }
+            }
+            if(counter == this.productUserPriceRedPack.length){
+              this.errorProdPriceRedPack = false;
+            }
+          }else{
+            let counter:number = 0;
+            for(var j=0; j<this.productsRedPack.length; j++)
+            {
+              var elementAux = <HTMLInputElement>document.getElementById(this.productsRedPack[j].id.toString());
+              if(Number(elementAux.value) > 0){
+                prodUserInfo.push(new User_Product(0, this.productsRedPack[j].id, Number(elementAux.value)));
+                counter++;
+              }else{
+                //Error de producto y no procede a guardar
+                this.errorProductRedPack = true;
+              }
+            }
+            if(counter == this.productsRedPack.length){
+              this.errorProductRedPack = false;
+            }
+          }
+        //End edit
+        }else{
+          let counter:number = 0;
+          for(var j=0; j<this.productsRedPack.length; j++)
+          {
+            var elementAux = <HTMLInputElement>document.getElementById(this.productsRedPack[j].id.toString());
+            if(Number(elementAux.value) > 0){
+              prodUserInfo.push(new User_Product(0, this.productsRedPack[j].id, Number(elementAux.value)));
+              counter++;
+            }else{
+              //Error de producto y no procede a guardar
+              this.errorProdPriceRedPack = true;
+            }
+          }
+          if(counter == this.productsRedPack.length){
+            this.errorProdPriceRedPack = false;
+          }
         }
       }
     }else{
@@ -485,21 +212,62 @@ export class AddParcelToClientComponent implements OnInit {
           parcInfoInd.limitedGuidesNumber = 0;
         }
         parcInfo.push(parcInfoInd);
-        for(var j=0; j<this.productsFedEx.length; j++)
-        {
-          var elementAux = <HTMLInputElement>document.getElementById(this.productsFedEx[j].id.toString());
-          prodUserInfo.push(new User_Product(0, this.productsFedEx[j].id, Number(elementAux.value)));
+        //Edit part
+        if(this.productService.operation == 1){
+          if(this.productUserPriceFedEx.length > 0){
+            let counter:number = 0;
+            for(var j=0; j<this.productUserPriceFedEx.length; j++){
+              var elementAux = <HTMLInputElement>document.getElementById(this.productUserPriceFedEx[j].productId.toString());
+              if(Number(elementAux.value) > 0){
+                prodUserInfo.push(new User_Product(0, this.productUserPriceFedEx[j].productId, Number(elementAux.value)));
+                counter++;
+              }else{
+                //Error de producto y no procede a guardar
+                this.errorProdPriceFedEx = true;
+              }
+            }
+            if(counter == this.productUserPriceFedEx.length){
+              this.errorProdPriceFedEx = false;
+            }
+          }else{
+            let counter:number = 0;
+            for(var j=0; j<this.productsFedEx.length; j++)
+            {
+              var elementAux = <HTMLInputElement>document.getElementById(this.productsFedEx[j].id.toString());
+              if(Number(elementAux.value) > 0){
+                prodUserInfo.push(new User_Product(0, this.productsFedEx[j].id, Number(elementAux.value)));
+                counter++;
+              }else{
+                //Error de producto y no procede a guardar
+                this.errorProductFedEx = true;
+              }
+            }
+            if(counter == this.productsFedEx.length){
+              this.errorProductFedEx = false;
+            }
+          }
+        //End edit
+        }else{
+          let counter:number = 0;
+          for(var j=0; j<this.productsFedEx.length; j++)
+          {
+            var elementAux = <HTMLInputElement>document.getElementById(this.productsFedEx[j].id.toString());
+            if(Number(elementAux.value) > 0){
+              prodUserInfo.push(new User_Product(0, this.productsFedEx[j].id, Number(elementAux.value)));
+              counter++;
+            }else{
+              //Error de producto y no procede a guardar
+              this.errorProductFedEx = true;
+            }
+          }
+          if(counter == this.productsFedEx.length){
+            this.errorProductFedEx = false;
+          }
         }
       }
     }else{
-      console.log("Entre a info fedEx");
       //FedEx
-      console.log(this.userParcelFedEx);
-      console.log(this.userParcelFedEx.extendedArea);
-      console.log(this.userParcelFedEx && this.userParcelFedEx.extendedArea != undefined);
       if(this.userParcelFedEx && this.userParcelFedEx.extendedArea != undefined){
-        console.log("Holis a ver")
-        console.log(this.userParcelFedEx);
         parcInfoInd = new User_Parcel;
         parcInfoInd.parcelId = this.userParcelFedEx.parcelId;
         parcInfoInd.userId = this.userParcelFedEx.userId;
@@ -512,11 +280,8 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.limitGuides = this.userParcelFedEx.limitGuides;
         parcInfoInd.limitedGuidesNumber = this.userParcelFedEx.limitedGuidesNumber;
         parcInfo.push(parcInfoInd);
-        console.log("Productos de fedEx");
-        console.log(this.productUserPriceFedEx);
         for(var j=0; j<this.productUserPriceFedEx.length; j++)
         {
-
           prodUserInfo.push(new User_Product(0, this.productUserPriceFedEx[j].productId, this.productUserPriceFedEx[j].amount));
         }
       }
@@ -544,16 +309,63 @@ export class AddParcelToClientComponent implements OnInit {
           parcInfoInd.limitedGuidesNumber = 0;
         }
         parcInfo.push(parcInfoInd);
-        for(var j=0; j<this.productsDHL.length; j++)
-        {
-          var elementAux = <HTMLInputElement>document.getElementById(this.productsDHL[j].id.toString());
-          prodUserInfo.push(new User_Product(0, this.productsDHL[j].id, Number(elementAux.value)));
+        //Edit part
+        if(this.productService.operation == 1){
+          if(this.productUserPriceDHL.length > 0){
+            let counter:number = 0;
+            for(var j=0; j<this.productUserPriceDHL.length; j++){
+              var elementAux = <HTMLInputElement>document.getElementById(this.productUserPriceDHL[j].productId.toString());
+              if(Number(elementAux.value) > 0){
+                prodUserInfo.push(new User_Product(0, this.productUserPriceDHL[j].productId, Number(elementAux.value)));
+                counter++;
+              }else{
+                //Error de producto y no procede a guardar
+                this.errorProdPriceDHL= true;
+              }
+            }
+            if(counter == this.productUserPriceDHL.length){
+              this.errorProdPriceDHL = false;
+            }
+          }else{
+            let counter:number = 0;
+            for(var j=0; j<this.productsDHL.length; j++)
+            {
+              var elementAux = <HTMLInputElement>document.getElementById(this.productsDHL[j].id.toString());
+              if(Number(elementAux.value) > 0){
+                prodUserInfo.push(new User_Product(0, this.productsDHL[j].id, Number(elementAux.value)));
+                counter++;
+              }else{
+                //Error de producto y no procede a guardar
+                this.errorProductDHL = true;
+              }
+            }
+            if(counter == this.productsDHL.length){
+              this.errorProductDHL = false;
+            }
+          }
+        //End edit
+        }else{
+          let counter:number = 0;
+          for(var j=0; j<this.productsDHL.length; j++)
+          {
+            var elementAux = <HTMLInputElement>document.getElementById(this.productsDHL[j].id.toString());
+            if(Number(elementAux.value) > 0){
+              prodUserInfo.push(new User_Product(0, this.productsDHL[j].id, Number(elementAux.value)));
+              counter++;
+            }else{
+              //Error de producto y no procede a guardar
+              this.errorProductDHL = true;
+            }
+          }
+          if(counter == this.productsDHL.length){
+            this.errorProductDHL = false;
+          }
         }
+
       }
     }else{
       //DHL
       if(this.userParcelDHL && this.userParcelDHL.extendedArea != undefined){
-        console.log("Aun así entre?");
         parcInfoInd = new User_Parcel;
         parcInfoInd.parcelId = this.userParcelDHL.parcelId;
         parcInfoInd.userId = this.userParcelDHL.userId;
@@ -594,11 +406,57 @@ export class AddParcelToClientComponent implements OnInit {
           parcInfoInd.limitedGuidesNumber = 0;
         }
         parcInfo.push(parcInfoInd);
-        for(var j=0; j<this.productsEstafeta.length; j++)
-        {
-          var elementAux = <HTMLInputElement>document.getElementById(this.productsEstafeta[j].id.toString());
-          prodUserInfo.push(new User_Product(0, this.productsEstafeta[j].id, Number(elementAux.value)));
-
+        //Edit part
+        if(this.productService.operation == 1){
+          if(this.productUserPriceEstafeta.length > 0){
+            let counter:number = 0;
+            for(var j=0; j<this.productUserPriceEstafeta.length; j++){
+              var elementAux = <HTMLInputElement>document.getElementById(this.productUserPriceEstafeta[j].productId.toString());
+              if(Number(elementAux.value) > 0){
+                prodUserInfo.push(new User_Product(0, this.productUserPriceEstafeta[j].productId, Number(elementAux.value)));
+                counter++;
+              }else{
+                //Error de producto y no procede a guardar
+                this.errorProdPriceEstafeta = true;
+              }
+            }
+            if(counter == this.productUserPriceEstafeta.length){
+              this.errorProdPriceEstafeta = false;
+            }
+          }else{
+            let counter:number = 0;
+            for(var j=0; j<this.productsEstafeta.length; j++)
+            {
+              var elementAux = <HTMLInputElement>document.getElementById(this.productsEstafeta[j].id.toString());
+              if(Number(elementAux.value) > 0){
+                prodUserInfo.push(new User_Product(0, this.productsEstafeta[j].id, Number(elementAux.value)));
+                counter++;
+              }else{
+                //Error de producto y no procede a guardar
+                this.errorProductEstafeta = true;
+              }
+            }
+            if(counter == this.productsEstafeta.length){
+              this.errorProductEstafeta = false;
+            }
+          }
+        //End edit
+        }else{
+          let counter:number = 0;
+          for(var j=0; j<this.productsEstafeta.length; j++)
+          {
+            var elementAux = <HTMLInputElement>document.getElementById(this.productsEstafeta[j].id.toString());
+            if(Number(elementAux.value) > 0){
+              prodUserInfo.push(new User_Product(0, this.productsEstafeta[j].id, Number(elementAux.value)));
+              counter++;
+            }else{
+              //Error de producto y no procede a guardar
+              this.errorProductEstafeta = true;
+            }
+          }
+          if(counter == this.productsEstafeta.length){
+            this.errorProductEstafeta = false;
+          }
         }
       }
     }else{
@@ -622,24 +480,116 @@ export class AddParcelToClientComponent implements OnInit {
         }
       }
     }
-
-
-    if(!this.errorParcelData){
+    //Paquete express form
+    if(this.paqueteExpressForm){
+      parcInfoInd = new User_Parcel;
+      if(forma.controls["passwordPaqueteExpress"].value == "" || forma.controls["usernamePaqueteExpress"].value == ""){
+        this.errorParcelData = true;
+      }else{
+        this.errorParcelData = false;
+        parcInfoInd.parcelId = 5;
+        parcInfoInd.userId = 0;
+        parcInfoInd.username = forma.controls["usernamePaqueteExpress"].value;
+        parcInfoInd.password = forma.controls["passwordPaqueteExpress"].value;
+        parcInfoInd.commissionDeclared = forma.controls["comitionPaqueteExpress"].value;
+        parcInfoInd.extendedArea = forma.controls["extAreaPaqueteExpress"].value;
+        parcInfoInd.percentageDeclared = forma.controls["porcValDeclPaqueteExpress"].value;
+        parcInfoInd.reference = forma.controls["referencePaqueteExpress"].value;
+        if(this.guidesPaqueteExpress){
+          parcInfoInd.limitGuides = 'Y';
+          parcInfoInd.limitedGuidesNumber = forma.controls["qtyGuidesPaqueteExpress"].value;
+        }else{
+          parcInfoInd.limitGuides = 'N';
+          parcInfoInd.limitedGuidesNumber = 0;
+        }
+        parcInfo.push(parcInfoInd);
+        //Edit part
+        if(this.productService.operation == 1){
+          if(this.productUserPricePaqueteExpress.length > 0){
+            let counter:number = 0;
+            for(var j=0; j<this.productUserPricePaqueteExpress.length; j++){
+              var elementAux = <HTMLInputElement>document.getElementById(this.productUserPricePaqueteExpress[j].productId.toString());
+              if(Number(elementAux.value) > 0){
+                prodUserInfo.push(new User_Product(0, this.productUserPricePaqueteExpress[j].productId, Number(elementAux.value)));
+                counter++;
+              }else{
+                //Error de producto y no procede a guardar
+                this.errorProdPricePaqueteExpress = true;
+              }
+            }
+            if(counter == this.productUserPricePaqueteExpress.length){
+              this.errorProdPricePaqueteExpress = false;
+            }
+          }else{
+            let counter:number = 0;
+            for(var j=0; j<this.productsPaqueteExpress.length; j++)
+            {
+              var elementAux = <HTMLInputElement>document.getElementById(this.productsPaqueteExpress[j].id.toString());
+              if(Number(elementAux.value) > 0){
+                prodUserInfo.push(new User_Product(0, this.productsPaqueteExpress[j].id, Number(elementAux.value)));
+                counter++;
+              }else{
+                //Error de producto y no procede a guardar
+                this.errorProductPaqueteExpress = true;
+              }
+            }
+            if(counter == this.productsPaqueteExpress.length){
+              this.errorProductPaqueteExpress = false;
+            }
+          }
+        //End edit
+        }else{
+          let counter:number = 0;
+          for(var j=0; j<this.productsPaqueteExpress.length; j++)
+          {
+            var elementAux = <HTMLInputElement>document.getElementById(this.productsPaqueteExpress[j].id.toString());
+            if(Number(elementAux.value) > 0){
+              prodUserInfo.push(new User_Product(0, this.productsPaqueteExpress[j].id, Number(elementAux.value)));
+              counter++;
+            }else{
+              //Error de producto y no procede a guardar
+              this.errorProductPaqueteExpress = true;
+            }
+          }
+          if(counter == this.productsPaqueteExpress.length){
+            this.errorProductFedEx = false;
+          }
+        }
+      }
+    }else{
+      //Paquete express
+      if(this.userParcelPaqueteExpress && this.userParcelPaqueteExpress.extendedArea != undefined){
+        parcInfoInd = new User_Parcel;
+        parcInfoInd.parcelId = this.userParcelPaqueteExpress.parcelId;
+        parcInfoInd.userId = this.userParcelPaqueteExpress.userId;
+        parcInfoInd.username = this.userParcelPaqueteExpress.username;
+        parcInfoInd.password = this.userParcelPaqueteExpress.password;
+        parcInfoInd.commissionDeclared = this.userParcelPaqueteExpress.commissionDeclared;
+        parcInfoInd.extendedArea = this.userParcelPaqueteExpress.extendedArea;
+        parcInfoInd.percentageDeclared = this.userParcelPaqueteExpress.percentageDeclared;
+        parcInfoInd.reference = this.userParcelPaqueteExpress.reference;
+        parcInfoInd.limitGuides = this.userParcelPaqueteExpress.limitGuides;
+        parcInfoInd.limitedGuidesNumber = this.userParcelPaqueteExpress.limitedGuidesNumber;
+        parcInfo.push(parcInfoInd);
+        for(var j=0; j<this.productUserPricePaqueteExpress.length; j++)
+        {
+          prodUserInfo.push(new User_Product(0, this.productUserPricePaqueteExpress[j].productId, this.productUserPricePaqueteExpress[j].amount));
+        }
+      }
+    }
+    if(!this.errorParcelData && !this.errorProductDHL && !this.errorProdPriceDHL && !this.errorProductFedEx  && !this.errorProdPriceFedEx
+      && !this.errorProductRedPack && !this.errorProdPriceRedPack && !this.errorProductEstafeta && !this.errorProdPriceEstafeta
+     && !this.errorProductPaqueteExpress && !this.errorProdPricePaqueteExpress){
       //Entra a enviar
-      console.log("Entre a enviar");
-      console.log(parcInfo);
       this.loading = true;
       this.parcelService.addParcelToClient(parcInfo).subscribe(jsonData => {
             var checkUser = jsonData;
             if (jsonData == "SUCCESS: Parcels assigned to User") {
-              console.log("Informacion de productos a enviar");
-              console.log(prodUserInfo);
               this.parcelService.addProductsToClient(prodUserInfo).subscribe(jsonData2 => {
                 if(jsonData2 == "SUCCESS: Products assigned to User")
                 {
                    this.router.navigate(['/home']);
                 }
-
               });
             } else {
                 this.loading = false;
@@ -647,9 +597,8 @@ export class AddParcelToClientComponent implements OnInit {
             }
         });
     }else{
-      console.log("No puede guardar");
+      this.loading = false;
     }
-
   }
 
   checkPaidGuidesRedPack(){
@@ -657,7 +606,6 @@ export class AddParcelToClientComponent implements OnInit {
     element = <HTMLInputElement>document.getElementById("checkGuidesRedPack");
     if(element.checked == true){
       this.guidesRedPack = true;
-
     }else{
       this.guidesRedPack = false;
     }
@@ -669,37 +617,328 @@ export class AddParcelToClientComponent implements OnInit {
     if(element.checked == true){
       this.redPackForm = true;
       let parcelId:number = 2;
-      this.parcelService.getProductsByParcel(parcelId).subscribe(
-        (successResponse) => {
-            if(!successResponse){
+      if(this.productService.operation == 0){
+        this.parcelService.getProductsByParcel(parcelId).subscribe(
+          (successResponse) => {
+              if(!successResponse){
+                this.loading = false;
+                this.petitionError = true;
+              }else{
+                var productArray = successResponse;
+                this.response = successResponse;
+                this.productsRedPack = [];
+                for (var i = 0; i < productArray.length; i++) {
+                  this.productsRedPack.push(
+                    new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                            productArray[i].kg, productArray[i].factor)
+                  );
+                }
+                if(this.userParcelRedPack && this.userParcelRedPack.limitGuides == 'Y'){
+                  var element = <HTMLInputElement>document.getElementById("checkGuidesRedPack");
+                  element = <HTMLInputElement>document.getElementById("checkGuidesRedPack");
+                  element.checked = true;
+                  this.guidesRedPack= true;
+                }
+                this.petitionError = false;
+              }
+          }
+        );
+        this.errorParcelData = false;
+      }else if(this.productService.operation == 1){
+        this.productService.getParcelsFromUser().subscribe(
+          (responseParcels) =>{
+            if(!responseParcels){
               this.loading = false;
               this.petitionError = true;
             }else{
-              var productArray = successResponse;
-              this.response = successResponse;
-              this.productsRedPack = [];
+              var productArray = responseParcels;
+              this.userParcelRedPack = new User_Parcel();
               for (var i = 0; i < productArray.length; i++) {
-                this.productsRedPack.push(
-                  new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
-                          productArray[i].kg, productArray[i].factor)
-                );
+                if(productArray[i].parcelId == 2){
+                  this.userParcelRedPack.userId = productArray[i].userId;
+                  this.userParcelRedPack.parcelId = productArray[i].parcelId;
+                  this.userParcelRedPack.password = productArray[i].password;
+                  this.userParcelRedPack.username = productArray[i].username;
+                  this.userParcelRedPack.commissionDeclared = productArray[i].commissionDeclared;
+                  this.userParcelRedPack.extendedArea = productArray[i].extendedArea;
+                  this.userParcelRedPack.limitGuides = productArray[i].limitGuides;
+                  if(productArray[i].limitedGuidesNumber > 0){
+                    this.userParcelRedPack.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
+                  }else{
+                    this.userParcelRedPack.limitedGuidesNumber = 0;
+                  }
+                  this.userParcelRedPack.percentageDeclared = productArray[i].percentageDeclared;
+                  this.userParcelRedPack.reference = productArray[i].reference;
+                }
               }
-              if(this.userParcelRedPack && this.userParcelRedPack.limitGuides == 'Y'){
-                var element = <HTMLInputElement>document.getElementById("checkGuidesRedPack");
-                element = <HTMLInputElement>document.getElementById("checkGuidesRedPack");
-                element.checked = true;
-                this.guidesRedPack = true;
-              }
-              this.petitionError = false;
-
-              //Edit
+              this.loadProductsRedPack = true;
+              this.productService.getProductsByUser().subscribe(
+                (responseProductsUser) =>{
+                  if(!responseProductsUser){
+                    this.loading = false;
+                    this.petitionError = true;
+                  }else{
+                    var productsUser = responseProductsUser;
+                    console.log(productsUser);
+                    console.log(productsUser.length);
+                    let counterFounded:number = 0;
+                    for(let i=0; i<productsUser.length; i++){
+                      for(let j=0; j<this.productsRedPack.length; j++){
+                        if(productsUser[i].productId == this.productsRedPack[j].id){
+                          counterFounded++;
+                        }
+                      }
+                    }
+                    if(productsUser.length < 1){
+                      console.log("No tiene");
+                      this.parcelService.getProductsByParcel(parcelId).subscribe(
+                        (successResponse) => {
+                            if(!successResponse){
+                              this.loading = false;
+                              this.petitionError = true;
+                            }else{
+                              var productArray = successResponse;
+                              this.response = successResponse;
+                              this.productsRedPack = [];
+                              for (var i = 0; i < productArray.length; i++) {
+                                this.productsRedPack.push(
+                                  new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                          productArray[i].kg, productArray[i].factor)
+                                );
+                              }
+                              if(this.userParcelRedPack && this.userParcelRedPack.limitGuides == 'Y'){
+                                var element = <HTMLInputElement>document.getElementById("checkGuidesRedPack");
+                                element = <HTMLInputElement>document.getElementById("checkGuidesRedPack");
+                                element.checked = true;
+                                this.guidesRedPack= true;
+                              }
+                              this.petitionError = false;
+                            }
+                        }
+                      );
+                    }else{
+                      this.existProductsRedPack = true;
+                      //Cargar elementos pagados
+                      this.parcelService.getProductsByParcel(parcelId).subscribe(
+                        (successResponse) => {
+                            if(!successResponse){
+                              this.loading = false;
+                              this.petitionError = true;
+                            }else{
+                              var productArray = successResponse;
+                              this.response = successResponse;
+                              this.productsRedPack = [];
+                              for (var i = 0; i < productArray.length; i++) {
+                                this.productsRedPack.push(
+                                  new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                          productArray[i].kg, productArray[i].factor)
+                                );
+                              }
+                              if(this.userParcelRedPack && this.userParcelRedPack.limitGuides == 'Y'){
+                                var element = <HTMLInputElement>document.getElementById("checkGuidesRedPack");
+                                element = <HTMLInputElement>document.getElementById("checkGuidesRedPack");
+                                element.checked = true;
+                                this.guidesRedPack= true;
+                              }
+                              this.petitionError = false;
+                              this.productUserPriceRedPack = [];
+                              for(var i = 0; i < responseProductsUser.length; i++) {
+                                for(var j=0; j < this.productsRedPack.length; j++){
+                                  if(responseProductsUser[i].productId == this.productsRedPack[j].id){
+                                    this.productUserPriceRedPack.push(
+                                      new User_Product_Price(responseProductsUser[i].userId, responseProductsUser[i].productId, responseProductsUser[i].amount, this.productsRedPack[j].name)
+                                    );
+                                  }
+                                }
+                              }
+                              console.log(this.productUserPriceRedPack);
+                            }
+                        }
+                      );
+                    }
+                  }
+                }
+              );
             }
-        }
-      );
-      this.errorParcelData = false;
+          }
+        );
+      }
     }else{
       this.redPackForm = false;
       this.guidesRedPack = false;
+      this.loadProductsRedPack = false;
+    }
+  }
+
+  checkPaidGuidesPaqueteExpress(){
+    var element = <HTMLInputElement>document.getElementById("checkGuidesPaqueteExpress");
+    element = <HTMLInputElement>document.getElementById("checkGuidesPaqueteExpress");
+    if(element.checked == true){
+      this.guidesPaqueteExpress = true;
+    }else{
+      this.guidesPaqueteExpress = false;
+    }
+  }
+
+  checkPaqueteExpress(){
+    console.log("Entre paqueteExpress")
+    var element = <HTMLInputElement>document.getElementById("paqueteExpress");
+    element = <HTMLInputElement>document.getElementById("paqueteExpress");
+    if(element.checked == true){
+      this.paqueteExpressForm = true;
+      let parcelId:number = 5;
+      console.log("Operacion");
+      console.log(this.productService.operation);
+      if(this.productService.operation == 0){
+        this.parcelService.getProductsByParcel(parcelId).subscribe(
+          (successResponse) => {
+              if(!successResponse){
+                this.loading = false;
+                this.petitionError = true;
+              }else{
+                var productArray = successResponse;
+                this.response = successResponse;
+                this.productsPaqueteExpress = [];
+                for (var i = 0; i < productArray.length; i++) {
+                  this.productsPaqueteExpress.push(
+                    new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                            productArray[i].kg, productArray[i].factor)
+                  );
+                }
+                if(this.userParcelPaqueteExpress && this.userParcelPaqueteExpress.limitGuides == 'Y'){
+                  var element = <HTMLInputElement>document.getElementById("checkGuidesPaqueteExpress");
+                  element = <HTMLInputElement>document.getElementById("checkGuidesPaqueteExpress");
+                  element.checked = true;
+                  this.guidesPaqueteExpress= true;
+                }
+                this.petitionError = false;
+              }
+          }
+        );
+        this.errorParcelData = false;
+      }else if(this.productService.operation == 1){
+        this.productService.getParcelsFromUser().subscribe(
+          (responseParcels) =>{
+            if(!responseParcels){
+              this.loading = false;
+              this.petitionError = true;
+            }else{
+              var productArray = responseParcels;
+              this.userParcelPaqueteExpress = new User_Parcel();
+              for (var i = 0; i < productArray.length; i++) {
+                if(productArray[i].parcelId == 5){
+                  this.userParcelPaqueteExpress.userId = productArray[i].userId;
+                  this.userParcelPaqueteExpress.parcelId = productArray[i].parcelId;
+                  this.userParcelPaqueteExpress.password = productArray[i].password;
+                  this.userParcelPaqueteExpress.username = productArray[i].username;
+                  this.userParcelPaqueteExpress.commissionDeclared = productArray[i].commissionDeclared;
+                  this.userParcelPaqueteExpress.extendedArea = productArray[i].extendedArea;
+                  this.userParcelPaqueteExpress.limitGuides = productArray[i].limitGuides;
+                  if(productArray[i].limitedGuidesNumber > 0){
+                    this.userParcelPaqueteExpress.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
+                  }else{
+                    this.userParcelPaqueteExpress.limitedGuidesNumber = 0;
+                  }
+                  this.userParcelPaqueteExpress.percentageDeclared = productArray[i].percentageDeclared;
+                  this.userParcelPaqueteExpress.reference = productArray[i].reference;
+                }
+              }
+              this.loadProductsPaqueteExpress = true;
+              this.productService.getProductsByUser().subscribe(
+                (responseProductsUser) =>{
+                  if(!responseProductsUser){
+                    this.loading = false;
+                    this.petitionError = true;
+                  }else{
+                    var productsUser = responseProductsUser;
+                    let counterFounded:number = 0;
+                    console.log(productsUser);
+                    console.log(productsUser.length);
+                    for(let i=0; i<productsUser.length; i++){
+                      for(let j=0; j<this.productsPaqueteExpress.length; j++){
+                        if(productsUser[i].productId == this.productsPaqueteExpress[j].id){
+                          counterFounded++;
+                        }
+                      }
+                    }
+                    if(counterFounded < 1){
+                      console.log("No tiene");
+                      this.parcelService.getProductsByParcel(parcelId).subscribe(
+                        (successResponse) => {
+                            if(!successResponse){
+                              this.loading = false;
+                              this.petitionError = true;
+                            }else{
+                              var productArray = successResponse;
+                              this.response = successResponse;
+                              this.productsPaqueteExpress = [];
+                              for (var i = 0; i < productArray.length; i++) {
+                                this.productsPaqueteExpress.push(
+                                  new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                          productArray[i].kg, productArray[i].factor)
+                                );
+                              }
+                              if(this.userParcelPaqueteExpress && this.userParcelPaqueteExpress.limitGuides == 'Y'){
+                                var element = <HTMLInputElement>document.getElementById("checkGuidesPaqueteExpress");
+                                element = <HTMLInputElement>document.getElementById("checkGuidesPaqueteExpress");
+                                element.checked = true;
+                                this.guidesPaqueteExpress= true;
+                              }
+                              this.petitionError = false;
+                            }
+                        }
+                      );
+                    }else{
+                      this.existProductsPaqueteExpress = true;
+                      //Cargar elementos pagados
+                      this.parcelService.getProductsByParcel(parcelId).subscribe(
+                        (successResponse) => {
+                            if(!successResponse){
+                              this.loading = false;
+                              this.petitionError = true;
+                            }else{
+                              var productArray = successResponse;
+                              this.response = successResponse;
+                              this.productsPaqueteExpress = [];
+                              for (var i = 0; i < productArray.length; i++) {
+                                this.productsPaqueteExpress.push(
+                                  new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                          productArray[i].kg, productArray[i].factor)
+                                );
+                              }
+                              if(this.userParcelPaqueteExpress && this.userParcelPaqueteExpress.limitGuides == 'Y'){
+                                var element = <HTMLInputElement>document.getElementById("checkGuidesPaqueteExpress");
+                                element = <HTMLInputElement>document.getElementById("checkGuidesPaqueteExpress");
+                                element.checked = true;
+                                this.guidesPaqueteExpress= true;
+                              }
+                              this.petitionError = false;
+                              this.productUserPricePaqueteExpress = [];
+                              for(var i = 0; i < responseProductsUser.length; i++) {
+                                for(var j=0; j < this.productsPaqueteExpress.length; j++){
+                                  if(responseProductsUser[i].productId == this.productsPaqueteExpress[j].id){
+                                    this.productUserPricePaqueteExpress.push(
+                                      new User_Product_Price(responseProductsUser[i].userId, responseProductsUser[i].productId, responseProductsUser[i].amount, this.productsPaqueteExpress[j].name)
+                                    );
+                                  }
+                                }
+                              }
+                              console.log(this.productUserPricePaqueteExpress);
+                            }
+                        }
+                      );
+                    }
+                  }
+                }
+              );
+            }
+          }
+        );
+      }
+    }else{
+      this.paqueteExpressForm = false;
+      this.guidesPaqueteExpress = false;
+      this.loadProductsPaqueteExpress = false;
     }
   }
 
@@ -719,35 +958,157 @@ export class AddParcelToClientComponent implements OnInit {
     if(element.checked == true){
       this.fedExForm = true;
       let parcelId:number = 3;
-      this.parcelService.getProductsByParcel(parcelId).subscribe(
-        (successResponse) => {
-            if(!successResponse){
+      if(this.productService.operation == 0){
+        this.parcelService.getProductsByParcel(parcelId).subscribe(
+          (successResponse) => {
+              if(!successResponse){
+                this.loading = false;
+                this.petitionError = true;
+              }else{
+                var productArray = successResponse;
+                this.response = successResponse;
+                this.productsFedEx = [];
+                for (var i = 0; i < productArray.length; i++) {
+                  this.productsFedEx.push(
+                    new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                            productArray[i].kg, productArray[i].factor)
+                  );
+                }
+                if(this.userParcelFedEx && this.userParcelFedEx.limitGuides == 'Y'){
+                  var element = <HTMLInputElement>document.getElementById("checkGuidesFedEx");
+                  element = <HTMLInputElement>document.getElementById("checkGuidesFedEx");
+                  element.checked = true;
+                  this.guidesFedEx = true;
+                }
+                this.petitionError = false;
+              }
+          }
+        );
+        this.errorParcelData = false;
+      }else if(this.productService.operation == 1){
+        this.productService.getParcelsFromUser().subscribe(
+          (responseParcels) =>{
+            if(!responseParcels){
               this.loading = false;
               this.petitionError = true;
             }else{
-              var productArray = successResponse;
-              this.response = successResponse;
-              this.productsFedEx = [];
+              var productArray = responseParcels;
+              this.userParcelFedEx = new User_Parcel();
               for (var i = 0; i < productArray.length; i++) {
-                this.productsFedEx.push(
-                  new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
-                          productArray[i].kg, productArray[i].factor)
-                );
+                if(productArray[i].parcelId == 3){
+                  this.userParcelFedEx.userId = productArray[i].userId;
+                  this.userParcelFedEx.parcelId = productArray[i].parcelId;
+                  this.userParcelFedEx.password = productArray[i].password;
+                  this.userParcelFedEx.username = productArray[i].username;
+                  this.userParcelFedEx.commissionDeclared = productArray[i].commissionDeclared;
+                  this.userParcelFedEx.extendedArea = productArray[i].extendedArea;
+                  this.userParcelFedEx.limitGuides = productArray[i].limitGuides;
+                  if(productArray[i].limitedGuidesNumber > 0){
+                    this.userParcelFedEx.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
+                  }else{
+                    this.userParcelFedEx.limitedGuidesNumber = 0;
+                  }
+                  this.userParcelFedEx.percentageDeclared = productArray[i].percentageDeclared;
+                  this.userParcelFedEx.reference = productArray[i].reference;
+                }
               }
-              if(this.userParcelFedEx && this.userParcelFedEx.limitGuides == 'Y'){
-                var element = <HTMLInputElement>document.getElementById("checkGuidesFedEx");
-                element = <HTMLInputElement>document.getElementById("checkGuidesFedEx");
-                element.checked = true;
-                this.guidesFedEx = true;
-              }
-              this.petitionError = false;
+              this.loadProductsFedEx = true;
+              this.productService.getProductsByUser().subscribe(
+                (responseProductsUser) =>{
+                  if(!responseProductsUser){
+                    this.loading = false;
+                    this.petitionError = true;
+                  }else{
+                    var productsUser = responseProductsUser;
+                    let counterFounded:number = 0;
+                    console.log(productsUser);
+                    console.log(productsUser.length);
+                    for(let i=0; i<productsUser.length; i++){
+                      for(let j=0; j<this.productsFedEx.length; j++){
+                        if(productsUser[i].productId == this.productsFedEx[j].id){
+                          counterFounded++;
+                        }
+                      }
+                    }
+                    if(counterFounded < 1){
+                      console.log("No tiene");
+                      this.parcelService.getProductsByParcel(parcelId).subscribe(
+                        (successResponse) => {
+                            if(!successResponse){
+                              this.loading = false;
+                              this.petitionError = true;
+                            }else{
+                              var productArray = successResponse;
+                              this.response = successResponse;
+                              this.productsFedEx = [];
+                              for (var i = 0; i < productArray.length; i++) {
+                                this.productsFedEx.push(
+                                  new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                          productArray[i].kg, productArray[i].factor)
+                                );
+                              }
+                              if(this.userParcelFedEx && this.userParcelFedEx.limitGuides == 'Y'){
+                                var element = <HTMLInputElement>document.getElementById("checkGuidesFedEx");
+                                element = <HTMLInputElement>document.getElementById("checkGuidesFedEx");
+                                element.checked = true;
+                                this.guidesFedEx = true;
+                              }
+                              this.petitionError = false;
+                            }
+                        }
+                      );
+                    }else{
+                      this.existProductsFedEx = true;
+                      //Cargar elementos pagados
+                      this.parcelService.getProductsByParcel(parcelId).subscribe(
+                        (successResponse) => {
+                            if(!successResponse){
+                              this.loading = false;
+                              this.petitionError = true;
+                            }else{
+                              var productArray = successResponse;
+                              this.response = successResponse;
+                              this.productsFedEx = [];
+                              for (var i = 0; i < productArray.length; i++) {
+                                this.productsFedEx.push(
+                                  new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                          productArray[i].kg, productArray[i].factor)
+                                );
+                              }
+                              if(this.userParcelFedEx && this.userParcelFedEx.limitGuides == 'Y'){
+                                var element = <HTMLInputElement>document.getElementById("checkGuidesFedEx");
+                                element = <HTMLInputElement>document.getElementById("checkGuidesFedEx");
+                                element.checked = true;
+                                this.guidesFedEx= true;
+                              }
+                              this.petitionError = false;
+                              this.productUserPriceFedEx = [];
+                              for(var i = 0; i < responseProductsUser.length; i++) {
+                                for(var j=0; j < this.productsFedEx.length; j++){
+                                  if(responseProductsUser[i].productId == this.productsFedEx[j].id){
+                                    this.productUserPriceFedEx.push(
+                                      new User_Product_Price(responseProductsUser[i].userId, responseProductsUser[i].productId, responseProductsUser[i].amount, this.productsFedEx[j].name)
+                                    );
+                                  }
+                                }
+                              }
+                              console.log(this.productUserPriceFedEx);
+                            }
+                        }
+                      );
+                    }
+                  }
+                }
+              );
             }
-        }
-      );
+          }
+        );
+      }
       this.errorParcelData = false;
     }else{
       this.fedExForm = false;
       this.guidesFedEx = false;
+      this.loadProductsFedEx = false;
     }
   }
 
@@ -767,35 +1128,156 @@ export class AddParcelToClientComponent implements OnInit {
     if(element.checked == true){
       this.dhlForm = true;
       let parcelId:number = 1;
-      this.parcelService.getProductsByParcel(parcelId).subscribe(
-        (successResponse) => {
-            if(!successResponse){
+      if(this.productService.operation == 0){
+        this.parcelService.getProductsByParcel(parcelId).subscribe(
+          (successResponse) => {
+              if(!successResponse){
+                this.loading = false;
+                this.petitionError = true;
+              }else{
+                var productArray = successResponse;
+                this.response = successResponse;
+                this.productsDHL = [];
+                for (var i = 0; i < productArray.length; i++) {
+                  this.productsDHL.push(
+                    new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                            productArray[i].kg, productArray[i].factor)
+                  );
+                }
+                if(this.userParcelDHL && this.userParcelDHL.limitGuides == 'Y'){
+                  var element = <HTMLInputElement>document.getElementById("checkGuidesDHL");
+                  element = <HTMLInputElement>document.getElementById("checkGuidesDHL");
+                  element.checked = true;
+                  this.guidesPaqueteExpress= true;
+                }
+                this.petitionError = false;
+              }
+          }
+        );
+        this.errorParcelData = false;
+      }else if(this.productService.operation == 1){
+        this.productService.getParcelsFromUser().subscribe(
+          (responseParcels) =>{
+            if(!responseParcels){
               this.loading = false;
               this.petitionError = true;
             }else{
-              var productArray = successResponse;
-              this.response = successResponse;
-              this.productsDHL = [];
+              var productArray = responseParcels;
+              this.userParcelDHL = new User_Parcel();
               for (var i = 0; i < productArray.length; i++) {
-                this.productsDHL.push(
-                  new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
-                          productArray[i].kg, productArray[i].factor)
-                );
+                if(productArray[i].parcelId == 1){
+                  this.userParcelDHL.userId = productArray[i].userId;
+                  this.userParcelDHL.parcelId = productArray[i].parcelId;
+                  this.userParcelDHL.password = productArray[i].password;
+                  this.userParcelDHL.username = productArray[i].username;
+                  this.userParcelDHL.commissionDeclared = productArray[i].commissionDeclared;
+                  this.userParcelDHL.extendedArea = productArray[i].extendedArea;
+                  this.userParcelDHL.limitGuides = productArray[i].limitGuides;
+                  if(productArray[i].limitedGuidesNumber > 0){
+                    this.userParcelDHL.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
+                  }else{
+                    this.userParcelDHL.limitedGuidesNumber = 0;
+                  }
+                  this.userParcelDHL.percentageDeclared = productArray[i].percentageDeclared;
+                  this.userParcelDHL.reference = productArray[i].reference;
+                }
               }
-              if(this.userParcelDHL && this.userParcelDHL.limitGuides == 'Y'){
-                var element = <HTMLInputElement>document.getElementById("checkGuidesDHL");
-                element = <HTMLInputElement>document.getElementById("checkGuidesDHL");
-                element.checked = true;
-                this.guidesDHL = true;
-              }
-              this.petitionError = false;
+              this.loadProductsDHL = true;
+              this.productService.getProductsByUser().subscribe(
+                (responseProductsUser) =>{
+                  if(!responseProductsUser){
+                    this.loading = false;
+                    this.petitionError = true;
+                  }else{
+                    var productsUser = responseProductsUser;
+                    let counterFounded:number = 0;
+                    console.log(productsUser);
+                    console.log(productsUser.length);
+                    for(let i=0; i<productsUser.length; i++){
+                      for(let j=0; j<this.productsDHL.length; j++){
+                        if(productsUser[i].productId == this.productsDHL[j].id){
+                          counterFounded++;
+                        }
+                      }
+                    }
+                    if(counterFounded < 1){
+                      console.log("No tiene");
+                      this.parcelService.getProductsByParcel(parcelId).subscribe(
+                        (successResponse) => {
+                            if(!successResponse){
+                              this.loading = false;
+                              this.petitionError = true;
+                            }else{
+                              var productArray = successResponse;
+                              this.response = successResponse;
+                              this.productsDHL = [];
+                              for (var i = 0; i < productArray.length; i++) {
+                                this.productsDHL.push(
+                                  new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                          productArray[i].kg, productArray[i].factor)
+                                );
+                              }
+                              if(this.userParcelDHL && this.userParcelDHL.limitGuides == 'Y'){
+                                var element = <HTMLInputElement>document.getElementById("checkGuidesDHL");
+                                element = <HTMLInputElement>document.getElementById("checkGuidesDHL");
+                                element.checked = true;
+                                this.guidesDHL= true;
+                              }
+                              this.petitionError = false;
+                            }
+                        }
+                      );
+                    }else{
+                      this.existProductsDHL = true;
+                      //Cargar elementos pagados
+                      this.parcelService.getProductsByParcel(parcelId).subscribe(
+                        (successResponse) => {
+                            if(!successResponse){
+                              this.loading = false;
+                              this.petitionError = true;
+                            }else{
+                              var productArray = successResponse;
+                              this.response = successResponse;
+                              this.productsDHL = [];
+                              for (var i = 0; i < productArray.length; i++) {
+                                this.productsDHL.push(
+                                  new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                          productArray[i].kg, productArray[i].factor)
+                                );
+                              }
+                              if(this.userParcelDHL && this.userParcelDHL.limitGuides == 'Y'){
+                                var element = <HTMLInputElement>document.getElementById("checkGuidesDHL");
+                                element = <HTMLInputElement>document.getElementById("checkGuidesDHL");
+                                element.checked = true;
+                                this.guidesDHL = true;
+                              }
+                              this.petitionError = false;
+                              this.productUserPriceDHL = [];
+                              for(var i = 0; i < responseProductsUser.length; i++) {
+                                for(var j=0; j < this.productsDHL.length; j++){
+                                  if(responseProductsUser[i].productId == this.productsDHL[j].id){
+                                    this.productUserPriceDHL.push(
+                                      new User_Product_Price(responseProductsUser[i].userId, responseProductsUser[i].productId, responseProductsUser[i].amount, this.productsDHL[j].name)
+                                    );
+                                  }
+                                }
+                              }
+                              console.log(this.productUserPriceDHL);
+                            }
+                        }
+                      );
+                    }
+                  }
+                }
+              );
             }
-        }
-      );
-      this.errorParcelData = false;
+          }
+        );
+      }
     }else{
         this.dhlForm = false;
         this.guidesDHL = false;
+        this.loadProductsDHL = false;
     }
   }
 
@@ -815,38 +1297,160 @@ export class AddParcelToClientComponent implements OnInit {
     if(element.checked == true){
       this.estafetaForm = true;
       let parcelId:number = 4;
-      this.parcelService.getProductsByParcel(parcelId).subscribe(
-        (successResponse) => {
-            if(!successResponse){
+      if(this.productService.operation == 0){
+        this.parcelService.getProductsByParcel(parcelId).subscribe(
+          (successResponse) => {
+              if(!successResponse){
+                this.loading = false;
+                this.petitionError = true;
+              }else{
+                var productArray = successResponse;
+                this.response = successResponse;
+                this.productsEstafeta = [];
+                for (var i = 0; i < productArray.length; i++) {
+                  this.productsEstafeta.push(
+                    new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                            productArray[i].kg, productArray[i].factor)
+                  );
+                }
+                if(this.userParcelEstafeta && this.userParcelEstafeta.limitGuides == 'Y'){
+                  var element = <HTMLInputElement>document.getElementById("checkGuidesEstafeta");
+                  element = <HTMLInputElement>document.getElementById("checkGuidesEstafeta");
+                  element.checked = true;
+                  this.guidesEstafeta= true;
+                }
+                this.petitionError = false;
+              }
+          }
+        );
+        this.errorParcelData = false;
+      }else if(this.productService.operation == 1){
+        this.productService.getParcelsFromUser().subscribe(
+          (responseParcels) =>{
+            if(!responseParcels){
               this.loading = false;
               this.petitionError = true;
             }else{
-              var productArray = successResponse;
-              this.response = successResponse;
-              this.productsEstafeta = [];
+              var productArray = responseParcels;
+              this.userParcelEstafeta = new User_Parcel();
               for (var i = 0; i < productArray.length; i++) {
-                this.productsEstafeta.push(
-                  new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
-                          productArray[i].kg, productArray[i].factor)
-                );
+                if(productArray[i].parcelId == 4){
+                  this.userParcelEstafeta.userId = productArray[i].userId;
+                  this.userParcelEstafeta.parcelId = productArray[i].parcelId;
+                  this.userParcelEstafeta.password = productArray[i].password;
+                  this.userParcelEstafeta.username = productArray[i].username;
+                  this.userParcelEstafeta.commissionDeclared = productArray[i].commissionDeclared;
+                  this.userParcelEstafeta.extendedArea = productArray[i].extendedArea;
+                  this.userParcelEstafeta.limitGuides = productArray[i].limitGuides;
+                  if(productArray[i].limitedGuidesNumber > 0){
+                    this.userParcelEstafeta.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
+                  }else{
+                    this.userParcelEstafeta.limitedGuidesNumber = 0;
+                  }
+                  this.userParcelEstafeta.percentageDeclared = productArray[i].percentageDeclared;
+                  this.userParcelEstafeta.reference = productArray[i].reference;
+                }
               }
-              if(this.userParcelEstafeta && this.userParcelEstafeta.limitGuides == 'Y'){
-                var element = <HTMLInputElement>document.getElementById("checkGuidesEstafeta");
-                element = <HTMLInputElement>document.getElementById("checkGuidesEstafeta");
-                element.checked = true;
-                this.guidesEstafeta = true;
-              }
-              this.petitionError = false;
+              this.loadProductsEstafeta = true;
+              this.productService.getProductsByUser().subscribe(
+                (responseProductsUser) =>{
+                  if(!responseProductsUser){
+                    this.loading = false;
+                    this.petitionError = true;
+                  }else{
+                    var productsUser = responseProductsUser;
+                    let counterFounded:number = 0;
+                    console.log(productsUser);
+                    console.log(this.productsEstafeta);
+                    for(let i=0; i<productsUser.length; i++){
+                      for(let j=0; j<this.productsEstafeta.length; j++){
+                        console.log(productsUser[i].productId == this.productsEstafeta[j].id);
+                        if(productsUser[i].productId == this.productsEstafeta[j].id){
+                          counterFounded++;
+                        }
+                      }
+                    }
+                    console.log(counterFounded);
+                    if(counterFounded < 1){
+                      this.existProductsEstafeta = false;
+                      console.log("No tiene");
+                      this.parcelService.getProductsByParcel(parcelId).subscribe(
+                        (successResponse) => {
+                            if(!successResponse){
+                              this.loading = false;
+                              this.petitionError = true;
+                            }else{
+                              var productArray = successResponse;
+                              this.response = successResponse;
+                              this.productsEstafeta = [];
+                              for (var i = 0; i < productArray.length; i++) {
+                                this.productsEstafeta.push(
+                                  new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                          productArray[i].kg, productArray[i].factor)
+                                );
+                              }
+                              if(this.userParcelEstafeta && this.userParcelEstafeta.limitGuides == 'Y'){
+                                var element = <HTMLInputElement>document.getElementById("checkGuidesEstafeta");
+                                element = <HTMLInputElement>document.getElementById("checkGuidesEstafeta");
+                                element.checked = true;
+                                this.guidesEstafeta = true;
+                              }
+                              this.petitionError = false;
+                            }
+                        }
+                      );
+                    }else{
+                      this.existProductsEstafeta = true;
+                      //Cargar elementos pagados
+                      this.parcelService.getProductsByParcel(parcelId).subscribe(
+                        (successResponse) => {
+                            if(!successResponse){
+                              this.loading = false;
+                              this.petitionError = true;
+                            }else{
+                              var productArray = successResponse;
+                              this.response = successResponse;
+                              this.productsEstafeta = [];
+                              for (var i = 0; i < productArray.length; i++) {
+                                this.productsEstafeta.push(
+                                  new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                          productArray[i].kg, productArray[i].factor)
+                                );
+                              }
+                              if(this.userParcelEstafeta && this.userParcelEstafeta.limitGuides == 'Y'){
+                                var element = <HTMLInputElement>document.getElementById("checkGuidesEstafeta");
+                                element = <HTMLInputElement>document.getElementById("checkGuidesEstafeta");
+                                element.checked = true;
+                                this.guidesEstafeta = true;
+                              }
+                              this.petitionError = false;
+                              this.productUserPriceEstafeta = [];
+                              for(var i = 0; i < responseProductsUser.length; i++) {
+                                for(var j=0; j < this.productsEstafeta.length; j++){
+                                  if(responseProductsUser[i].productId == this.productsEstafeta[j].id){
+                                    this.productUserPriceEstafeta.push(
+                                      new User_Product_Price(responseProductsUser[i].userId, responseProductsUser[i].productId, responseProductsUser[i].amount, this.productsEstafeta[j].name)
+                                    );
+                                  }
+                                }
+                              }
+                              console.log(this.productUserPriceEstafeta);
+                            }
+                        }
+                      );
+                    }
+                  }
+                }
+              );
             }
-        }
-      );
-      this.errorParcelData = false;
+          }
+        );
+      }
     }else{
       this.estafetaForm = false;
       this.guidesEstafeta = false;
     }
   }
-
 
   ngOnInit() {
   }

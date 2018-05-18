@@ -1,12 +1,12 @@
-<div class="row container">
+<div class="row container" class="white_body">
     <form name="form" (ngSubmit)="addQuotation(forma)" #forma="ngForm" novalidate class="col s12 m12 l12 blue lighten-5">
       <h5 class="blue lighten-2 s12 m12 l12">Recorrido</h5>
 
       <div class="row">
         <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': origin_city.errors?.required && origin_city.touched}">
           <i class="material-icons prefix">location_city</i>
-          <input id="origin_city" name="origin_city" ngControl="origin_city" type="text" ngModel #origin_city="ngModel" class="validate" minlength="5" required>
-          <label for="origin_city">Ciudad origen</label>
+          <input id="origin_city" name="origin_city" ngControl="origin_city" type="text" placeholder="{{this.createGuideService.userActual.city}}" value="{{this.createGuideService.userActual.city}}" [ngModel]="this.createGuideService.userActual.city" #origin_city="ngModel" class="validate" minlength="5" required>
+          <label class="active" for="origin_city">Ciudad origen</label>
           <p class="red-text text-darken-4" *ngIf="origin_city.errors?.required&&origin_city.touched">
             *Este campo es requerido.
           </p>
@@ -18,8 +18,8 @@
 
         <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': postal_code_origin.errors?.required && postal_code_origin.touched}">
           <i class="material-icons prefix">local_post_office</i>
-          <input id="postal_code_origin" name="postal_code_origin" type="number" min="0" ngModel #postal_code_origin="ngModel" class="validate" pattern=".{5,}" required>
-          <label for="postal_code_origin">C.P. Origen</label>
+          <input id="postal_code_origin" name="postal_code_origin" type="number" min="0" placeholder="{{this.createGuideService.userActual.zip}}" value="{{this.createGuideService.userActual.zip}}" [ngModel]="this.createGuideService.userActual.zip" #postal_code_origin="ngModel" class="validate" pattern=".{5,}" required>
+          <label class="active" for="postal_code_origin">C.P. Origen</label>
           <p class="red-text text-darken-4" *ngIf="postal_code_origin.errors?.required&&postal_code_origin.touched">
             *Este campo es requerido.
           </p>
@@ -118,7 +118,19 @@
             Por lo menos escriba {{hight.errors.minlength.requiredLength}} digitos.
           </p>
         </div>
+      </div>
 
+      <div class="row">
+        <div class="col offset-m2 m4 s4 offset-l2 l4">
+          <p>
+            <input (click)="checkSeguro()" class="filled-in checkbox-blue" type="checkbox" id="seguro" />
+            <label class="label-checkbox" for="seguro">Habilitar seguro</label>
+          </p>
+        </div>
+        <div *ngIf="this.seguro" class="input-field col s8 m4 l4" [ngClass]="{'has-danger': insurance.errors?.required && insurance.touched}">
+          <input id="insurance" name="insurance" type="number" min="0" ngModel #insurance="ngModel" class="validate" pattern=".{1,6}">
+          <label for="insurance">Monto seguro</label>
+        </div>
       </div>
 
       <div class="col offset-s1 s12 offset-m1 m12 offset-l1 l12" *ngIf="invalidForm">

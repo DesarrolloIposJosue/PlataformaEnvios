@@ -7,10 +7,12 @@ export class Rate{
   public parcelId:number;
   public amount:number;
   public parcelName:string;
+  public deliveryDateSpecified:boolean;
+  public deliveryDate:string;
 
    constructor(
     _id:number, _name:string, _description: string, _kg: number, _factor: number,
-    _parcelId: number, _amount:number, _parcelName: string){
+    _parcelId: number, _amount:number, _parcelName: string, _deliveryDateSpec: boolean, _deliveryDate: string){
       this.id = _id;
       this.name = _name;
       this.description = _description;
@@ -19,6 +21,8 @@ export class Rate{
       this.parcelId = _parcelId;
       this.amount = _amount;
       this.parcelName = _parcelName;
+      this.deliveryDateSpecified = _deliveryDateSpec;
+      this.deliveryDate = _deliveryDate;
   }
 
   /*GetDescription():string{
@@ -28,4 +32,6 @@ export class Rate{
   SetDescription(_description:string){
     this.description = _description;
   }*/
+
+  
 }

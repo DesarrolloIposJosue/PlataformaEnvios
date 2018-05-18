@@ -31,6 +31,8 @@ import { SelectClientEditComponent } from './modules/select-client-edit/select-c
 import { RateComponent } from './modules/rate/rate.component';
 import { SelectProductEditComponent } from './modules/select-product-edit/select-product-edit.component';
 import { AddGuidesToClientComponent } from './modules/add-guides-to-client/add-guides-to-client.component';
+import { SelectClientEditGuidesComponent } from './modules/select-client-edit-guides/select-client-edit-guides.component';
+import { CreateGuideComponent } from './modules/create-guide/create-guide.component';
 
 //Services
 import { ClientService } from './services/client-service/client.service';
@@ -41,7 +43,7 @@ import { ParcelService } from './services/parcel-service/parcel.service';
 import { ProductService } from './services/product-service/product.service';
 import { RateService } from './services/rate-service/rate.service';
 import { GuidesService } from './services/guides/guides.service';
-import { SelectClientEditGuidesComponent } from './modules/select-client-edit-guides/select-client-edit-guides.component';
+import { CreateGuideService } from './services/create-guide-service/create-guide.service';
 
 
 //Pipes
@@ -67,7 +69,8 @@ import { SelectClientEditGuidesComponent } from './modules/select-client-edit-gu
     RateComponent,
     SelectProductEditComponent,
     AddGuidesToClientComponent,
-    SelectClientEditGuidesComponent
+    SelectClientEditGuidesComponent,
+    CreateGuideComponent
   ],
   imports: [
     BrowserModule,
@@ -94,7 +97,8 @@ import { SelectClientEditGuidesComponent } from './modules/select-client-edit-gu
     ParcelService,
     ProductService,
     RateService,
-    GuidesService
+    GuidesService,
+    CreateGuideService
   ],
 
   bootstrap: [AppComponent],

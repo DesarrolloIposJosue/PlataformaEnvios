@@ -79,8 +79,8 @@
 
         <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="redPackForm">
           <p>
-            <input (click)="checkPaidGuidesRedPack()" class="filled-in checkbox-blue" type="checkbox" id="checkGuidesRedPack" />
-            <label for="checkGuidesRedPack">Habilitar guías prepagadas DHL</label>
+            <input (click)="checkPaidGuidesRedPack()" class="filled-in checkbox-blue check-guide" type="checkbox" id="checkGuidesRedPack" />
+            <label for="checkGuidesRedPack">Habilitar guías prepagadas RedPack</label>
           </p>
         </div>
 
@@ -174,7 +174,7 @@
 
         <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="dhlForm">
           <p>
-            <input (click)="checkPaidGuidesDHL()" class="filled-in checkbox-blue" type="checkbox" id="checkGuidesDHL" />
+            <input (click)="checkPaidGuidesDHL()" class="filled-in checkbox-blue check-guide" type="checkbox" id="checkGuidesDHL" />
             <label for="checkGuidesDHL">Habilitar guías prepagadas DHL</label>
           </p>
         </div>
@@ -268,7 +268,7 @@
 
         <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="fedExForm">
           <p>
-            <input (click)="checkPaidGuidesFedEx()" class="filled-in checkbox-blue" type="checkbox" id="checkGuidesFedEx" />
+            <input (click)="checkPaidGuidesFedEx()" class="filled-in checkbox-blue check-guide" type="checkbox" id="checkGuidesFedEx" />
             <label for="checkGuidesFedEx">Habilitar guías prepagadas FedEx</label>
           </p>
         </div>
@@ -363,7 +363,7 @@
 
         <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="estafetaForm">
           <p>
-            <input (click)="checkPaidGuidesEstafeta()" class="filled-in checkbox-blue" type="checkbox" id="checkGuidesEstafeta" />
+            <input (click)="checkPaidGuidesEstafeta()" class="filled-in checkbox-blue check-guide" type="checkbox" id="checkGuidesEstafeta" />
             <label for="checkGuidesEstafeta">Habilitar guías prepagadas Estafeta</label>
           </p>
         </div>
@@ -384,11 +384,135 @@
           </div>
         </div>
 
+        <!-- Formulario Paquete Express-->
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+          <p>
+            <input (click)="checkPaqueteExpress()" class="filled-in checkbox-blue" type="checkbox" id="paqueteExpress" />
+            <label for="paqueteExpress">Paquetexpress</label>
+          </p>
+        </div>
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': usernamePaqueteExpress.errors?.required && usernamePaqueteExpress.touched}" *ngIf="paqueteExpressForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="usernamePaqueteExpress" name="usernamePaqueteExpress" ngModel #usernamePaqueteExpress="ngModel" type="text" class="validate" minlength="3" >
+          <label for="usernamePaqueteExpress">Nombre de usuario Paquete Express</label>
+          <p *ngIf="usernamePaqueteExpress.errors?.required&&usernamePaqueteExpress.touched">
+            *Este campo es requerido.
+          </p>
+          <p *ngIf="usernamePaqueteExpress.errors?.minlength&&usernamePaqueteExpress.touched">
+            Por lo menos escriba {{usernamePaqueteExpress.errors.minlength.requiredLength}} caracteres.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': passwordPaqueteExpress.errors?.required && passwordPaqueteExpress.touched}" *ngIf="paqueteExpressForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="passwordPaqueteExpress" name="passwordPaqueteExpress" ngModel #passwordPaqueteExpress="ngModel" type="password" class="validate" minlength="3" >
+          <label for="passwordPaqueteExpress">Contraseña usuario Paquete Express</label>
+          <p *ngIf="passwordPaqueteExpress.errors?.required&&passwordPaqueteExpress.touched">
+            *Este campo es requerido.
+          </p>
+          <p *ngIf="passwordPaqueteExpress.errors?.minlength&&passwordPaqueteExpress.touched">
+            Por lo menos escriba {{passwordPaqueteExpress.errors.minlength.requiredLength}} caracteres.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': referencePaqueteExpress.errors?.required && referencePaqueteExpress.touched}" *ngIf="paqueteExpressForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="referencePaqueteExpress" name="referencePaqueteExpress" ngModel #referencePaqueteExpress="ngModel" type="text" class="validate" minlength="3" >
+          <label for="referencePaqueteExpress">Referencia FedEx</label>
+          <p *ngIf="referencePaqueteExpress.errors?.required&&referencePaqueteExpress.touched">
+            *Este campo es requerido.
+          </p>
+          <p *ngIf="referencePaqueteExpress.errors?.minlength&&referencePaqueteExpress.touched">
+            Por lo menos escriba {{referencePaqueteExpress.errors.minlength.requiredLength}} caracteres.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': extAreaPaqueteExpress.errors?.required && extAreaPaqueteExpress.touched}" *ngIf="paqueteExpressForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="extAreaPaqueteExpress" name="extAreaPaqueteExpress" placeholder="0" value="0" [ngModel]="0" min="0" #extAreaPaqueteExpress="ngModel" min="0" type="number" class="validate" minlength="3" >
+          <label class="active" for="extAreaPaqueteExpress">Area extendida Paquete Express</label>
+          <p *ngIf="extAreaPaqueteExpress.errors?.required&&extAreaPaqueteExpress.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': porcValDeclPaqueteExpress.errors?.required && porcValDeclPaqueteExpress.touched}" *ngIf="paqueteExpressForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="porcValDeclPaqueteExpress" name="porcValDeclPaqueteExpress" min="0" placeholder="0" value="0" [ngModel]="0" #porcValDeclPaqueteExpress="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="porcValDeclPaqueteExpress">Porcentaje valor declarado</label>
+          <p *ngIf="porcValDeclPaqueteExpress.errors?.required&&porcValDeclPaqueteExpress.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': comitionPaqueteExpress.errors?.required && comitionPaqueteExpress.touched}" *ngIf="paqueteExpressForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="comitionPaqueteExpress" name="comitionPaqueteExpress" min="0" placeholder="0" value="0" [ngModel]="0" #comitionPaqueteExpress="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="comitionPaqueteExpress">Comisión</label>
+          <p *ngIf="comitionPaqueteExpress.errors?.required&&comitionPaqueteExpress.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="paqueteExpressForm">
+          <p>
+            <input (click)="checkPaidGuidesPaqueteExpress()" class="filled-in checkbox-blue check-guide" type="checkbox" id="checkGuidesPaqueteExpress" />
+            <label for="checkGuidesFedEx">Habilitar guías prepagadas Paquete Express</label>
+          </p>
+        </div>
+
+        <div *ngIf="guidesPaqueteExpress" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': qtyGuidesPaqueteExpress.errors?.required && qtyGuidesPaqueteExpress.touched}">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="qtyGuidesPaqueteExpress" name="qtyGuidesPaqueteExpress" min="0" placeholder="0" value="0" [ngModel]="0" #qtyGuidesPaqueteExpress="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="qtyGuidesPaqueteExpress">Cantidad de guías</label>
+          <p *ngIf="qtyGuidesPaqueteExpress.errors?.required&&qtyGuidesPaqueteExpress.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div *ngIf="paqueteExpressForm && this.productsPaqueteExpress.length > 0">
+          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsPaqueteExpress, let i = index">
+            <input [id]="product.id" [name]="product.name" type="number" class="validate" minlength="3" >
+            <label for="nameProductPaqueteExpress">{{product.name}}</label>
+          </div>
+        </div>
+
         <!--Boton envia -->
 
         <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="errorParcelData">
           <p>
             Error en el formulario falta llenar alguno de los campos
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 red-text text-darken-2" *ngIf="errorProductDHL">
+          <p>
+            Error en los productos de DHL falta llenar algun campo
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 red-text text-darken-2" *ngIf="errorProductFedEx">
+          <p>
+            Error en los productos de FedEx falta llenar algun campo
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 red-text text-darken-2" *ngIf="errorProductEstafeta">
+          <p>
+            Error en los productos de Estafeta falta llenar algun campo
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 red-text text-darken-2" *ngIf="errorProductRedPack">
+          <p>
+            Error en los productos de RedPack falta llenar algun campo
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 red-text text-darken-2" *ngIf="errorProductPaqueteExpress">
+          <p>
+            Error en los productos de Paquete Express falta llenar algun campo
           </p>
         </div>
 
@@ -486,7 +610,7 @@
 
         <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="redPackForm">
           <p>
-            <input (click)="checkPaidGuidesRedPack()" class="filled-in checkbox-blue" type="checkbox" id="checkGuidesRedPack" />
+            <input (click)="checkPaidGuidesRedPack()" class="filled-in checkbox-blue check-guide" type="checkbox" id="checkGuidesRedPack" />
             <label for="checkGuidesRedPack">Habilitar guías prepagadas RedPack</label>
           </p>
         </div>
@@ -500,9 +624,16 @@
           </p>
         </div>
 
-        <div *ngIf="redPackForm && this.productsRedPack.length > 0">
+        <div *ngIf="redPackForm && this.productsRedPack && this.existProductsRedPack">
           <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPriceRedPack, let i = index">
             <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
+            <label class="active" for="usernameRedPack">{{product.name}}</label>
+          </div>
+        </div>
+
+        <div *ngIf="redPackForm && this.productsRedPack.length > 0 && this.existProductsRedPack">
+          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsRedPack, let i = index">
+            <input [id]="product.id" [name]="product.name" placeholder="0" value="0" type="number" class="validate" minlength="3" >
             <label class="active" for="usernameRedPack">{{product.name}}</label>
           </div>
         </div>
@@ -581,7 +712,7 @@
 
         <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="dhlForm">
           <p>
-            <input (click)="checkPaidGuidesDHL()" class="filled-in checkbox-blue" type="checkbox" id="checkGuidesDHL" />
+            <input (click)="checkPaidGuidesDHL()" class="filled-in checkbox-blue check-guide" type="checkbox" id="checkGuidesDHL" />
             <label for="checkGuidesDHL">Habilitar guías prepagadas DHL</label>
           </p>
         </div>
@@ -595,9 +726,16 @@
           </p>
         </div>
 
-        <div *ngIf="dhlForm && this.productsDHL.length > 0">
+        <div *ngIf="dhlForm && this.productsDHL && this.existProductsDHL">
           <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPriceDHL, let i = index">
             <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
+            <label class="active" for="usernameDHL">{{product.name}}</label>
+          </div>
+        </div>
+
+        <div *ngIf="dhlForm && this.productsDHL.length > 0 && this.loadProductsDHL && !this.existProductsDHL">
+          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsDHL, let i = index">
+            <input [id]="product.id" [name]="product.name" placeholder="0" value="0" type="number" class="validate" minlength="3" >
             <label class="active" for="usernameDHL">{{product.name}}</label>
           </div>
         </div>
@@ -676,7 +814,7 @@
 
         <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="fedExForm">
           <p>
-            <input (click)="checkPaidGuidesFedEx()" class="filled-in checkbox-blue" type="checkbox" id="checkGuidesFedEx" />
+            <input (click)="checkPaidGuidesFedEx()" class="filled-in checkbox-blue check-guide" type="checkbox" id="checkGuidesFedEx" />
             <label for="checkGuidesFedEx">Habilitar guías prepagadas FedEx</label>
           </p>
         </div>
@@ -690,9 +828,16 @@
           </p>
         </div>
 
-        <div *ngIf="fedExForm && this.productsFedEx.length > 0">
+        <div *ngIf="fedExForm && this.productsFedEx && this.existProductsFedEx">
           <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPriceFedEx, let i = index">
             <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
+            <label class="active" for="usernameFedEx">{{product.name}}</label>
+          </div>
+        </div>
+
+        <div *ngIf="fedExForm && this.productsFedEx.length > 0 && this.loadProductsFedEx && !this.existProductsFedEx">
+          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsFedEx, let i = index">
+            <input [id]="product.id" [name]="product.name" placeholder="0" value="0" type="number" class="validate" minlength="3" >
             <label class="active" for="usernameFedEx">{{product.name}}</label>
           </div>
         </div>
@@ -771,7 +916,7 @@
 
         <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="estafetaForm">
           <p>
-            <input (click)="checkPaidGuidesEstafeta()" class="filled-in checkbox-blue" type="checkbox" id="checkGuidesEstafeta" />
+            <input (click)="checkPaidGuidesEstafeta()" class="filled-in checkbox-blue check-guide" type="checkbox" id="checkGuidesEstafeta" />
             <label for="checkGuidesEstafeta">Habilitar guías prepagadas Estafeta</label>
           </p>
         </div>
@@ -785,14 +930,153 @@
           </p>
         </div>
 
-        <div *ngIf="estafetaForm && this.productsEstafeta.length > 0">
+        <div *ngIf="estafetaForm && this.productsEstafeta && this.existProductsEstafeta">
           <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPriceEstafeta, let i = index">
             <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
-            <label class="active" for="usernameEstafeat">{{product.name}}</label>
+            <label class="active" for="usernameEstafeta">{{product.name}}</label>
+          </div>
+        </div>
+
+        <div *ngIf="estafetaForm && this.productsEstafeta.length > 0 && this.loadProductsEstafeta && this.existProductsEstafeta == false">
+          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsEstafeta, let i = index">
+            <input [id]="product.id" [name]="product.name" placeholder="0" value="0" type="number" class="validate" minlength="3" >
+            <label class="active" for="usernameEstafeta">{{product.name}}</label>
+          </div>
+        </div>
+
+        <!-- Formulario Paquete Express -->
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+          <p>
+            <input (click)="checkPaqueteExpress()" class="filled-in checkbox-blue" type="checkbox" id="paqueteExpress" />
+            <label for="paqueteExpress">Paquetexpress</label>
+          </p>
+        </div>
+
+        <div *ngIf="this.userParcelPaqueteExpress && paqueteExpressForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': usernamePaqueteExpress.errors?.required && usernamePaqueteExpress.touched}">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="usernamePaqueteExpress" name="usernamePaqueteExpress" placeholder="{{this.userParcelPaqueteExpress.username}}" value="{{this.userParcelPaqueteExpress.username}}" [ngModel]="this.userParcelPaqueteExpress.username" #usernamePaqueteExpress="ngModel" type="text" class="validate" minlength="3" >
+          <label class="active" for="usernamePaqueteExpress">Nombre de usuario Paquete Express</label>
+          <p *ngIf="usernamePaqueteExpress.errors?.required&&usernamePaqueteExpress.touched">
+            *Este campo es requerido.
+          </p>
+          <p *ngIf="usernamePaqueteExpress.errors?.minlength&&usernamePaqueteExpress.touched">
+            Por lo menos escriba {{usernamePaqueteExpress.errors.minlength.requiredLength}} caracteres.
+          </p>
+        </div>
+
+        <div *ngIf="this.userParcelPaqueteExpress && paqueteExpressForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': passwordPaqueteExpress.errors?.required && passwordPaqueteExpress.touched}">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="passwordPaqueteExpress" name="passwordPaqueteExpress" placeholder="{{this.userParcelPaqueteExpress.password}}" value="{{this.userParcelPaqueteExpress.password}}" [ngModel]="this.userParcelPaqueteExpress.password" #passwordPaqueteExpress="ngModel" type="password" class="validate" minlength="3" >
+          <label class="active" for="passwordPaqueteExpress">Contraseña usuario Paquete Express</label>
+          <p *ngIf="passwordPaqueteExpress.errors?.required&&passwordPaqueteExpress.touched">
+            *Este campo es requerido.
+          </p>
+          <p *ngIf="passwordPaqueteExpress.errors?.minlength&&passwordPaqueteExpress.touched">
+            Por lo menos escriba {{passwordPaqueteExpress.errors.minlength.requiredLength}} caracteres.
+          </p>
+        </div>
+
+        <div *ngIf="this.userParcelPaqueteExpress && paqueteExpressForm" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': referencePaqueteExpress.errors?.required && referencePaqueteExpress.touched}" >
+          <i class="material-icons prefix">account_circle</i>
+          <input id="referencePaqueteExpress" name="referencePaqueteExpress" placeholder="{{this.userParcelPaqueteExpress.reference}}" value="{{this.userParcelPaqueteExpress.reference}}" [ngModel]="this.userParcelPaqueteExpress.reference" #referencePaqueteExpress="ngModel" type="text" class="validate" minlength="3" >
+          <label class="active" for="referencePaqueteExpress">Referencia Paquete Express</label>
+          <p *ngIf="referencePaqueteExpress.errors?.required&&referencePaqueteExpress.touched">
+            *Este campo es requerido.
+          </p>
+          <p *ngIf="referencePaqueteExpress.errors?.minlength&&referencePaqueteExpress.touched">
+            Por lo menos escriba {{referencePaqueteExpress.errors.minlength.requiredLength}} caracteres.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': extAreaPaqueteExpress.errors?.required && extAreaPaqueteExpress.touched}" *ngIf="this.userParcelPaqueteExpress && paqueteExpressForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="extAreaPaqueteExpress" name="extAreaPaqueteExpress" placeholder="{{this.userParcelPaqueteExpress.extendedArea}}" value="{{this.userParcelPaqueteExpress.extendedArea}}" [ngModel]="this.userParcelPaqueteExpress.extendedArea" min="0" #extAreaPaqueteExpress="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="extAreaPaqueteExpress">Area extendida Paquete Express</label>
+          <p *ngIf="extAreaPaqueteExpress.errors?.required&&extAreaPaqueteExpress.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': porcValDeclPaqueteExpress.errors?.required && porcValDeclPaqueteExpress.touched}" *ngIf="this.userParcelPaqueteExpress && paqueteExpressForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="porcValDeclPaqueteExpress" name="porcValDeclPaqueteExpress" min="0" placeholder="{{this.userParcelPaqueteExpress.percentageDeclared}}" value="{{this.userParcelPaqueteExpress.percentageDeclared}}" [ngModel]="this.userParcelPaqueteExpress.percentageDeclared" #porcValDeclPaqueteExpress="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="porcValDeclPaqueteExpress">Porcentaje valor declarado</label>
+          <p *ngIf="porcValDeclPaqueteExpress.errors?.required&&porcValDeclPaqueteExpress.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': comitionPaqueteExpress.errors?.required && comitionPaqueteExpress.touched}" *ngIf="this.userParcelPaqueteExpress && paqueteExpressForm">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="comitionPaqueteExpress" name="comitionPaqueteExpress" min="0" placeholder="{{this.userParcelPaqueteExpress.commissionDeclared}}" value="{{this.userParcelPaqueteExpress.commissionDeclared}}" [ngModel]="this.userParcelPaqueteExpress.commissionDeclared" #comitionPaqueteExpress="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="comitionPaqueteExpress">Comisión</label>
+          <p *ngIf="comitionPaqueteExpress.errors?.required&&comitionPaqueteExpress.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="paqueteExpressForm">
+          <p>
+            <input (click)="checkPaidGuidesPaqueteExpress()" class="filled-in checkbox-blue check-guide" type="checkbox" id="checkGuidesPaqueteExpress" />
+            <label for="checkGuidesPaqueteExpress">Habilitar guías prepagadas Paquete Express</label>
+          </p>
+        </div>
+
+        <div *ngIf="guidesPaqueteExpress" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': qtyGuidesPaqueteExpress.errors?.required && qtyGuidesPaqueteExpress.touched}">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="qtyGuidesPaqueteExpress" name="qtyGuidesPaqueteExpress" min="0" placeholder="{{this.userParcelPaqueteExpress.limitedGuidesNumber}}" value="{{this.userParcelPaqueteExpress.limitedGuidesNumber}}" [ngModel]="this.userParcelPaqueteExpress.limitedGuidesNumber" #qtyGuidesPaqueteExpress="ngModel" type="number" class="validate" minlength="3" >
+          <label class="active" for="qtyGuidesPaqueteExpress">Cantidad de guías</label>
+          <p *ngIf="qtyGuidesPaqueteExpress.errors?.required&&qtyGuidesPaqueteExpress.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div *ngIf="paqueteExpressForm && this.productsPaqueteExpress && this.existProductsPaqueteExpress">
+          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPricePaqueteExpress, let i = index">
+            <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
+            <label class="active" for="usernamePaqueteExpress">{{product.name}}</label>
+          </div>
+        </div>
+
+        <div *ngIf="paqueteExpressForm && this.productsPaqueteExpress.length > 0 && this.loadProductsPaqueteExpress && !this.existProductsPaqueteExpress">
+          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsPaqueteExpress, let i = index">
+            <input [id]="product.id" [name]="product.name" placeholder="0" value="0" type="number" class="validate" minlength="3" >
+            <label class="active" for="usernamePaqueteExpress">{{product.name}}</label>
           </div>
         </div>
 
         <!--Boton envia -->
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 red-text text-darken-2" *ngIf="errorProductDHL || errorProdPriceDHL">
+          <p>
+            Error en los productos de DHL falta llenar algun campo
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 red-text text-darken-2" *ngIf="errorProductFedEx || errorProdPriceFedEx">
+          <p>
+            Error en los productos de FedEx falta llenar algun campo
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 red-text text-darken-2" *ngIf="errorProductEstafeta || errorProdPriceEstafeta">
+          <p>
+            Error en los productos de Estafeta falta llenar algun campo
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 red-text text-darken-2" *ngIf="errorProductRedPack || errorProdPriceRedPack">
+          <p>
+            Error en los productos de RedPack falta llenar algun campo
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 red-text text-darken-2" *ngIf="errorProductPaqueteExpress || errorProdPricePaqueteExpress">
+          <p>
+            Error en los productos de paqueteExpress falta llenar algun campo
+          </p>
+        </div>
 
         <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="errorParcelData">
           <p>
@@ -803,6 +1087,7 @@
         <div class="row col offset-s1 s10 offset-m1 m10 offset-l1 l10 center-align">
           <button [disabled]="loading" class="btn waves-effect  blue accent-3">Guardar</button>
         </div>
+
         <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 
       </div>

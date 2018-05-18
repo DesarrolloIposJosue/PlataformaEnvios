@@ -9,7 +9,7 @@ import '../../rxjs/index';
 export class ClientService {
   private userLogged:boolean = false;
   private apiBase = 'http://bi-pos.servebeer.com:8080/WSGombar/Gombar.svc/';
-  public userEdit:User = new User;
+  public userEdit:User;
   public operation:number = 0; //0 Create, 1 Edit
 
   constructor(private http: Http) { }
@@ -20,6 +20,12 @@ export class ClientService {
           .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }*/
 
+    setUserEdit(user:User){
+      let userAux:User = new User(user.id, user.name, user.lastName, user.userName, user.password, user.address, user.email, user.typeId,
+      user.address2, user.colony, user.city, user.state, user.zip, user.country, user.phoneNumber);
+      this.userEdit = userAux;
+      console.log(this.userEdit);
+    }
 
     isLogged(): Promise<boolean>{
       if(typeof(Storage) !== 'undefined'){

@@ -27,15 +27,116 @@
         </p>
       </div>
 
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': country.errors?.required && country.touched}">
+        <select materialize="material_select" [materializeSelectOptions]="options" name="country" ngModel required #country="ngModel">
+          <option class="blue-text text-darken-4" value="" disabled selected>Elija una opción</option>
+          <option *ngIf="this.userType=='1' || this.userType=='2'" class="blue-text text-darken-4" value="Mexico">México</option>
+        </select>
+        <label>País</label>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': state.errors?.required && state.touched}">
+        <select materialize="material_select" [materializeSelectOptions]="options" name="state" ngModel required #state="ngModel">
+          <option class="blue-text text-darken-4" value="" disabled selected>Elija una opción</option>
+          <option class="blue-text text-darken-4" value="Aguascalientes">Aguascalientes</option>
+          <option class="blue-text text-darken-4" value="Baja California Norte">Baja California Norte</option>
+          <option class="blue-text text-darken-4" value="Baja California Sur">Baja California Sur</option>
+          <option class="blue-text text-darken-4" value="Campeche">Campeche</option>
+          <option class="blue-text text-darken-4" value="Chiapas">Chiapas</option>
+          <option class="blue-text text-darken-4" value="Chihuahua">Chihuahua</option>
+          <option class="blue-text text-darken-4" value="Coahuila">Coahuila</option>
+          <option class="blue-text text-darken-4" value="Colima">Colima</option>
+          <option class="blue-text text-darken-4" value="Distrito Federal">Distrito Federal</option>
+          <option class="blue-text text-darken-4" value="Durango">Durango</option>
+          <option class="blue-text text-darken-4" value="Guanajuato">Guanajuato</option>
+          <option class="blue-text text-darken-4" value="Guerrero">Guerrero</option>
+          <option class="blue-text text-darken-4" value="Hidalgo">Hidalgo</option>
+          <option class="blue-text text-darken-4" value="Jalisco">Jalisco</option>
+          <option class="blue-text text-darken-4" value="Mexico">Mexico</option>
+          <option class="blue-text text-darken-4" value="Michoacán">Michoacán</option>
+          <option class="blue-text text-darken-4" value="Morelos">Morelos</option>
+          <option class="blue-text text-darken-4" value="Nayarit">Nayarit</option>
+          <option class="blue-text text-darken-4" value="Nuevo Leon">Nuevo Leon</option>
+          <option class="blue-text text-darken-4" value="Oaxaca">Oaxaca</option>
+          <option class="blue-text text-darken-4" value="Puebla">Puebla</option>
+          <option class="blue-text text-darken-4" value="Queretaro">Queretaro</option>
+          <option class="blue-text text-darken-4" value="Quintana Roo">Quintana Roo</option>
+          <option class="blue-text text-darken-4" value="San Luis Potosi">San Luis Potosi</option>
+          <option class="blue-text text-darken-4" value="Sinaloa">Sinaloa</option>
+          <option class="blue-text text-darken-4" value="Sonora">Sonora</option>
+          <option class="blue-text text-darken-4" value="Tabasco">Tabasco</option>
+          <option class="blue-text text-darken-4" value="Tamaulipas">Tamaulipas</option>
+          <option class="blue-text text-darken-4" value="Tlaxcala">Tlaxcala</option>
+          <option class="blue-text text-darken-4" value="Veracruz">Veracruz</option>
+          <option class="blue-text text-darken-4" value="Yucatan">Yucatan</option>
+          <option class="blue-text text-darken-4" value="Zacatecas">Zacatecas</option>
+        </select>
+        <label>Estado de la república</label>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': city.errors?.required && city.touched}">
+        <i class="material-icons prefix">font_download</i>
+        <input id="city" name="city" ngModel #city="ngModel" type="text" class="validate" minlength="6" required>
+        <label for="city">Ciudad</label>
+        <p class="red-text text-darken-4" *ngIf="city.errors?.required&&city.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="city.errors?.minlength&&city.touched">
+          Por lo menos escriba {{city.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': colony.errors?.required && colony.touched}">
+        <i class="material-icons prefix">font_download</i>
+        <input id="colony" name="colony" ngModel #colony="ngModel" type="text" class="validate" minlength="4" required>
+        <label for="colony">Colonia</label>
+        <p class="red-text text-darken-4" *ngIf="colony.errors?.required&&colony.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="colony.errors?.minlength&&colony.touched">
+          Por lo menos escriba {{colony.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': zip.errors?.required && zip.touched}">
+        <i class="material-icons prefix">font_download</i>
+        <input id="zip" name="zip" ngModel #zip="ngModel" type="text" class="validate" minlength="5" required>
+        <label for="zip">Código postal</label>
+        <p class="red-text text-darken-4" *ngIf="zip.errors?.required&&zip.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="zip.errors?.minlength&&zip.touched">
+          Por lo menos escriba {{zip.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': address.errors?.required && address.touched}">
         <i class="material-icons prefix">location_city</i>
         <input id="address" name="address" ngModel #address="ngModel" type="text" class="validate" minlength="5" required>
-        <label for="address">Dirección del cliente</label>
+        <label for="address">Dirección del cliente (calle y número)</label>
         <p class="red-text text-darken-4" *ngIf="address.errors?.required&&address.touched">
           *Este campo es requerido.
         </p>
         <p class="red-text text-darken-4" *ngIf="address.errors?.minlength&&address.touched">
           Por lo menos escriba {{address.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10">
+        <i class="material-icons prefix">font_download</i>
+        <input id="address2" name="address2" ngModel #address2="ngModel" type="text" class="validate" minlength="3">
+        <label for="address2">Entre calles</label>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': phoneNumber.errors?.required && phoneNumber.touched}">
+        <i class="material-icons prefix">font_download</i>
+        <input id="phoneNumber" name="phoneNumber" ngModel #phoneNumber="ngModel" type="number" class="validate" minlength="6" required>
+        <label for="password">Teléfono</label>
+        <p class="red-text text-darken-4" *ngIf="phoneNumber.errors?.required&&phoneNumber.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="phoneNumber.errors?.minlength&&phoneNumber.touched">
+          Por lo menos escriba {{phoneNumber.errors.minlength.requiredLength}} caracteres.
         </p>
       </div>
 
@@ -139,6 +240,54 @@
         </p>
       </div>
 
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': city.errors?.required && city.touched}">
+        <i class="material-icons prefix">font_download</i>
+        <input id="city" name="city" placeholder="{{this.clientService.userEdit.city}}" value="{{this.clientService.userEdit.city}}" [ngModel]="this.clientService.userEdit.city" #city="ngModel" type="text" class="validate" minlength="6" required>
+        <label class="active" for="city">Ciudad</label>
+        <p class="red-text text-darken-4" *ngIf="city.errors?.required&&city.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="city.errors?.minlength&&city.touched">
+          Por lo menos escriba {{city.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': state.errors?.required && state.touched}">
+        <i class="material-icons prefix">font_download</i>
+        <input disabled id="state" name="state" placeholder="{{this.clientService.userEdit.state}}" value="{{this.clientService.userEdit.state}}" [ngModel]="this.clientService.userEdit.state" #state="ngModel" type="text" class="validate" minlength="6" required>
+        <label class="active" for="state">Estado</label>
+        <p class="red-text text-darken-4" *ngIf="state.errors?.required&&state.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="state.errors?.minlength&&state.touched">
+          Por lo menos escriba {{state.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': colony.errors?.required && colony.touched}">
+        <i class="material-icons prefix">font_download</i>
+        <input id="colony" name="colony" placeholder="{{this.clientService.userEdit.colony}}" value="{{this.clientService.userEdit.colony}}" [ngModel]="this.clientService.userEdit.colony" #colony="ngModel" type="text" class="validate" minlength="4" required>
+        <label class="active" for="colony">Colonia</label>
+        <p class="red-text text-darken-4" *ngIf="colony.errors?.required&&colony.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="colony.errors?.minlength&&colony.touched">
+          Por lo menos escriba {{colony.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': zip.errors?.required && zip.touched}">
+        <i class="material-icons prefix">font_download</i>
+        <input id="zip" name="zip" placeholder="{{this.clientService.userEdit.zip}}" value="{{this.clientService.userEdit.zip}}" [ngModel]="this.clientService.userEdit.zip" #zip="ngModel" type="text" class="validate" minlength="5" required>
+        <label class="active" for="zip">Código postal</label>
+        <p class="red-text text-darken-4" *ngIf="zip.errors?.required&&zip.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="zip.errors?.minlength&&zip.touched">
+          Por lo menos escriba {{zip.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': address.errors?.required && address.touched}">
         <i class="material-icons prefix">location_city</i>
         <input id="address" name="address" placeholder="{{this.clientService.userEdit.address}}" value="{{this.clientService.userEdit.address}}" [ngModel]="this.clientService.userEdit.address" #address="ngModel" type="text" class="validate" minlength="5" required>
@@ -148,6 +297,30 @@
         </p>
         <p class="red-text text-darken-4" *ngIf="address.errors?.minlength&&address.touched">
           Por lo menos escriba {{address.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': address2.errors?.required && address2.touched}">
+        <i class="material-icons prefix">font_download</i>
+        <input id="address2" name="address2" placeholder="{{this.clientService.userEdit.address2}}" value="{{this.clientService.userEdit.address2}}" [ngModel]="this.clientService.userEdit.address2" #address2="ngModel" type="text" class="validate" minlength="6">
+        <label class="active" for="address2">Entre calles</label>
+        <p class="red-text text-darken-4" *ngIf="address2.errors?.required&&address2.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="address2.errors?.minlength&&address2.touched">
+          Por lo menos escriba {{address2.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': phoneNumber.errors?.required && phoneNumber.touched}">
+        <i class="material-icons prefix">font_download</i>
+        <input id="phoneNumber" name="phoneNumber" placeholder="{{this.clientService.userEdit.phoneNumber}}" value="{{this.clientService.userEdit.phoneNumber}}" [ngModel]="this.clientService.userEdit.phoneNumber" #phoneNumber="ngModel" type="number" class="validate" minlength="6" required>
+        <label class="active" for="password">Teléfono</label>
+        <p class="red-text text-darken-4" *ngIf="phoneNumber.errors?.required&&phoneNumber.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="phoneNumber.errors?.minlength&&phoneNumber.touched">
+          Por lo menos escriba {{phoneNumber.errors.minlength.requiredLength}} caracteres.
         </p>
       </div>
 
@@ -195,7 +368,7 @@
 
       <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="errorCreateUser">
         <p class="red-text text-darken-4">
-          Error al crear el usuario, no pudo completarse el registro.
+          Error al actualizar el usuario, no pudo completarse el registro.
         </p>
       </div>
 

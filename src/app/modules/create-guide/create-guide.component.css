@@ -1,3 +1,8 @@
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    black;
+     opacity: 1 !important;
+}
+
 .main{
   margin-top: 5%;
 }
@@ -25,37 +30,10 @@
   box-shadow: 0 1px 0 0 #b71c1c ;
 }
 
-.input-field input[type=number]:focus + label {
-  color: #000;
-}
-/* label underline focus color */
-.input-field input[type=number]:focus {
-  border-bottom: 1px solid #2962ff;
-  box-shadow: 0 1px 0 0 #2962ff;
-}
-/* valid color */
-.input-field input[type=number].valid {
-  border-bottom: 1px solid #1b5e20;
-  box-shadow: 0 1px 0 0 #1b5e20;
-}
-/* invalid color */
-.input-field input[type=number].invalid {
-  border-bottom: 1px solid #b71c1c;
-  box-shadow: 0 1px 0 0 #b71c1c;
-}
-
 .input-field .prefix.active {
   color: #2962ff;
 }
 
-.checkbox-blue[type="checkbox"].filled-in:checked + label:after{
-     border: 2px solid #2962ff;
-     background-color: #2962ff;
-}
-
-.checkbox-blue{
-  margin-top: 2%;
-}
 
 /* password */
 .input-field input[type=password]:focus + label {
@@ -77,6 +55,26 @@
   box-shadow: 0 1px 0 0 #b71c1c;
 }
 
+/* email */
+.input-field input[type=email]:focus + label {
+  color: #000;
+}
+/* label underline focus color */
+.input-field input[type=email]:focus {
+  border-bottom: 1px solid #2962ff;
+  box-shadow: 0 1px 0 0 #2962ff;
+}
+/* valid color */
+.input-field input[type=email].valid {
+  border-bottom: 1px solid #1b5e20  ;
+  box-shadow: 0 1px 0 0 #1b5e20  ;
+}
+/* invalid color */
+.input-field input[type=email].invalid {
+  border-bottom: 1px solid #b71c1c;
+  box-shadow: 0 1px 0 0 #b71c1c;
+}
+
 .select-wrapper ul li>span {
     color: #2962ff;
 }
@@ -94,18 +92,21 @@ h5{
   margin-bottom: 5%;
 }
 
-label{
-  color:black;
-}
+[type="radio"].with-gap:checked + label:before {
+border-radius: 50%;
+border: 2px solid #0277bd; }
 
-input::-webkit-outer-spin-button,
- input::-webkit-inner-spin-button {
-     /* display: none; <- Crashes Chrome on hover */
-     -webkit-appearance: none;
-     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
- }
+[type="radio"].with-gap:checked + label:after {
+border-radius: 50%;
+border: 2px solid #0277bd;
+background-color: #0277bd;
+z-index: 0;
+-webkit-transform: scale(.5);
+-moz-transform: scale(.5);
+-ms-transform: scale(.5);
+-o-transform: scale(.5);
+transform: scale(.5); }
 
-.check-guide{
-  margin-top: 2%;
-  margin-bottom: 2%;
+.radio-buttons label{
+  color: #000;
 }

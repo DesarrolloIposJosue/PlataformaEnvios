@@ -16,7 +16,6 @@ export class ParcelService {
   public operation:number = 0;
 
   addParcelToClient(parcels:User_Parcel[]){
-    console.log(parcels);
     var operation:string = this.apiBase + 'SetParcelsToUser';
     // Headers
     let myHeaders = new Headers();
@@ -32,8 +31,6 @@ export class ParcelService {
   }
 
   getProductsByParcel(parcelId:number){
-    console.log("Dentro de products by parcel");
-    console.log(parcelId);
     var operation:string = this.apiBase + 'GetProductsByParcel';
     // Headers
     let myHeaders = new Headers();
@@ -47,13 +44,11 @@ export class ParcelService {
 
 
   addProductsToClient(products:User_Product[]){
-    console.log(products);
     var operation:string = this.apiBase + 'InsertUserProduct';
     // Headers
     let myHeaders = new Headers();
     const Products:User_Product[] = products;
     // Body or Search
-    console.log(sessionStorage.getItem('NewUserName'));
     let myParams: URLSearchParams = new URLSearchParams();
     myHeaders.set('UserName', sessionStorage.getItem('UserName'));
     myHeaders.set('Password', sessionStorage.getItem('Password'));

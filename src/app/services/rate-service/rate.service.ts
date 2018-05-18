@@ -15,8 +15,7 @@ export class RateService {
 
   constructor(private http: Http) { }
 
-  getQuotation(packageToSend:Package){
-    console.log(packageToSend);
+  getQuotation(packageToSend:Package, insurance:number){
     var operation:string = this.apiBase + 'GetQuotations';
     operation += "/" + packageToSend.weight.toString();
     operation += "/" + packageToSend.long.toString();
@@ -24,6 +23,7 @@ export class RateService {
     operation += "/" + packageToSend.hight.toString();
     operation += "/" + packageToSend.postCodeOrigin.toString();
     operation += "/" + packageToSend.postCodeDest.toString();
+    operation += "/" + insurance.toString();
     // Headers
     let myHeaders = new Headers();
     // Body or Search

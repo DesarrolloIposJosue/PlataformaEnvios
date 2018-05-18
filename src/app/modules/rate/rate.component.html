@@ -1,23 +1,26 @@
-<div class="container teal lighten-5">
+<div class="grey lighten-3">
   <!-- Page Content goes here -->
   <h3 *ngIf="noDelivery">No hay paqueterías disponibles</h3>
   <div class="row" *ngFor="let rate of this.rateService.dataProducts, let i = index">
-    <div class="col s12 offset-m2 m8 offset-l2 l8">
+    <div class="col s12 offset-m3 m6 offset-l3 l6">
       <div class="card horizontal">
         <div class="card-image">
           <img *ngIf="rate.parcelId == 4" src="../../assets/estafeta-logo.png">
           <img *ngIf="rate.parcelId == 3" src="../../assets/Logo-FedEx.png">
           <img *ngIf="rate.parcelId == 2" src="../../assets/redpac-logo.png">
           <img *ngIf="rate.parcelId == 1" src="../../assets/dhl-logo.png">
+          <img *ngIf="rate.parcelId == 5" src="../../assets/paqueteExpress.png">
         </div>
         <div class="card-stacked">
           <div class="card-content">
-            <p>{{rate.description}}</p>
+            <p>Producto: {{rate.description}}</p>
+            <p>Fecha entrega: {{rate.deliveryDate}}</p>
+            <p>Precio: ${{rate.amount}}</p>
             <div class="card-action hide-on-small-only offset-m1 m10 offset-l1 l10 center-align">
               <a class="btn center blue accent-3"><i class="material-icons right">send</i>Enviar</a>
             </div>
             <div class="card-action show-on-small hide-on-med-and-up offset-s1 s10 center-align">
-              <a class="btn center blue accent-3">Enviar</a>
+              <a (click)="selectProduct(rate.id, rate.parcelId)" class="btn center blue accent-3">Enviar</a>
             </div>
           </div>
         </div>
