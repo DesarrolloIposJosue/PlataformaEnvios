@@ -9,6 +9,8 @@ import { Rate } from '../../classes/Rate';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
+import { DownloadGuideService } from '../../services/download-guide-service/download-guide.service';
+
 declare var jQuery:any;
 declare var $:any;
 
@@ -34,13 +36,25 @@ export class QuotationComponent implements OnInit {
     private auth: AuthService,
     private rateService: RateService,
     private router: Router,
-    private createGuideService:CreateGuideService
+    private createGuideService:CreateGuideService,
+    private download:DownloadGuideService
   ) {
     $(document).ready(function(){
       $('input[type=number]').on('wheel', function(e){
           return false;
       });
     });
+    /*console.log(jsonData);
+    var byteCharacters = atob(jsonData);
+    var byteNumbers = new Array(byteCharacters.length);
+    for (var i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    var byteArray = new Uint8Array(byteNumbers);
+    var blob = new Blob([byteArray], {type: 'application/pdf'});
+    var url= window.URL.createObjectURL(blob);
+    window.open(url);*/
+
   }
 
   ngOnInit() {

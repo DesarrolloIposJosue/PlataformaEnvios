@@ -18,10 +18,10 @@
             <p>Precio: ${{rate.amount}}</p>
             <p *ngFor="let item of rate.amountDetails">{{item}}</p>
             <div class="card-action hide-on-small-only offset-m1 m10 offset-l1 l10 center-align">
-              <a (click)="selectProduct(rate.id, rate.parcelId, rate.amount)" class="btn center blue accent-3"><i class="material-icons right">send</i>Enviar</a>
+              <a (click)="selectProduct(rate.id, rate.parcelId, rate.amount, rate.amountDetails)" class="btn center blue accent-3"><i class="material-icons right">send</i>Enviar</a>
             </div>
             <div class="card-action show-on-small hide-on-med-and-up offset-s1 s10 center-align">
-              <a (click)="selectProduct(rate.id, rate.parcelId)" class="btn center blue accent-3">Enviar</a>
+              <a (click)="selectProduct(rate.id, rate.parcelId, rate.amount, rate.amountDetails)" class="btn center blue accent-3">Enviar</a>
             </div>
           </div>
         </div>

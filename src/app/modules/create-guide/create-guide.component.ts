@@ -39,6 +39,9 @@ export class CreateGuideComponent implements OnInit {
   private shpCode:string;
   private dlvyType:string;
   private packageContent:string;
+  private totalAmount:number;
+  private amountDetail:string;
+  private numberHouse:string;
 
 
   constructor(
@@ -59,6 +62,9 @@ export class CreateGuideComponent implements OnInit {
     console.log(this.destZip);
     this.clientName = this.client.name + " " + this.client.lastName;
     console.log(this.clientName);
+    this.totalAmount = createGuideservice.totalAmount;
+    this.amountDetail = createGuideservice.amountDetail;
+    console.log(this.amountDetail);
     $(document).ready(function(){
       $('input[type=number]').on('wheel', function(e){
           return false;
@@ -83,8 +89,8 @@ export class CreateGuideComponent implements OnInit {
         userId: this.client.id,
         parcelId: this.parcelId,
         productId: this.productId,
-        totalAmount: 0,
-        amountDetail: "",
+        totalAmount: this.totalAmount,
+        amountDetail: this.amountDetail,
 
         originCompany: forma.controls["originCompany"].value,
         originAddress: forma.controls["originAddress"].value,
@@ -119,16 +125,13 @@ export class CreateGuideComponent implements OnInit {
       }
       console.log(shipment);
 
-      if(this.packageType == 1){
-        this.shpCode = "1"
-      }else{
-        this.shpCode = forma.controls["destinyUserName"].value;
-      }
-
-      this.dlvyType = forma.controls["dlvyType"].value;
-      this.packageContent = forma.controls["packageContent"].value;
-
       if(this.parcelId == 3){
+        shipment.destinyAddress =  forma.controls["destinyAddress"].value + " " + forma.controls["numberAddress"].value;
+        console.log(shipment.destinyAddress);
+        shipment.originColony = "Col " + forma.controls["originColony"].value;
+        console.log(shipment.originColony);
+        shipment.destinyColony = "Col " + forma.controls["destinyColony"].value;
+        console.log(shipment.destinyColony);
         this.createGuideservice.GenerateGuideFedEx(shipment).subscribe(jsonData => {
           if(!jsonData){
             this.loading = false;
@@ -140,7 +143,15 @@ export class CreateGuideComponent implements OnInit {
       }
 
       if(this.parcelId == 5){
-        this.createGuideservice.GenerateGuidePaquetexpress(shipment, this.packageContent, this.client.id, this.dlvyType, this.shpCode).subscribe(jsonData => {
+        if(this.packageType == 1){
+          this.shpCode = "1"
+        }else{
+          this.shpCode = forma.controls["shpCode"].value;
+        }
+        this.dlvyType = forma.controls["dlvyType"].value;
+        this.packageContent = forma.controls["packageContent"].value;
+        this.numberHouse = forma.controls["numberAddress"].value;
+        this.createGuideservice.GenerateGuidePaquetexpress(shipment, this.packageContent, this.client.id, this.dlvyType, this.shpCode, this.numberHouse).subscribe(jsonData => {
           if(!jsonData){
             this.loading = false;
             this.petitionError = true;
