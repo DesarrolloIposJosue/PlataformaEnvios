@@ -30,11 +30,13 @@ export class RateComponent implements OnInit {
     }
   }
 
-  selectProduct(productId:number, parcelId:number){
+  selectProduct(productId:number, parcelId:number, amount:number){
     console.log(productId);
     console.log(parcelId);
     this.createGuideService.parcelId = parcelId;
     this.createGuideService.productId = productId;
+    this.createGuideService.totalAmount = amount;
+
     this.router.navigate(['/create-guide']);
   }
 

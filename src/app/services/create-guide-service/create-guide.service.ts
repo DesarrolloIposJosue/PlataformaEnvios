@@ -18,6 +18,9 @@ export class CreateGuideService {
   public zip:string;
   public destinyZip:string;
   public packageType:number;
+
+  public totalAmount:number;
+  public amountDetail:string;
   constructor(private http: Http) {
 
   }
