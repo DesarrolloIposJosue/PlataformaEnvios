@@ -16,6 +16,7 @@
             <p>Producto: {{rate.description}}</p>
             <p>Fecha entrega: {{rate.deliveryDate}}</p>
             <p>Precio: ${{rate.amount}}</p>
+            <p *ngFor="let item of rate.amountDetails">{{item}}</p>
             <div class="card-action hide-on-small-only offset-m1 m10 offset-l1 l10 center-align">
               <a (click)="selectProduct(rate.id, rate.parcelId, rate.amount)" class="btn center blue accent-3"><i class="material-icons right">send</i>Enviar</a>
             </div>

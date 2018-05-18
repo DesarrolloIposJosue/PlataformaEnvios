@@ -10,6 +10,9 @@ import { User_Product } from '../../classes/UserProduct';
 import { User_Product_Price } from '../../classes/UserProductPrice';
 import { Observable } from 'rxjs/Rx';
 
+declare var jQuery:any;
+declare var $:any;
+
 @Component({
   selector: 'app-add-parcel-to-client',
   templateUrl: './add-parcel-to-client.component.html',
@@ -90,6 +93,11 @@ export class AddParcelToClientComponent implements OnInit {
     private router:Router,
     private productService: ProductService
   ) {
+    $(document).ready(function(){
+      $('input[type=number]').on('wheel', function(e){
+          return false;
+      });
+    });
     console.log(this.productService.operation);
     if(this.productService.operation == 1){
       this.productService.getParcelsFromUser().subscribe(

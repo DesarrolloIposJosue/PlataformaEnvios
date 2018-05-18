@@ -36,7 +36,11 @@ export class QuotationComponent implements OnInit {
     private router: Router,
     private createGuideService:CreateGuideService
   ) {
-
+    $(document).ready(function(){
+      $('input[type=number]').on('wheel', function(e){
+          return false;
+      });
+    });
   }
 
   ngOnInit() {
@@ -108,7 +112,7 @@ export class QuotationComponent implements OnInit {
                 new Rate(rateArray[i].id, rateArray[i].name, rateArray[i].description,
                         rateArray[i].kg, rateArray[i].factor, rateArray[i].parcelId,
                         rateArray[i].amount, rateArray[i].parcelName, rateArray[i].deliveryDateSpecified,
-                         rateArray[i].deliveryDate, rateArray[i].amountDetailse));
+                         rateArray[i].deliveryDate, rateArray[i].amountDetails));
             }
             console.log(this.dataProducts);
             this.rateService.dataProducts = this.dataProducts;

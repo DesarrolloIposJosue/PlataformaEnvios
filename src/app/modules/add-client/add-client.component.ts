@@ -7,6 +7,8 @@ import { User } from '../../classes/Client';
 import { Observable } from 'rxjs/Rx';
 import { NgForm } from '@angular/forms';
 
+declare var jQuery:any;
+declare var $:any;
 
 @Component({
   selector: 'app-add-client',
@@ -22,6 +24,11 @@ export class AddClientComponent implements OnInit {
     private el: ElementRef,
     private prodSer: ProductService
   ) {
+    $(document).ready(function(){
+      $('input[type=number]').on('wheel', function(e){
+          return false;
+      });
+    });
     this.userType = sessionStorage.getItem('Type');
    }
 

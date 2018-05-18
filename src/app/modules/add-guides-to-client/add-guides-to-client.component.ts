@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+declare var jQuery:any;
+declare var $:any;
+
 @Component({
   selector: 'app-add-guides-to-client',
   templateUrl: './add-guides-to-client.component.html',
@@ -7,7 +10,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddGuidesToClientComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+    $(document).ready(function(){
+      $('input[type=number]').on('wheel', function(e){
+          return false;
+      });
+    });
+  }
 
   ngOnInit() {
   }

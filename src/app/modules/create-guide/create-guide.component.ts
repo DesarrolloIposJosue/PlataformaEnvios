@@ -10,6 +10,9 @@ import { Shipment } from '../../classes/Shipment';
 
 import {CreateGuideService} from '../../services/create-guide-service/create-guide.service';
 
+declare var jQuery:any;
+declare var $:any;
+
 @Component({
   selector: 'app-create-guide',
   templateUrl: './create-guide.component.html',
@@ -56,6 +59,11 @@ export class CreateGuideComponent implements OnInit {
     console.log(this.destZip);
     this.clientName = this.client.name + " " + this.client.lastName;
     console.log(this.clientName);
+    $(document).ready(function(){
+      $('input[type=number]').on('wheel', function(e){
+          return false;
+      });
+    });
    }
 
   ngOnInit() {

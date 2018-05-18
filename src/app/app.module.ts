@@ -44,6 +44,7 @@ import { ProductService } from './services/product-service/product.service';
 import { RateService } from './services/rate-service/rate.service';
 import { GuidesService } from './services/guides/guides.service';
 import { CreateGuideService } from './services/create-guide-service/create-guide.service';
+import { DownloadGuideService} from './services/download-guide-service/download-guide.service';
 
 
 //Pipes
@@ -98,7 +99,8 @@ import { CreateGuideService } from './services/create-guide-service/create-guide
     ProductService,
     RateService,
     GuidesService,
-    CreateGuideService
+    CreateGuideService,
+    DownloadGuideService
   ],
 
   bootstrap: [AppComponent],
