@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ViewEncapsulation, ViewChild, AfterViewChecked } from '@angular/core';
 import { ClientService } from '../../services/client-service/client.service';
+import { ProductService } from '../../services/product-service/product.service';
 import { User } from '../../classes/Client';
 import { Observable } from 'rxjs/Rx';
 import { NgForm } from '@angular/forms';
@@ -18,7 +19,8 @@ export class AddClientComponent implements OnInit {
   constructor(
     private router: Router,
     private clientService: ClientService,
-    private el: ElementRef
+    private el: ElementRef,
+    private prodSer: ProductService
   ) {
     this.userType = sessionStorage.getItem('Type');
    }
@@ -75,6 +77,7 @@ export class AddClientComponent implements OnInit {
               if (jsonData == "SUCCESS: User Created") {
                 console.log("Se creó correctamente");
                 sessionStorage.setItem('NewUserName', forma.controls["username"].value);
+                this.prodSer.operation = 0;
                 this.router.navigate(['/add-parcel-to-client']);
               } else {
                   this.loading = false;

@@ -102,7 +102,7 @@
 
         <!-- Formulario DHL -->
 
-        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 section-check" >
           <p>
             <input (click)="checkDHL()" class="filled-in checkbox-blue" type="checkbox" id="test6" />
             <label for="test6">DHL</label>
@@ -197,7 +197,7 @@
 
         <!-- Formulario FedEx-->
 
-        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 section-check" >
           <p>
             <input (click)="checkFedEx()" class="filled-in checkbox-blue" type="checkbox" id="test7" />
             <label for="test7">FedEx</label>
@@ -291,7 +291,7 @@
 
         <!-- Formulario Estafeta -->
 
-        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 section-check" >
           <p>
             <input (click)="checkEstafeta()" class="filled-in checkbox-blue" type="checkbox" id="test8" />
             <label for="test8">Estafeta</label>
@@ -386,7 +386,7 @@
 
         <!-- Formulario Paquete Express-->
 
-        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 section-check" >
           <p>
             <input (click)="checkPaqueteExpress()" class="filled-in checkbox-blue" type="checkbox" id="paqueteExpress" />
             <label for="paqueteExpress">Paquetexpress</label>
@@ -538,9 +538,9 @@
 
         <!-- Formulario RedPack -->
 
-        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10">
           <p>
-            <input (click)="checkRedPack()" class="filled-in checkbox-blue" type="checkbox" id="test5" />
+            <input (click)="checkRedPack()" class="filled-in checkbox-blue " type="checkbox" id="test5" />
             <label for="test5">RedPack</label>
           </p>
         </div>
@@ -624,14 +624,14 @@
           </p>
         </div>
 
-        <div *ngIf="redPackForm && this.productsRedPack && this.existProductsRedPack">
+        <div *ngIf="redPackForm && this.productsRedPack && this.existProductsRedPack && this.loadedRedPack">
           <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPriceRedPack, let i = index">
             <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
             <label class="active" for="usernameRedPack">{{product.name}}</label>
           </div>
         </div>
 
-        <div *ngIf="redPackForm && this.productsRedPack.length > 0 && this.existProductsRedPack">
+        <div *ngIf="redPackForm && this.productsRedPack.length > 0 && this.loadProductsRedPack && this.existProductsRedPack == false && this.loadedRedPack">
           <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsRedPack, let i = index">
             <input [id]="product.id" [name]="product.name" placeholder="0" value="0" type="number" class="validate" minlength="3" >
             <label class="active" for="usernameRedPack">{{product.name}}</label>
@@ -640,7 +640,7 @@
 
         <!-- Formulario DHL -->
 
-        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 section-check" >
           <p>
             <input (click)="checkDHL()" class="filled-in checkbox-blue" type="checkbox" id="test6" />
             <label for="test6">DHL</label>
@@ -726,14 +726,14 @@
           </p>
         </div>
 
-        <div *ngIf="dhlForm && this.productsDHL && this.existProductsDHL">
+        <div *ngIf="dhlForm && this.productsDHL && this.existProductsDHL && this.loadedDHL">
           <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPriceDHL, let i = index">
             <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
             <label class="active" for="usernameDHL">{{product.name}}</label>
           </div>
         </div>
 
-        <div *ngIf="dhlForm && this.productsDHL.length > 0 && this.loadProductsDHL && !this.existProductsDHL">
+        <div *ngIf="dhlForm && this.productsDHL.length > 0 && this.loadProductsDHL && this.existProductsDHL == false && this.loadedDHL">
           <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsDHL, let i = index">
             <input [id]="product.id" [name]="product.name" placeholder="0" value="0" type="number" class="validate" minlength="3" >
             <label class="active" for="usernameDHL">{{product.name}}</label>
@@ -742,7 +742,7 @@
 
         <!-- Formulario FedEx-->
 
-        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 section-check" >
           <p>
             <input (click)="checkFedEx()" class="filled-in checkbox-blue" type="checkbox" id="test7" />
             <label for="test7">FedEx</label>
@@ -828,14 +828,14 @@
           </p>
         </div>
 
-        <div *ngIf="fedExForm && this.productsFedEx && this.existProductsFedEx">
+        <div *ngIf="fedExForm && this.productsFedEx && this.existProductsFedEx && this.loadedFedEx">
           <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPriceFedEx, let i = index">
             <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
             <label class="active" for="usernameFedEx">{{product.name}}</label>
           </div>
         </div>
 
-        <div *ngIf="fedExForm && this.productsFedEx.length > 0 && this.loadProductsFedEx && !this.existProductsFedEx">
+        <div *ngIf="fedExForm && this.productsFedEx.length > 0 && this.loadProductsFedEx && !this.existProductsFedEx && this.loadedFedEx">
           <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsFedEx, let i = index">
             <input [id]="product.id" [name]="product.name" placeholder="0" value="0" type="number" class="validate" minlength="3" >
             <label class="active" for="usernameFedEx">{{product.name}}</label>
@@ -844,7 +844,7 @@
 
         <!-- Formulario Estafeta -->
 
-        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 section-check" >
           <p>
             <input (click)="checkEstafeta()" class="filled-in checkbox-blue" type="checkbox" id="test8" />
             <label for="test8">Estafeta</label>
@@ -930,14 +930,14 @@
           </p>
         </div>
 
-        <div *ngIf="estafetaForm && this.productsEstafeta && this.existProductsEstafeta">
+        <div *ngIf="estafetaForm && this.productsEstafeta && this.existProductsEstafeta && this.loadedEstafeta">
           <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPriceEstafeta, let i = index">
             <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
             <label class="active" for="usernameEstafeta">{{product.name}}</label>
           </div>
         </div>
 
-        <div *ngIf="estafetaForm && this.productsEstafeta.length > 0 && this.loadProductsEstafeta && this.existProductsEstafeta == false">
+        <div *ngIf="estafetaForm && this.productsEstafeta.length > 0 && this.loadProductsEstafeta && this.existProductsEstafeta == false && this.loadedEstafeta">
           <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsEstafeta, let i = index">
             <input [id]="product.id" [name]="product.name" placeholder="0" value="0" type="number" class="validate" minlength="3" >
             <label class="active" for="usernameEstafeta">{{product.name}}</label>
@@ -946,7 +946,7 @@
 
         <!-- Formulario Paquete Express -->
 
-        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 section-check" >
           <p>
             <input (click)="checkPaqueteExpress()" class="filled-in checkbox-blue" type="checkbox" id="paqueteExpress" />
             <label for="paqueteExpress">Paquetexpress</label>
@@ -1032,14 +1032,14 @@
           </p>
         </div>
 
-        <div *ngIf="paqueteExpressForm && this.productsPaqueteExpress && this.existProductsPaqueteExpress">
+        <div *ngIf="paqueteExpressForm && this.productsPaqueteExpress && this.existProductsPaqueteExpress && this.loadedPaquetexpress">
           <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPricePaqueteExpress, let i = index">
             <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
             <label class="active" for="usernamePaqueteExpress">{{product.name}}</label>
           </div>
         </div>
 
-        <div *ngIf="paqueteExpressForm && this.productsPaqueteExpress.length > 0 && this.loadProductsPaqueteExpress && !this.existProductsPaqueteExpress">
+        <div *ngIf="paqueteExpressForm && this.productsPaqueteExpress.length > 0 && this.loadProductsPaqueteExpress && !this.existProductsPaqueteExpress && this.loadedPaquetexpress">
           <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsPaqueteExpress, let i = index">
             <input [id]="product.id" [name]="product.name" placeholder="0" value="0" type="number" class="validate" minlength="3" >
             <label class="active" for="usernamePaqueteExpress">{{product.name}}</label>

@@ -108,8 +108,9 @@ export class QuotationComponent implements OnInit {
                 new Rate(rateArray[i].id, rateArray[i].name, rateArray[i].description,
                         rateArray[i].kg, rateArray[i].factor, rateArray[i].parcelId,
                         rateArray[i].amount, rateArray[i].parcelName, rateArray[i].deliveryDateSpecified,
-                         rateArray[i].deliveryDate));
+                         rateArray[i].deliveryDate, rateArray[i].amountDetailse));
             }
+            console.log(this.dataProducts);
             this.rateService.dataProducts = this.dataProducts;
             this.petitionError = false;
             this.createGuideService.city = forma.controls["origin_city"].value;
