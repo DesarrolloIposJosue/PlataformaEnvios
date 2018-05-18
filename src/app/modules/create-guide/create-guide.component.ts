@@ -9,6 +9,7 @@ import { DataAuxGuide } from '../../classes/DataAuxGuide';
 import { Shipment } from '../../classes/Shipment';
 
 import {CreateGuideService} from '../../services/create-guide-service/create-guide.service';
+import {DownloadGuideService} from '../../services/download-guide-service/download-guide.service';
 
 declare var jQuery:any;
 declare var $:any;
@@ -47,7 +48,8 @@ export class CreateGuideComponent implements OnInit {
   constructor(
     private router: Router,
     private el: ElementRef,
-    private createGuideservice:CreateGuideService
+    private createGuideservice:CreateGuideService,
+    private download:DownloadGuideService
   ) {
     this.dataGuide = createGuideservice.dataAuxGuide;
     this.client = createGuideservice.userActual;
@@ -125,6 +127,7 @@ export class CreateGuideComponent implements OnInit {
       }
       console.log(shipment);
 
+      //FedEx
       if(this.parcelId == 3){
         shipment.destinyAddress =  forma.controls["destinyAddress"].value + " " + forma.controls["numberAddress"].value;
         console.log(shipment.destinyAddress);
@@ -138,6 +141,18 @@ export class CreateGuideComponent implements OnInit {
             this.petitionError = true;
           }else{
             console.log(jsonData);
+            this.download.DownloadFile(jsonData).subscribe(document => {
+              if(!document){
+
+              }else{
+                var byteCharacters = document;
+                var byteArray = new Uint8Array(byteCharacters);
+                var blob = new Blob([byteArray], {type: 'application/pdf'});
+                var url= window.URL.createObjectURL(blob);
+                window.open(url);
+                this.router.navigate(['/home']);
+              }
+            });
           }
         });
       }
@@ -161,56 +176,10 @@ export class CreateGuideComponent implements OnInit {
             console.log(tracking);
             let url:string = "http://webbooking-pruebas.paquetexpress.com.mx:8082/wsReportPaquetexpress/GenCartaPorte?trackingNoGen=" + tracking;
             window.open(url, "_blank");
+            this.router.navigate(['/home']);
           }
         });
       }
-
-      /*
-      let dataAux:DataAuxGuide = new DataAuxGuide(quotationData.postCodeOrigin, quotationData.postCodeDest, quotationData.originAddress,
-      quotationData.destinationAddress, quotationData.kindPackage, quotationData.width, quotationData.long, quotationData.hight,
-      quotationData.weight, insurance);
-
-      this.createGuideService.dataAuxGuide = dataAux;
-
-      if(quotationData.postCodeOrigin > 0 && quotationData.postCodeDest > 0 && quotationData.weight > 0
-      && quotationData.long > 0 && quotationData.width > 0 && quotationData.hight > 0 &&
-      quotationData.postCodeOrigin.toString().length > 4 && quotationData.postCodeDest.toString().length > 4){
-        this.invalidNumber = false;
-        this.invalidPC = false;
-        this.rateService.getQuotation(quotationData, insurance).subscribe(jsonData => {
-          if(!jsonData){
-            this.loading = false;
-            this.petitionError = true;
-          }else{
-            var rateArray = jsonData;
-            this.response = jsonData;
-            this.dataProducts = [];
-            for (var i = 0; i < rateArray.length; i++) {
-              this.dataProducts.push(
-                new Rate(rateArray[i].id, rateArray[i].name, rateArray[i].description,
-                        rateArray[i].kg, rateArray[i].factor, rateArray[i].parcelId,
-                        rateArray[i].amount, rateArray[i].parcelName, rateArray[i].deliveryDateSpecified,
-                         rateArray[i].deliveryDate));
-            }
-            this.rateService.dataProducts = this.dataProducts;
-            this.petitionError = false;
-            this.createGuideService.city = forma.controls["origin_city"].value;
-            this.createGuideService.zip = forma.controls["postal_code_origin"].value;
-            this.createGuideService.packageType = forma.controls["kindPackage"].value;
-          }
-          this.router.navigate(['/show-rate']);
-        });
-      }else{
-        this.invalidForm = true;
-        this.loading = false;
-        if(quotationData.postCodeOrigin < 0 || quotationData.postCodeDest < 0 || quotationData.weight > 0
-        || quotationData.long < 0 || quotationData.width < 0 || quotationData.hight < 0){
-          this.invalidNumber = true;
-        }
-        if(quotationData.postCodeOrigin.toString().length < 4 || quotationData.postCodeDest.toString().length < 4){
-          this.invalidPC = true;
-        }
-      }*/
     }
   }
 }

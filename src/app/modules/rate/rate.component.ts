@@ -25,25 +25,7 @@ export class RateComponent implements OnInit {
     private download:DownloadGuideService
   ) {
     console.log(this.rateService.dataProducts);
-    this.download.DownloadFile().subscribe(jsonData => {
-      if(!jsonData){
-
-      }else{
-        /*console.log(jsonData);
-        var byteCharacters = jsonData;
-        console.log("Samunazi:")
-        console.log(byteCharacters);
-        /*var byteNumbers = new Array(byteCharacters.length);
-        for (var i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-        }*/
-        /*var byteArray = new Uint8Array(byteCharacters);
-        var blob = new Blob([byteArray], {type: 'application/pdf'});
-        var url= window.URL.createObjectURL(blob);
-        window.open(url);*/
-      }
-    });
-
+    
   }
 
   ngOnInit() {

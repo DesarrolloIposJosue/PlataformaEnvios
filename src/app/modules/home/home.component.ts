@@ -6,6 +6,7 @@ import { MaterializeModule } from "angular2-materialize";
 import { M } from "materialize-css";
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
+import "materialize-css";
 
 declare var jQuery:any;
 declare var $:any;
@@ -60,4 +61,5 @@ export class HomeComponent implements OnInit {
       this.router.navigate(['/quotation']);
   }
 
+  
 }

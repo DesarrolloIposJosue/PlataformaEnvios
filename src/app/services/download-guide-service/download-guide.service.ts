@@ -13,7 +13,7 @@ export class DownloadGuideService {
 
   }
 
-  DownloadFile(){
+  DownloadFile(filename:string){
     var operation:string = this.apiBase + 'DownloadFile';
     // Headers
     let myHeaders = new Headers();
@@ -21,7 +21,8 @@ export class DownloadGuideService {
     let myParams: URLSearchParams = new URLSearchParams();
     let path:string = "C:\fedex guides";
 
-    myHeaders.set('fileName', '794697653344');
+    console.log(filename);
+    myHeaders.set('fileName', filename);
     myHeaders.set('fileExtension', 'pdf');
     myHeaders.set('filePath', 'C:/fedex guides/');
 
