@@ -44,6 +44,7 @@ export class CreateGuideComponent implements OnInit {
   private amountDetail:string;
   private numberHouse:string;
 
+  private email:string;
 
   constructor(
     private router: Router,
@@ -141,7 +142,7 @@ export class CreateGuideComponent implements OnInit {
             this.petitionError = true;
           }else{
             console.log(jsonData);
-            this.download.DownloadFile(jsonData).subscribe(document => {
+            this.download.DownloadFileFedEx(jsonData).subscribe(document => {
               if(!document){
 
               }else{
@@ -157,6 +158,33 @@ export class CreateGuideComponent implements OnInit {
         });
       }
 
+      //RedPack
+      if(this.parcelId == 2){
+        this.dlvyType = forma.controls["dlvyType"].value;
+        this.email = forma.controls["email"].value;
+        this.createGuideservice.GenerateGuideRedPack(shipment, this.dlvyType, this.email).subscribe(jsonData => {
+          if(!jsonData){
+            this.loading = false;
+            this.petitionError = true;
+          }else{
+            console.log(jsonData);
+            this.download.DownloadFileRedPack(jsonData).subscribe(document => {
+              if(!document){
+
+              }else{
+                var byteCharacters = document;
+                var byteArray = new Uint8Array(byteCharacters);
+                var blob = new Blob([byteArray], {type: 'application/pdf'});
+                var url= window.URL.createObjectURL(blob);
+                window.open(url);
+                this.router.navigate(['/home']);
+              }
+            });
+          }
+        });
+      }
+
+      //paquetexpress
       if(this.parcelId == 5){
         if(this.packageType == 1){
           this.shpCode = "1"

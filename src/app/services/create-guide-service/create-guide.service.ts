@@ -37,6 +37,22 @@ export class CreateGuideService {
     return this.http.post(operation, JSON.stringify(Ship), options).map((res:Response) => res.json());
   }
 
+  GenerateGuideRedPack(shipment:Shipment, dlvyType:string, email:string){
+    var operation:string = this.apiBase + 'GenerateGuide';
+
+    // Headers
+    let myHeaders = new Headers();
+    const Ship:Shipment = shipment;
+
+    // Body or Search
+    let myParams: URLSearchParams = new URLSearchParams();
+    myHeaders.set('RDPCKOriginEmail', email);
+    myHeaders.set('RDPCKTipoEntrega', dlvyType);
+    let options = new RequestOptions({ headers: myHeaders, search: myParams });
+
+    return this.http.post(operation, JSON.stringify(Ship), options).map((res:Response) => res.json());
+  }
+
   GenerateGuidePaquetexpress(shipment:Shipment, contentPackage:string, numberClient:number, dlvyType:string, shpCode:string, numberHouse:string){
     var operation:string = this.apiBase + 'GenerateGuide';
     // Headers

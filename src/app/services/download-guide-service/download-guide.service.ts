@@ -13,13 +13,12 @@ export class DownloadGuideService {
 
   }
 
-  DownloadFile(filename:string){
+  DownloadFileFedEx(filename:string){
     var operation:string = this.apiBase + 'DownloadFile';
     // Headers
     let myHeaders = new Headers();
     // Body or Search
     let myParams: URLSearchParams = new URLSearchParams();
-    let path:string = "C:\fedex guides";
 
     console.log(filename);
     myHeaders.set('fileName', filename);
@@ -27,6 +26,23 @@ export class DownloadGuideService {
     myHeaders.set('filePath', 'C:/fedex guides/');
 
     console.log('C:/fedex guides/');
+
+    let options = new RequestOptions({ headers: myHeaders, search: myParams });
+
+    return this.http.get(operation, options).map((res:Response) => res.json());
+  }
+
+  DownloadFileRedPack(filename:string){
+    var operation:string = this.apiBase + 'DownloadFile';
+    // Headers
+    let myHeaders = new Headers();
+    // Body or Search
+    let myParams: URLSearchParams = new URLSearchParams();
+
+    console.log(filename);
+    myHeaders.set('fileName', filename);
+    myHeaders.set('fileExtension', 'pdf');
+    myHeaders.set('filePath', 'C:/redpack guides/');
 
     let options = new RequestOptions({ headers: myHeaders, search: myParams });
 
