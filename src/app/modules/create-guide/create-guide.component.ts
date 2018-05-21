@@ -124,7 +124,9 @@ export class CreateGuideComponent implements OnInit {
         length: this.dataGuide.long,
         width: this.dataGuide.width,
         height: this.dataGuide.hight,
-        insurance: this.dataGuide.insurance
+        insurance: this.dataGuide.insurance,
+
+        creationDate: new Date()
       }
       console.log(shipment);
 

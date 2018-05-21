@@ -25,7 +25,7 @@ export class RateComponent implements OnInit {
     private download:DownloadGuideService
   ) {
     console.log(this.rateService.dataProducts);
-    
+
   }
 
   ngOnInit() {
@@ -40,12 +40,16 @@ export class RateComponent implements OnInit {
     this.createGuideService.parcelId = parcelId;
     this.createGuideService.productId = productId;
     this.createGuideService.totalAmount = amount;
+    let amountDetail:string;
+    console.log(amountDetails);
     for(let i=0; i<amountDetails.length; i++){
       if(i == 0){
-        this.createGuideService.amountDetail = amountDetails[i];
+        amountDetail = amountDetails[i];
+      }else{
+        amountDetail = amountDetail + "," + amountDetails[i];
       }
-      this.createGuideService.amountDetail = this.createGuideService.amountDetail + "," + amountDetails[i];
     }
+    this.createGuideService.amountDetail = amountDetail;
     this.router.navigate(['/create-guide']);
   }
 
