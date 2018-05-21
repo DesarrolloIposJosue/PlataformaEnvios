@@ -6,17 +6,23 @@
       <div class="card horizontal">
         <div class="card-image">
           <img *ngIf="rate.parcelId == 4" src="../../assets/estafeta-logo.png">
-          <img *ngIf="rate.parcelId == 3" src="../../assets/Logo-FedEx.png">
-          <img *ngIf="rate.parcelId == 2" src="../../assets/redpac-logo.png">
+          <img *ngIf="rate.parcelId == 3" src="../../assets/Logo-FedEx.png" class="fedexImg">
+          <img *ngIf="rate.parcelId == 2" src="../../assets/redpac-logo.png" class="redpackImg">
           <img *ngIf="rate.parcelId == 1" src="../../assets/dhl-logo.png">
-          <img *ngIf="rate.parcelId == 5" src="../../assets/paqueteExpress.png">
+          <img *ngIf="rate.parcelId == 5" src="../../assets/paqueteExpress.png" class="paqueteExpressImg">
         </div>
         <div class="card-stacked">
           <div class="card-content">
             <p>Producto: {{rate.description}}</p>
             <p>Fecha entrega: {{rate.deliveryDate}}</p>
-            <p>Precio: ${{rate.amount}}</p>
+            <div>
+            <p class="pAmount">Precio: ${{rate.amount}}</p>
+            <a class="btn-floating btn-small  waves-light red buttonPlus" (click)="showDivDetails(i)"><i class="material-icons">add</i></a>
+            </div>
+            <div [id]=i style="display: none;">
             <p *ngFor="let item of rate.amountDetails">{{item}}</p>
+            </div>
+            <br>
             <div class="card-action hide-on-small-only offset-m1 m10 offset-l1 l10 center-align">
               <a (click)="selectProduct(rate.id, rate.parcelId, rate.amount, rate.amountDetails)" class="btn center blue accent-3"><i class="material-icons right">send</i>Enviar</a>
             </div>

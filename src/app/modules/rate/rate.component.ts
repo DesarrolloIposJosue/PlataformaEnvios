@@ -32,6 +32,15 @@ export class RateComponent implements OnInit {
     if(this.rateService.dataProducts.length == 0){
       this.noDelivery = true;
     }
+    /*else
+    {
+      for(let i=0; i<this.rateService.dataProducts.length; i++)
+      {
+        var x = document.getElementById(i.toString());
+        x.style.display = "none";
+      }
+    }*/
+
   }
 
   selectProduct(productId:number, parcelId:number, amount:number, amountDetails:string[]){
@@ -51,6 +60,17 @@ export class RateComponent implements OnInit {
     }
     this.createGuideService.amountDetail = amountDetail;
     this.router.navigate(['/create-guide']);
+  }
+
+  showDivDetails(valueP: number)
+  {
+    var x = document.getElementById(valueP.toString());
+    console.log(x.style.display);
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
   }
 
 }
