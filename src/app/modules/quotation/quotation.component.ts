@@ -8,6 +8,7 @@ import { CreateGuideService } from '../../services/create-guide-service/create-g
 import { Rate } from '../../classes/Rate';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
+import { User } from '../../classes/Client';
 
 import { DownloadGuideService } from '../../services/download-guide-service/download-guide.service';
 
@@ -44,17 +45,14 @@ export class QuotationComponent implements OnInit {
           return false;
       });
     });
-    /*console.log(jsonData);
-    var byteCharacters = atob(jsonData);
-    var byteNumbers = new Array(byteCharacters.length);
-    for (var i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    var byteArray = new Uint8Array(byteNumbers);
-    var blob = new Blob([byteArray], {type: 'application/pdf'});
-    var url= window.URL.createObjectURL(blob);
-    window.open(url);*/
 
+    var obj = JSON.parse(sessionStorage.getItem('ActualUser')); // An object :D
+    let user:User = new User(obj.id, obj.name, obj.lastName, obj.userName, obj.password, obj.address, obj.email, obj.typeId, obj.address2,
+  obj.colony, obj.city, obj.state, obj.zip, obj.country, obj.phoneNumber);
+
+    this.createGuideService.userActual = user;
+
+    console.log(user);
   }
 
   ngOnInit() {

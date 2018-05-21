@@ -45,6 +45,8 @@ import { RateService } from './services/rate-service/rate.service';
 import { GuidesService } from './services/guides/guides.service';
 import { CreateGuideService } from './services/create-guide-service/create-guide.service';
 import { DownloadGuideService} from './services/download-guide-service/download-guide.service';
+import { SummaryGuideComponent } from './modules/summary-guide/summary-guide.component';
+import { ReportsComponent } from './modules/reports/reports.component';
 
 
 //Pipes
@@ -71,7 +73,9 @@ import { DownloadGuideService} from './services/download-guide-service/download-
     SelectProductEditComponent,
     AddGuidesToClientComponent,
     SelectClientEditGuidesComponent,
-    CreateGuideComponent
+    CreateGuideComponent,
+    SummaryGuideComponent,
+    ReportsComponent
   ],
   imports: [
     BrowserModule,

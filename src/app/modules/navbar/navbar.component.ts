@@ -48,13 +48,6 @@ export class NavbarComponent implements OnInit {
      }
 
   ngOnInit() {
-    $(document).ready(function(){
-      $(this.el.nativeElement).find('.button-collapse').sideNav();
-      $(this.el.nativeElement).find('.dropdown-button').dropdown();
-      $('.dropdown-trigger').dropdown({
-        hover: false
-      });
-    });
 
   }
 

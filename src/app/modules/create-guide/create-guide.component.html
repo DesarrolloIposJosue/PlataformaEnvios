@@ -1,9 +1,18 @@
-<div class="row  main">
+<div class="row main">
   <form name="form" (ngSubmit)="createGuide(forma)" #forma="ngForm" novalidate class="col s12 offset-m2 offset-l2 m8 l8 blue lighten-5">
-    <h3 class="s12 m12 l12">Creando guía</h3>
+    <h3 class="s12 m12 l12 center-align">Creando guía</h3>
+
+    <div class="center-align">
+      <img *ngIf="this.parcelId == 4" src="../../assets/estafeta-logo.png">
+      <img *ngIf="this.parcelId == 3" src="../../assets/Logo-FedEx.png">
+      <img *ngIf="this.parcelId == 2" src="../../assets/redpac-logo.png">
+      <img *ngIf="this.parcelId == 1" src="../../assets/dhl-logo.png">
+      <img *ngIf="this.parcelId == 5" src="../../assets/paqueteExpress.png">
+    </div>
+
     <div class="row">
 
-      <h4>Datos del remitente</h4>
+      <h5>Datos del remitente</h5>
 
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10">
         <input id="originCompany" name="originCompany" ngModel #originCompany="ngModel" type="text" class="validate" #originCompany>
@@ -114,12 +123,12 @@
         </p>
       </div>
 
-      <!-- ---------------------------- Campos paquetexpress ------------------------- -->
+      <!-- ---------------------------- Campos RedPack ------------------------- -->
 
       <!-- ------------------------------------------------------------------------------------------------ -->
 
-      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10">
-        <h4>Datos del destinatario</h4>
+      <div>
+        <h5>Datos del destinatario</h5>
       </div>
 
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10">
@@ -190,8 +199,11 @@
         </p>
       </div>
 
+      <div>
+        <h5>Tipo entrega</h5>
+      </div>
+
       <div *ngIf="parcelId == 5 || parcelId == 2" class="row radio-buttons" [ngClass]="{'has-danger': dlvyType.errors?.required && dlvyType.touched}">
-          <h6>Tipo entrega</h6>
           <p class="col s6 m6 l6 ">
             <input class="with-gap" value="2" ngModel #dlvyType="ngModel" name="dlvyType" type="radio" id="test1" />
             <label for="test1">Domicilio</label>

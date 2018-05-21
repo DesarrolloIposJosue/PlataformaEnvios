@@ -67,6 +67,8 @@ export class LogInComponent implements OnInit {
                 this.createGuideservice.userActual = user;
                 console.log(this.createGuideservice.userActual);
 
+                sessionStorage.setItem('ActualUser', JSON.stringify(user));
+
                 sessionStorage.setItem('UserName', logInData.username);
                 sessionStorage.setItem('Password', logInData.password);
                 sessionStorage.setItem('Type', successResponse.typeId);

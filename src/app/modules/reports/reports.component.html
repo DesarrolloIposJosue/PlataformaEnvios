@@ -1,0 +1,52 @@
+<div *ngIf="this.clientService.operation == 0" class="row  main">
+  <form name="form" (ngSubmit)="saveClient(forma)" #forma="ngForm" novalidate class="col s12 offset-m2 offset-l2 m8 l8 blue lighten-5">
+    <h5 class="s12 m12 l12">Registrar nuevo cliente</h5>
+    <div class="row">
+
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': startDate.errors?.required && startDate.touched}">
+        <i class="material-icons prefix">date_range</i>
+        <input id="startDate" name="startDate" ngModel #startDate="ngModel" type="text" class="validate" class="datepicker" #startDate required>
+        <label for="startDate">Fecha de inicio</label>
+        <p class="red-text text-darken-4" *ngIf="startDate.errors?.required&&startDate.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="startDate.errors?.minlength&&startDate.touched">
+          Por lo menos escriba {{startDate.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': finishDate.errors?.required && finishDate.touched}">
+        <i class="material-icons prefix">date_range</i>
+        <input id="finishDate" name="finishDate" ngModel #finishDate="ngModel" type="text" class="validate" class="datepicker" #finishDate required>
+        <label for="finishDate">Fecha fin</label>
+        <p class="red-text text-darken-4" *ngIf="finishDate.errors?.required&&finishDate.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="finishDate.errors?.minlength&&finishDate.touched">
+          Por lo menos escriba {{finishDate.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': client.errors?.required && client.touched}">
+        <select materialize="material_select" [materializeSelectOptions]="options" name="client" ngModel required #client="ngModel">
+          <option class="blue-text text-darken-4" value="" disabled selected>Elija un cliente</option>
+          <option *ngFor="let itemClient of this.clients" class="blue-text text-darken-4" value="" disabled selected>Elija un cliente</option>
+        </select>
+        <label>País</label>
+      </div>
+
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="errorCreateUser">
+        <p class="red-text text-darken-4">
+          Error al crear el usuario, no pudo completarse el registro.
+        </p>
+      </div>
+
+      <div class="row col offset-s1 s10 offset-m1 m10 offset-l1 l10 center-align">
+        <button [disabled]="loading" class="btn waves-effect  blue accent-3">Guardar</button>
+      </div>
+      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+    </div>
+  </form>
+</div>
