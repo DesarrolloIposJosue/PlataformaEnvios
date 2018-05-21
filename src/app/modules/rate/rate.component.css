@@ -2,3 +2,26 @@
 {
    background:#f2f2f2;
 }
+
+.pAmount{
+      margin: 0;
+      display: inline-block;
+  }
+.buttonPlus {
+    float: right;
+  }
+
+.paqueteExpressImg
+{
+    margin-top: 15%;
+}
+
+.redpackImg
+{
+    margin-top: 10%;
+}
+
+.fedexImg
+{
+    margin-top: 5%;
+}
