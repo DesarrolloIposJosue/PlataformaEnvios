@@ -9,6 +9,7 @@ import '../../rxjs/index';
 @Injectable()
 export class CreateGuideService {
   private apiBase = 'http://bi-pos.servebeer.com:8080/WSGombar/Gombar.svc/';
+
   public dataAuxGuide:DataAuxGuide;
   public userActual:User;
   public parcelId:number;

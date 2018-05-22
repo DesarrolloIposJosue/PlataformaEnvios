@@ -98,13 +98,15 @@ export class QuotationComponent implements OnInit {
 
       if(forma.controls["insurance"]){
         insurance = forma.controls["insurance"].value;
-      }else{
-        insurance = 0;
       }
+      
+      console.log(insurance);
 
       let dataAux:DataAuxGuide = new DataAuxGuide(quotationData.postCodeOrigin, quotationData.postCodeDest, quotationData.originAddress,
       quotationData.destinationAddress, quotationData.kindPackage, quotationData.width, quotationData.long, quotationData.hight,
       quotationData.weight, insurance);
+
+      console.log(dataAux.insurance);
 
       this.createGuideService.dataAuxGuide = dataAux;
 

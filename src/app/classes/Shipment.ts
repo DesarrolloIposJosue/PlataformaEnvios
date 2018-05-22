@@ -37,12 +37,14 @@ export class Shipment{
   public height: number;
   public insurance: number;
 
+  public creationDate : Date = new Date();
+
    constructor(
     _id:number, _userId:number, _parcelId:number, _productId:number, _totalAmount:number, _amountDetail:string, _originCompany:string,
   _originAddress:string, _originAddress2:string, _originColony:string, _originCity:string, _originState:string, _originZip:number,
 _originCountry:string, _originPhoneNumber:string, _originUserName:string, _destinyCompany:string, _destinyAddress:string, _destinyAddress2:string, _destinyColony:string,
 _destinyCity:string, _destinyState:string, _destinyZip:number, _destinyCountry:string, _destinyPhoneNumber:string, _destinyUserName:string, _trackingKey:string,
-_status:string, _weight:number, _length:number, _width:number, _height:number, _insurance:number){
+_status:string, _weight:number, _length:number, _width:number, _height:number, _insurance:number, _creationDate:Date){
     this.id = _id;
     this.userId = _userId;
     this.parcelId = _parcelId;
@@ -80,6 +82,8 @@ _status:string, _weight:number, _length:number, _width:number, _height:number, _
     this.width = _width;
     this.height = _height;
     this.insurance = _insurance;
+
+    this.creationDate = _creationDate;
   }
 
 }
