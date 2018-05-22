@@ -40,4 +40,17 @@ export class GuidesService {
     return this.http.put(operation, JSON.stringify(guides), options).map((res:Response) => res.json());
   }
 
+  GetShipmentsByUserAndDates(startDate:string, finishDate:string, userId:number){
+    var operation:string = this.apiBase + 'GetShipmentsByUserAndDates';
+    // Headers
+    let myHeaders = new Headers();
+    // Body or Search
+    let myParams: URLSearchParams = new URLSearchParams();
+    myHeaders.set('StartDate', startDate);
+    myHeaders.set('EndDate', finishDate);
+    myHeaders.set('UserId', userId.toString());
+    let options = new RequestOptions({ headers: myHeaders});
+    return this.http.get(operation, options).map((res:Response) => res.json());
+  }
+
 }
