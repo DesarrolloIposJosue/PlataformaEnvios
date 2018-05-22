@@ -77,6 +77,8 @@ export class QuotationComponent implements OnInit {
           this.invalidForm = true;
           this.loading = false;
     }else{
+      var x = document.getElementById("preloaderRate");
+      x.style.display = "block";
       this.invalidForm = false;
       const quotationData: Package = {
         id: 0,

@@ -86,6 +86,8 @@ export class CreateGuideComponent implements OnInit {
           this.invalidForm = true;
           this.loading = false;
     }else{
+      var x = document.getElementById("preloaderRate");
+      x.style.display = "block";
       this.invalidForm = false;
       const shipment: Shipment = {
         id: 0,
