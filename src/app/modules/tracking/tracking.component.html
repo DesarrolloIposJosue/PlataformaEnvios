@@ -1,19 +1,22 @@
-<div class="grey container">
+<div class="grey lighten-4">
   <div class="row">
-    <div class="col s4 l4 m4">
-      <img class="circle responsive-img" src="../../assets/estafeta-logo.png">
+    <div class="center-align">
+      <h3>Rastreo</h3>
     </div>
-    <div class="col s4 l4 m4">
-      <img class="circle responsive-img" src="../../assets/Logo-FedEx.png">
+    <div class="col s4 l4 m4 center-align">
+      <img (click)="goEstafeta()" class="circle responsive-img" height="240" width="240" src="../../assets/estafetaSquare.jpg">
     </div>
-    <div class="col s4 l4 m4">
-      <img class="circle responsive-img" src="../../assets/redpac-logo.png">
+    <div class="col s4 l4 m4 center-align">
+      <img (click)="goFedEx()" class="circle responsive-img" height="240" width="240" src="../../assets/fedexSquare.png">
     </div>
-    <div class="col s4 l4 m4">
-      <img class="circle responsive-img" src="../../assets/dhl-logo.png">
+    <div class="col s4 l4 m4 center-align">
+      <img (click)="goRedPack()" class="circle responsive-img" height="240" width="240" src="../../assets/redpackSquare.jpg">
     </div>
-    <div class="col s4 l4 m4">
-      <img class="circle responsive-img" src="../../assets/paqueteExpress.png">
+    <div class="col offset-s2 s4 offset-l2 l4 offset-m2 m4 center-align">
+      <img (click)="goDHL()" class="circle responsive-img" height="240" width="240" src="../../assets/dhlSquare.jpg">
+    </div>
+    <div class="col s4 l4 m4 center-align">
+      <img (click)="goPaquetexpress()" class="circle responsive-img" height="240" width="240" src="../../assets/paquetexpressSquare.png">
     </div>
   </div>
 </div>
