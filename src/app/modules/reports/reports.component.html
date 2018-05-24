@@ -55,22 +55,22 @@
   <table *ngIf="this.shipments && this.loaded">
     <thead *ngIf="this.shipments && this.loaded">
       <tr>
-        <th>Nombre</th>
-        <th>C.P. Origen</th>
-        <th>C.P. Destino</th>
+        <th>Guia</th>
+        <th>Monto</th>
+        <th>Nombre origen</th>
+        <th>Nombre destino</th>
         <th>Fecha</th>
-        <th>Precio total</th>
         <th></th>
       </tr>
     </thead>
 
     <tbody>
       <tr *ngFor="let shipment of this.shipments">
+        <td>{{shipment.trackingKey}}</td>
+        <td>${{shipment.totalAmount}}</td>
         <td>{{shipment.originUserName}}</td>
-        <td>{{shipment.originZip}}</td>
-        <td>{{shipment.destinyZip}}</td>
+        <td>{{shipment.destinyUserName}}
         <td>{{shipment.creationDateString}}</td>
-        <td>{{shipment.totalAmount}}</td>
         <td>
           <a (click)="loadReport(shipment.id)" class="btn-small blue accent-3">Mostrar</a>
         </td>

@@ -16,6 +16,7 @@ import { RateComponent } from './modules/rate/rate.component';
 import { AddGuidesToClientComponent } from './modules/add-guides-to-client/add-guides-to-client.component';
 import { CreateGuideComponent } from './modules/create-guide/create-guide.component';
 import { ReportsComponent } from './modules/reports/reports.component';
+import { SummaryGuideComponent } from './modules/summary-guide/summary-guide.component';
 
 const APP_ROUTES: Routes = [
   { path: 'home', component: HomeComponent },
@@ -34,6 +35,8 @@ const APP_ROUTES: Routes = [
   { path: 'add-guides-to-client', component: AddGuidesToClientComponent, canActivate:[AuthGuardService]},
   { path: 'create-guide', component: CreateGuideComponent, canActivate:[AuthGuardService]},
   { path: 'reports', component: ReportsComponent, canActivate:[AuthGuardService]},
+  { path: 'summary', component: SummaryGuideComponent, canActivate:[AuthGuardService]},
+  { path: 'tracking', component: TrackingComponent, canActivate:[AuthGuardService]},
   { path: '', pathMatch: 'full', redirectTo: 'log-in' },
   { path: '**', component: LogInComponent }
 ];

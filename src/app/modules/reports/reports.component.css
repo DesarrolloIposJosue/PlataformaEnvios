@@ -99,5 +99,6 @@ table{
 .btn-small{
   color: #ffffff;
   background-color: #0D47A1;
-  padding: 20px 10px;
+  padding: 3px 6px;
+  cursor: pointer;
 }

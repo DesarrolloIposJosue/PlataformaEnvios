@@ -27,7 +27,8 @@ export class ReportsComponent implements OnInit {
 
   constructor(
     private clientService:ClientService,
-    private guideService:GuidesService
+    private guideService:GuidesService,
+    private router:Router
   ) {
     this.clientService.getUsersByUserID().subscribe(response =>{
       if(!response){
@@ -82,5 +83,15 @@ export class ReportsComponent implements OnInit {
 
   loadReport(reportId:number){
     console.log(reportId);
+    for(let i=0; i < this.shipments.length; i++){
+      if(this.shipments[i].id == reportId){
+        this.guideService.selectedGuide = this.shipments[i];
+        console.log(this.guideService.selectedGuide);
+      }
+    }
+
+    this.router.navigate(['/summary']);
+
+
   }
 }

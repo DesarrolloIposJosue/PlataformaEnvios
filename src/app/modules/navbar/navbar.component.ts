@@ -62,12 +62,6 @@ export class NavbarComponent implements OnInit {
        this.closeSideNav();
    }
 
-   goTracking() {
-       this._router.navigate(['/tracking']);
-       this.closeSideNav();
-       this.closeSideNav();
-   }
-
    goLogIn() {
        this._router.navigate(['/log-in']);
        this.closeSideNav();
@@ -113,6 +107,11 @@ export class NavbarComponent implements OnInit {
    goReports(){
      this.closeSideNav();
      this._router.navigate(['/reports']);
+   }
+
+   goTracking(){
+     this.closeSideNav();
+     this._router.navigate(['/tracking']);
    }
 
    logOut(){

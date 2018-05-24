@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { Shipment } from '../../classes/Shipment';
 import { Product } from '../../classes/Product';
 import { User_PrepaidGuides } from "../../classes/User_PrepaidGuides";
 import '../../rxjs/index';
@@ -13,6 +14,7 @@ export class GuidesService {
 
   public productEdit:Product = new Product();
   public operation:number = 0;
+  public selectedGuide:Shipment;
 
   selectPrepaidGuidesFromUser(userId:number){
     var operation:string = this.apiBase + 'SelectPrepaidGuidesFromUser';

@@ -1,3 +1,158 @@
-<p>
-  summary-guide works!
-</p>
+<div *ngIf="this.guide" class="row main blue lighten-5">
+  <h5 class="s12 m12 l12">Datos envío</h5>
+    <!-- Left side of the information -->
+    <div class="row s12 m6 l6">
+      <h5>Datos remitente</h5>
+
+      <div *ngIf="this.guide.originCompany.length > 0" class="input-field col s12 m6 l6">
+        <input id="originCompany" name="originCompany" type="text" placeholder="{{this.guide.originCompany}}">
+        <label class="active" for="originCompany">Compañia</label>
+      </div>
+
+      <div class="input-field col s12 m6 l6">
+        <input id="originName" name="originName" type="text" placeholder="{{this.guide.originUserName}}">
+        <label class="active" for="originName">Nombre</label>
+      </div>
+
+      <div class="input-field col s12 m6 l6">
+        <input id="originCountry" name="originCountry" type="text" placeholder="{{this.guide.originCountry}}">
+        <label class="active" for="originCountry">País</label>
+      </div>
+
+      <div class="input-field col s12 m6 l6">
+        <input id="originState" name="originState" type="text" placeholder="{{this.guide.originState}}">
+        <label class="active" for="originState">Estado</label>
+      </div>
+
+      <div class="input-field col s12 m6 l6">
+        <input id="originCity" name="originCity" type="text" placeholder="{{this.guide.originCity}}">
+        <label class="active" for="originCity">Ciudad</label>
+      </div>
+
+      <div class="input-field col s12 m6 l6">
+        <input id="originColony" name="originColony" type="text" placeholder="{{this.guide.originColony}}">
+        <label class="active" for="originColony">Colonia</label>
+      </div>
+
+      <div class="input-field col s12 m6 l6">
+        <input id="originZip" name="originZip" type="text" placeholder="{{this.guide.originZip}}">
+        <label class="active" for="originZip">Codigo postal</label>
+      </div>
+
+      <div class="input-field col s12 m6 l6">
+        <input id="originAddress" name="originAddress" type="text" placeholder="{{this.guide.originAddress}}">
+        <label class="active" for="originAddress">Dirección</label>
+      </div>
+
+      <div *ngIf="this.guide.originAddress2.length > 0" class="input-field col s12 m6 l6">
+        <input id="originAddress2" name="originAddress2" type="text" placeholder="{{this.guide.originAddress2}}">
+        <label class="active" for="originAddress2">Entre calles</label>
+      </div>
+
+      <div *ngIf="this.guide.originPhoneNumber.length > 0" class="input-field col s12 m6 l6">
+        <input id="originPhoneNumber" name="originPhoneNumber" type="text" placeholder="{{this.guide.originPhoneNumber}}">
+        <label class="active" for="originPhoneNumber">Número telefónico</label>
+      </div>
+
+    </div>
+
+
+  <!-- Right side of the information -->
+  <div class="row s12 m6 l6">
+    <h5>Datos destinatario</h5>
+
+    <div *ngIf="this.guide.destinyCompany.length > 0" class="input-field col s12 m6 l6">
+      <input id="destinyCompany" name="destinyCompany" type="text" placeholder="{{this.guide.destinyCompany}}">
+      <label class="active" for="destinyCompany">Compañia</label>
+    </div>
+
+    <div class="input-field col s12 m6 l6">
+      <input id="destinyName" name="destinyName" type="text" placeholder="{{this.guide.destinyUserName}}">
+      <label class="active" for="destinyName">Nombre</label>
+    </div>
+
+    <div class="input-field col s12 m6 l6">
+      <input id="destinyCountry" name="destinyCountry" type="text" placeholder="{{this.guide.destinyCountry}}">
+      <label class="active" for="destinyCountry">País</label>
+    </div>
+
+    <div class="input-field col s12 m6 l6">
+      <input id="destinyState" name="destinyState" type="text" placeholder="{{this.guide.destinyState}}">
+      <label class="active" for="destinyState">Estado</label>
+    </div>
+
+    <div class="input-field col s12 m6 l6">
+      <input id="destinyCity" name="destinyCity" type="text" placeholder="{{this.guide.destinyCity}}">
+      <label class="active" for="destinyCity">Ciudad</label>
+    </div>
+
+    <div class="input-field col s12 m6 l6">
+      <input id="destinyColony" name="destinyColony" type="text" placeholder="{{this.guide.destinyColony}}">
+      <label class="active" for="destinyColony">Colonia</label>
+    </div>
+
+    <div class="input-field col s12 m6 l6">
+      <input id="originZip" name="destinyZip" type="text" placeholder="{{this.guide.destinyZip}}">
+      <label class="active" for="destinyZip">Codigo postal</label>
+    </div>
+
+    <div class="input-field col s12 m6 l6">
+      <input id="destinyAddress" name="destinyAddress" type="text" placeholder="{{this.guide.destinyAddress}}">
+      <label class="active" for="destinyAddress">Dirección</label>
+    </div>
+
+    <div *ngIf="this.guide.destinyAddress2.length > 0" class="input-field col s12 m6 l6">
+      <input id="destinyAddress2" name="destinyAddress2" type="text" placeholder="{{this.guide.destinyAddress2}}">
+      <label class="active" for="destinyAddress2">Entre calles</label>
+    </div>
+
+    <div *ngIf="this.guide.destinyPhoneNumber.length > 0" class="input-field col s12 m6 l6">
+      <input id="destinyPhoneNumber" name="destinyPhoneNumber" type="text" placeholder="{{this.guide.destinyPhoneNumber}}">
+      <label class="active" for="destinyPhoneNumber">Número telefónico</label>
+    </div>
+  </div>
+
+  <!-- Bottom side of the information -->
+  <div class="row s12 m12 l12">
+    <h5>Datos paquete</h5>
+
+    <div *ngIf="this.guide.creationDateString.length > 0" class="input-field col s12 m6 l6">
+      <input id="creationDateString" name="creationDateString" type="text" placeholder="{{this.guide.creationDateString}}">
+      <label class="active" for="creationDateString">Fecha</label>
+    </div>
+
+    <div *ngIf="this.guide.trackingKey.length > 0" class="input-field col s12 m6 l6">
+      <input id="trackingKey" name="trackingKey" type="text" placeholder="{{this.guide.trackingKey}}">
+      <label class="active" for="trackingKey">Rastreo</label>
+    </div>
+
+    <div class="input-field col s12 m6 l6">
+      <input id="weight" name="weight" type="text" placeholder="{{this.guide.weight}}">
+      <label class="active" for="weight">Peso</label>
+    </div>
+
+    <div class="input-field col s12 m6 l6">
+      <input id="length" name="length" type="text" placeholder="{{this.guide.length}}">
+      <label class="active" for="length">Largo</label>
+    </div>
+
+    <div class="input-field col s12 m6 l6">
+      <input id="width" name="width" type="text" placeholder="{{this.guide.width}}">
+      <label class="active" for="width">Ancho</label>
+    </div>
+
+    <div class="input-field col s12 m6 l6">
+      <input id="height" name="height" type="text" placeholder="{{this.guide.height}}">
+      <label class="active" for="height">Alto</label>
+    </div>
+
+    <div *ngIf="this.guide.insurance.length > 0" class="input-field col s12 m6 l6">
+      <input id="insurance" name="insurance" type="text" placeholder="{{this.guide.insurance}}">
+      <label class="active" for="insurance">Asegurado por</label>
+    </div>
+  </div>
+
+  <div class="row col offset-s1 s10 offset-m1 m10 offset-l1 l10 center-align">
+    <a (click)="ready()" class="blue accent-3 btn">Listo</a>
+  </div>
+</div>

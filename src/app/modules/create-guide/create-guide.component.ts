@@ -10,6 +10,7 @@ import { Shipment } from '../../classes/Shipment';
 
 import {CreateGuideService} from '../../services/create-guide-service/create-guide.service';
 import {DownloadGuideService} from '../../services/download-guide-service/download-guide.service';
+import { GuidesService } from '../../services/guides/guides.service';
 
 declare var jQuery:any;
 declare var $:any;
@@ -50,7 +51,8 @@ export class CreateGuideComponent implements OnInit {
     private router: Router,
     private el: ElementRef,
     private createGuideservice:CreateGuideService,
-    private download:DownloadGuideService
+    private download:DownloadGuideService,
+    private guides:GuidesService
   ) {
     this.dataGuide = createGuideservice.dataAuxGuide;
     this.client = createGuideservice.userActual;
@@ -83,8 +85,9 @@ export class CreateGuideComponent implements OnInit {
     this.loading = true;
 
     if(!forma.valid){
-          this.invalidForm = true;
-          this.loading = false;
+      console.log("Entre?");
+      this.invalidForm = true;
+      this.loading = false;
     }else{
       var x = document.getElementById("preloaderRate");
       x.style.display = "block";
@@ -156,7 +159,8 @@ export class CreateGuideComponent implements OnInit {
                 var blob = new Blob([byteArray], {type: 'application/pdf'});
                 var url= window.URL.createObjectURL(blob);
                 window.open(url);
-                this.router.navigate(['/home']);
+                this.guides.selectedGuide = shipment;
+                this.router.navigate(['/summary']);
               }
             });
           }
@@ -182,7 +186,8 @@ export class CreateGuideComponent implements OnInit {
                 var blob = new Blob([byteArray], {type: 'application/pdf'});
                 var url= window.URL.createObjectURL(blob);
                 window.open(url);
-                this.router.navigate(['/home']);
+                this.guides.selectedGuide = shipment;
+                this.router.navigate(['/summary']);
               }
             });
           }
@@ -209,7 +214,8 @@ export class CreateGuideComponent implements OnInit {
             console.log(tracking);
             let url:string = "http://webbooking-pruebas.paquetexpress.com.mx:8082/wsReportPaquetexpress/GenCartaPorte?trackingNoGen=" + tracking;
             window.open(url, "_blank");
-            this.router.navigate(['/home']);
+            this.guides.selectedGuide = shipment;
+            this.router.navigate(['/summary']);
           }
         });
       }
