@@ -23,7 +23,7 @@ export class SummaryGuideComponent implements OnInit {
   }
 
   ready(){
-    this.router.navigate(['/reports']);
+    this.router.navigate(['/home']);
   }
 
 }

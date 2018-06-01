@@ -1,59 +1,129 @@
 <div class="row  main">
   <form name="form" (ngSubmit)="checkReports(forma)" #forma="ngForm" novalidate class="col s12 offset-m2 offset-l2 m8 l8 blue lighten-5">
-    <h5 class="s12 m12 l12">Registrar nuevo cliente</h5>
+    <h5 *ngIf="this.createGuideService.userActual.typeId == 1" class="s12 m12 l12">Reportes</h5>
+    <h5 *ngIf="this.createGuideService.userActual.typeId == 2" class="s12 m12 l12">Guías</h5>
     <div class="row">
+      <div *ngIf="this.createGuideService.userActual.typeId == 1">
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': country.errors?.required && country.touched}">
+          <select (change)="onChange($event.target.value)" materialize="material_select" [materializeSelectOptions]="options" name="country" ngModel required #country="ngModel">
+            <option class="blue-text text-darken-4" value="" disabled selected>Elija una opción</option>
+            <option class="blue-text text-darken-4" value="1">Por cliente</option>
+            <option class="blue-text text-darken-4" value="2">Por cliente y fecha</option>
+            <option class="blue-text text-darken-4" value="3">Todos los clientes por fecha</option>
+          </select>
+          <label>Tipo de reporte</label>
+        </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': startDate.errors?.required && startDate.touched}">
-        <i class="material-icons prefix">date_range</i>
-        <input id="startDate" materialize="pickadate" [materializeParams]="[{format:'dd/mm/yyyy'}]" name="startDate" ngModel #startDate="ngModel" type="text" class="validate" class="datepicker" #startDate required>
-        <label for="startDate">Fecha de inicio</label>
-        <p class="red-text text-darken-4" *ngIf="startDate.errors?.required&&startDate.touched">
-          *Este campo es requerido.
-        </p>
-        <p class="red-text text-darken-4" *ngIf="startDate.errors?.minlength&&startDate.touched">
-          Por lo menos escriba {{startDate.errors.minlength.requiredLength}} caracteres.
-        </p>
+        <div *ngIf="this.reportType && (this.reportType == 2 || this.reportType == 3)" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': startDate.errors?.required && startDate.touched}">
+          <i class="material-icons prefix">date_range</i>
+          <input id="startDate" materialize="pickadate" [materializeParams]="[{format:'dd/mm/yyyy'}]" name="startDate" ngModel #startDate="ngModel" type="text" class="validate" class="datepicker" #startDate required>
+          <label for="startDate">Fecha de inicio</label>
+          <p class="red-text text-darken-4" *ngIf="startDate.errors?.required&&startDate.touched">
+            *Este campo es requerido.
+          </p>
+          <p class="red-text text-darken-4" *ngIf="startDate.errors?.minlength&&startDate.touched">
+            Por lo menos escriba {{startDate.errors.minlength.requiredLength}} caracteres.
+          </p>
+        </div>
+
+        <div *ngIf="this.reportType && (this.reportType == 2 || this.reportType == 3)" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': finishDate.errors?.required && finishDate.touched}">
+          <i class="material-icons prefix">date_range</i>
+          <input id="finishDate" materialize="pickadate" [materializeParams]="[{format:'dd/mm/yyyy'}]" name="finishDate" ngModel #finishDate="ngModel" type="text" class="validate" class="datepicker" #finishDate required>
+          <label for="finishDate">Fecha fin</label>
+          <p class="red-text text-darken-4" *ngIf="finishDate.errors?.required&&finishDate.touched">
+            *Este campo es requerido.
+          </p>
+          <p class="red-text text-darken-4" *ngIf="finishDate.errors?.minlength&&finishDate.touched">
+            Por lo menos escriba {{finishDate.errors.minlength.requiredLength}} caracteres.
+          </p>
+        </div>
+
+        <!--<div *ngIf="( this.reportType == 1 || this.reportType == 2 ) && this.clients && this.loadedClients" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': client.errors?.required && client.touched}">
+          <select materialize="material_select" [materializeSelectOptions]="options" name="client" ngModel required #client="ngModel">
+            <option class="blue-text text-darken-4" value="" disabled selected>Elija un cliente</option>
+            <option *ngFor="let item of this.clients" class="blue-text text-darken-4" value="{{item.id}}">{{item.name}} {{item.lastName}}</option>
+          </select>
+          <label>Clientes</label>
+          <p class="red-text text-darken-4" *ngIf="client.errors?.required&&client.touched">
+            *Este campo es requerido.
+          </p>
+        </div>-->
+
+        <div *ngIf="this.dataUser && this.reportType && ( this.reportType == 1 || this.reportType == 2 )" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': userData.errors?.required && userData.touched}">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="userData" name="userData" ngModel #userData="ngModel" type="text" class="validate autocomplete" minlength="1" required>
+          <label for="userData">Nombre del cliente</label>
+          <p class="red-text text-darken-4" *ngIf="userData.errors?.required&&userData.touched">
+            *Este campo es requerido.
+          </p>
+        </div>
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="errorCreateUser">
+          <p class="red-text text-darken-4">
+            Error al crear generar reportes.
+          </p>
+        </div>
+
+        <div class="row col offset-s1 s10 offset-m1 m10 offset-l1 l10 center-align">
+          <button [disabled]="loading" class="btn blue accent-3">Mostrar</button>
+        </div>
+        <div *ngIf="error" class="alert alert-danger">{{error}}</div>
       </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': finishDate.errors?.required && finishDate.touched}">
-        <i class="material-icons prefix">date_range</i>
-        <input id="finishDate" materialize="pickadate" [materializeParams]="[{format:'dd/mm/yyyy'}]" name="finishDate" ngModel #finishDate="ngModel" type="text" class="validate" class="datepicker" #finishDate required>
-        <label for="finishDate">Fecha fin</label>
-        <p class="red-text text-darken-4" *ngIf="finishDate.errors?.required&&finishDate.touched">
-          *Este campo es requerido.
-        </p>
-        <p class="red-text text-darken-4" *ngIf="finishDate.errors?.minlength&&finishDate.touched">
-          Por lo menos escriba {{finishDate.errors.minlength.requiredLength}} caracteres.
-        </p>
-      </div>
+      <div *ngIf="this.createGuideService.userActual.typeId == 2">
 
-      <div *ngIf="this.clients && this.loadedClients" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': client.errors?.required && client.touched}">
-        <select materialize="material_select" [materializeSelectOptions]="options" name="client" ngModel required #client="ngModel">
-          <option class="blue-text text-darken-4" value="" disabled selected>Elija un cliente</option>
-          <option *ngFor="let item of this.clients" class="blue-text text-darken-4" value="{{item.id}}">{{item.name}} {{item.lastName}}</option>
-        </select>
-        <label>Clientes</label>
-        <p class="red-text text-darken-4" *ngIf="client.errors?.required&&client.touched">
-          *Este campo es requerido.
-        </p>
-      </div>
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': startDate.errors?.required && startDate.touched}">
+          <i class="material-icons prefix">date_range</i>
+          <input id="startDate" materialize="pickadate" [materializeParams]="[{format:'dd/mm/yyyy'}]" name="startDate" ngModel #startDate="ngModel" type="text" class="validate" class="datepicker" #startDate required>
+          <label for="startDate">Fecha de inicio</label>
+          <p class="red-text text-darken-4" *ngIf="startDate.errors?.required&&startDate.touched">
+            *Este campo es requerido.
+          </p>
+          <p class="red-text text-darken-4" *ngIf="startDate.errors?.minlength&&startDate.touched">
+            Por lo menos escriba {{startDate.errors.minlength.requiredLength}} caracteres.
+          </p>
+        </div>
 
-      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="errorCreateUser">
-        <p class="red-text text-darken-4">
-          Error al crear generar reportes.
-        </p>
-      </div>
+        <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': finishDate.errors?.required && finishDate.touched}">
+          <i class="material-icons prefix">date_range</i>
+          <input id="finishDate" materialize="pickadate" [materializeParams]="[{format:'dd/mm/yyyy'}]" name="finishDate" ngModel #finishDate="ngModel" type="text" class="validate" class="datepicker" #finishDate required>
+          <label for="finishDate">Fecha fin</label>
+          <p class="red-text text-darken-4" *ngIf="finishDate.errors?.required&&finishDate.touched">
+            *Este campo es requerido.
+          </p>
+          <p class="red-text text-darken-4" *ngIf="finishDate.errors?.minlength&&finishDate.touched">
+            Por lo menos escriba {{finishDate.errors.minlength.requiredLength}} caracteres.
+          </p>
+        </div>
 
-      <div class="row col offset-s1 s10 offset-m1 m10 offset-l1 l10 center-align">
-        <button [disabled]="loading" class="btn blue accent-3">Mostrar</button>
+        <!--<div *ngIf="( this.reportType == 1 || this.reportType == 2 ) && this.clients && this.loadedClients" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': client.errors?.required && client.touched}">
+          <select materialize="material_select" [materializeSelectOptions]="options" name="client" ngModel required #client="ngModel">
+            <option class="blue-text text-darken-4" value="" disabled selected>Elija un cliente</option>
+            <option *ngFor="let item of this.clients" class="blue-text text-darken-4" value="{{item.id}}">{{item.name}} {{item.lastName}}</option>
+          </select>
+          <label>Clientes</label>
+          <p class="red-text text-darken-4" *ngIf="client.errors?.required&&client.touched">
+            *Este campo es requerido.
+          </p>
+        </div>-->
+
+        <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="errorCreateUser">
+          <p class="red-text text-darken-4">
+            Error al crear generar reportes.
+          </p>
+        </div>
+
+        <div class="row col offset-s1 s10 offset-m1 m10 offset-l1 l10 center-align">
+          <button [disabled]="loading" class="btn blue accent-3">Mostrar</button>
+        </div>
+        <div *ngIf="error" class="alert alert-danger">{{error}}</div>
       </div>
-      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 
     </div>
   </form>
 
-  <table *ngIf="this.shipments && this.loaded">
-    <thead *ngIf="this.shipments && this.loaded">
+  <table *ngIf="this.validDateGuide && this.validDateGuide.length > 0 ">
+    <thead *ngIf="this.validDateGuide && this.loaded">
       <tr>
         <th>Guia</th>
         <th>Monto</th>
@@ -61,16 +131,27 @@
         <th>Nombre destino</th>
         <th>Fecha</th>
         <th></th>
+        <th></th>
+        <th></th>
       </tr>
     </thead>
 
     <tbody>
-      <tr *ngFor="let shipment of this.shipments">
+      <tr *ngFor="let shipment of this.validDateGuide">
         <td>{{shipment.trackingKey}}</td>
         <td>${{shipment.totalAmount}}</td>
         <td>{{shipment.originUserName}}</td>
         <td>{{shipment.destinyUserName}}
         <td>{{shipment.creationDateString}}</td>
+        <td>
+
+        </td>
+        <td *ngIf="shipment.validDate">
+          <a (click)="checkGuide(shipment.parcelId, shipment.trackingKey)" class="btn-small blue accent-3">Reimprimir</a>
+        </td>
+        <td *ngIf="shipment.validDate && this.createGuideService.userActual.typeId == 1">
+          <a (click)="cancelGuide(shipment)" class="btn-small blue accent-3">Cancelar</a>
+        </td>
         <td>
           <a (click)="loadReport(shipment.id)" class="btn-small blue accent-3">Mostrar</a>
         </td>

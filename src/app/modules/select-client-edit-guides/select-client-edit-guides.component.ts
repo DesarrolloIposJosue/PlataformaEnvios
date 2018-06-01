@@ -78,6 +78,7 @@ export class SelectClientEditGuidesComponent implements OnInit {
         var userNameLastName = this.response[i].name + " " + this.response[i].lastName;
         if(element.value == userNameLastName){
           this.guidesUserFounded = true;
+          console.log(this.response[i].id);
           this.guideService.selectPrepaidGuidesFromUser(this.response[i].id).subscribe(
             (successResponse) => {
                 if(!successResponse){

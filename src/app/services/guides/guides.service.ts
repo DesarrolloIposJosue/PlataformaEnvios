@@ -3,7 +3,9 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { Shipment } from '../../classes/Shipment';
 import { Product } from '../../classes/Product';
+import { RedPackNumberGuide } from '../../classes/RedPackNumberGuide';
 import { User_PrepaidGuides } from "../../classes/User_PrepaidGuides";
+import { Multipieces } from "../../classes/Multipieces";
 import '../../rxjs/index';
 
 @Injectable()
@@ -17,6 +19,7 @@ export class GuidesService {
   public selectedGuide:Shipment;
 
   selectPrepaidGuidesFromUser(userId:number){
+    console.log(userId);
     var operation:string = this.apiBase + 'SelectPrepaidGuidesFromUser';
     // Headers
     let myHeaders = new Headers();
@@ -33,9 +36,6 @@ export class GuidesService {
     let myHeaders = new Headers();
     // Body or Search
     let myParams: URLSearchParams = new URLSearchParams();
-    console.log(sessionStorage.getItem('UserName'));
-    console.log(sessionStorage.getItem('Password'));
-    console.log(guides);
     myHeaders.set('UserName', sessionStorage.getItem('UserName'));
     myHeaders.set('Password', sessionStorage.getItem('Password'));
     let options = new RequestOptions({ headers: myHeaders});
@@ -54,5 +54,38 @@ export class GuidesService {
     let options = new RequestOptions({ headers: myHeaders});
     return this.http.get(operation, options).map((res:Response) => res.json());
   }
+
+  GetRedPackNumberGuides(){
+    var operation:string = this.apiBase + 'GetRedPackNumberGuides';
+    // Headers
+    let myHeaders = new Headers();
+    // Body or Search
+    let myParams: URLSearchParams = new URLSearchParams();
+    let options = new RequestOptions({ headers: myHeaders});
+    return this.http.get(operation, options).map((res:Response) => res.json());
+  }
+
+  UpdateRedpackNumberGuide(redpackguides:RedPackNumberGuide){
+    var operation:string = this.apiBase + 'UpdateRedpackNumberGuide';
+    // Headers
+    let myHeaders = new Headers();
+    // Body or Search
+    let myParams: URLSearchParams = new URLSearchParams();
+    myHeaders.set('UserName', sessionStorage.getItem('UserName'));
+    myHeaders.set('Password', sessionStorage.getItem('Password'));
+    let options = new RequestOptions({ headers: myHeaders});
+    return this.http.put(operation, JSON.stringify(redpackguides), options).map((res:Response) => res.json());
+  }
+
+  CancelGuide(shipment:Shipment){
+    var operation:string = this.apiBase + 'CancelShipment';
+    // Headers
+    let myHeaders = new Headers();
+    // Body or Search
+    let myParams: URLSearchParams = new URLSearchParams();
+    let options = new RequestOptions({ headers: myHeaders});
+    return this.http.post(operation, JSON.stringify(shipment), options).map((res:Response) => res.json());
+  }
+
 
 }

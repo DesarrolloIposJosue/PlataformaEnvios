@@ -119,4 +119,12 @@ export class NavbarComponent implements OnInit {
      this.clientService.logOut();
    }
 
+   goDefineGuidesRedPack(){
+     this._router.navigate(['/define-guides-redpack']);
+   }
+
+   goGuides(){
+     this._router.navigate(['/guides']);
+   }
+
 }

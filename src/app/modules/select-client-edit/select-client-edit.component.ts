@@ -65,14 +65,12 @@ export class SelectClientEditComponent implements OnInit {
     if(!forma.valid){
       this.invalidForm = true;
     }else{
-      console.log("entre?");
       this.invalidForm = false;
       this.loading = true;
       console.log(this.response);
       for(var i = 0; i < this.response.length; i++){
         var userNameLastName = this.response[i].name + " " + this.response[i].lastName;
         if(element.value == userNameLastName){
-          console.log("match?");
           let userAux:User = new User(this.response[i].id, this.response[i].name, this.response[i].lastName,
             this.response[i].userName, this.response[i].password, this.response[i].address, this.response[i].email,
             this.response[i].typeId, this.response[i].address2, this.response[i].colony, this.response[i].city,

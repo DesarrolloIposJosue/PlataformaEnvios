@@ -47,6 +47,8 @@ import { CreateGuideService } from './services/create-guide-service/create-guide
 import { DownloadGuideService} from './services/download-guide-service/download-guide.service';
 import { SummaryGuideComponent } from './modules/summary-guide/summary-guide.component';
 import { ReportsComponent } from './modules/reports/reports.component';
+import { BuyGuidesComponent } from './modules/buy-guides/buy-guides.component';
+import { DefineGuidesRedpackComponent } from './modules/define-guides-redpack/define-guides-redpack.component';
 
 
 //Pipes
@@ -75,7 +77,9 @@ import { ReportsComponent } from './modules/reports/reports.component';
     SelectClientEditGuidesComponent,
     CreateGuideComponent,
     SummaryGuideComponent,
-    ReportsComponent
+    ReportsComponent,
+    BuyGuidesComponent,
+    DefineGuidesRedpackComponent
   ],
   imports: [
     BrowserModule,

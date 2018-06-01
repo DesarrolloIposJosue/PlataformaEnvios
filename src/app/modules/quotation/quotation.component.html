@@ -71,67 +71,127 @@
           </p>
       </div>
 
-      <h5 class="blue lighten-2">Características</h5>
+      <div *ngIf="this.userMultiPack" class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 margin-bottom ">
+        <p>
+          <input (click)="activeMultiPack()" class="filled-in checkbox-blue" type="checkbox" id="multipack" />
+          <label for="multipack">Activar multipieza</label>
+        </p>
+      </div>
 
-      <div class="row">
-        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': weight.errors?.required && weight.touched}">
-          <input id="weight" name="weight" type="number" min="0" ngModel #weight="ngModel" class="validate" pattern=".{1,5}" required>
-          <label for="weight">Peso (kg)</label>
-          <p class="red-text text-darken-4" *ngIf="weight.errors?.required&&weight.touched">
-            *Este campo es requerido.
-          </p>
-          <p class="red-text text-darken-4" *ngIf="weight.errors?.minlength&&weight.touched">
-            Por lo menos escriba {{weight.errors.minlength.requiredLength}} digito.
-          </p>
+      <div *ngIf="multiPackActive" class="row input-field col s12 m12 l12" [ngClass]="{'has-danger': quantityProd.errors?.required && quantityProd.touched}">
+        <input (change)="quantityChange($event.target.value)" id="quantityProd" name="quantityProd" type="number" min="0" ngModel #quantityProd="ngModel" class="validate" required>
+        <label for="quantityProd">Cantidad piezas</label>
+        <p class="red-text text-darken-4" *ngIf="quantityProd.errors?.required&&quantityProd.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="quantityProd.errors?.minlength&&quantityProd.touched">
+          Por lo menos escriba {{quantityProd.errors.minlength.requiredLength}} digito.
+        </p>
+      </div>
+
+      <div *ngIf="objectCreateMultipieces.length > 0">
+        <div *ngFor="let pack of objectCreateMultipieces, let i = index">
+          <div class="row">
+            <h5>Paquete {{i+1}}</h5>
+
+            <div class="input-field col s12 m6 l6">
+              <input [id]="pack.weight" [name]="pack.weight" type="number" min="0" class="validate" pattern=".{1,5}" required>
+              <label for="weight">Peso (kg)</label>
+            </div>
+
+            <div class="input-field col s12 m6 l6">
+              <input [id]="pack.length" [name]="pack.length" type="number" min="0" class="validate" pattern=".{1,6}" required>
+              <label for="long">Largo (cm)</label>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12 m6 l6">
+              <input [id]="pack.width" [name]="pack.width" type="number" min="0" class="validate" pattern=".{1,6}" required>
+              <label for="width">Ancho (cm)</label>
+            </div>
+
+            <div class="input-field col s12 m6 l6">
+              <input [id]="pack.height" [name]="pack.height" type="number" min="0" class="validate" pattern=".{1,6}" required>
+              <label for="hight">Alto (cm)</label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12 m6 l6">
+              <input [id]="pack.insurance" [name]="pack.insurance" type="number" placeholder="0" value=0 min="0" class="validate" pattern=".{1,6}">
+              <label class="active" for="insurance">Monto seguro</label>
+            </div>
+          </div>
+
         </div>
 
-        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': long.errors?.required && long.touched}">
-          <input id="long" name="long" type="number" min="0" ngModel #long="ngModel" class="validate" pattern=".{1,6}" required>
-          <label for="long">Largo (cm)</label>
-          <p class="red-text text-darken-4" *ngIf="long.errors?.required&&long.touched">
-            *Este campo es requerido.
-          </p>
-          <p class="red-text text-darken-4" *ngIf="long.errors?.minlength&&long.touched">
-            Por lo menos escriba {{long.errors.minlength.requiredLength}} digitos.
-          </p>
-        </div>
 
       </div>
 
-      <div class="row">
-        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': width.errors?.required && width.touched}">
-          <input id="width" name="width" type="number" min="0" ngModel #width="ngModel" class="validate" pattern=".{1,6}" required>
-          <label for="width">Ancho (cm)</label>
-          <p class="red-text text-darken-4" *ngIf="width.errors?.required&&width.touched">
-            *Este campo es requerido.
-          </p>
-          <p class="red-text text-darken-4" *ngIf="width.errors?.minlength&&width.touched">
-            Por lo menos escriba {{width.errors.minlength.requiredLength}} digitos.
-          </p>
+      <div *ngIf="!multiPackActive">
+        <h5 class="blue lighten-2">Características</h5>
+        <div class="row">
+          <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': weight.errors?.required && weight.touched}">
+            <input id="weight" name="weight" type="number" min="0" ngModel #weight="ngModel" class="validate" pattern=".{1,5}" required>
+            <label for="weight">Peso (kg)</label>
+            <p class="red-text text-darken-4" *ngIf="weight.errors?.required&&weight.touched">
+              *Este campo es requerido.
+            </p>
+            <p class="red-text text-darken-4" *ngIf="weight.errors?.minlength&&weight.touched">
+              Por lo menos escriba {{weight.errors.minlength.requiredLength}} digito.
+            </p>
+          </div>
+
+          <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': long.errors?.required && long.touched}">
+            <input id="long" name="long" type="number" min="0" ngModel #long="ngModel" class="validate" pattern=".{1,6}" required>
+            <label for="long">Largo (cm)</label>
+            <p class="red-text text-darken-4" *ngIf="long.errors?.required&&long.touched">
+              *Este campo es requerido.
+            </p>
+            <p class="red-text text-darken-4" *ngIf="long.errors?.minlength&&long.touched">
+              Por lo menos escriba {{long.errors.minlength.requiredLength}} digitos.
+            </p>
+          </div>
+
         </div>
 
-        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': hight.errors?.required && hight.touched}">
-          <input id="hight" name="hight" type="number" min="0" ngModel #hight="ngModel" class="validate" pattern=".{1,6}" required>
-          <label for="hight">Alto (cm)</label>
-          <p class="red-text text-darken-4" *ngIf="hight.errors?.required&&hight.touched">
-            *Este campo es requerido.
-          </p>
-          <p class="red-text text-darken-4" *ngIf="hight.errors?.minlength&&hight.touched">
-            Por lo menos escriba {{hight.errors.minlength.requiredLength}} digitos.
-          </p>
-        </div>
-      </div>
+        <div class="row">
+          <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': width.errors?.required && width.touched}">
+            <input id="width" name="width" type="number" min="0" ngModel #width="ngModel" class="validate" pattern=".{1,6}" required>
+            <label for="width">Ancho (cm)</label>
+            <p class="red-text text-darken-4" *ngIf="width.errors?.required&&width.touched">
+              *Este campo es requerido.
+            </p>
+            <p class="red-text text-darken-4" *ngIf="width.errors?.minlength&&width.touched">
+              Por lo menos escriba {{width.errors.minlength.requiredLength}} digitos.
+            </p>
+          </div>
 
-      <div class="row">
-        <div class="col offset-m2 m4 s4 offset-l2 l4">
-          <p>
-            <input (click)="checkSeguro()" class="filled-in checkbox-blue" type="checkbox" id="seguro" />
-            <label class="label-checkbox" for="seguro">Habilitar seguro</label>
-          </p>
+          <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': hight.errors?.required && hight.touched}">
+            <input id="hight" name="hight" type="number" min="0" ngModel #hight="ngModel" class="validate" pattern=".{1,6}" required>
+            <label for="hight">Alto (cm)</label>
+            <p class="red-text text-darken-4" *ngIf="hight.errors?.required&&hight.touched">
+              *Este campo es requerido.
+            </p>
+            <p class="red-text text-darken-4" *ngIf="hight.errors?.minlength&&hight.touched">
+              Por lo menos escriba {{hight.errors.minlength.requiredLength}} digitos.
+            </p>
+          </div>
         </div>
-        <div *ngIf="this.seguro" class="input-field col s8 m4 l4" [ngClass]="{'has-danger': insurance.errors?.required && insurance.touched}">
-          <input id="insurance" name="insurance" type="number" min="0" ngModel #insurance="ngModel" class="validate" pattern=".{1,6}">
-          <label for="insurance">Monto seguro</label>
+
+        <div class="row">
+          <div class="col offset-m2 m4 s4 offset-l2 l4">
+            <p>
+              <input (click)="checkSeguro()" class="filled-in checkbox-blue" type="checkbox" id="seguro" />
+              <label class="label-checkbox" for="seguro">Habilitar seguro</label>
+            </p>
+          </div>
+          <div *ngIf="this.seguro" class="input-field col s8 m4 l4" [ngClass]="{'has-danger': insurance.errors?.required && insurance.touched}">
+            <input id="insurance" name="insurance" type="number" min="0" ngModel #insurance="ngModel" class="validate" pattern=".{1,6}">
+            <label for="insurance">Monto seguro</label>
+          </div>
         </div>
       </div>
 

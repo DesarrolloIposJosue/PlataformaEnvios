@@ -61,15 +61,11 @@ export class CreateGuideComponent implements OnInit {
     this.packageType = createGuideservice.packageType;
     this.city = createGuideservice.city;
     this.destCity = createGuideservice.destinyCity;
-    console.log(this.destCity);
     this.zip = createGuideservice.zip;
     this.destZip = createGuideservice.destinyZip;
-    console.log(this.destZip);
     this.clientName = this.client.name + " " + this.client.lastName;
-    console.log(this.clientName);
     this.totalAmount = createGuideservice.totalAmount;
     this.amountDetail = createGuideservice.amountDetail;
-    console.log(this.amountDetail);
     $(document).ready(function(){
       $('input[type=number]').on('wheel', function(e){
           return false;
@@ -85,7 +81,6 @@ export class CreateGuideComponent implements OnInit {
     this.loading = true;
 
     if(!forma.valid){
-      console.log("Entre?");
       this.invalidForm = true;
       this.loading = false;
     }else{
@@ -132,7 +127,14 @@ export class CreateGuideComponent implements OnInit {
         insurance: this.dataGuide.insurance,
 
         creationDate: new Date(),
-        creationDateString: ""
+        creationDateString: "",
+
+        numGuide: "",
+        multiPieces: "N",
+        multiPiecesMasterId: 0,
+        multiPiecesSequenceNumber: 0,
+        multiPiecesMasterTracking: ""
+
       }
       console.log(shipment);
 
@@ -150,19 +152,24 @@ export class CreateGuideComponent implements OnInit {
             this.petitionError = true;
           }else{
             console.log(jsonData);
-            this.download.DownloadFileFedEx(jsonData).subscribe(document => {
-              if(!document){
+            if(jsonData == "ERROR: BUY MORE PREPAID GUIDES"){
+              this.router.navigate(['/buy-guides']);
+            }else{
+            console.log(jsonData);
+              this.download.DownloadFileFedEx(jsonData).subscribe(document => {
+                if(!document){
 
-              }else{
-                var byteCharacters = document;
-                var byteArray = new Uint8Array(byteCharacters);
-                var blob = new Blob([byteArray], {type: 'application/pdf'});
-                var url= window.URL.createObjectURL(blob);
-                window.open(url);
-                this.guides.selectedGuide = shipment;
-                this.router.navigate(['/summary']);
-              }
-            });
+                }else{
+                  var byteCharacters = document;
+                  var byteArray = new Uint8Array(byteCharacters);
+                  var blob = new Blob([byteArray], {type: 'application/pdf'});
+                  var url= window.URL.createObjectURL(blob);
+                  window.open(url);
+                  this.guides.selectedGuide = shipment;
+                  this.router.navigate(['/summary']);
+                }
+              });
+            }
           }
         });
       }
@@ -176,7 +183,9 @@ export class CreateGuideComponent implements OnInit {
             this.loading = false;
             this.petitionError = true;
           }else{
-            console.log(jsonData);
+            if(jsonData == "ERROR: BUY MORE PREPAID GUIDES"){
+              this.router.navigate(['/buy-guides']);
+            }else{
             this.download.DownloadFileRedPack(jsonData).subscribe(document => {
               if(!document){
 
@@ -190,6 +199,9 @@ export class CreateGuideComponent implements OnInit {
                 this.router.navigate(['/summary']);
               }
             });
+            }
+            console.log(jsonData);
+
           }
         });
       }
@@ -209,13 +221,18 @@ export class CreateGuideComponent implements OnInit {
             this.loading = false;
             this.petitionError = true;
           }else{
-            console.log(jsonData);
-            let tracking:string = jsonData;
-            console.log(tracking);
-            let url:string = "http://webbooking-pruebas.paquetexpress.com.mx:8082/wsReportPaquetexpress/GenCartaPorte?trackingNoGen=" + tracking;
-            window.open(url, "_blank");
-            this.guides.selectedGuide = shipment;
-            this.router.navigate(['/summary']);
+            if(jsonData == "ERROR: BUY MORE PREPAID GUIDES"){
+              //Show message
+              this.router.navigate(['/buy-guides']);
+            }else{
+              console.log(jsonData);
+              let tracking:string = jsonData;
+              console.log(tracking);
+              let url:string = "http://webbooking-pruebas.paquetexpress.com.mx:8082/wsReportPaquetexpress/GenCartaPorte?trackingNoGen=" + tracking;
+              window.open(url, "_blank");
+              this.guides.selectedGuide = shipment;
+              this.router.navigate(['/summary']);
+            }
           }
         });
       }

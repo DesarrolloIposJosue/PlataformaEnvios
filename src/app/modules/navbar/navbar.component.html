@@ -15,7 +15,9 @@
         <!--<li *ngIf="this.typeUser == '1'"><a (click)="goAddProduct()">Agregar producto</a></li>
         <li *ngIf="this.typeUser == '1'"><a (click)="goEditProduct()">Editar producto</a></li>-->
         <li *ngIf="this.typeUser == '1'"><a (click)="goAddGuides()">Agregar guias</a></li>
+        <li *ngIf="this.typeUser == '1'"><a (click)="goDefineGuidesRedPack()">RedPack</a></li>
         <li *ngIf="this.typeUser == '1'"><a (click)="goReports()">Reportes</a></li>
+        <li *ngIf="this.typeUser == '2'"><a (click)="goGuides()">Guías</a></li>
         <li *ngIf="this.clientService.isAuthenticated()"><a (click)="logOut()">Cerrar sesión</a></li>
       </ul>
 
@@ -26,13 +28,15 @@
 <ul materialize="sideNav" class="side-nav" id="mobile-demo">
   <li><a (click)="goHome()"><i class="material-icons icon-blue">home</i>Inicio</a></li>
   <li><a (click)="goQuotation()"><i class="material-icons icon-blue">attach_money</i>Cotizaciones</a></li>
-  <li><a (click)="goTracking()">Rastreo</a></li>
+  <li><a (click)="goTracking()"><i class="material-icons icon-blue">track_changes</i>Rastreo</a></li>
   <li *ngIf="this.typeUser != '3'"><a (click)="goAddClient()"><i class="material-icons icon-blue">account_circle</i>Agregar cliente</a></li>
   <li *ngIf="this.typeUser != '3'"><a (click)="goEditClient()"><i class="material-icons icon-blue">create</i>Editar cliente</a></li>
   <li *ngIf="this.typeUser == '1'"><a (click)="goAddParcelClient()"><i class="material-icons icon-blue">create</i>Asignar paqueterias</a></li>
   <!--<li *ngIf="this.typeUser == '1'"><a (click)="goAddProduct()"><i class="material-icons icon-blue">add_circle_outline</i>Agregar producto</a></li>
   <li *ngIf="this.typeUser == '1'"><a (click)="goEditProduct()"><i class="material-icons icon-blue">add_circle_outline</i>Editar producto</a></li>-->
   <li *ngIf="this.typeUser == '1'"><a (click)="goAddGuides()"><i class="material-icons icon-blue">add_circle_outline</i>Agregar guias</a></li>
-  <li *ngIf="this.typeUser == '1'"><a (click)="goReports()">Reportes</a></li>
+  <li *ngIf="this.typeUser == '1'"><a (click)="goDefineGuidesRedPack()">RedPack</a></li>
+  <li *ngIf="this.typeUser == '1'"><a (click)="goReports()"><i class="material-icons icon-blue">assignment</i>Reportes</a></li>
+  <li *ngIf="this.typeUser == '2'"><a (click)="goGuides()"><i class="material-icons icon-blue">assignment</i>Guías</a></li>
   <li *ngIf="this.clientService.isAuthenticated()"><a (click)="logOut()"><i class="material-icons icon-blue">exit_to_app</i>Cerrar sesión</a></li>
 </ul>

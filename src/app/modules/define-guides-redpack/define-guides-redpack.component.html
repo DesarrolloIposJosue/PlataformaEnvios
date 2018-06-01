@@ -1,0 +1,47 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<div class="row  main">
+  <form name="form" (ngSubmit)="defineGuides(forma)" #forma="ngForm" novalidate class="col s12 offset-m2 offset-l2 m8 l8 blue lighten-5">
+    <h5 class="s12 m12 l12">Definir lote de guías RedPack</h5>
+    <div class="row">
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': startValue.errors?.required && startValue.touched}">
+        <input id="startValue" name="startValue" placeholder="{{this.redPackNumberGuide.startValue}}" value="{{this.redPackNumberGuide.startValue}}" [ngModel]="this.redPackNumberGuide.startValue" #startValue="ngModel" type="text" minlength="1" required>
+        <label class="active" for="startValue">Valor de inicio</label>
+        <p class="red-text text-darken-4" *ngIf="startValue.errors?.required&&startValue.touched">
+          *Este campo es requerido.
+        </p>
+      </div>
+
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <p>
+          <input (click)="activeActVal()" class="filled-in checkbox-blue" type="checkbox" id="activeActVal" />
+          <label for="activeActVal">Activar modificación valor actual</label>
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': currentValue.errors?.required && currentValue.touched}">
+        <input [disabled]="!this.activeActualVal" id="userData" name="currentValue" placeholder="{{this.redPackNumberGuide.currentValue}}" value="{{this.redPackNumberGuide.currentValue}}" [ngModel]="this.redPackNumberGuide.currentValue" #currentValue="ngModel" type="text" class="validate autocomplete" minlength="1">
+        <label class="active" for="currentValue">Valor actual</label>
+        <p class="red-text text-darken-4" *ngIf="currentValue.errors?.required&&currentValue.touched">
+          *Este campo es requerido.
+        </p>
+      </div>
+
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': limitValue.errors?.required && limitValue.touched}">
+        <input id="limitValue" name="limitValue" placeholder="{{this.redPackNumberGuide.limitValue}}" value="{{this.redPackNumberGuide.limitValue}}" [ngModel]="this.redPackNumberGuide.limitValue" #limitValue="ngModel" type="text" minlength="1" required>
+        <label class="active" for="limitValue">Valor del limite</label>
+        <p class="red-text text-darken-4" *ngIf="limitValue.errors?.required&&limitValue.touched">
+          *Este campo es requerido.
+        </p>
+      </div>
+
+      <div class="row col offset-s1 s10 offset-m1 m10 offset-l1 l10 center-align">
+        <button [disabled]="loading" class="btn blue accent-3">Limitar</button>
+      </div>
+
+      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+    </div>
+  </form>
+</div>

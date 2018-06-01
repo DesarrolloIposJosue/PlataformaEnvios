@@ -52,6 +52,18 @@ export class ProductService {
     return this.http.get(operation, options).map((res:Response) => res.json());
   }
 
+  getParcelsFromUserQuotation(userId:number){
+    var operation:string = this.apiBase + 'GetParcelsFromUser';
+    // Headers
+    let myHeaders = new Headers();
+    // Body or Search
+    let myParams: URLSearchParams = new URLSearchParams();
+    myHeaders.set('UserId', userId.toString());
+    let options = new RequestOptions({ headers: myHeaders, search: myParams });
+
+    return this.http.get(operation, options).map((res:Response) => res.json());
+  }
+
   updateProduct(product:Product){
     var operation:string = this.apiBase + 'UpdateProduct';
     // Headers

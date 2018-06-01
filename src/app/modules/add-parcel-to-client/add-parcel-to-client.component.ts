@@ -88,6 +88,9 @@ export class AddParcelToClientComponent implements OnInit {
   private errorProductPaqueteExpress:boolean = false;
   private errorProdPricePaqueteExpress:boolean = false;
 
+  private multiPackRedPack:string = "N";
+  private multiPackFedEx:string = "N";
+
   constructor(
     private parcelService:ParcelService,
     private router:Router,
@@ -98,7 +101,6 @@ export class AddParcelToClientComponent implements OnInit {
           return false;
       });
     });
-    console.log(this.productService.operation);
     if(this.productService.operation == 1){
       this.productService.getParcelsFromUser().subscribe(
         (responseParcels) =>{
@@ -172,6 +174,7 @@ export class AddParcelToClientComponent implements OnInit {
           parcInfoInd.limitGuides = 'N';
           parcInfoInd.limitedGuidesNumber = 0;
         }
+        parcInfoInd.multiPieces = this.multiPackRedPack;
         parcInfo.push(parcInfoInd);
         //Edit part
         if(this.productService.operation == 1){
@@ -240,6 +243,7 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.reference = this.userParcelRedPack.reference;
         parcInfoInd.limitGuides = this.userParcelRedPack.limitGuides;
         parcInfoInd.limitedGuidesNumber = this.userParcelRedPack.limitedGuidesNumber;
+        parcInfoInd.multiPieces = this.userParcelRedPack.multiPieces;
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPriceRedPack.length; j++)
         {
@@ -269,6 +273,7 @@ export class AddParcelToClientComponent implements OnInit {
           parcInfoInd.limitGuides = 'N';
           parcInfoInd.limitedGuidesNumber = 0;
         }
+        parcInfoInd.multiPieces = this.multiPackFedEx;
         parcInfo.push(parcInfoInd);
         //Edit part
         if(this.productService.operation == 1){
@@ -337,6 +342,7 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.reference = this.userParcelFedEx.reference;
         parcInfoInd.limitGuides = this.userParcelFedEx.limitGuides;
         parcInfoInd.limitedGuidesNumber = this.userParcelFedEx.limitedGuidesNumber;
+        parcInfoInd.multiPieces = this.userParcelFedEx.multiPieces;
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPriceFedEx.length; j++)
         {
@@ -366,6 +372,7 @@ export class AddParcelToClientComponent implements OnInit {
           parcInfoInd.limitGuides = 'N';
           parcInfoInd.limitedGuidesNumber = 0;
         }
+        parcInfoInd.multiPieces = 'N';
         parcInfo.push(parcInfoInd);
         //Edit part
         if(this.productService.operation == 1){
@@ -435,6 +442,7 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.reference = this.userParcelDHL.reference;
         parcInfoInd.limitGuides = this.userParcelDHL.limitGuides;
         parcInfoInd.limitedGuidesNumber = this.userParcelDHL.limitedGuidesNumber;
+        parcInfoInd.multiPieces = 'N';
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPriceDHL.length; j++)
         {
@@ -463,6 +471,7 @@ export class AddParcelToClientComponent implements OnInit {
           parcInfoInd.limitGuides = 'N';
           parcInfoInd.limitedGuidesNumber = 0;
         }
+        parcInfoInd.multiPieces = 'N';
         parcInfo.push(parcInfoInd);
         //Edit part
         if(this.productService.operation == 1){
@@ -531,6 +540,7 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.reference = this.userParcelEstafeta.reference;
         parcInfoInd.limitGuides = this.userParcelEstafeta.limitGuides;
         parcInfoInd.limitedGuidesNumber = this.userParcelEstafeta.limitedGuidesNumber;
+        parcInfoInd.multiPieces = 'N';
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPriceEstafeta.length; j++)
         {
@@ -560,6 +570,7 @@ export class AddParcelToClientComponent implements OnInit {
           parcInfoInd.limitGuides = 'N';
           parcInfoInd.limitedGuidesNumber = 0;
         }
+        parcInfoInd.multiPieces = 'N';
         parcInfo.push(parcInfoInd);
         //Edit part
         if(this.productService.operation == 1){
@@ -628,6 +639,7 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.reference = this.userParcelPaqueteExpress.reference;
         parcInfoInd.limitGuides = this.userParcelPaqueteExpress.limitGuides;
         parcInfoInd.limitedGuidesNumber = this.userParcelPaqueteExpress.limitedGuidesNumber;
+        parcInfoInd.multiPieces = 'N';
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPricePaqueteExpress.length; j++)
         {
@@ -677,7 +689,6 @@ export class AddParcelToClientComponent implements OnInit {
       this.redPackForm = true;
       let parcelId:number = 2;
       if(this.productService.operation == 0){
-        console.log("Entro?");
         this.parcelService.getProductsByParcel(parcelId).subscribe(
           (successResponse) => {
               if(!successResponse){
@@ -722,6 +733,15 @@ export class AddParcelToClientComponent implements OnInit {
                   this.userParcelRedPack.commissionDeclared = productArray[i].commissionDeclared;
                   this.userParcelRedPack.extendedArea = productArray[i].extendedArea;
                   this.userParcelRedPack.limitGuides = productArray[i].limitGuides;
+                  this.userParcelRedPack.multiPieces = productArray[i].multiPieces;
+                  if(this.userParcelRedPack.multiPieces == "Y"){
+                    var element = <HTMLInputElement>document.getElementById("multipackRedPack");
+                    element = <HTMLInputElement>document.getElementById("multipackRedPack");
+                    element.checked = true;
+                    this.multiPackRedPack = "Y";
+                  }else{
+                    this.multiPackRedPack = "N";
+                  }
                   if(productArray[i].limitedGuidesNumber > 0){
                     this.userParcelRedPack.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
                   }else{
@@ -1042,6 +1062,14 @@ export class AddParcelToClientComponent implements OnInit {
                   this.userParcelFedEx.commissionDeclared = productArray[i].commissionDeclared;
                   this.userParcelFedEx.extendedArea = productArray[i].extendedArea;
                   this.userParcelFedEx.limitGuides = productArray[i].limitGuides;
+                  this.userParcelFedEx.multiPieces = productArray[i].multiPieces;
+                  if(this.userParcelFedEx.multiPieces == "Y"){
+                    var element = <HTMLInputElement>document.getElementById("multipackFedEx");
+                    element.checked = true;
+                    this.multiPackFedEx = "Y";
+                  }else{
+                    this.multiPackFedEx = "N";
+                  }
                   if(productArray[i].limitedGuidesNumber > 0){
                     this.userParcelFedEx.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
                   }else{
@@ -1318,8 +1346,6 @@ export class AddParcelToClientComponent implements OnInit {
     if(element.checked == true){
       this.estafetaForm = true;
       let parcelId:number = 4;
-      console.log("Entro?");
-      console.log(this.productService.operation);
       if(this.productService.operation == 0){
         this.parcelService.getProductsByParcel(parcelId).subscribe(
           (successResponse) => {
@@ -1460,6 +1486,26 @@ export class AddParcelToClientComponent implements OnInit {
     }else{
       this.estafetaForm = false;
       this.guidesEstafeta = false;
+    }
+  }
+
+  validateMultipackFedEx(){
+    var element = <HTMLInputElement>document.getElementById("multipackFedEx");
+    element = <HTMLInputElement>document.getElementById("multipackFedEx");
+    if(element.checked == true){
+      this.multiPackFedEx = "Y";
+    }else{
+      this.multiPackFedEx = "N";
+    }
+  }
+
+  validateMultipackRedPack(){
+    var element = <HTMLInputElement>document.getElementById("multipackRedPack");
+    element = <HTMLInputElement>document.getElementById("multipackRedPack");
+    if(element.checked == true){
+      this.multiPackRedPack = "Y";
+    }else{
+      this.multiPackRedPack = "N";
     }
   }
 

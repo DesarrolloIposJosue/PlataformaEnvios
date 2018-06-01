@@ -1,5 +1,116 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-<p>
-  add-guides-to-client works!
-</p>
+<div *ngIf="this.clientService.operation == 0" class="row  main">
+  <form name="form" (ngSubmit)="savePrepaidGuides(forma)" #forma="ngForm" novalidate class="col s12 offset-m2 offset-l2 m8 l8 blue lighten-5">
+    <h5 class="s12 m12 l12">Añadir guias prepago</h5>
+    <div class="row">
+
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <p>
+          <input (click)="checkEstafeta()" class="filled-in checkbox-blue" type="checkbox" id="estafetaCheck" />
+          <label for="estafetaCheck">Estafeta</label>
+        </p>
+      </div>
+
+      <div *ngIf="this.guidesEstafeta" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': numberGuidesEstafeta.errors?.required && numberGuidesEstafeta.touched}">
+        <i class="material-icons prefix">font_download</i>
+        <input id="numberGuidesEstafeta" name="numberGuidesEstafeta" ngModel #numberGuidesEstafeta="ngModel" type="number" class="validate" minlength="6" required>
+        <label for="numberGuidesEstafeta">Guías Estafeta</label>
+        <p class="red-text text-darken-4" *ngIf="numberGuidesEstafeta.errors?.required&&numberGuidesEstafeta.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="numberGuidesEstafeta.errors?.minlength&&numberGuidesEstafeta.touched">
+          Por lo menos escriba {{numberGuidesEstafeta.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <p>
+          <input (click)="checkDHL()" class="filled-in checkbox-blue" type="checkbox" id="dhlCheck" />
+          <label for="dhlCheck">DHL</label>
+        </p>
+      </div>
+
+      <div *ngIf="this.guidesDHL" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': numberGuidesDHL.errors?.required && numberGuidesDHL.touched}">
+        <i class="material-icons prefix">font_download</i>
+        <input id="numberGuidesDHL" name="numberGuidesDHL" ngModel #numberGuidesDHL="ngModel" type="number" class="validate" minlength="6" required>
+        <label for="numberGuidesDHL">Guías DHL</label>
+        <p class="red-text text-darken-4" *ngIf="numberGuidesDHL.errors?.required&&numberGuidesDHL.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="numberGuidesPaquete.errors?.minlength&&numberGuidesPaquete.touched">
+          Por lo menos escriba {{numberGuidesPaquete.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <p>
+          <input (click)="checkRedPack()" class="filled-in checkbox-blue" type="checkbox" id="redPackCheck" />
+          <label for="redPackCheck">RedPack</label>
+        </p>
+      </div>
+
+      <div *ngIf="this.guidesRedPack" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': numberGuidesRedPack.errors?.required && numberGuidesRedPack.touched}">
+        <i class="material-icons prefix">font_download</i>
+        <input id="numberGuidesRedPack" name="numberGuidesRedPack" ngModel #numberGuidesRedPack="ngModel" type="number" class="validate" minlength="6" required>
+        <label for="numberGuidesRedPack">Guías RedPack</label>
+        <p class="red-text text-darken-4" *ngIf="numberGuidesRedPack.errors?.required&&numberGuidesRedPack.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="numberGuidesRedPack.errors?.minlength&&numberGuidesRedPack.touched">
+          Por lo menos escriba {{numberGuidesRedPack.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <p>
+          <input (click)="checkFedEx()" class="filled-in checkbox-blue" type="checkbox" id="fedExCheck" />
+          <label for="fedExCheck">FedEx</label>
+        </p>
+      </div>
+
+      <div *ngIf="this.guidesFedEx" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': numberGuidesFedEx.errors?.required && numberGuidesFedEx.touched}">
+        <i class="material-icons prefix">font_download</i>
+        <input id="numberGuidesFedEx" name="numberGuidesFedEx" ngModel #numberGuidesFedEx="ngModel" type="number" class="validate" minlength="6" required>
+        <label for="numberGuidesFedEx">Guías FedEx</label>
+        <p class="red-text text-darken-4" *ngIf="numberGuidesFedEx.errors?.required&&numberGuidesFedEx.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="numberGuidesFedEx.errors?.minlength&&numberGuidesFedEx.touched">
+          Por lo menos escriba {{numberGuidesFedEx.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
+        <p>
+          <input (click)="checkPaquetexpress()" class="filled-in checkbox-blue" type="checkbox" id="paquetexpressCheck" />
+          <label for="paquetexpressCheck">Paquetexpress</label>
+        </p>
+      </div>
+
+      <div *ngIf="this.guidesPaquetexpress" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': numberGuidesPaquete.errors?.required && numberGuidesPaquete.touched}">
+        <i class="material-icons prefix">font_download</i>
+        <input id="numberGuidesPaquete" name="numberGuidesPaquete" ngModel #numberGuidesPaquete="ngModel" type="number" class="validate" minlength="6" required>
+        <label for="numberGuidesPaquete">Guías paquetexpress</label>
+        <p class="red-text text-darken-4" *ngIf="numberGuidesPaquete.errors?.required&&numberGuidesPaquete.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="numberGuidesPaquete.errors?.minlength&&numberGuidesPaquete.touched">
+          Por lo menos escriba {{numberGuidesPaquete.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="formInvalid">
+        <p class="red-text text-darken-4">
+          Error en el formulario falta llenar alguno de los campos.
+        </p>
+      </div>
+
+      <div class="row col offset-s1 s10 offset-m1 m10 offset-l1 l10 center-align">
+        <button [disabled]="loading" class="btn waves-effect  blue accent-3">Guardar</button>
+      </div>
+      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+    </div>
+  </form>
+</div>

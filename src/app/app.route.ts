@@ -17,6 +17,8 @@ import { AddGuidesToClientComponent } from './modules/add-guides-to-client/add-g
 import { CreateGuideComponent } from './modules/create-guide/create-guide.component';
 import { ReportsComponent } from './modules/reports/reports.component';
 import { SummaryGuideComponent } from './modules/summary-guide/summary-guide.component';
+import { BuyGuidesComponent } from './modules/buy-guides/buy-guides.component';
+import { DefineGuidesRedpackComponent } from './modules/define-guides-redpack/define-guides-redpack.component';
 
 const APP_ROUTES: Routes = [
   { path: 'home', component: HomeComponent },
@@ -35,8 +37,11 @@ const APP_ROUTES: Routes = [
   { path: 'add-guides-to-client', component: AddGuidesToClientComponent, canActivate:[AuthGuardService]},
   { path: 'create-guide', component: CreateGuideComponent, canActivate:[AuthGuardService]},
   { path: 'reports', component: ReportsComponent, canActivate:[AuthGuardService]},
+  { path: 'guides', component: ReportsComponent, canActivate:[AuthGuardService]},
   { path: 'summary', component: SummaryGuideComponent, canActivate:[AuthGuardService]},
   { path: 'tracking', component: TrackingComponent, canActivate:[AuthGuardService]},
+  { path: 'buy-guides', component: BuyGuidesComponent, canActivate:[AuthGuardService]},
+  { path: 'define-guides-redpack', component: DefineGuidesRedpackComponent, canActivate:[AuthGuardService]},
   { path: '', pathMatch: 'full', redirectTo: 'log-in' },
   { path: '**', component: LogInComponent }
 ];

@@ -9,4 +9,5 @@ export class User_Parcel{
   public commissionDeclared: number;
   public limitGuides: string;
   public limitedGuidesNumber: number;
+  public multiPieces: string;
 }

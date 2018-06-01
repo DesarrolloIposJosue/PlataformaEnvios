@@ -24,7 +24,6 @@ export class ClientService {
       let userAux:User = new User(user.id, user.name, user.lastName, user.userName, user.password, user.address, user.email, user.typeId,
       user.address2, user.colony, user.city, user.state, user.zip, user.country, user.phoneNumber);
       this.userEdit = userAux;
-      console.log(this.userEdit);
     }
 
     isLogged(): Promise<boolean>{
