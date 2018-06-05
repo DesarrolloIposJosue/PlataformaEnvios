@@ -122,31 +122,53 @@
     </div>
   </form>
 
-  <table *ngIf="this.validDateGuide && this.validDateGuide.length > 0 ">
+
+  <div *ngIf="totalCalculated && this.createGuideService.userActual.typeId == 1" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10 blue lighten-5 ">
+    <h6>Total calculado: {{total}}</h6>
+  </div>
+
+  <table *ngIf="this.validDateGuide && this.validDateGuide.length > 0 && this.multipiecesObject && this.multipiecesObject.length > 0">
     <thead *ngIf="this.validDateGuide && this.loaded">
       <tr>
         <th>Guia</th>
         <th>Monto</th>
+        <th>Piezas</th>
         <th>Nombre origen</th>
         <th>Nombre destino</th>
         <th>Fecha</th>
-        <th></th>
-        <th></th>
+        <th *ngIf="shipment.validDate && shipment.status != 'CANCELADO'"></th>
+        <th *ngIf="shipment.validDate && this.createGuideService.userActual.typeId == 1"></th>
         <th></th>
       </tr>
     </thead>
 
-    <tbody>
+    <tbody >
       <tr *ngFor="let shipment of this.validDateGuide">
+        <td *ngIf="shipment.multiPieces == 'N'">{{shipment.trackingKey}}</td>
+        <td *ngIf="shipment.multiPieces == 'N'">${{shipment.totalAmount}}</td>
+        <td *ngIf="shipment.multiPieces == 'N'">1</td>
+        <td *ngIf="shipment.multiPieces == 'N'">{{shipment.originUserName}}</td>
+        <td *ngIf="shipment.multiPieces == 'N'">{{shipment.destinyUserName}}
+        <td *ngIf="shipment.multiPieces == 'N'">{{shipment.creationDateString}}</td>
+        <td *ngIf="shipment.multiPieces == 'N'">
+          <a *ngIf="shipment.multiPieces == 'N' && shipment.validDate && shipment.status != 'CANCELADO'" (click)="checkGuide(shipment.parcelId, shipment.trackingKey)" class="btn-small blue accent-3">Reimprimir</a>
+        </td>
+        <td *ngIf="shipment.multiPieces == 'N' && shipment.validDate && this.createGuideService.userActual.typeId == 1">
+          <a (click)="cancelGuide(shipment)" class="btn-small blue accent-3">Cancelar</a>
+        </td>
+        <td *ngIf="shipment.multiPieces == 'N'">
+          <a (click)="loadReport(shipment.id)" class="btn-small blue accent-3">Mostrar</a>
+        </td>
+      </tr>
+
+      <tr *ngFor="let shipment of this.multipiecesObject">
         <td>{{shipment.trackingKey}}</td>
-        <td>${{shipment.totalAmount}}</td>
+        <td>${{shipment.amount}}</td>
+        <td>{{shipment.quantity}}</td>
         <td>{{shipment.originUserName}}</td>
         <td>{{shipment.destinyUserName}}
-        <td>{{shipment.creationDateString}}</td>
-        <td>
-
-        </td>
-        <td *ngIf="shipment.validDate">
+        <td>{{shipment.date}}</td>
+        <td *ngIf="shipment.validDate && shipment.status != 'CANCELADO'">
           <a (click)="checkGuide(shipment.parcelId, shipment.trackingKey)" class="btn-small blue accent-3">Reimprimir</a>
         </td>
         <td *ngIf="shipment.validDate && this.createGuideService.userActual.typeId == 1">
@@ -158,5 +180,6 @@
       </tr>
     </tbody>
   </table>
+
 
 </div>

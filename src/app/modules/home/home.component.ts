@@ -25,7 +25,20 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private autoLogOut:AutoLogOutService
   ) {
-
+    $(document).ready(function(){
+      $('.carousel').carousel({
+      fullWidth: true,
+      indicators: true,
+      });
+      $('.carousel').carousel({
+        padding: 200
+      });
+      autoplay()
+      function autoplay() {
+        $('.carousel').carousel('next');
+        setTimeout(autoplay, 5000);
+      }
+    });
   }
 
   toggle() {
@@ -36,18 +49,8 @@ export class HomeComponent implements OnInit {
     }
 
   ngOnInit() {
-    $('.carousel').carousel({
-    fullWidth: true,
-    indicators: true,
-    });
-    $('.carousel').carousel({
-      padding: 200
-    });
-    autoplay()
-    function autoplay() {
-      $('.carousel').carousel('next');
-      setTimeout(autoplay, 5000);
-    }
+
+
 
     this.clientService.isLogged().then((result:boolean) => {
       if(!result){
@@ -61,5 +64,5 @@ export class HomeComponent implements OnInit {
       this.router.navigate(['/quotation']);
   }
 
-  
+
 }

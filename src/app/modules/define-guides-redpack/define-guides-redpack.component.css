@@ -42,3 +42,7 @@
 .input-field .prefix.active {
   color: #2962ff;
 }
+
+label{
+  color:black;
+}

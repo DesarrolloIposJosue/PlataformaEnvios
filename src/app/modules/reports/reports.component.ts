@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { ClientService } from '../../services/client-service/client.service';
 import { User } from '../../classes/Client';
+import { ShowMultiPieces } from '../../classes/ShowMultipieces';
 import { Shipment } from "../../classes/Shipment";
 import { ValidDateGuide } from "../../classes/ValidDateGuide";
 import { MaterializeAction, MaterializeDirective } from 'angular2-materialize';
@@ -38,6 +39,12 @@ export class ReportsComponent implements OnInit {
   private limitDate:Date;
 
   private validDateGuide:ValidDateGuide[] = [];
+  private validDateGuideAux:ValidDateGuide;
+
+  private multipiecesObject:ShowMultiPieces[] = [];
+
+  private totalCalculated:boolean = false;
+  private total:number = 0;
 
   constructor(
     private clientService:ClientService,
@@ -102,7 +109,9 @@ export class ReportsComponent implements OnInit {
   }
 
   checkReports(forma:NgForm){
+    this.total = 0;
     this.validDateGuide = [];
+    this.multipiecesObject = [];
     var element = <HTMLInputElement>document.getElementById("userData");
     this.shipments = [];
 
@@ -119,7 +128,6 @@ export class ReportsComponent implements OnInit {
       for(var i = 0; i < this.response.length; i++){
         var userNameLastName = this.response[i].name + " " + this.response[i].lastName;
         if(element.value == userNameLastName){
-          console.log("match?");
           idClient = this.response[i].id;
         }
       }
@@ -137,7 +145,6 @@ export class ReportsComponent implements OnInit {
             for(let i = 0; i < response.length; i++){
               let valid:boolean = false;
               let x = response[i].CreationDateString.split("/");
-              console.log(x);
               let day:string = x[0];
               let month:string = x[1];
               let year:string = x[2];
@@ -158,14 +165,66 @@ export class ReportsComponent implements OnInit {
         response[i].NumGuide, response[i].MultiPieces, response[i].MultiPiecesMasterTracking, response[i].MultiPiecesMasterId, response[i].MultiPiecesSequenceNumber, valid));
             }
 
-            console.log(this.validDateGuide);
-
-
-
-
           if(this.shipments.length > 0 || this.validDateGuide.length > 0){
-            console.log("Entre")
             this.loaded = true;
+            let masterId:number = 0;
+            let lastMasterId:number = 0;
+            let counterMatches:number = 0;
+            let start:boolean = false;
+            for(let i=0; i<this.validDateGuide.length; i++){
+              if(this.validDateGuide[i].multiPieces == "N"){
+                this.total = this.validDateGuide[i].totalAmount + this.total;
+              }
+              if(i == this.validDateGuide.length-1){
+                console.log("Entre");
+                if(this.validDateGuide[i].multiPieces == "Y"){
+                  this.total = this.validDateGuide[i].totalAmount + this.total;
+                  counterMatches++
+                  this.validDateGuideAux = this.validDateGuide[i];
+                  this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                    this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                  this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId));
+                }else{
+                  this.total = this.validDateGuide[i].totalAmount + this.total;
+                  this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                    this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                  this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId));
+                }
+              }else if(this.validDateGuide[i].multiPieces == "Y"){
+                lastMasterId = masterId;
+                console.log("lastmaster");
+                console.log(lastMasterId);
+                masterId = this.validDateGuide[i].multiPiecesMasterId;
+                console.log("masterId")
+                console.log(masterId);
+                if(lastMasterId != masterId && start){
+                  console.log("Reinicio");
+                  this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                  this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId));
+                  counterMatches = 1;
+                  this.total = this.validDateGuide[i].totalAmount + this.total;
+                }else if(i == this.validDateGuide.length-1){
+                  counterMatches++;
+                  console.log(counterMatches);
+                }else{
+                  counterMatches++;
+                  console.log(counterMatches);
+                }
+                start = true;
+                this.validDateGuideAux = this.validDateGuide[i];
+              }else{
+                if(counterMatches > 1){
+                  this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                  this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId));
+                counterMatches = 0;
+                this.total = this.validDateGuide[i].totalAmount + this.total;
+                }
+              }
+            }
+            this.totalCalculated = true;
+            console.log(this.multipiecesObject);
           }else{
             this.loaded = false;
           }

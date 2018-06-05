@@ -35,7 +35,14 @@ export class SelectClientEditGuidesComponent implements OnInit {
     private router:Router,
     private clientService:ClientService,
     private guideService:GuidesService
-  ) { }
+  ) {
+
+    $(document).ready(function(){
+      $('input[type=number]').on('wheel', function(e){
+          return false;
+      });
+    });
+  }
 
   ngOnInit() {
     this.clientService.getUsersByUserID().subscribe(
@@ -93,6 +100,11 @@ export class SelectClientEditGuidesComponent implements OnInit {
                         new User_PrepaidGuides(guides[i].userId, guides[i].limitedGuidesNumber, guides[i].parcelId)
                     )
                   }
+                  $(document).ready(function(){
+                    $('input[type=number]').on('wheel', function(e){
+                        return false;
+                    });
+                  });
                   /*let checkParcelId:boolean = false;
                   let userId:number = 0;
                   let parcelIdActual:number = 0;

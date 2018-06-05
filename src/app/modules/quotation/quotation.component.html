@@ -71,8 +71,10 @@
           </p>
       </div>
 
-      <div *ngIf="this.userMultiPack" class="col offset-s1 s10 offset-m1 m10 offset-l1 l10 margin-bottom ">
-        <p>
+      <h5 *ngIf="this.userMultiPack" class="blue lighten-2">Multipieza</h5>
+
+      <div *ngIf="this.userMultiPack" class="row margin-bottom">
+        <p class="col s10 m10 l10">
           <input (click)="activeMultiPack()" class="filled-in checkbox-blue" type="checkbox" id="multipack" />
           <label for="multipack">Activar multipieza</label>
         </p>

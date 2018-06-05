@@ -233,6 +233,11 @@ export class QuotationComponent implements OnInit {
       this.objectCreateMultipieces.push(new MultipiecesForm("weight" + i, "length" + i, "width" + i,
       "height" + i, "insurance" + i))
     }
+    $(document).ready(function(){
+      $('input[type=number]').on('wheel', function(e){
+          return false;
+      });
+    });
   }
 
   activeMultiPack(){
@@ -240,9 +245,19 @@ export class QuotationComponent implements OnInit {
     element = <HTMLInputElement>document.getElementById("multipack");
     if(element.checked == true){
       this.multiPackActive = true;
+      $(document).ready(function(){
+        $('input[type=number]').on('wheel', function(e){
+            return false;
+        });
+      });
     }else{
       this.objectCreateMultipieces = [];
       this.multiPackActive = false;
+      $(document).ready(function(){
+        $('input[type=number]').on('wheel', function(e){
+            return false;
+        });
+      });
     }
   }
 }
