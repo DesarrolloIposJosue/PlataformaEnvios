@@ -32,7 +32,6 @@ export class SelectClientEditComponent implements OnInit {
   ngOnInit() {
     this.clientService.getUsersByUserID().subscribe(
       (successResponse) => {
-        console.log(successResponse);
           if(!successResponse){
             this.loading = false;
             this.petitionError = true;
@@ -53,7 +52,6 @@ export class SelectClientEditComponent implements OnInit {
           }
       },
       (errorResponse) => {
-        console.log('Error al hacer el request');
         this.loading = false;
         this.petitionError = true;
       }
@@ -67,7 +65,6 @@ export class SelectClientEditComponent implements OnInit {
     }else{
       this.invalidForm = false;
       this.loading = true;
-      console.log(this.response);
       for(var i = 0; i < this.response.length; i++){
         var userNameLastName = this.response[i].name + " " + this.response[i].lastName;
         if(element.value == userNameLastName){

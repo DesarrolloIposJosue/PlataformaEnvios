@@ -59,17 +59,11 @@ export class ReportsComponent implements OnInit {
 
     this.date = new Date();
     this.limitDate = new Date();
-    console.log(this.date.getMonth());
     this.limitDate.setMonth(this.limitDate.getMonth() - 1);
-    console.log(this.limitDate.getMonth());
-
-    console.log(this.limitDate.toString());
 
     var obj = JSON.parse(sessionStorage.getItem('ActualUser')); // An object :D
     this.user = new User(obj.id, obj.name, obj.lastName, obj.userName, obj.password, obj.address, obj.email, obj.typeId, obj.address2,
   obj.colony, obj.city, obj.state, obj.zip, obj.country, obj.phoneNumber);
-
-  console.log(this.user);
 
   if(this.user.typeId == 2){
     this.reportType = 2;
@@ -79,7 +73,6 @@ export class ReportsComponent implements OnInit {
 
     this.clientService.getUsersByUserID().subscribe(
       (successResponse) => {
-        console.log(successResponse);
           if(!successResponse){
             this.loading = false;
             this.petitionError = true;
@@ -100,7 +93,6 @@ export class ReportsComponent implements OnInit {
           }
       },
       (errorResponse) => {
-        console.log('Error al hacer el request');
         this.loading = false;
         this.petitionError = true;
       }
@@ -168,7 +160,6 @@ export class ReportsComponent implements OnInit {
         response[i].NumGuide, response[i].MultiPieces, response[i].MultiPiecesMasterTracking, response[i].MultiPiecesMasterId, response[i].MultiPiecesSequenceNumber, valid));
             }
 
-            console.log(this.validDateGuide);
 
           if(this.shipments.length > 0 || this.validDateGuide.length > 0){
             this.loaded = true;
@@ -178,10 +169,7 @@ export class ReportsComponent implements OnInit {
             let start:boolean = false;
             for(let i=0; i<this.validDateGuide.length; i++){
               if(this.validDateGuide[i].multiPieces == "N"){
-                console.log("Se agrega");
-                console.log(this.validDateGuide[i].totalAmount);
                 this.total = this.validDateGuide[i].totalAmount + this.total;
-                console.log(this.total);
                 if(counterMatches > 0){
                   this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                     this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
@@ -192,13 +180,8 @@ export class ReportsComponent implements OnInit {
                   counterMatches = 0;
                 }
               }else if(i == this.validDateGuide.length-1){
-                console.log("entro al final");
-                console.log("Valor: ", i)
                 if(this.validDateGuide[i].multiPieces == "Y"){
-                  console.log("Se agrega");
-                  console.log(this.validDateGuide[i].totalAmount);
                   this.total = this.validDateGuide[i].totalAmount + this.total;
-                  console.log(this.total);
                   counterMatches++;
                   if(this.validDateGuide[i].parcelId == 2){
                     this.trackings.push(this.validDateGuide[i].numGuide);
@@ -212,10 +195,7 @@ export class ReportsComponent implements OnInit {
                   this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
                   this.trackings, this.guidesId));
                 }else{
-                  console.log("Se agrega");
-                  console.log(this.validDateGuide[i].totalAmount);
                   this.total = this.validDateGuide[i].totalAmount + this.total;
-                  console.log(this.total);
                   this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                     this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
                   this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
@@ -239,11 +219,7 @@ export class ReportsComponent implements OnInit {
                   }
                   this.guidesId.push(this.validDateGuide[i].id.toString());
                   if(i != this.validDateGuide.length-2){
-                    console.log("Valor: ", i)
-                    console.log("Se agrega");
-                    console.log(this.validDateGuide[i].totalAmount);
                     this.total = this.validDateGuide[i].totalAmount + this.total;
-                    console.log(this.total);
                   }
                 }else if(i == this.validDateGuide.length-1){
                   counterMatches++;
@@ -312,7 +288,6 @@ export class ReportsComponent implements OnInit {
                 start = true;
                 this.validDateGuideAux = this.validDateGuide[i];*/
               }else{
-                console.log("Entro jajajajajaajjaj");
                 if(counterMatches > 1){
                   this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                   this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
@@ -321,10 +296,7 @@ export class ReportsComponent implements OnInit {
                   this.trackings = [];
                   this.guidesId = [];
                   counterMatches = 0;
-                  console.log("Se agrega");
-                  console.log(this.validDateGuide[i].totalAmount);
                   this.total = this.validDateGuide[i].totalAmount + this.total;
-                  console.log(this.total);
                 }
               }
             }
@@ -332,7 +304,6 @@ export class ReportsComponent implements OnInit {
             if(this.total > 0){
               this.totalCalculated = true;
             }
-            console.log(this.multipiecesObject);
           }else{
             this.loaded = false;
           }
@@ -351,7 +322,6 @@ export class ReportsComponent implements OnInit {
     if(deviceValue == 1 || deviceValue == 2){
       this.clientService.getUsersByUserID().subscribe(
         (successResponse) => {
-          console.log(successResponse);
             if(!successResponse){
               this.loading = false;
               this.petitionError = true;
@@ -372,7 +342,6 @@ export class ReportsComponent implements OnInit {
             }
         },
         (errorResponse) => {
-          console.log('Error al hacer el request');
           this.loading = false;
           this.petitionError = true;
         }
@@ -388,11 +357,7 @@ export class ReportsComponent implements OnInit {
       }
     }
 
-
-    console.log("Que pacho?");
-    console.log(this.shipment);
     let data = JSON.stringify(this.shipment);
-    console.log(data);
     this.downloadReport(data);
     this.router.navigate(['/summary']);
   }
@@ -431,8 +396,6 @@ export class ReportsComponent implements OnInit {
   }
 
   checkMultiguides(parcelId:number, trackingKeys:string[]){
-    console.log(parcelId);
-    console.log(trackingKeys);
     for(let tracking = 0; tracking < trackingKeys.length; tracking++){
       if(parcelId == 3){
         this.download.DownloadFileFedEx(trackingKeys[tracking]).subscribe(document => {
@@ -468,7 +431,6 @@ export class ReportsComponent implements OnInit {
   }
 
   loadReportMultiguides(shipmentsId:string[]){
-    console.log(shipmentsId);
     let shipments:ValidDateGuide[] = [];
     for(let i=0; i < shipmentsId.length; i++){
       var idString = shipmentsId[i];
@@ -476,14 +438,12 @@ export class ReportsComponent implements OnInit {
       let item = this.validDateGuide.find(j => j.id === compare);
       shipments.push(item);
     }
-    console.log(shipments);
     this.guideService.selectedMultiguides = shipments;
     this.router.navigate(['/summary']);
   }
 
   downloadReport(data){
     var csvData = this.ConvertToCSV(data);
-    console.log(csvData);
     var a = document.createElement("a");
     a.setAttribute('style', 'display:none;');
     document.body.appendChild(a);
@@ -509,26 +469,19 @@ export class ReportsComponent implements OnInit {
      //append Label row with line break
      str += row + '\r\n';
      for (var i = 0; i < array.length; i++) {
-       console.log("Entro aquí?");
        var line = '';
-       console.log(array);
        for (var index in array[i]) {
-         console.log("Entro?")
          if (line != '') line += ','
           line += array[i][index];
-          console.log(array[i][index])
        }
        str += line + '\r\n';
      }
-     console.log(str);
      return str;
   }
 
   cancelGuide(shipment:Shipment){
-    console.log(shipment);
     this.guideService.CancelGuide(shipment).subscribe(response =>{
       if(response){
-        console.log(response);
         this.router.navigate(['/home']);
       }
     });

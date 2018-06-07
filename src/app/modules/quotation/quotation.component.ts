@@ -67,7 +67,6 @@ export class QuotationComponent implements OnInit {
           this.petitionError = true;
         }else{
           var productArray = responseParcels;
-          console.log(productArray);
           for (var i = 0; i < productArray.length; i++) {
             if(productArray[i].parcelId == 2 || productArray[i].parcelId == 3){
               if(productArray[i].multiPieces == "Y"){
@@ -132,7 +131,6 @@ export class QuotationComponent implements OnInit {
           this.createGuideService.multipiecesData = this.packs;
         this.rateService.GetQuotationMultiPieces(this.packs, this.createGuideService.userActual.id).subscribe(responseQuotation => {
           if(responseQuotation){
-            console.log(responseQuotation)
             var rateArray = responseQuotation;
             this.response = responseQuotation;
             this.dataProducts = [];

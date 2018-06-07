@@ -104,7 +104,6 @@ export class CreateGuideComponent implements OnInit {
   "","Generando",this.createGuideservice.multipiecesData[i].weight,this.createGuideservice.multipiecesData[i].length,
   this.createGuideservice.multipiecesData[i].width,this.createGuideservice.multipiecesData[i].height,this.createGuideservice.multipiecesData[i].insurance,new Date(),"","","Y","",0,0))
         }
-        console.log(this.arrayShipment);
       }else{
         this.shipment = new Shipment(0,this.client.id,this.parcelId,this.productId,this.totalAmount,this.amountDetail,forma.controls["originCompany"].value,
       forma.controls["originAddress"].value,forma.controls["originAddress2"].value,forma.controls["originColony"].value,forma.controls["originCity"].value,
@@ -124,7 +123,6 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
             this.arrayShipment[i].destinyColony = "Col " + forma.controls["destinyColony"].value;
           }
           this.createGuideservice.GenerateGuideMPS(this.arrayShipment).subscribe(jsonData => {
-            console.log(jsonData);
             this.dataMultipieces.response = jsonData.response;
             this.dataMultipieces.trackings = jsonData.trackings;
             if(this.dataMultipieces.response == "SUCCESS: Guides Generated"){
@@ -151,21 +149,19 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
           });
         }else{
           this.shipment.destinyAddress =  forma.controls["destinyAddress"].value + " " + forma.controls["numberAddress"].value;
-          console.log(this.shipment.destinyAddress);
+
           this.shipment.originColony = "Col " + forma.controls["originColony"].value;
-          console.log(this.shipment.originColony);
+
           this.shipment.destinyColony = "Col " + forma.controls["destinyColony"].value;
-          console.log(this.shipment.destinyColony);
+
           this.createGuideservice.GenerateGuideFedEx(this.shipment).subscribe(jsonData => {
             if(!jsonData){
               this.loading = false;
               this.petitionError = true;
             }else{
-              console.log(jsonData);
               if(jsonData == "ERROR: BUY MORE PREPAID GUIDES"){
                 this.router.navigate(['/buy-guides']);
               }else{
-              console.log(jsonData);
                 this.download.DownloadFileFedEx(jsonData).subscribe(document => {
                   if(!document){
 
@@ -191,7 +187,7 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
           this.dlvyType = forma.controls["dlvyType"].value;
           this.email = forma.controls["email"].value;
           this.createGuideservice.GenerateGuideMPSRedPack(this.arrayShipment, this.dlvyType, this.email).subscribe(jsonData => {
-            console.log(jsonData);
+
             this.dataMultipieces.response = jsonData.response;
             this.dataMultipieces.trackings = jsonData.trackings;
             if(this.dataMultipieces.response == "SUCCESS: Guides Generated"){
@@ -241,7 +237,6 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
                 }
               });
               }
-              console.log(jsonData);
 
             }
           });
@@ -267,9 +262,7 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
               //Show message
               this.router.navigate(['/buy-guides']);
             }else{
-              console.log(jsonData);
               let tracking:string = jsonData;
-              console.log(tracking);
               let url:string = "http://webbooking-pruebas.paquetexpress.com.mx:8082/wsReportPaquetexpress/GenCartaPorte?trackingNoGen=" + tracking;
               window.open(url, "_blank");
               this.guides.selectedGuide = this.shipment;

@@ -52,10 +52,8 @@ export class AddClientComponent implements OnInit {
   }*/
 
   saveClient(forma:NgForm){
-    console.log(forma);
     if(!forma.valid){
       this.formInvalid = true;
-      console.log("Error");
     }else{
       this.formInvalid = false;
       this.loading = true;
@@ -77,12 +75,9 @@ export class AddClientComponent implements OnInit {
           country: forma.controls["country"].value,
           phoneNumber: forma.controls["phoneNumber"].value
         }
-        console.log(clientData);
         this.clientService.addClient(clientData).subscribe(jsonData => {
-              console.log("Panamez: "+jsonData);
               var checkUser = jsonData;
               if (jsonData == "SUCCESS: User Created") {
-                console.log("Se creó correctamente");
                 sessionStorage.setItem('NewUserName', forma.controls["username"].value);
                 this.prodSer.operation = 0;
                 this.router.navigate(['/add-parcel-to-client']);
@@ -91,7 +86,6 @@ export class AddClientComponent implements OnInit {
               }
           });
       }else if(this.clientService.operation == 1){
-        console.log(this.clientService.userEdit);
         const updateClientData:User = {
           id: this.clientService.userEdit.id,
           name: forma.controls["name"].value,
@@ -110,12 +104,9 @@ export class AddClientComponent implements OnInit {
           phoneNumber: forma.controls["phoneNumber"].value
         }
         this.clientService.updateClient(updateClientData).subscribe(jsonData => {
-              console.log("Panamez: "+jsonData);
               var checkUser = jsonData;
-              console.log(jsonData);
               if (jsonData == "SUCCESS: User Updated.") {
                 this.clientService.operation = 0;
-                console.log("Se actualizo correctamente");
                 this.router.navigate(['/home']);
               } else {
                   this.loading = false;

@@ -52,7 +52,6 @@ export class SelectClientEditParcelComponent implements OnInit {
           }
       },
       (errorResponse) => {
-        console.log('Error al hacer el request');
         this.loading = false;
         this.petitionError = true;
       }

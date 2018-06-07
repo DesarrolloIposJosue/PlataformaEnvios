@@ -24,7 +24,6 @@ export class RateComponent implements OnInit {
     private router:Router,
     private download:DownloadGuideService
   ) {
-    console.log(this.rateService.dataProducts);
 
   }
 
@@ -45,7 +44,6 @@ export class RateComponent implements OnInit {
 
   selectProduct(productId:number, parcelId:number, amount:number, amountDetails:string[]){
     this.createGuideService.GetPrepaidGuide(parcelId).subscribe(json => {
-      console.log(json);
       if(json == -2){
         this.createGuideService.parcelId = parcelId;
         this.createGuideService.productId = productId;

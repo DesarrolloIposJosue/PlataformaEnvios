@@ -37,12 +37,8 @@ export class SelectProductEditComponent implements OnInit {
   }
 
   loadProductsParcel(parcelId: number) {
-    console.log("Entre");
-    console.log(parcelId);
     this.parcelService.getProductsByParcel(parcelId).subscribe(
       (successResponse) => {
-        console.log("Success");
-        console.log(successResponse);
           if(!successResponse){
             this.loading = false;
             this.petitionError = true;
@@ -53,12 +49,10 @@ export class SelectProductEditComponent implements OnInit {
             this.dataProducts = [];
             for (var i = 0; i < productArray.length; i++) {
               //console.log(countryArray[i].name);
-              console.log(productArray[i].name);
               this.dataProducts[productArray[i].name] = null;
             }
 
             this.petitionError = false;
-            console.log(this.dataProducts);
             $(this.el.nativeElement).find('input.autocomplete').autocomplete({
               data: this.dataProducts,
               limit: 5
@@ -69,13 +63,10 @@ export class SelectProductEditComponent implements OnInit {
   }
 
   onParcelChange($event, parcelId: number) {
-    console.log("Holis");
-    console.log(parcelId);
     this.loadProductsParcel(parcelId);
   }
 
   selectProduct(forma:NgForm){
-    console.log("entre");
     var element = <HTMLInputElement>document.getElementById("productData");
     if(!forma.valid){
       this.invalidForm = true;
@@ -85,7 +76,6 @@ export class SelectProductEditComponent implements OnInit {
       for(var i = 0; i < this.response.length; i++){
         var nameProduct = this.response[i].name;
         if(element.value == nameProduct){
-          console.log(this.response[i].id);
           this.parcelService.productEdit.id = this.response[i].id;
           this.parcelService.productEdit.description = this.response[i].description;
           this.parcelService.productEdit.factor = this.response[i].factor;
@@ -93,7 +83,6 @@ export class SelectProductEditComponent implements OnInit {
           this.parcelService.productEdit.name = this.response[i].name;
           this.parcelService.productEdit.parcelId = this.response[i].parcelId;
           this.productService.operation = 1;
-          console.log(this.parcelService.productEdit);
           this.router.navigate(['/add-product']);
         }else{
           this.loading = false;

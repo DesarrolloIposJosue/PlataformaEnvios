@@ -66,7 +66,6 @@ export class SelectClientEditGuidesComponent implements OnInit {
           }
       },
       (errorResponse) => {
-        console.log('Error al hacer el request');
         this.loading = false;
         this.petitionError = true;
       }
@@ -85,7 +84,6 @@ export class SelectClientEditGuidesComponent implements OnInit {
         var userNameLastName = this.response[i].name + " " + this.response[i].lastName;
         if(element.value == userNameLastName){
           this.guidesUserFounded = true;
-          console.log(this.response[i].id);
           this.guideService.selectPrepaidGuidesFromUser(this.response[i].id).subscribe(
             (successResponse) => {
                 if(!successResponse){
@@ -139,8 +137,6 @@ export class SelectClientEditGuidesComponent implements OnInit {
                 }
             },
             (errorResponse) => {
-              console.log('Error al hacer el request');
-              console.log(errorResponse);
               this.loading = false;
               this.petitionError = true;
             }
@@ -161,14 +157,12 @@ export class SelectClientEditGuidesComponent implements OnInit {
       (successResponse) => {
         var checkUser = successResponse;
         if (successResponse == "SUCCESS: Prepaid Guides Updated.") {
-          console.log("Se actualizo correctamente");
           this.router.navigate(['/home']);
         } else {
             this.loadingGuides = false;
         }
       },
       (errorResponse) => {
-        console.log('Error al hacer el request');
         this.loadingGuides = false;
         this.petitionError = true;
       }

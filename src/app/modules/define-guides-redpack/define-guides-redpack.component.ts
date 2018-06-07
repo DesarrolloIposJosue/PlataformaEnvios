@@ -31,13 +31,11 @@ export class DefineGuidesRedpackComponent implements OnInit {
           if(!successResponse){
 
           }else{
-            console.log(successResponse);
             if(successResponse.CurrentValue > 0 && successResponse.LimitValue > 0 && successResponse.StartValue > 0){
               this.redPackNumberGuide.currentValue = successResponse.CurrentValue;
               this.redPackNumberGuide.limitValue = successResponse.LimitValue;
               this.redPackNumberGuide.startValue = successResponse.StartValue;
 
-              console.log(this.redPackNumberGuide.startValue);
             }else{
               this.redPackNumberGuide.currentValue = 0;
               this.redPackNumberGuide.limitValue = 0;
@@ -69,7 +67,6 @@ export class DefineGuidesRedpackComponent implements OnInit {
 
     this.guidesService.UpdateRedpackNumberGuide(this.sendRedPackNumberGuide).subscribe(json =>{
       if(json){
-        console.log(json);
         if(json == "SUCCESS: RedPack Number Guides Updated."){
           this.router.navigate(['/home']);
         }

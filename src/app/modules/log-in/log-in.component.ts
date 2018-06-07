@@ -53,7 +53,6 @@ export class LogInComponent implements OnInit {
       this.loading = true;
       this.clientService.getUserLogged(logInData.username, logInData.password).subscribe(
         (successResponse) => {
-          console.log(successResponse);
             if(!successResponse.address){
               this.loading = false;
               this.petitionError = true;
@@ -65,7 +64,6 @@ export class LogInComponent implements OnInit {
             successResponse.phoneNumber);
 
                 this.createGuideservice.userActual = user;
-                console.log(this.createGuideservice.userActual);
 
                 sessionStorage.setItem('ActualUser', JSON.stringify(user));
 
