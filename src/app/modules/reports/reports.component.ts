@@ -160,7 +160,7 @@ export class ReportsComponent implements OnInit {
         response[i].NumGuide, response[i].MultiPieces, response[i].MultiPiecesMasterTracking, response[i].MultiPiecesMasterId, response[i].MultiPiecesSequenceNumber, valid));
             }
 
-          
+
 
           if(this.shipments.length > 0 || this.validDateGuide.length > 0){
             this.loaded = true;
@@ -351,6 +351,9 @@ export class ReportsComponent implements OnInit {
   }
 
   loadReport(reportId:number){
+    this.guideService.selectedGuides = [];
+    this.guideService.selectedMultiguides = [];
+    this.guideService.selectedGuide = null;
     for(let i=0; i < this.validDateGuide.length; i++){
       if(this.validDateGuide[i].id == reportId){
         this.guideService.selectedGuide = this.validDateGuide[i];
@@ -432,6 +435,9 @@ export class ReportsComponent implements OnInit {
   }
 
   loadReportMultiguides(shipmentsId:string[]){
+    this.guideService.selectedGuides = [];
+    this.guideService.selectedMultiguides = [];
+    this.guideService.selectedGuide = null;
     let shipments:ValidDateGuide[] = [];
     for(let i=0; i < shipmentsId.length; i++){
       var idString = shipmentsId[i];
