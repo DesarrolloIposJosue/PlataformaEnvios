@@ -178,11 +178,27 @@ export class ReportsComponent implements OnInit {
             let start:boolean = false;
             for(let i=0; i<this.validDateGuide.length; i++){
               if(this.validDateGuide[i].multiPieces == "N"){
+                console.log("Se agrega");
+                console.log(this.validDateGuide[i].totalAmount);
                 this.total = this.validDateGuide[i].totalAmount + this.total;
-              }
-              if(i == this.validDateGuide.length-1){
+                console.log(this.total);
+                if(counterMatches > 0){
+                  this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                    this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                  this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                  this.trackings, this.guidesId));
+                  this.shipments = [];
+                  this.trackings = [];
+                  counterMatches = 0;
+                }
+              }else if(i == this.validDateGuide.length-1){
+                console.log("entro al final");
+                console.log("Valor: ", i)
                 if(this.validDateGuide[i].multiPieces == "Y"){
+                  console.log("Se agrega");
+                  console.log(this.validDateGuide[i].totalAmount);
                   this.total = this.validDateGuide[i].totalAmount + this.total;
+                  console.log(this.total);
                   counterMatches++;
                   if(this.validDateGuide[i].parcelId == 2){
                     this.trackings.push(this.validDateGuide[i].numGuide);
@@ -196,13 +212,59 @@ export class ReportsComponent implements OnInit {
                   this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
                   this.trackings, this.guidesId));
                 }else{
+                  console.log("Se agrega");
+                  console.log(this.validDateGuide[i].totalAmount);
                   this.total = this.validDateGuide[i].totalAmount + this.total;
+                  console.log(this.total);
                   this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                     this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
                   this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
                   this.trackings, this.guidesId));
                 }
               }else if(this.validDateGuide[i].multiPieces == "Y"){
+                if(this.validDateGuide[i].multiPiecesMasterId == 0){
+                  if(counterMatches > 0){
+                    this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                    this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                  this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                  this.trackings, this.guidesId));
+                  }
+                  counterMatches = 1;
+                  this.trackings = [];
+                  this.guidesId = []
+                  if(this.validDateGuide[i].parcelId == 2){
+                    this.trackings.push(this.validDateGuide[i].numGuide);
+                  }else{
+                    this.trackings.push(this.validDateGuide[i].trackingKey);
+                  }
+                  this.guidesId.push(this.validDateGuide[i].id.toString());
+                  if(i != this.validDateGuide.length-2){
+                    console.log("Valor: ", i)
+                    console.log("Se agrega");
+                    console.log(this.validDateGuide[i].totalAmount);
+                    this.total = this.validDateGuide[i].totalAmount + this.total;
+                    console.log(this.total);
+                  }
+                }else if(i == this.validDateGuide.length-1){
+                  counterMatches++;
+                  if(this.validDateGuide[i].parcelId == 2){
+                    this.trackings.push(this.validDateGuide[i].numGuide);
+                  }else{
+                    this.trackings.push(this.validDateGuide[i].trackingKey);
+                  }
+                  this.guidesId.push(this.validDateGuide[i].id.toString());
+                }else{
+                  counterMatches++;
+                  if(this.validDateGuide[i].parcelId == 2){
+                    this.trackings.push(this.validDateGuide[i].numGuide);
+                  }else{
+                    this.trackings.push(this.validDateGuide[i].trackingKey);
+                  }
+                  this.guidesId.push(this.validDateGuide[i].id.toString());
+                }
+                start = true;
+                this.validDateGuideAux = this.validDateGuide[i];
+                /*
                 lastMasterId = masterId;
                 masterId = this.validDateGuide[i].multiPiecesMasterId;
                 if(lastMasterId != masterId && start){
@@ -248,21 +310,28 @@ export class ReportsComponent implements OnInit {
                   console.log(counterMatches);
                 }
                 start = true;
-                this.validDateGuideAux = this.validDateGuide[i];
+                this.validDateGuideAux = this.validDateGuide[i];*/
               }else{
+                console.log("Entro jajajajajaajjaj");
                 if(counterMatches > 1){
                   this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                   this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
-                this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
-                this.trackings, this.guidesId));
-                this.trackings = [];
-                this.guidesId = [];
-                counterMatches = 0;
-                this.total = this.validDateGuide[i].totalAmount + this.total;
+                  this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                  this.trackings, this.guidesId));
+                  this.trackings = [];
+                  this.guidesId = [];
+                  counterMatches = 0;
+                  console.log("Se agrega");
+                  console.log(this.validDateGuide[i].totalAmount);
+                  this.total = this.validDateGuide[i].totalAmount + this.total;
+                  console.log(this.total);
                 }
               }
             }
-            this.totalCalculated = true;
+
+            if(this.total > 0){
+              this.totalCalculated = true;
+            }
             console.log(this.multipiecesObject);
           }else{
             this.loaded = false;
