@@ -3,6 +3,7 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { Shipment } from '../../classes/Shipment';
 import { Product } from '../../classes/Product';
+import { ValidDateGuide } from '../../classes/ValidDateGuide';
 import { RedPackNumberGuide } from '../../classes/RedPackNumberGuide';
 import { User_PrepaidGuides } from "../../classes/User_PrepaidGuides";
 import { Multipieces } from "../../classes/Multipieces";
@@ -10,13 +11,15 @@ import '../../rxjs/index';
 
 @Injectable()
 export class GuidesService {
-  private apiBase = 'http://bi-pos.servebeer.com:8080/WSGombar/Gombar.svc/';
+  private apiBase = 'http://162.248.52.104/WSGombar/Gombar.svc/';
 
   constructor(private http: Http) { }
 
   public productEdit:Product = new Product();
   public operation:number = 0;
   public selectedGuide:Shipment;
+  public selectedGuides:Shipment[] = [];
+  public selectedMultiguides:ValidDateGuide[] = [];
 
   selectPrepaidGuidesFromUser(userId:number){
     console.log(userId);

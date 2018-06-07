@@ -95,6 +95,7 @@ export class QuotationComponent implements OnInit {
   }
 
   addQuotation(forma:NgForm){
+    this.packs = [];
     this.loading = true;
     let insurance:number = 0;
 
@@ -105,7 +106,7 @@ export class QuotationComponent implements OnInit {
       var x = document.getElementById("preloaderRate");
       x.style.display = "block";
       this.invalidForm = false;
-      if(this.userMultiPack){
+      if(this.multiPackActive){
         if(this.objectCreateMultipieces.length > 0){
           let counter:number = 0;
           for(var j=0; j<this.objectCreateMultipieces.length; j++)
@@ -128,6 +129,7 @@ export class QuotationComponent implements OnInit {
           if(counter == this.packs.length){
             //this.errorProductFedEx = false;
           }
+          this.createGuideService.multipiecesData = this.packs;
         this.rateService.GetQuotationMultiPieces(this.packs, this.createGuideService.userActual.id).subscribe(responseQuotation => {
           if(responseQuotation){
             console.log(responseQuotation)
@@ -150,82 +152,81 @@ export class QuotationComponent implements OnInit {
             this.createGuideService.packageType = forma.controls["kindPackage"].value;
             this.router.navigate(['/show-rate']);
           }
-        })
+        });
+      }
+    }else{
+      const quotationData: Package = {
+        id: 0,
+        status: "iniciado",
+        originAddress: forma.controls["origin_city"].value,
+        postCodeOrigin: forma.controls["postal_code_origin"].value,
+        destinationAddress: forma.controls["dest_city"].value,
+        postCodeDest: forma.controls["postal_code_dest"].value,
+        kindPackage: forma.controls["kindPackage"].value,
+        weight: forma.controls["weight"].value,
+        long: forma.controls["long"].value,
+        width: forma.controls["width"].value,
+        hight: forma.controls["hight"].value,
+        idParcel: 0
+      }
 
-        }
-      }else{
-        const quotationData: Package = {
-          id: 0,
-          status: "iniciado",
-          originAddress: forma.controls["origin_city"].value,
-          postCodeOrigin: forma.controls["postal_code_origin"].value,
-          destinationAddress: forma.controls["dest_city"].value,
-          postCodeDest: forma.controls["postal_code_dest"].value,
-          kindPackage: forma.controls["kindPackage"].value,
-          weight: forma.controls["weight"].value,
-          long: forma.controls["long"].value,
-          width: forma.controls["width"].value,
-          hight: forma.controls["hight"].value,
-          idParcel: 0
-        }
-
-        if(forma.controls["insurance"]){
-          insurance = forma.controls["insurance"].value;
-        }
-
-
-        let dataAux:DataAuxGuide = new DataAuxGuide(quotationData.postCodeOrigin, quotationData.postCodeDest, quotationData.originAddress,
-        quotationData.destinationAddress, quotationData.kindPackage, quotationData.width, quotationData.long, quotationData.hight,
-        quotationData.weight, insurance);
+      if(forma.controls["insurance"]){
+        insurance = forma.controls["insurance"].value;
+      }
 
 
-        this.createGuideService.dataAuxGuide = dataAux;
+      let dataAux:DataAuxGuide = new DataAuxGuide(quotationData.postCodeOrigin, quotationData.postCodeDest, quotationData.originAddress,
+      quotationData.destinationAddress, quotationData.kindPackage, quotationData.width, quotationData.long, quotationData.hight,
+      quotationData.weight, insurance);
 
-        if(quotationData.postCodeOrigin > 0 && quotationData.postCodeDest > 0 && quotationData.weight > 0
-        && quotationData.long > 0 && quotationData.width > 0 && quotationData.hight > 0 &&
-        quotationData.postCodeOrigin.toString().length > 4 && quotationData.postCodeDest.toString().length > 4){
-          this.invalidNumber = false;
-          this.invalidPC = false;
-          this.rateService.getQuotation(quotationData, insurance).subscribe(jsonData => {
-            if(!jsonData){
-              this.loading = false;
-              this.petitionError = true;
-            }else{
-              var rateArray = jsonData;
-              this.response = jsonData;
-              this.dataProducts = [];
-              for (var i = 0; i < rateArray.length; i++) {
-                this.dataProducts.push(
-                  new Rate(rateArray[i].id, rateArray[i].name, rateArray[i].description,
-                          rateArray[i].kg, rateArray[i].factor, rateArray[i].parcelId,
-                          rateArray[i].amount, rateArray[i].parcelName, rateArray[i].deliveryDateSpecified,
-                           rateArray[i].deliveryDate, rateArray[i].amountDetails));
-              }
-              this.rateService.dataProducts = this.dataProducts;
-              this.petitionError = false;
-              this.createGuideService.city = forma.controls["origin_city"].value;
-              this.createGuideService.destinyCity = forma.controls["dest_city"].value;
-              this.createGuideService.zip = forma.controls["postal_code_origin"].value;
-              this.createGuideService.destinyZip = forma.controls["postal_code_dest"].value;
-              this.createGuideService.packageType = forma.controls["kindPackage"].value;
-              this.router.navigate(['/show-rate']);
+
+      this.createGuideService.dataAuxGuide = dataAux;
+
+      if(quotationData.postCodeOrigin > 0 && quotationData.postCodeDest > 0 && quotationData.weight > 0
+      && quotationData.long > 0 && quotationData.width > 0 && quotationData.hight > 0 &&
+      quotationData.postCodeOrigin.toString().length > 4 && quotationData.postCodeDest.toString().length > 4){
+        this.invalidNumber = false;
+        this.invalidPC = false;
+        this.rateService.getQuotation(quotationData, insurance).subscribe(jsonData => {
+          if(!jsonData){
+            this.loading = false;
+            this.petitionError = true;
+          }else{
+            var rateArray = jsonData;
+            this.response = jsonData;
+            this.dataProducts = [];
+            for (var i = 0; i < rateArray.length; i++) {
+              this.dataProducts.push(
+                new Rate(rateArray[i].id, rateArray[i].name, rateArray[i].description,
+                        rateArray[i].kg, rateArray[i].factor, rateArray[i].parcelId,
+                        rateArray[i].amount, rateArray[i].parcelName, rateArray[i].deliveryDateSpecified,
+                         rateArray[i].deliveryDate, rateArray[i].amountDetails));
             }
+            this.rateService.dataProducts = this.dataProducts;
+            this.petitionError = false;
+            this.createGuideService.city = forma.controls["origin_city"].value;
+            this.createGuideService.destinyCity = forma.controls["dest_city"].value;
+            this.createGuideService.zip = forma.controls["postal_code_origin"].value;
+            this.createGuideService.destinyZip = forma.controls["postal_code_dest"].value;
+            this.createGuideService.packageType = forma.controls["kindPackage"].value;
+            this.router.navigate(['/show-rate']);
+          }
 
-          });
-        }else{
-          this.invalidForm = true;
-          this.loading = false;
-          if(quotationData.postCodeOrigin < 0 || quotationData.postCodeDest < 0 || quotationData.weight > 0
-          || quotationData.long < 0 || quotationData.width < 0 || quotationData.hight < 0){
-            this.invalidNumber = true;
-          }
-          if(quotationData.postCodeOrigin.toString().length < 4 || quotationData.postCodeDest.toString().length < 4){
-            this.invalidPC = true;
-          }
+        });
+      }else{
+        this.invalidForm = true;
+        this.loading = false;
+        if(quotationData.postCodeOrigin < 0 || quotationData.postCodeDest < 0 || quotationData.weight > 0
+        || quotationData.long < 0 || quotationData.width < 0 || quotationData.hight < 0){
+          this.invalidNumber = true;
+        }
+        if(quotationData.postCodeOrigin.toString().length < 4 || quotationData.postCodeDest.toString().length < 4){
+          this.invalidPC = true;
         }
       }
     }
   }
+}
 
   quantityChange(deviceValue){
     this.objectCreateMultipieces = [];

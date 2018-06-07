@@ -8,7 +8,7 @@ import '../../rxjs/index';
 @Injectable()
 export class ClientService {
   private userLogged:boolean = false;
-  private apiBase = 'http://bi-pos.servebeer.com:8080/WSGombar/Gombar.svc/';
+  private apiBase = 'http://162.248.52.104/WSGombar/Gombar.svc/';
   public userEdit:User;
   public operation:number = 0; //0 Create, 1 Edit
 

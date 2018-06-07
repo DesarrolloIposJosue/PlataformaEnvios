@@ -44,28 +44,48 @@ export class RateComponent implements OnInit {
   }
 
   selectProduct(productId:number, parcelId:number, amount:number, amountDetails:string[]){
-    console.log(productId);
-    console.log(parcelId);
-    this.createGuideService.parcelId = parcelId;
-    this.createGuideService.productId = productId;
-    this.createGuideService.totalAmount = amount;
-    let amountDetail:string;
-    console.log(amountDetails);
-    for(let i=0; i<amountDetails.length; i++){
-      if(i == 0){
-        amountDetail = amountDetails[i];
-      }else{
-        amountDetail = amountDetail + "," + amountDetails[i];
+    this.createGuideService.GetPrepaidGuide(parcelId).subscribe(json => {
+      console.log(json);
+      if(json == -2){
+        this.createGuideService.parcelId = parcelId;
+        this.createGuideService.productId = productId;
+        this.createGuideService.totalAmount = amount;
+        let amountDetail:string;
+        for(let i=0; i<amountDetails.length; i++){
+          if(i == 0){
+            amountDetail = amountDetails[i];
+          }else{
+            amountDetail = amountDetail + "," + amountDetails[i];
+          }
+        }
+        this.createGuideService.amountDetail = amountDetail;
+        this.router.navigate(['/create-guide']);
+      }else if(json == -1){
+        this.router.navigate(['/home']);
+      }else if(json == 0){
+        this.router.navigate(['/buy-guides']);
+      }else if(json > 0){
+        this.createGuideService.parcelId = parcelId;
+        this.createGuideService.productId = productId;
+        this.createGuideService.totalAmount = amount;
+        let amountDetail:string;
+        for(let i=0; i<amountDetails.length; i++){
+          if(i == 0){
+            amountDetail = amountDetails[i];
+          }else{
+            amountDetail = amountDetail + "," + amountDetails[i];
+          }
+        }
+        this.createGuideService.amountDetail = amountDetail;
+        this.router.navigate(['/create-guide']);
       }
-    }
-    this.createGuideService.amountDetail = amountDetail;
-    this.router.navigate(['/create-guide']);
+    })
+
   }
 
   showDivDetails(valueP: number)
   {
     var x = document.getElementById(valueP.toString());
-    console.log(x.style.display);
     if (x.style.display === "none") {
         x.style.display = "block";
     } else {

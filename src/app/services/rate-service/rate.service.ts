@@ -10,7 +10,7 @@ import '../../rxjs/index';
 
 @Injectable()
 export class RateService {
-  private apiBase = 'http://bi-pos.servebeer.com:8080/WSGombar/Gombar.svc/';
+  private apiBase = 'http://162.248.52.104/WSGombar/Gombar.svc/';
 
   public dataProducts:Rate[] = [];
 

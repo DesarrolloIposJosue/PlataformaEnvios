@@ -10,9 +10,11 @@ export class ShowMultiPieces{
   date:string;
   validDate:boolean;
   parcelId:number;
+  trackings:string[];
+  shipmentsId:string[]
 
   constructor(_id:number, _trackingKey:string, _numberGuide, _amount:number, _quantity:number, _originUserName:string,
-  _destinyUserName:string, _status:string, _date:string, _validDate:boolean, _parcelId:number){
+  _destinyUserName:string, _status:string, _date:string, _validDate:boolean, _parcelId:number, _trackings:string[], _shipmentsID:string[]){
     this.id = _id;
     this.trackingKey = _trackingKey;
     this.numberGuide = _numberGuide;
@@ -24,5 +26,7 @@ export class ShowMultiPieces{
     this.date = _date;
     this.validDate = _validDate;
     this.parcelId = _parcelId;
+    this.trackings = _trackings;
+    this.shipmentsId = _shipmentsID;
   }
 }
