@@ -160,6 +160,7 @@ export class ReportsComponent implements OnInit {
         response[i].NumGuide, response[i].MultiPieces, response[i].MultiPiecesMasterTracking, response[i].MultiPiecesMasterId, response[i].MultiPiecesSequenceNumber, valid));
             }
 
+          
 
           if(this.shipments.length > 0 || this.validDateGuide.length > 0){
             this.loaded = true;

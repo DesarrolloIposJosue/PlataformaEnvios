@@ -127,7 +127,7 @@
     <h6>Total calculado: {{total}}</h6>
   </div>
 
-  <table *ngIf="this.validDateGuide && this.validDateGuide.length > 0 && this.multipiecesObject && this.multipiecesObject.length > 0">
+  <table *ngIf="(this.validDateGuide && this.validDateGuide.length > 0) || (this.multipiecesObject && this.multipiecesObject.length > 0)">
     <thead *ngIf="this.validDateGuide && this.loaded">
       <tr>
         <th>Guia</th>
