@@ -45,6 +45,7 @@ export class ValidDateGuide{
   public multiPiecesMasterTracking: string;
   public multiPiecesMasterId:number;
   public multiPiecesSequenceNumber:number;
+  public productName:string;
 
   public validDate:boolean;
 
@@ -54,7 +55,7 @@ export class ValidDateGuide{
 _originCountry:string, _originPhoneNumber:string, _originUserName:string, _destinyCompany:string, _destinyAddress:string, _destinyAddress2:string, _destinyColony:string,
 _destinyCity:string, _destinyState:string, _destinyZip:number, _destinyCountry:string, _destinyPhoneNumber:string, _destinyUserName:string, _trackingKey:string,
 _status:string, _weight:number, _length:number, _width:number, _height:number, _insurance:number, _creationDate:Date, _creationDateString:string, _numGuide:string,
-_multiPieces:string, _multiPiecesMasterTracking:string, _multiPiecesMasterId:number, _multiPiecesSequenceNumber:number, _validDate:boolean){
+_multiPieces:string, _multiPiecesMasterTracking:string, _multiPiecesMasterId:number, _multiPiecesSequenceNumber:number,  _productName:string, _validDate:boolean){
     this.id = _id;
     this.userId = _userId;
     this.parcelId = _parcelId;
@@ -101,6 +102,7 @@ _multiPieces:string, _multiPiecesMasterTracking:string, _multiPiecesMasterId:num
     this.multiPiecesMasterTracking = _multiPiecesMasterTracking;
     this.multiPiecesMasterId = _multiPiecesMasterId;
     this.multiPiecesSequenceNumber = _multiPiecesSequenceNumber;
+    this.productName = _productName;
 
     this.validDate = _validDate;
   }

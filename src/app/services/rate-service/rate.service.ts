@@ -13,6 +13,7 @@ export class RateService {
   private apiBase = 'http://162.248.52.104/WSGombar/Gombar.svc/';
 
   public dataProducts:Rate[] = [];
+  public weight:number;
 
   constructor(private http: Http) { }
 

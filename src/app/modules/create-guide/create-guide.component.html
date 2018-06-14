@@ -109,7 +109,7 @@
       </div>
 
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10">
-        <input disabled id="originUserName" name="originUserName" placeholder="{{this.clientName}}" value="{{this.clientName}}" [ngModel]="this.clientName" #originUserName="ngModel" type="text" class="validate" >
+        <input id="originUserName" name="originUserName" placeholder="{{this.clientName}}" value="{{this.clientName}}" [ngModel]="this.clientName" #originUserName="ngModel" type="text" class="validate" >
         <label class="active" for="originUserName">Nombre del cliente de origen*</label>
       </div>
 
@@ -139,13 +139,17 @@
         <label for="destinyCompany">Compañia de destino</label>
       </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': destinyCountry.errors?.required && destinyCountry.touched}">
-        <select materialize="material_select" [materializeSelectOptions]="options" name="destinyCountry" ngModel required #destinyCountry="ngModel">
-          <option class="blue-text text-darken-4" value="" disabled selected>Elija una opción</option>
-          <option class="blue-text text-darken-4" value="Mexico">México</option>
+      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10">
+        <input disabled id="destinyCountry" name="destinyCountry" placeholder="{{this.client.country}}" value="{{this.client.country}}" [ngModel]="this.client.country" #destinyCountry="ngModel" type="text" class="validate" >
+        <label class="active" for="destinyCountry">País de destino*</label>
+      </div>
+
+      <!--<div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': destinyCountry.errors?.required && destinyCountry.touched}">
+        <select materialize="material_select" [materializeSelectOptions]="options" name="destinyCountry" [ngModel]="Mexico" required #destinyCountry="ngModel">
+          <option class="blue-text text-darken-4" value="Mexico" disabled selected>México</option>
         </select>
         <label>País de destino*</label>
-      </div>
+      </div>-->
 
       <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': destinyState.errors?.required && destinyState.touched}">
         <select materialize="material_select" [materializeSelectOptions]="options" name="destinyState" ngModel required #destinyState="ngModel">

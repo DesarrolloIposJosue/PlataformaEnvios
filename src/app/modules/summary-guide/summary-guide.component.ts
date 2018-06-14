@@ -29,6 +29,7 @@ export class SummaryGuideComponent implements OnInit {
 
   ready(){
     this.router.navigate(['/home']);
+    this.guideService.selectedGuide = null;
     this.guideService.selectedGuides = [];
     this.guideService.selectedMultiguides = [];
   }

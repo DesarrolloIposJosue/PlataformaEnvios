@@ -53,6 +53,8 @@ export class CreateGuideComponent implements OnInit {
 
   private email:string;
 
+  private productName:string;
+
   constructor(
     private router: Router,
     private el: ElementRef,
@@ -77,6 +79,8 @@ export class CreateGuideComponent implements OnInit {
           return false;
       });
     });
+    this.productName = this.createGuideservice.productName;
+    console.log(this.productName);
    }
 
   ngOnInit() {
@@ -102,7 +106,7 @@ export class CreateGuideComponent implements OnInit {
     forma.controls["destinyAddress2"].value,forma.controls["destinyColony"].value,forma.controls["destinyCity"].value,forma.controls["destinyState"].value,
   this.createGuideservice.multipiecesData[i].destinyCP,forma.controls["destinyCountry"].value,forma.controls["destinyPhoneNumber"].value,forma.controls["destinyUserName"].value,
   "","Generando",this.createGuideservice.multipiecesData[i].weight,this.createGuideservice.multipiecesData[i].length,
-  this.createGuideservice.multipiecesData[i].width,this.createGuideservice.multipiecesData[i].height,this.createGuideservice.multipiecesData[i].insurance,new Date(),"","","Y","",0,0))
+  this.createGuideservice.multipiecesData[i].width,this.createGuideservice.multipiecesData[i].height,this.createGuideservice.multipiecesData[i].insurance,new Date(),"","","Y","",0,0,this.productName))
         }
       }else{
         this.shipment = new Shipment(0,this.client.id,this.parcelId,this.productId,this.totalAmount,this.amountDetail,forma.controls["originCompany"].value,
@@ -111,8 +115,10 @@ export class CreateGuideComponent implements OnInit {
     forma.controls["originUserName"].value,forma.controls["destinyCompany"].value, forma.controls["destinyAddress"].value,
   forma.controls["destinyAddress2"].value,forma.controls["destinyColony"].value,forma.controls["destinyCity"].value,forma.controls["destinyState"].value,
 forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.controls["destinyPhoneNumber"].value,forma.controls["destinyUserName"].value,
-"","Generando",this.dataGuide.weight,this.dataGuide.long,this.dataGuide.width,this.dataGuide.hight,this.dataGuide.insurance,new Date(),"","","N","",0,0);
+"","Generando",this.dataGuide.weight,this.dataGuide.long,this.dataGuide.width,this.dataGuide.hight,this.dataGuide.insurance,new Date(),"","","N","",0,0,this.productName);
+    
       }
+
 
       //FedEx
       if(this.parcelId == 3){
@@ -135,7 +141,17 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
                     var byteArray = new Uint8Array(byteCharacters);
                     var blob = new Blob([byteArray], {type: 'application/pdf'});
                     var url= window.URL.createObjectURL(blob);
-                    window.open(url);
+                    //window.open(url);
+                    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                        window.navigator.msSaveOrOpenBlob(blob);
+                        console.log("Edge");
+                    }
+                    else {
+                        //var objectUrl = URL.createObjectURL(blob);
+                        //window.open(objectUrl);
+                        window.open(url);
+                        console.log("Otros");
+                    }
                     /*this.guides.selectedGuide = this.shipment;
                     this.router.navigate(['/summary']);*/
                   }
@@ -170,7 +186,17 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
                     var byteArray = new Uint8Array(byteCharacters);
                     var blob = new Blob([byteArray], {type: 'application/pdf'});
                     var url= window.URL.createObjectURL(blob);
-                    window.open(url);
+                    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                      console.log("Edge");
+                        window.navigator.msSaveOrOpenBlob(blob);
+                    }
+                    else {
+                        //var objectUrl = URL.createObjectURL(blob);
+                        //window.open(objectUrl);
+                        console.log("Otros");
+                        window.open(url);
+
+                    }
                     this.guides.selectedGuide = this.shipment;
                     this.router.navigate(['/summary']);
                   }
@@ -200,7 +226,18 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
                     var byteArray = new Uint8Array(byteCharacters);
                     var blob = new Blob([byteArray], {type: 'application/pdf'});
                     var url= window.URL.createObjectURL(blob);
-                    window.open(url);
+                    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                      console.log("Edge");
+                        window.navigator.msSaveOrOpenBlob(blob);
+
+                    }
+                    else {
+                        //var objectUrl = URL.createObjectURL(blob);
+                        //window.open(objectUrl);
+                        console.log("Otros");
+                        window.open(url);
+
+                    }
                     /*this.guides.selectedGuide = this.shipment;
                     this.router.navigate(['/summary']);*/
                   }
@@ -231,7 +268,18 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
                   var byteArray = new Uint8Array(byteCharacters);
                   var blob = new Blob([byteArray], {type: 'application/pdf'});
                   var url= window.URL.createObjectURL(blob);
-                  window.open(url);
+                  if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                    console.log("Edge");
+                      window.navigator.msSaveOrOpenBlob(blob);
+                      console.log("Edge");
+                  }
+                  else {
+                      //var objectUrl = URL.createObjectURL(blob);
+                      //window.open(objectUrl);
+                      console.log("Otros");
+                      window.open(url);
+                      console.log("Otros");
+                  }
                   this.guides.selectedGuide = this.shipment;
                   this.router.navigate(['/summary']);
                 }

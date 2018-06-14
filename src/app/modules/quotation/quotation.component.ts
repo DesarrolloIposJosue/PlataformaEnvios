@@ -88,6 +88,8 @@ export class QuotationComponent implements OnInit {
     element = <HTMLInputElement>document.getElementById("seguro");
     if(element.checked == true){
       this.seguro = true;
+      setTimeout( () => { document.getElementById("insurance").focus(); }, 100 );
+
     }else{
       this.seguro = false;
     }
@@ -107,6 +109,7 @@ export class QuotationComponent implements OnInit {
       this.invalidForm = false;
       if(this.multiPackActive){
         if(this.objectCreateMultipieces.length > 0){
+          let totalWeight:number = 0;
           let counter:number = 0;
           for(var j=0; j<this.objectCreateMultipieces.length; j++)
           {
@@ -120,6 +123,7 @@ export class QuotationComponent implements OnInit {
               Number(elementWeight.value),Number(elementLength.value), Number(elementWidth.value), Number(elementHeight.value),
               Number(elementInsurance.value)));
               counter++;
+              totalWeight = Number(elementWeight.value) + totalWeight;
             }else{
               //Error de producto y no procede a guardar
               //this.errorProductPaqueteExpress = true;
@@ -134,10 +138,11 @@ export class QuotationComponent implements OnInit {
             var rateArray = responseQuotation;
             this.response = responseQuotation;
             this.dataProducts = [];
+            console.log(rateArray);
             for (var i = 0; i < rateArray.length; i++) {
               this.dataProducts.push(
                 new Rate(rateArray[i].id, rateArray[i].name, rateArray[i].description,
-                        rateArray[i].kg, rateArray[i].factor, rateArray[i].parcelId,
+                        rateArray[i].kg, rateArray[i].volumetricWeight, rateArray[i].factor, rateArray[i].parcelId,
                         rateArray[i].amount, rateArray[i].parcelName, rateArray[i].deliveryDateSpecified,
                          rateArray[i].deliveryDate, rateArray[i].amountDetails));
             }
@@ -148,6 +153,7 @@ export class QuotationComponent implements OnInit {
             this.createGuideService.zip = forma.controls["postal_code_origin"].value;
             this.createGuideService.destinyZip = forma.controls["postal_code_dest"].value;
             this.createGuideService.packageType = forma.controls["kindPackage"].value;
+            this.rateService.weight = totalWeight;
             this.router.navigate(['/show-rate']);
           }
         });
@@ -196,7 +202,7 @@ export class QuotationComponent implements OnInit {
             for (var i = 0; i < rateArray.length; i++) {
               this.dataProducts.push(
                 new Rate(rateArray[i].id, rateArray[i].name, rateArray[i].description,
-                        rateArray[i].kg, rateArray[i].factor, rateArray[i].parcelId,
+                        rateArray[i].kg, rateArray[i].volumetricWeight, rateArray[i].factor, rateArray[i].parcelId,
                         rateArray[i].amount, rateArray[i].parcelName, rateArray[i].deliveryDateSpecified,
                          rateArray[i].deliveryDate, rateArray[i].amountDetails));
             }
@@ -207,6 +213,7 @@ export class QuotationComponent implements OnInit {
             this.createGuideService.zip = forma.controls["postal_code_origin"].value;
             this.createGuideService.destinyZip = forma.controls["postal_code_dest"].value;
             this.createGuideService.packageType = forma.controls["kindPackage"].value;
+            this.rateService.weight = forma.controls["weight"].value;
             this.router.navigate(['/show-rate']);
           }
 

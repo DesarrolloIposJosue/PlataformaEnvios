@@ -33,6 +33,10 @@ import { SelectProductEditComponent } from './modules/select-product-edit/select
 import { AddGuidesToClientComponent } from './modules/add-guides-to-client/add-guides-to-client.component';
 import { SelectClientEditGuidesComponent } from './modules/select-client-edit-guides/select-client-edit-guides.component';
 import { CreateGuideComponent } from './modules/create-guide/create-guide.component';
+import { SummaryGuideComponent } from './modules/summary-guide/summary-guide.component';
+import { ReportsComponent } from './modules/reports/reports.component';
+import { BuyGuidesComponent } from './modules/buy-guides/buy-guides.component';
+import { DefineGuidesRedpackComponent } from './modules/define-guides-redpack/define-guides-redpack.component';
 
 //Services
 import { ClientService } from './services/client-service/client.service';
@@ -45,11 +49,7 @@ import { RateService } from './services/rate-service/rate.service';
 import { GuidesService } from './services/guides/guides.service';
 import { CreateGuideService } from './services/create-guide-service/create-guide.service';
 import { DownloadGuideService} from './services/download-guide-service/download-guide.service';
-import { SummaryGuideComponent } from './modules/summary-guide/summary-guide.component';
-import { ReportsComponent } from './modules/reports/reports.component';
-import { BuyGuidesComponent } from './modules/buy-guides/buy-guides.component';
-import { DefineGuidesRedpackComponent } from './modules/define-guides-redpack/define-guides-redpack.component';
-
+import { ExcelService} from './services/excel-service/excel.service';
 
 //Pipes
 
@@ -108,7 +108,8 @@ import { DefineGuidesRedpackComponent } from './modules/define-guides-redpack/de
     RateService,
     GuidesService,
     CreateGuideService,
-    DownloadGuideService
+    DownloadGuideService,
+    ExcelService
   ],
 
   bootstrap: [AppComponent],

@@ -3,6 +3,7 @@ import "materialize-css";
 import "angular2-materialize";
 import { ClientService } from '../../services/client-service/client.service';
 import { ProductService } from '../../services/product-service/product.service';
+import { GuidesService } from '../../services/guides/guides.service';
 import { MaterializeAction, MaterializeDirective } from 'angular2-materialize';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
@@ -27,7 +28,8 @@ export class NavbarComponent implements OnInit {
     private _actRouter: ActivatedRoute,
     private _router: Router,
     private clientService:ClientService,
-    private productService:ProductService
+    private productService:ProductService,
+    private guideService:GuidesService
   ) {
       this.typeUser = sessionStorage.getItem('Type');
   }
@@ -52,78 +54,123 @@ export class NavbarComponent implements OnInit {
   }
 
   goHome() {
+        this.guideService.selectedGuide = null;
+        this.guideService.selectedGuides = [];
+        this.guideService.selectedMultiguides = [];
        this._router.navigate(['/home']);
        this.closeSideNav();
    }
 
    goQuotation() {
+     this.guideService.selectedGuide = null;
+     this.guideService.selectedGuides = [];
+     this.guideService.selectedMultiguides = [];
        this._router.navigate(['/quotation']);
        this.closeSideNav();
        this.closeSideNav();
    }
 
    goLogIn() {
+     this.guideService.selectedGuide = null;
+     this.guideService.selectedGuides = [];
+     this.guideService.selectedMultiguides = [];
        this._router.navigate(['/log-in']);
        this.closeSideNav();
    }
 
    goGoogleMaps(){
+     this.guideService.selectedGuide = null;
+     this.guideService.selectedGuides = [];
+     this.guideService.selectedMultiguides = [];
      this.closeSideNav();
      this._router.navigate(['/google-maps']);
    }
 
    goAddClient(){
+     this.guideService.selectedGuide = null;
+     this.guideService.selectedGuides = [];
+     this.guideService.selectedMultiguides = [];
      this.closeSideNav();
      this.clientService.operation = 0;
      this._router.navigate(['/add-client']);
    }
 
    goAddParcelClient(){
+     this.guideService.selectedGuide = null;
+     this.guideService.selectedGuides = [];
+     this.guideService.selectedMultiguides = [];
      this.closeSideNav();
      this._router.navigate(['/select-client-to-edit-parcel']);
    }
 
    goEditClient(){
+     this.guideService.selectedGuide = null;
+     this.guideService.selectedGuides = [];
+     this.guideService.selectedMultiguides = [];
      this.closeSideNav();
      this._router.navigate(['/select-client-to-edit']);
    }
 
    goAddProduct(){
+     this.guideService.selectedGuide = null;
+     this.guideService.selectedGuides = [];
+     this.guideService.selectedMultiguides = [];
      this.closeSideNav();
      this.productService.operation = 0;
      this._router.navigate(['/add-product']);
    }
 
    goEditProduct(){
+     this.guideService.selectedGuide = null;
+     this.guideService.selectedGuides = [];
+     this.guideService.selectedMultiguides = [];
      this.closeSideNav();
      this._router.navigate(['/select-product-to-edit']);
    }
 
    goAddGuides(){
+     this.guideService.selectedGuide = null;
+     this.guideService.selectedGuides = [];
+     this.guideService.selectedMultiguides = [];
      this.closeSideNav();
      this._router.navigate(['/select-client-to-edit-guides']);
    }
 
    goReports(){
+     this.guideService.selectedGuide = null;
+     this.guideService.selectedGuides = [];
+     this.guideService.selectedMultiguides = [];
      this.closeSideNav();
      this._router.navigate(['/reports']);
    }
 
    goTracking(){
+     this.guideService.selectedGuide = null;
+     this.guideService.selectedGuides = [];
+     this.guideService.selectedMultiguides = [];
      this.closeSideNav();
      this._router.navigate(['/tracking']);
    }
 
    logOut(){
+     this.guideService.selectedGuide = null;
+     this.guideService.selectedGuides = [];
+     this.guideService.selectedMultiguides = [];
      this._router.navigate(['/log-in']);
      this.clientService.logOut();
    }
 
    goDefineGuidesRedPack(){
+     this.guideService.selectedGuide = null;
+     this.guideService.selectedGuides = [];
+     this.guideService.selectedMultiguides = [];
      this._router.navigate(['/define-guides-redpack']);
    }
 
    goGuides(){
+     this.guideService.selectedGuide = null;
+     this.guideService.selectedGuides = [];
+     this.guideService.selectedMultiguides = [];
      this._router.navigate(['/guides']);
    }
 

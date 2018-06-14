@@ -22,6 +22,7 @@ export class CreateGuideService {
   public zip:string;
   public destinyZip:string;
   public packageType:number;
+  public productName:string;
 
   public totalAmount:number;
   public amountDetail:string;

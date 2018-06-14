@@ -42,12 +42,13 @@ export class RateComponent implements OnInit {
 
   }
 
-  selectProduct(productId:number, parcelId:number, amount:number, amountDetails:string[]){
+  selectProduct(productId:number, parcelId:number, amount:number, amountDetails:string[], description:string){
     this.createGuideService.GetPrepaidGuide(parcelId).subscribe(json => {
       if(json == -2){
         this.createGuideService.parcelId = parcelId;
         this.createGuideService.productId = productId;
         this.createGuideService.totalAmount = amount;
+        this.createGuideService.productName = description;
         let amountDetail:string;
         for(let i=0; i<amountDetails.length; i++){
           if(i == 0){
@@ -66,6 +67,7 @@ export class RateComponent implements OnInit {
         this.createGuideService.parcelId = parcelId;
         this.createGuideService.productId = productId;
         this.createGuideService.totalAmount = amount;
+        this.createGuideService.productName = description;
         let amountDetail:string;
         for(let i=0; i<amountDetails.length; i++){
           if(i == 0){

@@ -15,6 +15,7 @@
           <div class="card-content">
             <p>Producto: {{rate.description}}</p>
             <p>Fecha entrega: {{rate.deliveryDate}}</p>
+            <p *ngIf="rate.volumetricWeight > this.rateService.weight">Peso volumétrico total: {{rate.volumetricWeight}}kg</p>
             <div>
             <p class="pAmount">Precio: ${{rate.amount}}</p>
             <a class="btn-floating btn-small  waves-light red buttonPlus" (click)="showDivDetails(i)"><i class="material-icons">add</i></a>
@@ -27,7 +28,7 @@
               <a (click)="selectProduct(rate.id, rate.parcelId, rate.amount, rate.amountDetails)" class="btn center blue accent-3"><i class="material-icons right">send</i>Enviar</a>
             </div>
             <div class="card-action show-on-small hide-on-med-and-up offset-s1 s10 center-align">
-              <a (click)="selectProduct(rate.id, rate.parcelId, rate.amount, rate.amountDetails)" class="btn center blue accent-3">Enviar</a>
+              <a (click)="selectProduct(rate.id, rate.parcelId, rate.amount, rate.amountDetails, rate.description)" class="btn center blue accent-3">Enviar</a>
             </div>
           </div>
         </div>

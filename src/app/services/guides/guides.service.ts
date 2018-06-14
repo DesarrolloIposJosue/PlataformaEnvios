@@ -12,6 +12,7 @@ import '../../rxjs/index';
 @Injectable()
 export class GuidesService {
   private apiBase = 'http://162.248.52.104/WSGombar/Gombar.svc/';
+  //private apiBase = 'http://localhost:55679/Gombar.svc/';
 
   constructor(private http: Http) { }
 
@@ -39,6 +40,8 @@ export class GuidesService {
     let myHeaders = new Headers();
     // Body or Search
     let myParams: URLSearchParams = new URLSearchParams();
+    console.log(sessionStorage.getItem('UserName'));
+    console.log(sessionStorage.getItem('Password'));
     myHeaders.set('UserName', sessionStorage.getItem('UserName'));
     myHeaders.set('Password', sessionStorage.getItem('Password'));
     let options = new RequestOptions({ headers: myHeaders});
@@ -46,6 +49,9 @@ export class GuidesService {
   }
 
   GetShipmentsByUserAndDates(startDate:string, finishDate:string, userId:number){
+    console.log(startDate);
+    console.log(finishDate);
+    console.log(userId);
     var operation:string = this.apiBase + 'GetShipmentsByUserAndDates';
     // Headers
     let myHeaders = new Headers();

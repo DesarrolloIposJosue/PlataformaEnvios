@@ -8,13 +8,14 @@
           <select (change)="onChange($event.target.value)" materialize="material_select" [materializeSelectOptions]="options" name="country" ngModel required #country="ngModel">
             <option class="blue-text text-darken-4" value="" disabled selected>Elija una opción</option>
             <!--<option class="blue-text text-darken-4" value="1">Por cliente</option>-->
+            <option class="blue-text text-darken-4" value="1">Todos los clientes por fecha</option>
             <option class="blue-text text-darken-4" value="2">Por cliente y fecha</option>
             <!--<option class="blue-text text-darken-4" value="3">Todos los clientes por fecha</option>-->
           </select>
           <label>Tipo de reporte</label>
         </div>
 
-        <div *ngIf="this.reportType && (this.reportType == 2 || this.reportType == 3)" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': startDate.errors?.required && startDate.touched}">
+        <div *ngIf="this.reportType && (this.reportType == 2 || this.reportType == 1)" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': startDate.errors?.required && startDate.touched}">
           <i class="material-icons prefix">date_range</i>
           <input id="startDate" materialize="pickadate" [materializeParams]="[{format:'dd/mm/yyyy'}]" name="startDate" ngModel #startDate="ngModel" type="text" class="validate" class="datepicker" #startDate required>
           <label for="startDate">Fecha de inicio</label>
@@ -26,7 +27,7 @@
           </p>
         </div>
 
-        <div *ngIf="this.reportType && (this.reportType == 2 || this.reportType == 3)" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': finishDate.errors?.required && finishDate.touched}">
+        <div *ngIf="this.reportType && (this.reportType == 2 || this.reportType == 1)" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': finishDate.errors?.required && finishDate.touched}">
           <i class="material-icons prefix">date_range</i>
           <input id="finishDate" materialize="pickadate" [materializeParams]="[{format:'dd/mm/yyyy'}]" name="finishDate" ngModel #finishDate="ngModel" type="text" class="validate" class="datepicker" #finishDate required>
           <label for="finishDate">Fecha fin</label>
@@ -49,7 +50,7 @@
           </p>
         </div>-->
 
-        <div *ngIf="this.dataUser && this.reportType && ( this.reportType == 1 || this.reportType == 2 )" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': userData.errors?.required && userData.touched}">
+        <div *ngIf="this.dataUser && this.reportType && ( this.reportType == 2 )" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': userData.errors?.required && userData.touched}">
           <i class="material-icons prefix">account_circle</i>
           <input id="userData" name="userData" ngModel #userData="ngModel" type="text" class="validate autocomplete" minlength="1" required>
           <label for="userData">Nombre del cliente</label>
@@ -123,9 +124,11 @@
   </form>
 
 
-  <div *ngIf="totalCalculated && this.createGuideService.userActual.typeId == 1" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10 blue lighten-5 ">
+  <div *ngIf="totalCalculated" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10 blue lighten-5 ">
     <h6>Total calculado: {{total}}</h6>
+    <a (click)="downloadReports()" class="btn-small blue accent-3">Descargar reporte Excel</a>
   </div>
+
 
   <table *ngIf="(this.validDateGuide && this.validDateGuide.length > 0) || (this.multipiecesObject && this.multipiecesObject.length > 0)">
     <thead *ngIf="this.validDateGuide && this.loaded">
@@ -135,7 +138,7 @@
         <th>Piezas</th>
         <th>Nombre origen</th>
         <th>Nombre destino</th>
-        <th>Fecha</th>
+        <th>Fecha (mm/dd/aaaaa)</th>
         <th *ngIf="shipment.validDate && shipment.status != 'CANCELADO'"></th>
         <th *ngIf="shipment.validDate && this.createGuideService.userActual.typeId == 1"></th>
         <th></th>
@@ -151,7 +154,7 @@
         <td *ngIf="shipment.multiPieces == 'N'">{{shipment.destinyUserName}}
         <td *ngIf="shipment.multiPieces == 'N'">{{shipment.creationDateString}}</td>
         <td *ngIf="shipment.multiPieces == 'N'">
-          <a *ngIf="shipment.multiPieces == 'N' && shipment.validDate && shipment.status != 'CANCELADO'" (click)="checkGuide(shipment.parcelId, shipment.trackingKey)" class="btn-small blue accent-3">Reimprimir</a>
+          <a *ngIf="shipment.validDate && shipment.status != 'CANCELADO'" (click)="checkGuide(shipment.parcelId, shipment.trackingKey)" class="btn-small blue accent-3">Reimprimir</a>
         </td>
         <td *ngIf="shipment.multiPieces == 'N' && shipment.validDate && this.createGuideService.userActual.typeId == 1">
           <a (click)="cancelGuide(shipment)" class="btn-small blue accent-3">Cancelar</a>

@@ -3,6 +3,7 @@ export class Rate{
   public name:string;
   public description:string;
   public kg:number;
+  public volumetricWeight:number;
   public factor:number;
   public parcelId:number;
   public amount:number;
@@ -12,13 +13,14 @@ export class Rate{
   public amountDetails:string[];
 
    constructor(
-    _id:number, _name:string, _description: string, _kg: number, _factor: number,
+    _id:number, _name:string, _description: string, _kg: number, _volumetricWeight:number, _factor: number,
     _parcelId: number, _amount:number, _parcelName: string, _deliveryDateSpec: boolean, _deliveryDate: string,
     _amountDetails:string[]){
       this.id = _id;
       this.name = _name;
       this.description = _description;
       this.kg = _kg;
+      this.volumetricWeight = _volumetricWeight;
       this.factor = _factor;
       this.parcelId = _parcelId;
       this.amount = _amount;
