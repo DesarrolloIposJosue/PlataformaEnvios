@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, Output, EventEmitter  } from '@angular/core';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { NgForm } from '@angular/forms';
 import { Package } from '../../classes/Package';
@@ -6,14 +6,18 @@ import { DataAuxGuide } from '../../classes/DataAuxGuide';
 import { RateService } from '../../services/rate-service/rate.service';
 import { CreateGuideService } from '../../services/create-guide-service/create-guide.service';
 import { Rate } from '../../classes/Rate';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { User } from '../../classes/Client';
 import { Multipieces } from '../../classes/Multipieces';
 import { MultipiecesForm } from '../../classes/MultipiecesForm';
 import { ProductService } from '../../services/product-service/product.service';
+import { ClientService } from '../../services/client-service/client.service';
 
 import { DownloadGuideService } from '../../services/download-guide-service/download-guide.service';
+import { QuotationService } from '../../services/quotation-service/quotation.service';
+
+import { ResponseCP } from '../../classes/ResponseCP';
 
 declare var jQuery:any;
 declare var $:any;
@@ -39,15 +43,31 @@ export class QuotationComponent implements OnInit {
   private packs:Multipieces[] = []
   private objectCreateMultipieces:MultipiecesForm[] = [];
   private userMultiPack:boolean = false; //To know if the user is multipack
+  private responseCP:ResponseCP = new ResponseCP();
+
+  private noCP:boolean = false;
+  private dataUser:any[] = [];
+  private userArray:any[] = [];
+  private loaded:boolean = false;
+  private selectedClientInfo:User;
 
   constructor(
+    private el: ElementRef,
     private auth: AuthService,
     private rateService: RateService,
     private router: Router,
     private createGuideService:CreateGuideService,
     private download:DownloadGuideService,
-    private productService: ProductService
+    private productService: ProductService,
+    private clientService: ClientService
   ) {
+    this.router.events.subscribe((evt) => {
+        if (!(evt instanceof NavigationEnd)) {
+            return;
+        }
+        window.scrollTo(0, 0)
+    });
+
     $(document).ready(function(){
       $('input[type=number]').on('wheel', function(e){
           return false;
@@ -56,9 +76,10 @@ export class QuotationComponent implements OnInit {
 
     var obj = JSON.parse(sessionStorage.getItem('ActualUser')); // An object :D
     let user:User = new User(obj.id, obj.name, obj.lastName, obj.userName, obj.password, obj.address, obj.email, obj.typeId, obj.address2,
-  obj.colony, obj.city, obj.state, obj.zip, obj.country, obj.phoneNumber);
+  obj.colony, obj.city, obj.state, obj.zip, obj.country, obj.phoneNumber, obj.numberHouse, obj.setCompany, obj.lockInfo);
 
     this.createGuideService.userActual = user;
+
 
     this.productService.getParcelsFromUserQuotation(user.id).subscribe(
       (responseParcels) =>{
@@ -66,6 +87,7 @@ export class QuotationComponent implements OnInit {
           this.loading = false;
           this.petitionError = true;
         }else{
+
           var productArray = responseParcels;
           for (var i = 0; i < productArray.length; i++) {
             if(productArray[i].parcelId == 2 || productArray[i].parcelId == 3){
@@ -74,6 +96,37 @@ export class QuotationComponent implements OnInit {
               }
             }
           }
+          this.clientService.getUsersByUserID().subscribe(
+            (successResponse) => {
+                if(!successResponse){
+                  this.loading = false;
+                  this.petitionError = true;
+                }else{
+
+                  this.loaded = true;
+                  this.userArray = successResponse;
+                  this.response = successResponse;
+                  this.dataUser = [];
+                  for (var i = 0; i < this.userArray.length; i++) {
+                    //console.log(countryArray[i].name);
+                    this.dataUser[this.userArray[i].name + " " + this.userArray[i].lastName] = null; //countryArray[i].flag or null
+                  }
+                  this.petitionError = false;
+                  setTimeout(() =>
+                  {
+                    $(this.el.nativeElement).find('input.autocomplete').autocomplete({
+                      data: this.dataUser,
+                      limit: 5
+                    });
+                  },
+                  400);
+                }
+            },
+            (errorResponse) => {
+              this.loading = false;
+              this.petitionError = true;
+            }
+          );
         }
       }
     );
@@ -83,19 +136,98 @@ export class QuotationComponent implements OnInit {
 
   }
 
+  selectedClient(deviceValue){
+    if(deviceValue.length > 0){
+      for(var i = 0; i < this.response.length; i++){
+        var userNameLastName = this.response[i].name + " " + this.response[i].lastName;
+        if(deviceValue == userNameLastName){
+          this.selectedClientInfo = new User(this.response[i].id, this.response[i].name, this.response[i].lastName,
+            this.response[i].userName, this.response[i].password, this.response[i].address, this.response[i].email,
+            this.response[i].typeId, this.response[i].address2, this.response[i].colony, this.response[i].city,
+            this.response[i].state, this.response[i].zip, this.response[i].country, this.response[i].phoneNumber,
+            this.response[i].numberHouse, this.response[i].setCompany, this.response[i].lockInfo);
+          //this.clientService.setUserEdit(userAux);
+        }else{
+          this.loading = false;
+        }
+      }
+    }
+    /*
+
+    var element = <HTMLInputElement>document.getElementById("userData");
+      this.invalidForm = false;
+      this.loading = true;
+      for(var i = 0; i < this.response.length; i++){
+        var userNameLastName = this.response[i].name + " " + this.response[i].lastName;
+        if(element.value == userNameLastName){
+          let userAux:User = new User(this.response[i].id, this.response[i].name, this.response[i].lastName,
+            this.response[i].userName, this.response[i].password, this.response[i].address, this.response[i].email,
+            this.response[i].typeId, this.response[i].address2, this.response[i].colony, this.response[i].city,
+            this.response[i].state, this.response[i].zip, this.response[i].country, this.response[i].phoneNumber);
+          this.clientService.setUserEdit(userAux);
+          this.clientService.operation = 1;
+          this.router.navigate(['/add-client']);
+        }else{
+          this.loading = false;
+        }
+      }*/
+
+  }
+
   checkSeguro(){
     var element = <HTMLInputElement>document.getElementById("seguro");
     element = <HTMLInputElement>document.getElementById("seguro");
     if(element.checked == true){
       this.seguro = true;
       setTimeout( () => { document.getElementById("insurance").focus(); }, 100 );
-
     }else{
       this.seguro = false;
     }
   }
 
+  loseFocusDest(deviceValue){
+    if(deviceValue.length > 4){
+      this.rateService.getInfoByPostalCode(deviceValue).subscribe(
+        (response) => {
+          this.responseCP.postalCode = response.codigo_postal;
+          this.responseCP.colonies = response.colonias;
+          this.responseCP.municipality = response.municipio;
+          this.responseCP.state = response.estado;
+
+          if(response.colonias.length < 1){
+            this.noCP = true;
+          }
+        }
+      )
+    }
+  }
+
+  setArrayEmptyDest(){
+    this.responseCP.colonies = [];
+  }
+
+  checkDestCP(deviceValue){
+    this.noCP = false;
+    this.responseCP.colonies = [];
+    this.rateService.getInfoByPostalCode(deviceValue).subscribe(
+      (response) => {
+        console.log(response);
+        this.responseCP.postalCode = response.codigo_postal;
+        this.responseCP.colonies = response.colonias;
+        this.responseCP.municipality = response.municipio;
+        this.responseCP.state = response.estado;
+
+        console.log(this.responseCP);
+
+        if(response.colonias.length < 1){
+          this.noCP = true;
+        }
+      }
+    )
+  }
+
   addQuotation(forma:NgForm){
+    console.log(forma);
     this.packs = [];
     this.loading = true;
     let insurance:number = 0;
@@ -154,6 +286,13 @@ export class QuotationComponent implements OnInit {
             this.createGuideService.destinyZip = forma.controls["postal_code_dest"].value;
             this.createGuideService.packageType = forma.controls["kindPackage"].value;
             this.rateService.weight = totalWeight;
+
+            this.rateService.dataCpDest.colony = forma.controls["colonyDest"].value;
+            this.rateService.dataCpDest.municipality = forma.controls["dest_city"].value;
+            this.rateService.dataCpDest.postalCode = forma.controls["postal_code_dest"].value;
+            this.rateService.dataCpDest.state = forma.controls["dest_state"].value;
+            this.rateService.selectedUser = this.selectedClientInfo;
+
             this.router.navigate(['/show-rate']);
           }
         });
@@ -214,6 +353,13 @@ export class QuotationComponent implements OnInit {
             this.createGuideService.destinyZip = forma.controls["postal_code_dest"].value;
             this.createGuideService.packageType = forma.controls["kindPackage"].value;
             this.rateService.weight = forma.controls["weight"].value;
+
+            this.rateService.dataCpDest.colony = forma.controls["colonyDest"].value;
+            this.rateService.dataCpDest.municipality = forma.controls["dest_city"].value;
+            this.rateService.dataCpDest.postalCode = forma.controls["postal_code_dest"].value;
+            this.rateService.dataCpDest.state = forma.controls["dest_state"].value;
+            this.rateService.selectedUser = this.selectedClientInfo;
+
             this.router.navigate(['/show-rate']);
           }
 

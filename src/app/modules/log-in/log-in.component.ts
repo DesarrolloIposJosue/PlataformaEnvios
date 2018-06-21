@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { ClientService } from '../../services/client-service/client.service';
 import { CreateGuideService } from '../../services/create-guide-service/create-guide.service';
@@ -30,6 +30,12 @@ export class LogInComponent implements OnInit {
     private autoLogOut: AutoLogOutService,
     private createGuideservice:CreateGuideService
   ) {
+    this.router.events.subscribe((evt) => {
+        if (!(evt instanceof NavigationEnd)) {
+            return;
+        }
+        window.scrollTo(0, 0)
+    });
     autoLogOut.stop();
   }
 
@@ -58,10 +64,11 @@ export class LogInComponent implements OnInit {
               this.petitionError = true;
             }else{
               if(typeof (Storage) !== 'undefined'){
+                console.log(successResponse);
                 let user:User = new User(successResponse.id, successResponse.name, successResponse.lastName, successResponse.userName,
                 successResponse.password, successResponse.address, successResponse.email, successResponse.typeId, successResponse.address2,
               successResponse.colony, successResponse.city, successResponse.state, successResponse.zip, successResponse.country,
-            successResponse.phoneNumber);
+            successResponse.phoneNumber, successResponse.numberHouse, successResponse.setCompany, successResponse.lockInfo);
 
                 this.createGuideservice.userActual = user;
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { ViewEncapsulation, ViewChild, AfterViewChecked } from '@angular/core';
 import { RateService } from '../../services/rate-service/rate.service';
 import { CreateGuideService } from '../../services/create-guide-service/create-guide.service';
@@ -24,7 +24,12 @@ export class RateComponent implements OnInit {
     private router:Router,
     private download:DownloadGuideService
   ) {
-
+    this.router.events.subscribe((evt) => {
+        if (!(evt instanceof NavigationEnd)) {
+            return;
+        }
+        window.scrollTo(0, 0)
+    });
   }
 
   ngOnInit() {
@@ -68,6 +73,7 @@ export class RateComponent implements OnInit {
         this.createGuideService.productId = productId;
         this.createGuideService.totalAmount = amount;
         this.createGuideService.productName = description;
+        console.log(this.createGuideService.productName);
         let amountDetail:string;
         for(let i=0; i<amountDetails.length; i++){
           if(i == 0){

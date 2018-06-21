@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ClientService } from './services/client-service/client.service';
 import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +21,13 @@ export class AppComponent {
     public clientService: ClientService,
     private _actRouter: ActivatedRoute,
     private _router: Router
-  ) {}
+  ) {
+
+  }
+
+  ngOnInit() {
+        
+    }
       // sets an idle timeout of 280 seconds, for testing purposes.
     /*idle.setIdle(10);
     // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.

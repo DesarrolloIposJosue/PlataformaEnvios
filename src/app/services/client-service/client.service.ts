@@ -9,6 +9,7 @@ import '../../rxjs/index';
 export class ClientService {
   private userLogged:boolean = false;
   private apiBase = 'http://162.248.52.104/WSGombar/Gombar.svc/';
+  //private apiBase = 'http://localhost:55679/Gombar.svc/';
   public userEdit:User;
   public operation:number = 0; //0 Create, 1 Edit
 
@@ -22,7 +23,7 @@ export class ClientService {
 
     setUserEdit(user:User){
       let userAux:User = new User(user.id, user.name, user.lastName, user.userName, user.password, user.address, user.email, user.typeId,
-      user.address2, user.colony, user.city, user.state, user.zip, user.country, user.phoneNumber);
+      user.address2, user.colony, user.city, user.state, user.zip, user.country, user.phoneNumber, user.numberHouse, user.setCompany, user.lockInfo);
       this.userEdit = userAux;
     }
 

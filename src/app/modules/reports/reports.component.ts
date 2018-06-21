@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, Output, EventEmitter} from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { ClientService } from '../../services/client-service/client.service';
 import { User } from '../../classes/Client';
@@ -54,6 +54,8 @@ export class ReportsComponent implements OnInit {
   private ObjectExcel:ObjectExcel[] = [];
   private tryExcel:ValidDateGuide[] = [];
 
+  private canceledGuide:boolean = false;
+
   constructor(
     private clientService:ClientService,
     private guideService:GuidesService,
@@ -63,6 +65,13 @@ export class ReportsComponent implements OnInit {
     private download:DownloadGuideService,
     private excelService:ExcelService
   ) {
+    this.router.events.subscribe((evt) => {
+        if (!(evt instanceof NavigationEnd)) {
+            return;
+        }
+        window.scrollTo(0, 0)
+    });
+
     this.excelService = excelService;
     this.date = new Date();
     this.limitDate = new Date();
@@ -70,7 +79,8 @@ export class ReportsComponent implements OnInit {
 
     var obj = JSON.parse(sessionStorage.getItem('ActualUser')); // An object :D
     this.user = new User(obj.id, obj.name, obj.lastName, obj.userName, obj.password, obj.address, obj.email, obj.typeId, obj.address2,
-  obj.colony, obj.city, obj.state, obj.zip, obj.country, obj.phoneNumber);
+  obj.colony, obj.city, obj.state, obj.zip, obj.country, obj.phoneNumber, obj.numberHouse, obj.setCompany, obj.lockInfo);
+  console.log(this.user);
 
   if(this.user.typeId == 2){
     this.reportType = 2;
@@ -104,6 +114,14 @@ export class ReportsComponent implements OnInit {
         this.petitionError = true;
       }
     );
+  }
+
+  modalActions = new EventEmitter<string|MaterializeAction>();
+  openModal() {
+    this.modalActions.emit({action:"modal",params:['open']});
+  }
+  closeModal() {
+    this.modalActions.emit({action:"modal",params:['close']});
   }
 
   ngOnInit() {
@@ -659,7 +677,15 @@ export class ReportsComponent implements OnInit {
   cancelGuide(shipment:Shipment){
     this.guideService.CancelGuide(shipment).subscribe(response =>{
       if(response){
-        this.router.navigate(['/home']);
+        if(response == "SUCCESS: Shipment Canceled"){
+          console.log("Se cancelo correctamente la guía");
+          this.canceledGuide = true;
+          this.openModal();
+        }else{
+          console.log("La guía no se canceló");
+          this.canceledGuide = false;
+          this.openModal();
+        }
       }
     });
   }

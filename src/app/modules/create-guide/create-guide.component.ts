@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, ElementRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { ViewEncapsulation, ViewChild, AfterViewChecked } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { NgForm } from '@angular/forms';
@@ -12,6 +12,7 @@ import { GuideMPSResponse } from '../../classes/GuideMPSResponse';
 import {CreateGuideService} from '../../services/create-guide-service/create-guide.service';
 import {DownloadGuideService} from '../../services/download-guide-service/download-guide.service';
 import { GuidesService } from '../../services/guides/guides.service';
+import { RateService } from '../../services/rate-service/rate.service'
 
 declare var jQuery:any;
 declare var $:any;
@@ -54,33 +55,45 @@ export class CreateGuideComponent implements OnInit {
   private email:string;
 
   private productName:string;
+  private companyName = "GOMBAR";
+  private selectedName:string;
 
   constructor(
     private router: Router,
     private el: ElementRef,
     private createGuideservice:CreateGuideService,
     private download:DownloadGuideService,
-    private guides:GuidesService
+    private guides:GuidesService,
+    private rateService:RateService
   ) {
-    this.dataGuide = createGuideservice.dataAuxGuide;
-    this.client = createGuideservice.userActual;
-    this.productId = createGuideservice.productId;
-    this.parcelId = createGuideservice.parcelId;
-    this.packageType = createGuideservice.packageType;
-    this.city = createGuideservice.city;
-    this.destCity = createGuideservice.destinyCity;
-    this.zip = createGuideservice.zip;
-    this.destZip = createGuideservice.destinyZip;
-    this.clientName = this.client.name + " " + this.client.lastName;
-    this.totalAmount = createGuideservice.totalAmount;
-    this.amountDetail = createGuideservice.amountDetail;
-    $(document).ready(function(){
-      $('input[type=number]').on('wheel', function(e){
-          return false;
-      });
+    this.router.events.subscribe((evt) => {
+        if (!(evt instanceof NavigationEnd)) {
+            return;
+        }
+        window.scrollTo(0, 0)
     });
-    this.productName = this.createGuideservice.productName;
-    console.log(this.productName);
+      this.dataGuide = createGuideservice.dataAuxGuide;
+      this.client = createGuideservice.userActual;
+      this.productId = createGuideservice.productId;
+      this.parcelId = createGuideservice.parcelId;
+      this.packageType = createGuideservice.packageType;
+      this.city = createGuideservice.city;
+      this.destCity = createGuideservice.destinyCity;
+      this.zip = createGuideservice.zip;
+      this.destZip = createGuideservice.destinyZip;
+      this.clientName = this.client.name + " " + this.client.lastName;
+      this.totalAmount = createGuideservice.totalAmount;
+      this.amountDetail = createGuideservice.amountDetail;
+      if( this.rateService.selectedUser){
+        this.selectedName = this.rateService.selectedUser.name + " " + this.rateService.selectedUser.lastName
+      }
+      $(document).ready(function(){
+        $('input[type=number]').on('wheel', function(e){
+            return false;
+        });
+      });
+      this.productName = this.createGuideservice.productName;
+      console.log(this.productName);
    }
 
   ngOnInit() {
@@ -116,7 +129,7 @@ export class CreateGuideComponent implements OnInit {
   forma.controls["destinyAddress2"].value,forma.controls["destinyColony"].value,forma.controls["destinyCity"].value,forma.controls["destinyState"].value,
 forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.controls["destinyPhoneNumber"].value,forma.controls["destinyUserName"].value,
 "","Generando",this.dataGuide.weight,this.dataGuide.long,this.dataGuide.width,this.dataGuide.hight,this.dataGuide.insurance,new Date(),"","","N","",0,0,this.productName);
-    
+
       }
 
 

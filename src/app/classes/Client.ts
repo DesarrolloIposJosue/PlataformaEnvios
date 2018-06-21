@@ -14,9 +14,13 @@ export class User{
   public zip:string;
   public country:string;
   public phoneNumber:string;
+  public numberHouse:string;
+  public setCompany:string;
+  public lockInfo:string;
 
   constructor(_id:number, _name:string, _lastName:string, _userName:string, _password:string, _address:string, _email:string,
-  _typeId:number, _address2:string, _colony:string, _city:string, _state:string, _zip:string, _country:string, _phoneNumber:string){
+  _typeId:number, _address2:string, _colony:string, _city:string, _state:string, _zip:string, _country:string, _phoneNumber:string,
+  _numberHouse:string, _setCompany:string, _lockInfo:string){
     this.id = _id;
     this.name = _name;
     this.lastName = _lastName;
@@ -31,7 +35,10 @@ export class User{
     this.state = _state;
     this.zip = _zip;
     this.country = _country;
-    this.phoneNumber = _phoneNumber; 
+    this.phoneNumber = _phoneNumber;
+    this.numberHouse = _numberHouse;
+    this.setCompany = _setCompany;
+    this.lockInfo = _lockInfo;
   }
 
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { ClientService } from '../../services/client-service/client.service';
 import { ProductService } from '../../services/product-service/product.service';
 import { GuidesService } from '../../services/guides/guides.service';
@@ -36,6 +36,12 @@ export class SelectClientEditGuidesComponent implements OnInit {
     private clientService:ClientService,
     private guideService:GuidesService
   ) {
+    this.router.events.subscribe((evt) => {
+        if (!(evt instanceof NavigationEnd)) {
+            return;
+        }
+        window.scrollTo(0, 0)
+    });
 
     $(document).ready(function(){
       $('input[type=number]').on('wheel', function(e){

@@ -3,6 +3,20 @@
      opacity: 1 !important;
 }
 
+.checkbox-blue[type="checkbox"].filled-in:checked + label:after{
+     border: 2px solid #2962ff;
+     background-color: #2962ff;
+}
+
+.checkbox-blue{
+  margin-top: 2%;
+  margin-bottom: 3%;
+}
+
+.label-checkbox{
+  color: #000000;
+}
+
 .main{
   margin-top: 5%;
 }
@@ -91,3 +105,10 @@ h5{
   margin-top: 5%;
   margin-bottom: 5%;
 }
+
+input::-webkit-outer-spin-button,
+ input::-webkit-inner-spin-button {
+     /* display: none; <- Crashes Chrome on hover */
+     -webkit-appearance: none;
+     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+ }

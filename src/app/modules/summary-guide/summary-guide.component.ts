@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GuidesService } from '../../services/guides/guides.service';
 import { Shipment } from '../../classes/Shipment';
 import { ValidDateGuide } from '../../classes/ValidDateGuide';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-summary-guide',
@@ -21,6 +21,12 @@ export class SummaryGuideComponent implements OnInit {
     this.guide = this.guideService.selectedGuide;
     this.guides = this.guideService.selectedGuides;
     this.multiguides = this.guideService.selectedMultiguides;
+    this.router.events.subscribe((evt) => {
+        if (!(evt instanceof NavigationEnd)) {
+            return;
+        }
+        window.scrollTo(0, 0)
+    });
   }
 
   ngOnInit() {

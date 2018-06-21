@@ -1,8 +1,8 @@
 <div class="grey lighten-3">
   <!-- Page Content goes here -->
   <h3 *ngIf="noDelivery">No hay paqueterías disponibles</h3>
-  <div class="row" *ngFor="let rate of this.rateService.dataProducts, let i = index">
-    <div class="col s12 offset-m3 m6 offset-l3 l6">
+  <div class="row">
+    <div class="col s12 m6 l6" *ngFor="let rate of this.rateService.dataProducts, let i = index">
       <div class="card horizontal">
         <div class="card-image">
           <img *ngIf="rate.parcelId == 4" src="./assets/estafeta-logo.png">

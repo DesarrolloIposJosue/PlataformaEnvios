@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { GuidesService } from '../../services/guides/guides.service';
 import { RedPackNumberGuide } from '../../classes/RedPackNumberGuide';
 
@@ -21,6 +21,12 @@ export class DefineGuidesRedpackComponent implements OnInit {
     private router:Router,
     private guidesService:GuidesService
   ) {
+    this.router.events.subscribe((evt) => {
+        if (!(evt instanceof NavigationEnd)) {
+            return;
+        }
+        window.scrollTo(0, 0)
+    });
     $(document).ready(function(){
       $('input[type=number]').on('wheel', function(e){
           return false;

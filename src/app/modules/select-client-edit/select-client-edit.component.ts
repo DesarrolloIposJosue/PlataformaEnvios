@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { ClientService } from '../../services/client-service/client.service';
 import { Observable } from 'rxjs/Rx';
 import { NgForm } from '@angular/forms';
@@ -27,7 +27,14 @@ export class SelectClientEditComponent implements OnInit {
     private el: ElementRef,
     private router:Router,
     private clientService:ClientService
-  ) { }
+  ) {
+    this.router.events.subscribe((evt) => {
+        if (!(evt instanceof NavigationEnd)) {
+            return;
+        }
+        window.scrollTo(0, 0)
+    });
+   }
 
   ngOnInit() {
     this.clientService.getUsersByUserID().subscribe(
@@ -68,10 +75,13 @@ export class SelectClientEditComponent implements OnInit {
       for(var i = 0; i < this.response.length; i++){
         var userNameLastName = this.response[i].name + " " + this.response[i].lastName;
         if(element.value == userNameLastName){
+          console.log(this.response);
           let userAux:User = new User(this.response[i].id, this.response[i].name, this.response[i].lastName,
             this.response[i].userName, this.response[i].password, this.response[i].address, this.response[i].email,
             this.response[i].typeId, this.response[i].address2, this.response[i].colony, this.response[i].city,
-            this.response[i].state, this.response[i].zip, this.response[i].country, this.response[i].phoneNumber);
+            this.response[i].state, this.response[i].zip, this.response[i].country, this.response[i].phoneNumber,
+            this.response[i].numberHouse, this.response[i].setCompany, this.response[i].lockInfo);
+          console.log(userAux);
           this.clientService.setUserEdit(userAux);
           this.clientService.operation = 1;
           this.router.navigate(['/add-client']);

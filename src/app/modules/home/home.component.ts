@@ -4,7 +4,7 @@ import { MaterializeAction, MaterializeDirective } from 'angular2-materialize';
 import { AutoLogOutService } from '../../services/auto-log-out-service/auto-log-out.service';
 import { MaterializeModule } from "angular2-materialize";
 import { M } from "materialize-css";
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import "materialize-css";
 
@@ -25,6 +25,12 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private autoLogOut:AutoLogOutService
   ) {
+    this.router.events.subscribe((evt) => {
+        if (!(evt instanceof NavigationEnd)) {
+            return;
+        }
+        window.scrollTo(0, 0)
+    });
     $(document).ready(function(){
       $('.carousel').carousel({
       fullWidth: true,
@@ -33,11 +39,11 @@ export class HomeComponent implements OnInit {
       $('.carousel').carousel({
         padding: 200
       });
-      autoplay()
+      /*autoplay()
       function autoplay() {
         $('.carousel').carousel('next');
         setTimeout(autoplay, 5000);
-      }
+      }*/
     });
   }
 

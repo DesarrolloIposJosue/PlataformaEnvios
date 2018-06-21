@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
 declare var jQuery:any;
 declare var $:any;
@@ -16,7 +17,13 @@ export class AddGuidesToClientComponent implements OnInit {
   private guidesPaquetexpress:boolean = false;
   private guidesFedEx:boolean = false;
 
-  constructor() {
+  constructor(private router:Router) {
+    this.router.events.subscribe((evt) => {
+        if (!(evt instanceof NavigationEnd)) {
+            return;
+        }
+        window.scrollTo(0, 0)
+    });
     $(document).ready(function(){
       $('input[type=number]').on('wheel', function(e){
           return false;

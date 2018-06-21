@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { ClientService } from '../../services/client-service/client.service';
 import { ProductService } from '../../services/product-service/product.service';
 import { Observable } from 'rxjs/Rx';
@@ -27,7 +27,14 @@ export class SelectClientEditParcelComponent implements OnInit {
     private router:Router,
     private clientService:ClientService,
     private productService:ProductService
-  ) { }
+  ) {
+    this.router.events.subscribe((evt) => {
+        if (!(evt instanceof NavigationEnd)) {
+            return;
+        }
+        window.scrollTo(0, 0)
+    });
+   }
 
   ngOnInit() {
     this.clientService.getUsersByUserID().subscribe(

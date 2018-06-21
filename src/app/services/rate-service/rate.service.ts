@@ -5,17 +5,31 @@ import { Rate } from '../../classes/Rate';
 import { Package } from '../../classes/Package';
 import { Multipieces } from '../../classes/Multipieces';
 import { User_Parcel } from "../../classes/UserParcel";
+import { ResponseToGuide } from '../../classes/ResponseCP';
+import { User } from '../../classes/Client';
 import '../../rxjs/index';
 
 
 @Injectable()
 export class RateService {
   private apiBase = 'http://162.248.52.104/WSGombar/Gombar.svc/';
+  private postalCodeAPI = 'https://api-codigos-postales.herokuapp.com/v2/codigo_postal/';
 
   public dataProducts:Rate[] = [];
+
+  public dataCpOrig:ResponseToGuide = new ResponseToGuide();
+  public dataCpDest:ResponseToGuide = new ResponseToGuide();
+
   public weight:number;
 
+  public selectedUser:User;
+
   constructor(private http: Http) { }
+
+  getInfoByPostalCode(postalCode:string){
+    let searchPostalCode:string = this.postalCodeAPI + postalCode;
+    return this.http.get(searchPostalCode).map((res:Response) => res.json());
+  }
 
   getQuotation(packageToSend:Package, insurance:number){
     var operation:string = this.apiBase + 'GetQuotations';

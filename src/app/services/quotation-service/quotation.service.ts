@@ -8,10 +8,16 @@ import '../../rxjs/index';
 @Injectable()
 export class QuotationService {
   private apiBase = 'http://162.248.52.104/WSGombar/Gombar.svc/';
+  //private postalCodeAPI = 'https://api-codigos-postales.herokuapp.com/v2/codigo_postal/';
 
   constructor(private http: Http) {
 
   }
+
+  /*getInfoByPostalCode(postalCode:string){
+    let searchPostalCode:string = this.postalCodeAPI + postalCode;
+    return this.http.get(searchPostalCode).map((res:Response) => res.json());
+  }*/
 
   addQuotation(quotation:Package){
     console.log(quotation);
