@@ -32,6 +32,7 @@ export class NavbarComponent implements OnInit {
     private guideService:GuidesService
   ) {
       this.typeUser = sessionStorage.getItem('Type');
+
   }
 
   private userLogged:boolean = false;

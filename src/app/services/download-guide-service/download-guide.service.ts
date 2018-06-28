@@ -21,12 +21,10 @@ export class DownloadGuideService {
     // Body or Search
     let myParams: URLSearchParams = new URLSearchParams();
 
-    console.log(filename);
     myHeaders.set('fileName', filename);
     myHeaders.set('fileExtension', 'pdf');
     myHeaders.set('filePath', 'C:/fedex guides/');
 
-    console.log('C:/fedex guides/');
 
     let options = new RequestOptions({ headers: myHeaders, search: myParams });
 
@@ -40,7 +38,6 @@ export class DownloadGuideService {
     // Body or Search
     let myParams: URLSearchParams = new URLSearchParams();
 
-    console.log(filename);
     myHeaders.set('fileName', filename);
     myHeaders.set('fileExtension', 'pdf');
     myHeaders.set('filePath', 'C:/redpack guides/');

@@ -91,6 +91,9 @@ export class AddParcelToClientComponent implements OnInit {
   private multiPackRedPack:string = "N";
   private multiPackFedEx:string = "N";
 
+  private nextDayFedEx:string = "N";
+  private economicFedEx:string = "N";
+
   constructor(
     private parcelService:ParcelService,
     private router:Router,
@@ -173,6 +176,8 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.extendedArea = forma.controls["extAreaRedPack"].value;
         parcInfoInd.percentageDeclared = forma.controls["porcValDeclRedPack"].value;
         parcInfoInd.reference = forma.controls["referenceRedPack"].value;
+        parcInfoInd.economic = "Y";
+        parcInfoInd.nextDay = "Y";
         if(this.guidesRedPack){
           parcInfoInd.limitGuides = 'Y';
           parcInfoInd.limitedGuidesNumber = forma.controls["qtyGuidesRedPack"].value;
@@ -181,6 +186,7 @@ export class AddParcelToClientComponent implements OnInit {
           parcInfoInd.limitedGuidesNumber = 0;
         }
         parcInfoInd.multiPieces = this.multiPackRedPack;
+        parcInfoInd.thirdAccount = "";
         parcInfo.push(parcInfoInd);
         //Edit part
         if(this.productService.operation == 1){
@@ -250,6 +256,9 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.limitGuides = this.userParcelRedPack.limitGuides;
         parcInfoInd.limitedGuidesNumber = this.userParcelRedPack.limitedGuidesNumber;
         parcInfoInd.multiPieces = this.userParcelRedPack.multiPieces;
+        parcInfoInd.thirdAccount = "";
+        parcInfoInd.economic = "Y";
+        parcInfoInd.nextDay = "Y";
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPriceRedPack.length; j++)
         {
@@ -272,6 +281,21 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.extendedArea = forma.controls["extAreaFedEx"].value;
         parcInfoInd.percentageDeclared = forma.controls["porcValDeclFedEx"].value;
         parcInfoInd.reference = forma.controls["referenceFedEx"].value;
+        var element = <HTMLInputElement>document.getElementById("nextDayFedEx");
+        if(element.checked == true){
+          this.nextDayFedEx = "Y";
+        }else{
+          this.nextDayFedEx = "N";
+        }
+        element = <HTMLInputElement>document.getElementById("economicFedEx");
+        if(element.checked == true){
+          this.economicFedEx = "Y";
+        }else{
+          this.economicFedEx = "N";
+        }
+        parcInfoInd.economic = this.economicFedEx;
+        parcInfoInd.nextDay = this.nextDayFedEx;
+        parcInfoInd.thirdAccount = forma.controls["thirdAccountFedEx"].value;
         if(this.guidesFedEx){
           parcInfoInd.limitGuides = 'Y';
           parcInfoInd.limitedGuidesNumber = forma.controls["qtyGuidesFedEx"].value;
@@ -349,6 +373,21 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.limitGuides = this.userParcelFedEx.limitGuides;
         parcInfoInd.limitedGuidesNumber = this.userParcelFedEx.limitedGuidesNumber;
         parcInfoInd.multiPieces = this.userParcelFedEx.multiPieces;
+        parcInfoInd.thirdAccount = forma.controls["thirdAccountFedEx"].value;
+        var element = <HTMLInputElement>document.getElementById("nextDayFedEx");
+        if(element.checked == true){
+          this.nextDayFedEx = "Y";
+        }else{
+          this.nextDayFedEx = "N";
+        }
+        element = <HTMLInputElement>document.getElementById("economicFedEx");
+        if(element.checked == true){
+          this.economicFedEx = "Y";
+        }else{
+          this.economicFedEx = "N";
+        }
+        parcInfoInd.economic = this.economicFedEx;
+        parcInfoInd.nextDay = this.nextDayFedEx;
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPriceFedEx.length; j++)
         {
@@ -371,6 +410,9 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.extendedArea = forma.controls["extAreaDHL"].value;
         parcInfoInd.percentageDeclared = forma.controls["porcValDeclDHL"].value;
         parcInfoInd.reference = forma.controls["referenceDHL"].value;
+        parcInfoInd.economic = "Y";
+        parcInfoInd.nextDay = "Y";
+        parcInfoInd.thirdAccount = "";
         if(this.guidesDHL){
           parcInfoInd.limitGuides = 'Y';
           parcInfoInd.limitedGuidesNumber = forma.controls["qtyGuidesDHL"].value;
@@ -449,6 +491,9 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.limitGuides = this.userParcelDHL.limitGuides;
         parcInfoInd.limitedGuidesNumber = this.userParcelDHL.limitedGuidesNumber;
         parcInfoInd.multiPieces = 'N';
+        parcInfoInd.economic = "Y";
+        parcInfoInd.nextDay = "Y";
+        parcInfoInd.thirdAccount = "";
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPriceDHL.length; j++)
         {
@@ -470,6 +515,9 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.extendedArea = forma.controls["extAreaEstafeta"].value;
         parcInfoInd.percentageDeclared = forma.controls["porcValDeclEstafeta"].value;
         parcInfoInd.reference = forma.controls["referenceEstafeta"].value;
+        parcInfoInd.economic = "Y";
+        parcInfoInd.nextDay = "Y";
+        parcInfoInd.thirdAccount = "";
         if(this.guidesEstafeta){
           parcInfoInd.limitGuides = 'Y';
           parcInfoInd.limitedGuidesNumber = forma.controls["qtyGuidesEstafeta"].value;
@@ -546,7 +594,10 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.reference = this.userParcelEstafeta.reference;
         parcInfoInd.limitGuides = this.userParcelEstafeta.limitGuides;
         parcInfoInd.limitedGuidesNumber = this.userParcelEstafeta.limitedGuidesNumber;
+        parcInfoInd.thirdAccount = "";
         parcInfoInd.multiPieces = 'N';
+        parcInfoInd.economic = "Y";
+        parcInfoInd.nextDay = "Y";
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPriceEstafeta.length; j++)
         {
@@ -569,6 +620,9 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.extendedArea = forma.controls["extAreaPaqueteExpress"].value;
         parcInfoInd.percentageDeclared = forma.controls["porcValDeclPaqueteExpress"].value;
         parcInfoInd.reference = forma.controls["referencePaqueteExpress"].value;
+        parcInfoInd.economic = "Y";
+        parcInfoInd.nextDay = "Y";
+        parcInfoInd.thirdAccount = "";
         if(this.guidesPaqueteExpress){
           parcInfoInd.limitGuides = 'Y';
           parcInfoInd.limitedGuidesNumber = forma.controls["qtyGuidesPaqueteExpress"].value;
@@ -646,6 +700,9 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.limitGuides = this.userParcelPaqueteExpress.limitGuides;
         parcInfoInd.limitedGuidesNumber = this.userParcelPaqueteExpress.limitedGuidesNumber;
         parcInfoInd.multiPieces = 'N';
+        parcInfoInd.economic = "Y";
+        parcInfoInd.nextDay = "Y";
+        parcInfoInd.thirdAccount = "";
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPricePaqueteExpress.length; j++)
         {
@@ -1069,12 +1126,29 @@ export class AddParcelToClientComponent implements OnInit {
                   this.userParcelFedEx.extendedArea = productArray[i].extendedArea;
                   this.userParcelFedEx.limitGuides = productArray[i].limitGuides;
                   this.userParcelFedEx.multiPieces = productArray[i].multiPieces;
+                  this.userParcelFedEx.economic = productArray[i].economic;
+                  this.userParcelFedEx.nextDay = productArray[i].nextDay;
+                  this.userParcelFedEx.thirdAccount = productArray[i].thirdAccount;
                   if(this.userParcelFedEx.multiPieces == "Y"){
                     var element = <HTMLInputElement>document.getElementById("multipackFedEx");
                     element.checked = true;
                     this.multiPackFedEx = "Y";
                   }else{
                     this.multiPackFedEx = "N";
+                  }
+                  if(this.userParcelFedEx.economic == "Y"){
+                    var element = <HTMLInputElement>document.getElementById("economicFedEx");
+                    element.checked = true;
+                    this.economicFedEx = "Y";
+                  }else{
+                    this.economicFedEx = "N";
+                  }
+                  if(this.userParcelFedEx.nextDay == "Y"){
+                    var element = <HTMLInputElement>document.getElementById("nextDayFedEx");
+                    element.checked = true;
+                    this.nextDayFedEx = "Y";
+                  }else{
+                    this.nextDayFedEx = "N";
                   }
                   if(productArray[i].limitedGuidesNumber > 0){
                     this.userParcelFedEx.limitedGuidesNumber = productArray[i].limitedGuidesNumber;

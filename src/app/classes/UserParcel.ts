@@ -10,4 +10,7 @@ export class User_Parcel{
   public limitGuides: string;
   public limitedGuidesNumber: number;
   public multiPieces: string;
+  public economic: string;
+  public nextDay: string;
+  public thirdAccount: string;
 }

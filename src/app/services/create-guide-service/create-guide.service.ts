@@ -10,7 +10,7 @@ import '../../rxjs/index';
 @Injectable()
 export class CreateGuideService {
   private apiBase = 'http://162.248.52.104/WSGombar/Gombar.svc/';
-
+  //private apiBase = 'http://localhost:55679/Gombar.svc/';
   public multipiecesData:Multipieces[] = [];
 
   public dataAuxGuide:DataAuxGuide;
@@ -26,6 +26,8 @@ export class CreateGuideService {
 
   public totalAmount:number;
   public amountDetail:string;
+
+  public thirdAccount:string;
   constructor(private http: Http) {
 
   }
@@ -38,7 +40,6 @@ export class CreateGuideService {
 
     // Body or Search
     let myParams: URLSearchParams = new URLSearchParams();
-    console.log('UserId', sessionStorage.getItem('Id'));
     myHeaders.set('UserId', sessionStorage.getItem('Id'));
     myHeaders.set('ParcelId', parcelId.toString());
     let options = new RequestOptions({ headers: myHeaders, search: myParams });
@@ -50,6 +51,7 @@ export class CreateGuideService {
     var operation:string = this.apiBase + 'GenerateGuide';
     // Headers
     let myHeaders = new Headers();
+    myHeaders.set('ThirdAccount', this.thirdAccount);
     const Ship:Shipment = shipment;
     // Body or Search
     let myParams: URLSearchParams = new URLSearchParams();
@@ -80,7 +82,6 @@ export class CreateGuideService {
     let myHeaders = new Headers();
     const Ship:Shipment = shipment;
     // Body or Search
-    console.log(shpCode);
 
     let myParams: URLSearchParams = new URLSearchParams();
     myHeaders.set('ContentPackage', contentPackage);
@@ -98,6 +99,7 @@ export class CreateGuideService {
     // Headers
     let myHeaders = new Headers();
     // Body or Search
+    myHeaders.set('ThirdAccount', this.thirdAccount);
 
     let myParams: URLSearchParams = new URLSearchParams();
     let options = new RequestOptions({ headers: myHeaders, search: myParams });

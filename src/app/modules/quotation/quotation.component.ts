@@ -51,6 +51,9 @@ export class QuotationComponent implements OnInit {
   private loaded:boolean = false;
   private selectedClientInfo:User;
 
+  private noLoad:boolean = false;
+  private thirdAccount:string = "";
+
   constructor(
     private el: ElementRef,
     private auth: AuthService,
@@ -87,12 +90,14 @@ export class QuotationComponent implements OnInit {
           this.loading = false;
           this.petitionError = true;
         }else{
-
           var productArray = responseParcels;
           for (var i = 0; i < productArray.length; i++) {
             if(productArray[i].parcelId == 2 || productArray[i].parcelId == 3){
               if(productArray[i].multiPieces == "Y"){
                 this.userMultiPack = true;
+              }
+              if(productArray[i].thirdAccount.length > 0 ){
+                this.thirdAccount = productArray[i].thirdAccount;
               }
             }
           }
@@ -211,13 +216,10 @@ export class QuotationComponent implements OnInit {
     this.responseCP.colonies = [];
     this.rateService.getInfoByPostalCode(deviceValue).subscribe(
       (response) => {
-        console.log(response);
         this.responseCP.postalCode = response.codigo_postal;
         this.responseCP.colonies = response.colonias;
         this.responseCP.municipality = response.municipio;
         this.responseCP.state = response.estado;
-
-        console.log(this.responseCP);
 
         if(response.colonias.length < 1){
           this.noCP = true;
@@ -227,7 +229,6 @@ export class QuotationComponent implements OnInit {
   }
 
   addQuotation(forma:NgForm){
-    console.log(forma);
     this.packs = [];
     this.loading = true;
     let insurance:number = 0;
@@ -235,9 +236,12 @@ export class QuotationComponent implements OnInit {
     if(!forma.valid){
           this.invalidForm = true;
           this.loading = false;
+
     }else{
+      this.noLoad = false;
       var x = document.getElementById("preloaderRate");
       x.style.display = "block";
+
       this.invalidForm = false;
       if(this.multiPackActive){
         if(this.objectCreateMultipieces.length > 0){
@@ -270,7 +274,6 @@ export class QuotationComponent implements OnInit {
             var rateArray = responseQuotation;
             this.response = responseQuotation;
             this.dataProducts = [];
-            console.log(rateArray);
             for (var i = 0; i < rateArray.length; i++) {
               this.dataProducts.push(
                 new Rate(rateArray[i].id, rateArray[i].name, rateArray[i].description,
@@ -285,8 +288,9 @@ export class QuotationComponent implements OnInit {
             this.createGuideService.zip = forma.controls["postal_code_origin"].value;
             this.createGuideService.destinyZip = forma.controls["postal_code_dest"].value;
             this.createGuideService.packageType = forma.controls["kindPackage"].value;
-            this.rateService.weight = totalWeight;
+            this.createGuideService.thirdAccount = this.thirdAccount;
 
+            this.rateService.weight = totalWeight;
             this.rateService.dataCpDest.colony = forma.controls["colonyDest"].value;
             this.rateService.dataCpDest.municipality = forma.controls["dest_city"].value;
             this.rateService.dataCpDest.postalCode = forma.controls["postal_code_dest"].value;
@@ -294,7 +298,15 @@ export class QuotationComponent implements OnInit {
             this.rateService.selectedUser = this.selectedClientInfo;
 
             this.router.navigate(['/show-rate']);
+          }else{
+            x.style.display = "none";
+            this.loading = false;
+            this.noLoad = true;
           }
+        },(errorResponse) => {
+          x.style.display = "none";
+          this.invalidForm = true;
+          this.loading = false;
         });
       }
     }else{
@@ -334,6 +346,8 @@ export class QuotationComponent implements OnInit {
           if(!jsonData){
             this.loading = false;
             this.petitionError = true;
+            x.style.display = "none";
+            this.noLoad = true;
           }else{
             var rateArray = jsonData;
             this.response = jsonData;
@@ -347,11 +361,14 @@ export class QuotationComponent implements OnInit {
             }
             this.rateService.dataProducts = this.dataProducts;
             this.petitionError = false;
+
             this.createGuideService.city = forma.controls["origin_city"].value;
             this.createGuideService.destinyCity = forma.controls["dest_city"].value;
             this.createGuideService.zip = forma.controls["postal_code_origin"].value;
             this.createGuideService.destinyZip = forma.controls["postal_code_dest"].value;
             this.createGuideService.packageType = forma.controls["kindPackage"].value;
+            this.createGuideService.thirdAccount = this.thirdAccount;
+
             this.rateService.weight = forma.controls["weight"].value;
 
             this.rateService.dataCpDest.colony = forma.controls["colonyDest"].value;
@@ -363,8 +380,15 @@ export class QuotationComponent implements OnInit {
             this.router.navigate(['/show-rate']);
           }
 
-        });
+        },
+        (errorResponse) => {
+          x.style.display = "none";
+          this.invalidForm = true;
+          this.loading = false;
+        }
+      );
       }else{
+        x.style.display = "none";
         this.invalidForm = true;
         this.loading = false;
         if(quotationData.postCodeOrigin < 0 || quotationData.postCodeDest < 0 || quotationData.weight > 0

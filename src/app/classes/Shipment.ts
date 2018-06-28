@@ -103,7 +103,6 @@ _multiPieces:string, _multiPiecesMasterTracking:string, _multiPiecesMasterId:num
     this.multiPiecesSequenceNumber = _multiPiecesSequenceNumber;
 
     this.productName = _productName;
-
   }
 
 }

@@ -58,6 +58,8 @@ export class CreateGuideComponent implements OnInit {
   private companyName = "GOMBAR";
   private selectedName:string;
 
+  private errorPetition:boolean = false;
+
   constructor(
     private router: Router,
     private el: ElementRef,
@@ -93,7 +95,6 @@ export class CreateGuideComponent implements OnInit {
         });
       });
       this.productName = this.createGuideservice.productName;
-      console.log(this.productName);
    }
 
   ngOnInit() {
@@ -101,6 +102,7 @@ export class CreateGuideComponent implements OnInit {
   }
 
   createGuide(forma:NgForm){
+    this.petitionError = false;
     this.loading = true;
 
     if(!forma.valid){
@@ -157,13 +159,11 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
                     //window.open(url);
                     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
                         window.navigator.msSaveOrOpenBlob(blob);
-                        console.log("Edge");
                     }
                     else {
                         //var objectUrl = URL.createObjectURL(blob);
                         //window.open(objectUrl);
                         window.open(url);
-                        console.log("Otros");
                     }
                     /*this.guides.selectedGuide = this.shipment;
                     this.router.navigate(['/summary']);*/
@@ -175,6 +175,10 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
             }else if(this.dataMultipieces.response == "ERROR: BUY MORE PREPAID GUIDES"){
               this.router.navigate(['/buy-guides']);
             }
+          },(errorResponse) => {
+            x.style.display = "none";
+            this.petitionError = true;
+            this.loading = false;
           });
         }else{
           this.shipment.destinyAddress =  forma.controls["destinyAddress"].value + " " + forma.controls["numberAddress"].value;
@@ -200,13 +204,11 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
                     var blob = new Blob([byteArray], {type: 'application/pdf'});
                     var url= window.URL.createObjectURL(blob);
                     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                      console.log("Edge");
                         window.navigator.msSaveOrOpenBlob(blob);
                     }
                     else {
                         //var objectUrl = URL.createObjectURL(blob);
                         //window.open(objectUrl);
-                        console.log("Otros");
                         window.open(url);
 
                     }
@@ -216,6 +218,10 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
                 });
               }
             }
+          },(errorResponse) => {
+            x.style.display = "none";
+            this.petitionError = true;
+            this.loading = false;
           });
         }
       }
@@ -240,14 +246,11 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
                     var blob = new Blob([byteArray], {type: 'application/pdf'});
                     var url= window.URL.createObjectURL(blob);
                     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                      console.log("Edge");
                         window.navigator.msSaveOrOpenBlob(blob);
-
                     }
                     else {
                         //var objectUrl = URL.createObjectURL(blob);
                         //window.open(objectUrl);
-                        console.log("Otros");
                         window.open(url);
 
                     }
@@ -261,6 +264,10 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
             }else if(this.dataMultipieces.response == "ERROR: BUY MORE PREPAID GUIDES"){
               this.router.navigate(['/buy-guides']);
             }
+          },(errorResponse) => {
+            x.style.display = "none";
+            this.petitionError = true;
+            this.loading = false;
           });
         }else{
           this.dlvyType = forma.controls["dlvyType"].value;
@@ -282,16 +289,12 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
                   var blob = new Blob([byteArray], {type: 'application/pdf'});
                   var url= window.URL.createObjectURL(blob);
                   if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                    console.log("Edge");
                       window.navigator.msSaveOrOpenBlob(blob);
-                      console.log("Edge");
                   }
                   else {
                       //var objectUrl = URL.createObjectURL(blob);
                       //window.open(objectUrl);
-                      console.log("Otros");
                       window.open(url);
-                      console.log("Otros");
                   }
                   this.guides.selectedGuide = this.shipment;
                   this.router.navigate(['/summary']);
@@ -300,6 +303,10 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
               }
 
             }
+          },(errorResponse) => {
+            x.style.display = "none";
+            this.petitionError = true;
+            this.loading = false;
           });
         }
       }
@@ -330,6 +337,10 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
               this.router.navigate(['/summary']);
             }
           }
+        },(errorResponse) => {
+          x.style.display = "none";
+          this.petitionError = true;
+          this.loading = false;
         });
       }
     }

@@ -45,7 +45,6 @@ export class RateService {
     // Body or Search
     myHeaders.set('UserId', sessionStorage.getItem('Id'));
     let options = new RequestOptions({ headers: myHeaders});
-    console.log(operation);
     return this.http.get(operation, options).map((res:Response) => res.json());
   }
 

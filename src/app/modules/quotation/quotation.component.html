@@ -278,6 +278,12 @@
         </p>
       </div>
 
+      <div class="col offset-s1 s12 offset-m1 m12 offset-l1 l12" *ngIf="this.noLoad">
+        <p class="red-text text-darken-4">
+          La petición no se concreto correctamente, vuelva a intentarlo.
+        </p>
+      </div>
+
       <div class="row center-align">
         <button [disabled]="loading" class="btn offset-s4 s4 waves-effect blue accent-3">Cotizar
           <i class="material-icons right">send</i>

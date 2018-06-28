@@ -16,12 +16,12 @@ import { NgForm } from '@angular/forms';
 })
 
 export class LogInComponent implements OnInit {
-  //model: Client = new Client();
   error = '';
   loading: boolean = false;
   private user:any;
   private invalidForm = false;
   private petitionError = false;
+  private invalidUser = false;
 
   constructor(
     private router:Router,
@@ -59,29 +59,34 @@ export class LogInComponent implements OnInit {
       this.loading = true;
       this.clientService.getUserLogged(logInData.username, logInData.password).subscribe(
         (successResponse) => {
-            if(!successResponse.address){
+            if(!successResponse){
               this.loading = false;
               this.petitionError = true;
             }else{
-              if(typeof (Storage) !== 'undefined'){
-                console.log(successResponse);
-                let user:User = new User(successResponse.id, successResponse.name, successResponse.lastName, successResponse.userName,
-                successResponse.password, successResponse.address, successResponse.email, successResponse.typeId, successResponse.address2,
-              successResponse.colony, successResponse.city, successResponse.state, successResponse.zip, successResponse.country,
-            successResponse.phoneNumber, successResponse.numberHouse, successResponse.setCompany, successResponse.lockInfo);
+              if(successResponse.id > 0){
+                this.invalidUser = false;
+                if(typeof (Storage) !== 'undefined'){
+                  let user:User = new User(successResponse.id, successResponse.name, successResponse.lastName, successResponse.userName,
+                  successResponse.password, successResponse.address, successResponse.email, successResponse.typeId, successResponse.address2,
+                successResponse.colony, successResponse.city, successResponse.state, successResponse.zip, successResponse.country,
+              successResponse.phoneNumber, successResponse.numberHouse, successResponse.setCompany, successResponse.lockInfo);
 
-                this.createGuideservice.userActual = user;
+                  this.createGuideservice.userActual = user;
 
-                sessionStorage.setItem('ActualUser', JSON.stringify(user));
+                  sessionStorage.setItem('ActualUser', JSON.stringify(user));
 
-                sessionStorage.setItem('UserName', logInData.username);
-                sessionStorage.setItem('Password', logInData.password);
-                sessionStorage.setItem('Type', successResponse.typeId);
-                sessionStorage.setItem('Id', successResponse.id);
+                  sessionStorage.setItem('UserName', logInData.username);
+                  sessionStorage.setItem('Password', logInData.password);
+                  sessionStorage.setItem('Type', successResponse.typeId);
+                  sessionStorage.setItem('Id', successResponse.id);
 
+                }
+                this.petitionError = false;
+                this.router.navigate(['/home']);
+              }else{
+                this.invalidUser = true;
+                this.loading = false;
               }
-              this.petitionError = false;
-              this.router.navigate(['/home']);
             }
         },
         (errorResponse) => {
