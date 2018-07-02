@@ -323,6 +323,7 @@ export class QuotationComponent implements OnInit {
         width: forma.controls["width"].value,
         hight: forma.controls["hight"].value,
         idParcel: 0
+        
       }
 
       if(forma.controls["insurance"]){
