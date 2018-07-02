@@ -26,6 +26,7 @@ export class CreateGuideService {
 
   public totalAmount:number;
   public amountDetail:string;
+  public printType:string;
 
   public thirdAccount:string;
   constructor(private http: Http) {
@@ -52,10 +53,13 @@ export class CreateGuideService {
     // Headers
     let myHeaders = new Headers();
     myHeaders.set('ThirdAccount', this.thirdAccount);
+    myHeaders.set('PrintType', this.printType);
     const Ship:Shipment = shipment;
     // Body or Search
     let myParams: URLSearchParams = new URLSearchParams();
     let options = new RequestOptions({ headers: myHeaders, search: myParams });
+    
+    
 
     return this.http.post(operation, JSON.stringify(Ship), options).map((res:Response) => res.json());
   }
