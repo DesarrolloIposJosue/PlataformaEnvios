@@ -54,6 +54,7 @@ export class QuotationComponent implements OnInit {
   private noLoad:boolean = false;
   private thirdAccount:string = "";
 
+
   constructor(
     private el: ElementRef,
     private auth: AuthService,
@@ -90,7 +91,16 @@ export class QuotationComponent implements OnInit {
           this.loading = false;
           this.petitionError = true;
         }else{
+          console.log(responseParcels);
           var productArray = responseParcels;
+          console.log(productArray.length);
+
+          if(productArray.length > 1){
+            this.rateService.uniqueParcel = true;
+          }else{
+            this.rateService.uniqueParcel = false;
+          }
+
           for (var i = 0; i < productArray.length; i++) {
             if(productArray[i].parcelId == 2 || productArray[i].parcelId == 3){
               if(productArray[i].multiPieces == "Y"){
@@ -101,6 +111,7 @@ export class QuotationComponent implements OnInit {
               }
             }
           }
+
           this.clientService.getUsersByUserID().subscribe(
             (successResponse) => {
                 if(!successResponse){

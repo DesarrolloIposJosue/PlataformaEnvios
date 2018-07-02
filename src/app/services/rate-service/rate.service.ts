@@ -12,7 +12,8 @@ import '../../rxjs/index';
 
 @Injectable()
 export class RateService {
-  private apiBase = 'http://162.248.52.104/WSGombar/Gombar.svc/';
+  //private apiBase = 'http://162.248.52.104/WSGombar/Gombar.svc/';
+  private apiBase = 'http://localhost:55679/Gombar.svc/';
   private postalCodeAPI = 'https://api-codigos-postales.herokuapp.com/v2/codigo_postal/';
 
   public dataProducts:Rate[] = [];
@@ -21,8 +22,8 @@ export class RateService {
   public dataCpDest:ResponseToGuide = new ResponseToGuide();
 
   public weight:number;
-
   public selectedUser:User;
+  public uniqueParcel:boolean = false;
 
   constructor(private http: Http) { }
 

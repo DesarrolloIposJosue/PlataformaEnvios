@@ -20,6 +20,7 @@ import 'rxjs/Rx' ;
 export class RateComponent implements OnInit {
   private noDelivery:boolean = false;
   private validRates:ValidRate[] = [];
+  private quantityOfPerm:number = 0;
 
   constructor(
     private rateService:RateService,
@@ -29,6 +30,7 @@ export class RateComponent implements OnInit {
     private productService:ProductService
   ) {
     sessionStorage.setItem("NewUserId", sessionStorage.getItem("Id"));
+    console.log(this.rateService.dataProducts);
     this.productService.getParcelsFromUser().subscribe(
       (response) => {
         if(response){
@@ -38,27 +40,35 @@ export class RateComponent implements OnInit {
           for(let item of response){
             if(item.parcelId == 3 && item.economic == "Y"){
               economic = true;
+              this.quantityOfPerm++;
             }
             if(item.parcelId == 3 && item.nextDay == "Y"){
               nextDay = true;
+              this.quantityOfPerm++;
             }
           }
-          for(let item of this.rateService.dataProducts){
-            if(item.description.indexOf('Economico') >= 0 && item.parcelId == 3){
-              if(3 == item.parcelId && economic){
+          if(this.quantityOfPerm > 1 && this.rateService.dataProducts.length > 1){
+            for(let item of this.rateService.dataProducts){
+              if(item.description.indexOf('Economico') >= 0 && item.parcelId == 3){
+                if(3 == item.parcelId && economic){
+                  this.validRates.push(new ValidRate(item.id, item.name, item.description, item.kg, item.volumetricWeight, item.factor,
+                    item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y"));
+                }
+              }else if(item.description.indexOf('Dia Siguiente') >= 0 && item.parcelId == 3){
+                if(3 == item.parcelId && nextDay){
+                  this.validRates.push(new ValidRate(item.id, item.name, item.description, item.kg, item.volumetricWeight, item.factor,
+                    item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y"));
+                }
+              }else{
                 this.validRates.push(new ValidRate(item.id, item.name, item.description, item.kg, item.volumetricWeight, item.factor,
                   item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y"));
               }
-            }else if(item.description.indexOf('Dia Siguiente') >= 0 && item.parcelId == 3){
-              if(3 == item.parcelId && nextDay){
-                this.validRates.push(new ValidRate(item.id, item.name, item.description, item.kg, item.volumetricWeight, item.factor,
-                  item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y"));
-              }
-            }else{
-              this.validRates.push(new ValidRate(item.id, item.name, item.description, item.kg, item.volumetricWeight, item.factor,
-                item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y"));
+              index++;
             }
-            index++;
+          }else{
+            for(let item of this.rateService.dataProducts){
+              this.selectProduct(item.id, item.parcelId, item.amount, item.amountDetails, item.description)
+            }
           }
         }
       }

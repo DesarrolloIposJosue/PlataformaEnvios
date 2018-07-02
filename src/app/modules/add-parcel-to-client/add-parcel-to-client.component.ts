@@ -716,11 +716,16 @@ export class AddParcelToClientComponent implements OnInit {
       //Entra a enviar
       this.loading = true;
       this.parcelService.addParcelToClient(parcInfo).subscribe(jsonData => {
+          console.log("Entro?");
             var checkUser = jsonData;
+            console.log(jsonData);
             if (jsonData == "SUCCESS: Parcels assigned to User") {
+                console.log("Entro?");
               this.parcelService.addProductsToClient(prodUserInfo).subscribe(jsonData2 => {
                 if(jsonData2 == "SUCCESS: Products assigned to User")
                 {
+                    console.log("Entro?");
+                    console.log(jsonData2);
                    sessionStorage.removeItem('NewUserId');
                    this.router.navigate(['/home']);
                 }
@@ -1566,6 +1571,26 @@ export class AddParcelToClientComponent implements OnInit {
     }else{
       this.estafetaForm = false;
       this.guidesEstafeta = false;
+    }
+  }
+
+  validateNextDayFedEx(){
+    var element = <HTMLInputElement>document.getElementById("nextDayFedEx");
+    element = <HTMLInputElement>document.getElementById("nextDayFedEx");
+    if(element.checked == true){
+      this.nextDayFedEx = "Y";
+    }else{
+      this.nextDayFedEx = "N";
+    }
+  }
+
+  validateEconomicFedEx(){
+    var element = <HTMLInputElement>document.getElementById("economicFedEx");
+    element = <HTMLInputElement>document.getElementById("economicFedEx");
+    if(element.checked == true){
+      this.economicFedEx = "Y";
+    }else{
+      this.economicFedEx = "N";
     }
   }
 
