@@ -261,6 +261,17 @@
           <label for="thirdAccountFedEx">Cuenta terceros FedEx</label>
         </div>
 
+        <div *ngIf="fedExForm" class="row radio-buttons" [ngClass]="{'has-danger': printType.errors?.required && printType.touched}">
+          <p class="col offset-s1 s5 offset-m1 m5 offset-l1 l5 ">
+            <input class="with-gap" value="P" ngModel #printType="ngModel" name="printType" type="radio" id="pdf" />
+            <label for="pdf">PDF</label>
+          </p>
+          <p class="col s6 m6 l6">
+            <input class="with-gap" value="Z" ngModel #printType="ngModel" name="printType" type="radio" id="zebra" />
+            <label for="zebra">Etiqueta</label>
+          </p>
+      </div>
+
         <div *ngIf="fedExForm" class="col offset-s1 s5 offset-m1 m5 offset-l1 l5" >
           <p>
             <input (click)="validateNextDayFedEx()" class="filled-in checkbox-blue" type="checkbox" id="nextDayFedEx" />
@@ -805,6 +816,17 @@
           <label class="active" for="thirdAccountFedEx">Cuenta terceros FedEx</label>
         </div>
 
+        <div *ngIf="this.userParcelFedEx && fedExForm" class="row radio-buttons" [ngClass]="{'has-danger': printType.errors?.required && printType.touched}">
+          <p class="col offset-s1 s5 offset-m1 m5 offset-l1 l5 ">
+            <input class="with-gap" value="P" ngModel #printType="ngModel" name="printType" type="radio" id="pdf" />
+            <label for="pdf">PDF</label>
+          </p>
+          <p class="col s6 m6 l6">
+            <input class="with-gap" value="Z" ngModel #printType="ngModel" name="printType" type="radio" id="zebra" />
+            <label for="zebra">Etiqueta</label>
+          </p>
+        </div>
+
         <div *ngIf="fedExForm" class="col offset-s1 s5 offset-m1 m5 offset-l1 l5" >
           <p>
             <input (click)="validateNextDayFedEx()" class="filled-in checkbox-blue" type="checkbox" id="nextDayFedEx" />
@@ -854,6 +876,8 @@
             <label class="active" for="usernameFedEx">{{product.name}}</label>
           </div>
         </div>
+
+       
 
         <!-- Formulario Estafeta -->
 
