@@ -1,7 +1,7 @@
 <div class="grey lighten-3">
   <!-- Page Content goes here -->
   <h3 *ngIf="noDelivery">No hay paqueterías disponibles</h3>
-  <div class="row" *ngIf="this.validRates.length > 0">
+  <div class="row" *ngIf="this.validRates.length > 0 && this.rateService.dataProducts.length > 1">
     <div class="col s12 m6 l6" *ngFor="let rate of this.validRates, let i = index">
       <div class="card horizontal">
         <div class="card-image">

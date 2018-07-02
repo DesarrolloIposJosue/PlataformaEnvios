@@ -76,7 +76,7 @@
 
         <div *ngIf="this.responseCP.colonies.length > 0" class="input-field col s12 m6 l6" [ngClass]="{'has-danger': colonyDest.errors?.required && colonyDest.touched}">
           <select materialize="material_select" [materializeSelectOptions]="options" name="colonyDest" ngModel required #colonyDest="ngModel">
-            <option class="blue-text text-darken-4" disabled selected>Elija una opción</option>
+            <option class="blue-text text-darken-4" value="" disabled selected>Elija una opción</option>
             <option class="blue-text text-darken-4" value="{{item}}" *ngFor="let item of this.responseCP.colonies">{{item}}</option>
           </select>
           <label>Colonia destino</label>

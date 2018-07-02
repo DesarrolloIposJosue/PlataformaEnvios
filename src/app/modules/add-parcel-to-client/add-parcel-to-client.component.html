@@ -259,7 +259,7 @@
         <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': thirdAccountFedEx.errors?.required && thirdAccountFedEx.touched}" *ngIf="fedExForm">
           <input id="thirdAccountFedEx" name="thirdAccountFedEx" [ngModel]="" value="" #thirdAccountFedEx="ngModel" type="text" class="validate" minlength="3" >
           <label for="thirdAccountFedEx">Cuenta terceros FedEx</label>
-        </div>
+        </div>        
 
         <div *ngIf="fedExForm" class="row radio-buttons" [ngclass]="{'has-danger': printType.errors?.required && printType.touched}">
           <p class="col offset-s1 s5 offset-m1 m5 offset-l1 l5 ">
