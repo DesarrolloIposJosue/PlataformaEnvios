@@ -9,8 +9,8 @@ import '../../rxjs/index';
 
 @Injectable()
 export class CreateGuideService {
-  private apiBase = 'http://162.248.52.104/WSGombar/Gombar.svc/';
-  //private apiBase = 'http://localhost:55679/Gombar.svc/';
+  //private apiBase = 'http://162.248.52.104/WSGombar/Gombar.svc/';
+  private apiBase = 'http://localhost:55679/Gombar.svc/';
   public multipiecesData:Multipieces[] = [];
 
   public dataAuxGuide:DataAuxGuide;

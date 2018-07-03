@@ -261,7 +261,7 @@
           <label for="thirdAccountFedEx">Cuenta terceros FedEx</label>
         </div>        
 
-        <div *ngIf="fedExForm" class="row radio-buttons" [ngclass]="{'has-danger': printType.errors?.required && printType.touched}">
+        <div *ngIf="fedExForm" class="row radio-buttons" [ngClass]="{'has-danger': printType.errors?.required && printType.touched}">
           <p class="col offset-s1 s5 offset-m1 m5 offset-l1 l5 ">
             <input class="with-gap" value="P" ngModel #printType="ngModel" name="printType" Type="radio" id="pdf"/>
             <label for="pdf">PDF</label>
@@ -816,7 +816,7 @@
           <label class="active" for="thirdAccountFedEx">Cuenta terceros FedEx</label>
         </div>
         
-        <div *ngIf="fedExForm" class="row radio-buttons" [ngclass]="{'has-danger': printType.errors?.required && printType.touched}">
+        <div *ngIf="fedExForm" class="row radio-buttons" [ngClass]="{'has-danger': printType.errors?.required && printType.touched}">
         <p class="col offset-s1 s5 offset-m1 m5 offset-l1 l5 ">
           <input class="with-gap" value="P" ngModel #printType="ngModel" name="printType" Type="radio" id="pdf"/>
           <label for="pdf">PDF</label>
