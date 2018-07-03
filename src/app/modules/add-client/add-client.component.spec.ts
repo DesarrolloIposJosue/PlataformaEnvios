@@ -11,7 +11,7 @@ describe('AddClientComponent', () => {
       declarations: [ AddClientComponent ]
     })
     .compileComponents();
-  }));
+  }));  
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AddClientComponent);
