@@ -398,7 +398,7 @@ export class AddParcelToClientComponent implements OnInit {
           prodUserInfo.push(new User_Product(0, this.productUserPriceFedEx[j].productId, this.productUserPriceFedEx[j].amount));
         }
       }
-    }
+    } 
 
     if(this.dhlForm){
       parcInfoInd = new User_Parcel;
