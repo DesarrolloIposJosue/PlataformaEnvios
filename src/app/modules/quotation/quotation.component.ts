@@ -111,11 +111,15 @@ export class QuotationComponent implements OnInit {
               if(productArray[i].thirdAccount.length > 0 ){
                 this.thirdAccount = productArray[i].thirdAccount;
               }
-              if(productArray[i].parcelId == 3 && productArray[i].printType.lenght > 0){
+              if(productArray[i].parcelId == 3 && productArray[i].printType.length > 0){
                 this.printType=productArray[i].printType;
+                console.log(this.printType);
+              }
+              if(productArray[i].extendedArea > 0 && productArray[i].parcelId == 3){
+                this.extArea = productArray[i].extendedArea;
               }
             }
-            
+
           }
 
           this.clientService.getUsersByUserID().subscribe(
@@ -286,7 +290,7 @@ export class QuotationComponent implements OnInit {
             //this.errorProductFedEx = false;
           }
           this.createGuideService.multipiecesData = this.packs;
-        this.rateService.GetQuotationMultiPieces(this.packs, this.createGuideService.userActual.id).subscribe(responseQuotation => {
+        this.rateService.GetQuotationMultiPieces(this.packs, this.createGuideService.userActual.id, this.extArea).subscribe(responseQuotation => {
           if(responseQuotation){
             var rateArray = responseQuotation;
             this.response = responseQuotation;
@@ -361,7 +365,7 @@ export class QuotationComponent implements OnInit {
       quotationData.postCodeOrigin.toString().length > 4 && quotationData.postCodeDest.toString().length > 4){
         this.invalidNumber = false;
         this.invalidPC = false;
-        this.rateService.getQuotation(quotationData, insurance).subscribe(jsonData => {
+        this.rateService.getQuotation(quotationData, insurance, this.extArea).subscribe(jsonData => {
           if(!jsonData){
             this.loading = false;
             this.petitionError = true;
