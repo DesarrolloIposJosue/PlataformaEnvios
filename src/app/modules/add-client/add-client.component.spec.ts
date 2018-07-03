@@ -5,7 +5,7 @@ import { AddClientComponent } from './add-client.component';
 describe('AddClientComponent', () => {
   let component: AddClientComponent;
   let fixture: ComponentFixture<AddClientComponent>;
-
+ 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AddClientComponent ]
