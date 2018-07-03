@@ -54,6 +54,7 @@ export class QuotationComponent implements OnInit {
   private noLoad:boolean = false;
   private thirdAccount:string = "";
 
+  private extArea:number = 0;
 
   constructor(
     private el: ElementRef,
@@ -110,6 +111,7 @@ export class QuotationComponent implements OnInit {
                 this.thirdAccount = productArray[i].thirdAccount;
               }
             }
+            
           }
 
           this.clientService.getUsersByUserID().subscribe(
