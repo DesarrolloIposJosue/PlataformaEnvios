@@ -53,6 +53,7 @@ export class QuotationComponent implements OnInit {
 
   private noLoad:boolean = false;
   private thirdAccount:string = "";
+  private printType:string;
 
   private extArea:number = 0;
 
@@ -109,6 +110,9 @@ export class QuotationComponent implements OnInit {
               }
               if(productArray[i].thirdAccount.length > 0 ){
                 this.thirdAccount = productArray[i].thirdAccount;
+              }
+              if(productArray[i].parcelId == 3 && productArray[i].printType.lenght > 0){
+                this.printType=productArray[i].printType;
               }
             }
             
@@ -292,7 +296,7 @@ export class QuotationComponent implements OnInit {
                 new Rate(rateArray[i].id, rateArray[i].name, rateArray[i].description,
                         rateArray[i].kg, rateArray[i].volumetricWeight, rateArray[i].factor, rateArray[i].parcelId,
                         rateArray[i].amount, rateArray[i].parcelName, rateArray[i].deliveryDateSpecified,
-                         rateArray[i].deliveryDate, rateArray[i].amountDetails));
+                        rateArray[i].deliveryDate, rateArray[i].amountDetails));
             }
             this.rateService.dataProducts = this.dataProducts;
             this.petitionError = false;
@@ -302,6 +306,7 @@ export class QuotationComponent implements OnInit {
             this.createGuideService.destinyZip = forma.controls["postal_code_dest"].value;
             this.createGuideService.packageType = forma.controls["kindPackage"].value;
             this.createGuideService.thirdAccount = this.thirdAccount;
+            this.createGuideService.printType = this.printType;
 
             this.rateService.weight = totalWeight;
             this.rateService.dataCpDest.colony = forma.controls["colonyDest"].value;
@@ -336,6 +341,7 @@ export class QuotationComponent implements OnInit {
         width: forma.controls["width"].value,
         hight: forma.controls["hight"].value,
         idParcel: 0
+
       }
 
       if(forma.controls["insurance"]){
@@ -381,6 +387,7 @@ export class QuotationComponent implements OnInit {
             this.createGuideService.destinyZip = forma.controls["postal_code_dest"].value;
             this.createGuideService.packageType = forma.controls["kindPackage"].value;
             this.createGuideService.thirdAccount = this.thirdAccount;
+            this.createGuideService.printType = this.printType;
 
             this.rateService.weight = forma.controls["weight"].value;
 
