@@ -55,7 +55,9 @@ export class QuotationComponent implements OnInit {
   private thirdAccount:string = "";
   private printType:string;
 
-  private extArea:number = 0;
+  private extAreaFedEx:number = 0;
+  private extAreaPaquete:number = 0;
+  private extAreaRedPack:number = 0;
 
   constructor(
     private el: ElementRef,
@@ -93,9 +95,7 @@ export class QuotationComponent implements OnInit {
           this.loading = false;
           this.petitionError = true;
         }else{
-          console.log(responseParcels);
           var productArray = responseParcels;
-          console.log(productArray.length);
 
           if(productArray.length > 1){
             this.rateService.uniqueParcel = true;
@@ -111,13 +111,18 @@ export class QuotationComponent implements OnInit {
               if(productArray[i].thirdAccount.length > 0 ){
                 this.thirdAccount = productArray[i].thirdAccount;
               }
-              if(productArray[i].parcelId == 3 && productArray[i].printType.length > 0){
-                this.printType=productArray[i].printType;
-                console.log(this.printType);
-              }
-              if(productArray[i].extendedArea > 0 && productArray[i].parcelId == 3){
-                this.extArea = productArray[i].extendedArea;
-              }
+            }
+            if(productArray[i].parcelId == 3 && productArray[i].printType.length > 0){
+              this.printType=productArray[i].printType;
+            }
+            if(productArray[i].extendedArea > 0 && productArray[i].parcelId == 5){
+              this.extAreaPaquete = productArray[i].extendedArea;
+            }
+            if(productArray[i].extendedArea > 0 && productArray[i].parcelId == 2){
+              this.extAreaRedPack = productArray[i].extendedArea;
+            }
+            if(productArray[i].extendedArea > 0 && productArray[i].parcelId == 3){
+              this.extAreaFedEx = productArray[i].extendedArea;
             }
 
           }
@@ -290,7 +295,7 @@ export class QuotationComponent implements OnInit {
             //this.errorProductFedEx = false;
           }
           this.createGuideService.multipiecesData = this.packs;
-        this.rateService.GetQuotationMultiPieces(this.packs, this.createGuideService.userActual.id, this.extArea).subscribe(responseQuotation => {
+        this.rateService.GetQuotationMultiPieces(this.packs, this.createGuideService.userActual.id, this.extAreaFedEx).subscribe(responseQuotation => {
           if(responseQuotation){
             var rateArray = responseQuotation;
             this.response = responseQuotation;
@@ -365,7 +370,7 @@ export class QuotationComponent implements OnInit {
       quotationData.postCodeOrigin.toString().length > 4 && quotationData.postCodeDest.toString().length > 4){
         this.invalidNumber = false;
         this.invalidPC = false;
-        this.rateService.getQuotation(quotationData, insurance, this.extArea).subscribe(jsonData => {
+        this.rateService.getQuotation(quotationData, insurance, this.extAreaFedEx, this.extAreaPaquete, this.extAreaRedPack).subscribe(jsonData => {
           if(!jsonData){
             this.loading = false;
             this.petitionError = true;

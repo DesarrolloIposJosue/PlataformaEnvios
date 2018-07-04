@@ -32,7 +32,7 @@ export class RateService {
     return this.http.get(searchPostalCode).map((res:Response) => res.json());
   }
 
-  getQuotation(packageToSend:Package, insurance:number, extArea:number){
+  getQuotation(packageToSend:Package, insurance:number, extArea:number, extAreaPaquete:number, extAreaRedPack:number){
     var operation:string = this.apiBase + 'GetQuotations';
     operation += "/" + packageToSend.weight.toString();
     operation += "/" + packageToSend.long.toString();
@@ -41,9 +41,11 @@ export class RateService {
     operation += "/" + packageToSend.postCodeOrigin.toString();
     operation += "/" + packageToSend.postCodeDest.toString();
     operation += "/" + insurance.toString();
-    operation += "/" + extArea.toString();
     // Headers
     let myHeaders = new Headers();
+    myHeaders.set('ExtArea', extArea.toString());
+    myHeaders.set('ExtAreaPaquete', extAreaPaquete.toString());
+    myHeaders.set('ExtAreaRedPack', extAreaRedPack.toString());
     // Body or Search
     myHeaders.set('UserId', sessionStorage.getItem('Id'));
     let options = new RequestOptions({ headers: myHeaders});
