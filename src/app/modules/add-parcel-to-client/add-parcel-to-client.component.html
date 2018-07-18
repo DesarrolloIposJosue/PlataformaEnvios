@@ -2,7 +2,7 @@
 
 <div *ngIf="this.productService.operation == 0" class="container">
   <div class="row  main">
-    <form name="form" (ngSubmit)="assignParcel(forma)" #forma="ngForm" novalidate class="col s12 offset-m2 offset-l2 m8 l8 teal lighten-5">
+    <form name="form" (ngSubmit)="assignParcel(forma)" #forma="ngForm" novalidate class="col s12 offset-m1 offset-l1 m10 l10 teal lighten-5">
       <h5 class="s12 m12 l12">Asignar paqueterías a cliente</h5>
 
       <div class="row">
@@ -74,6 +74,20 @@
           </p>
         </div>
 
+        <div *ngIf="redPackForm" class="col s6 m6 l6" >
+          <p>
+            <input (click)="validateEconomicRedPack()" class="filled-in checkbox-blue" type="checkbox" id="economicRedPack" />
+            <label for="economicRedPack">Habilitar ecónomico</label>
+          </p>
+        </div>
+
+        <div *ngIf="redPackForm" class="col s6 m6 l6" >
+          <p>
+            <input (click)="validateNextDayRedPack()" class="filled-in checkbox-blue" type="checkbox" id="nextDayRedPack" />
+            <label for="nextDayRedPack">Habilitar día siguiente </label>
+          </p>
+        </div>
+
         <div *ngIf="redPackForm" class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
           <p>
             <input (click)="validateMultipackRedPack()" class="filled-in checkbox-blue" type="checkbox" id="multipackRedPack" />
@@ -97,9 +111,21 @@
         </div>
 
         <div *ngIf="redPackForm && this.productsRedPack.length > 0">
-          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsRedPack, let i = index">
-            <input [id]="product.id" [name]="product.name" type="number" class="validate" minlength="3" >
-            <label for="nameProductRedPack">{{product.name}}</label>
+          <div class="col s12 m12 l12">
+            <div class="col s12 m6 l6">
+              <h6>Económico</h6>
+              <div class="input-field col s12 m12 l12" *ngFor="let product of this.productEconomicRedPack, let i = index">
+                <input [id]="product.id" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
+            <div class="col s12 m6 l6">
+              <h6>Día siguiente</h6>
+              <div class="input-field col s12 m12 l12" *ngFor="let product of this.productNextDayRedPack, let i = index">
+                <input [id]="product.id" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -185,9 +211,19 @@
         </div>
 
         <div *ngIf="dhlForm && this.productsDHL.length > 0">
-          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsDHL, let i = index">
-            <input [id]="product.id" [name]="product.name" type="number" class="validate" minlength="3" >
-            <label for="nameProductDHL">{{product.name}}</label>
+          <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsDHL, let i = index">
+            <div class="col s12 m6 l6">
+              <div *ngIf="i < 7" class="input-field col s12 m12 l12">
+                <input [id]="product.id" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
+            <div class="col s12 m6 l6">
+              <div *ngIf="i > 6 " class="input-field col s12 m12 l12">
+                <input [id]="product.id" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -259,15 +295,15 @@
         <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': thirdAccountFedEx.errors?.required && thirdAccountFedEx.touched}" *ngIf="fedExForm">
           <input id="thirdAccountFedEx" name="thirdAccountFedEx" [ngModel]="" value="" #thirdAccountFedEx="ngModel" type="text" class="validate" minlength="3" >
           <label for="thirdAccountFedEx">Cuenta terceros FedEx</label>
-        </div>        
+        </div>
 
         <div *ngIf="fedExForm" class="row radio-buttons" [ngClass]="{'has-danger': printType.errors?.required && printType.touched}">
           <p class="col offset-s1 s5 offset-m1 m5 offset-l1 l5 ">
-            <input class="with-gap" value="P" ngModel #printType="ngModel" name="printType" Type="radio" id="pdf"/>
+            <input class="with-gap" value="P" ngModel #printType="ngModel" name="printType" type="radio" id="pdf" required/>
             <label for="pdf">PDF</label>
           </p>
           <p class="col s6 m6 16">
-            <input class="with-gap" value="Z" ngModel #printType="ngModel" name="printType" Type="radio" id="zebra"/>
+            <input class="with-gap" value="Z" ngModel #printType="ngModel" name="printType" type="radio" id="zebra" required/>
             <label for="zebra">Etiqueta</label>
           </p>
         </div>
@@ -309,9 +345,21 @@
         </div>
 
         <div *ngIf="fedExForm && this.productsFedEx.length > 0">
-          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsFedEx, let i = index">
-            <input [id]="product.id" [name]="product.name" type="number" class="validate" minlength="3" >
-            <label for="nameProductFedEx">{{product.name}}</label>
+          <div class="col s12 m12 l12">
+            <div class="col s12 m6 l6">
+              <h6>Económico</h6>
+              <div class="input-field col s12 m12 l12" *ngFor="let product of this.productEconomicFedEx, let i = index">
+                <input [id]="product.id" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" required>
+                <label class="active" for="fedEx">{{product.name}}</label>
+              </div>
+            </div>
+            <div class="col s12 m6 l6">
+              <h6>Día siguiente</h6>
+              <div class="input-field col s12 m12 l12" *ngFor="let product of this.productNextDayFedEx, let i = index">
+                <input [id]="product.id" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" required>
+                <label class="active" for="fedEx">{{product.name}}</label>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -397,9 +445,19 @@
         </div>
 
         <div *ngIf="estafetaForm && this.productsEstafeta.length > 0">
-          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsEstafeta, let i = index">
-            <input [id]="product.id" [name]="product.name" type="number" class="validate" minlength="3" >
-            <label for="nameProductEstafeta">{{product.name}}</label>
+          <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsEstafeta, let i = index">
+            <div class="col s12 m6 l6">
+              <div *ngIf="i < 12" class="input-field col s12 m12 l12">
+                <input [id]="product.id" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
+            <div class="col s12 m6 l6">
+              <div *ngIf="i > 11 " class="input-field col s12 m12 l12">
+                <input [id]="product.id" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -484,9 +542,14 @@
         </div>
 
         <div *ngIf="paqueteExpressForm && this.productsPaqueteExpress.length > 0">
-          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsPaqueteExpress, let i = index">
-            <input [id]="product.id" [name]="product.name" type="number" class="validate" minlength="3" >
-            <label for="nameProductPaqueteExpress">{{product.name}}</label>
+          <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsPaqueteExpress, let i = index">
+
+            <div class="col s12 m6 l6">
+              <div *ngIf="i < 7" class="input-field col s12 m12 l12">
+                <input [id]="product.id" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -543,7 +606,7 @@
 
 <div class="container" *ngIf="this.productService.operation == 1">
   <div class="row  main">
-    <form name="form" (ngSubmit)="assignParcel(forma)" #forma="ngForm" novalidate class="col s12 offset-m2 offset-l2 m8 l8 teal lighten-5">
+    <form name="form" (ngSubmit)="assignParcel(forma)" #forma="ngForm" novalidate class="col s12 offset-m1 offset-l1 m10 l10 teal lighten-5">
       <h5 class="s12 m12 l12">Editar paqueterías a cliente</h5>
 
       <div class="row">
@@ -614,6 +677,20 @@
           </p>
         </div>
 
+        <div *ngIf="redPackForm" class="col offset-s1 s5 offset-m1 m5 offset-l1 l5" >
+          <p>
+            <input (click)="validateNextDayRedPack()" class="filled-in checkbox-blue" type="checkbox" id="nextDayRedPack" />
+            <label for="nextDayRedPack">Habilitar día siguiente</label>
+          </p>
+        </div>
+
+        <div *ngIf="redPackForm" class="col s6 m6 l6" >
+          <p>
+            <input (click)="validateEconomicRedPack()" class="filled-in checkbox-blue" type="checkbox" id="economicRedPack" />
+            <label for="economicRedPack">Habilitar ecónomico</label>
+          </p>
+        </div>
+
         <div *ngIf="redPackForm" class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" >
           <p>
             <input (click)="validateMultipackRedPack()" class="filled-in checkbox-blue" type="checkbox" id="multipackRedPack" />
@@ -637,16 +714,40 @@
         </div>
 
         <div *ngIf="redPackForm && this.productsRedPack && this.existProductsRedPack && this.loadedRedPack">
-          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPriceRedPack, let i = index">
-            <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
-            <label class="active" for="usernameRedPack">{{product.name}}</label>
+          <div class="col s12 m12 l12">
+            <div class="col s12 m6 l6">
+              <h6>Económico</h6>
+              <div class="input-field col s12 m12 l12" *ngFor="let product of this.productUserPriceEconomicRedPack, let i = index">
+                <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="2" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
+            <div class="col s12 m6 l6">
+              <h6>Día siguiente</h6>
+              <div class="input-field col s12 m12 l12" *ngFor="let product of this.productUserPriceNextDayRedPack, let i = index">
+                <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="2" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
           </div>
         </div>
 
         <div *ngIf="redPackForm && this.productsRedPack.length > 0 && this.loadProductsRedPack && this.existProductsRedPack == false && this.loadedRedPack">
-          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsRedPack, let i = index">
-            <input [id]="product.id" [name]="product.name" placeholder="0" value="0" type="number" class="validate" minlength="3" >
-            <label class="active" for="usernameRedPack">{{product.name}}</label>
+          <div class="col s12 m12 l12">
+            <div class="col s12 m6 l6">
+              <h6>Económico</h6>
+              <div class="input-field col s12 m12 l12" *ngFor="let product of this.productEconomicRedPack, let i = index">
+                <input [id]="product.id" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
+            <div class="col s12 m6 l6">
+              <h6>Día siguiente</h6>
+              <div class="input-field col s12 m12 l12" *ngFor="let product of this.productNextDayRedPack, let i = index">
+                <input [id]="product.id" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -732,16 +833,27 @@
         </div>
 
         <div *ngIf="dhlForm && this.productsDHL && this.existProductsDHL && this.loadedDHL">
-          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPriceDHL, let i = index">
-            <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
-            <label class="active" for="usernameDHL">{{product.name}}</label>
+          <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPriceDHL, let i = index">
+            <h6 *ngIf="i == 0">Económico</h6>
+            <div class="col s12 m12 l12">
+
+              <div class="input-field col s12 m6 l6">
+                <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="2" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
           </div>
         </div>
 
         <div *ngIf="dhlForm && this.productsDHL.length > 0 && this.loadProductsDHL && this.existProductsDHL == false && this.loadedDHL">
-          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsDHL, let i = index">
-            <input [id]="product.id" [name]="product.name" placeholder="0" value="0" type="number" class="validate" minlength="3" >
-            <label class="active" for="usernameDHL">{{product.name}}</label>
+          <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsDHL, let i = index">
+            <h6 *ngIf="i == 0">Económico</h6>
+            <div class="col s12 m6 l6">
+              <div class="input-field col s12 m12 l12">
+                <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="2" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -815,14 +927,14 @@
           <input id="thirdAccountFedEx" name="thirdAccountFedEx" placeholder="{{this.userParcelFedEx.thirdAccount}}" value="{{this.userParcelFedEx.thirdAccount}}" [ngModel]="this.userParcelFedEx.thirdAccount" #thirdAccountFedEx="ngModel" type="text" class="validate" minlength="3" >
           <label class="active" for="thirdAccountFedEx">Cuenta terceros FedEx</label>
         </div>
-        
-        <div *ngIf="fedExForm" class="row radio-buttons" [ngClass]="{'has-danger': printType.errors?.required && printType.touched}">
+
+        <div *ngIf="fedExForm && this.userParcelFedEx" class="row radio-buttons" [ngClass]="{'has-danger': printType.errors?.required && printType.touched}">
         <p class="col offset-s1 s5 offset-m1 m5 offset-l1 l5 ">
-          <input class="with-gap" value="P" ngModel #printType="ngModel" name="printType" Type="radio" id="pdf"/>
+          <input class="with-gap" value="P" [ngModel]="this.userParcelFedEx.printType" #printType="ngModel" name="printType" type="radio" id="pdf" required/>
           <label for="pdf">PDF</label>
         </p>
         <p class="col s6 m6 16">
-          <input class="with-gap" value="Z" ngModel #printType="ngModel" name="printType" Type="radio" id="zebra"/>
+          <input class="with-gap" value="Z" [ngModel]="this.userParcelFedEx.printType" #printType="ngModel" name="printType" type="radio" id="zebra" required/>
           <label for="zebra">Etiqueta</label>
         </p>
       </div>
@@ -864,16 +976,41 @@
         </div>
 
         <div *ngIf="fedExForm && this.productsFedEx && this.existProductsFedEx && this.loadedFedEx">
-          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPriceFedEx, let i = index">
-            <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
-            <label class="active" for="usernameFedEx">{{product.name}}</label>
+          <div class="col s12 m12 l12">
+            <div class="col s12 m6 l6">
+              <h6 >Económico</h6>
+              <div class="input-field col s12 m12 l12" *ngFor="let product of this.productUserPriceEconomicFedEx, let i = index">
+                <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="2" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
+            <div class="col s12 m6 l6">
+              <h6 >Día siguiente</h6>
+              <div class="input-field col s12 m12 l12" *ngFor="let product of this.productUserPriceNextDayFedEx, let i = index">
+                <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="2" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
           </div>
         </div>
 
         <div *ngIf="fedExForm && this.productsFedEx.length > 0 && this.loadProductsFedEx && !this.existProductsFedEx && this.loadedFedEx">
-          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsFedEx, let i = index">
-            <input [id]="product.id" [name]="product.name" placeholder="0" value="0" type="number" class="validate" minlength="3" >
-            <label class="active" for="usernameFedEx">{{product.name}}</label>
+          <div class="col s12 m12 l12">
+            <div class="col s12 m6 l6">
+              <h6 >Económico</h6>
+              <div class="input-field col s12 m12 l12" *ngFor="let product of this.productEconomicFedEx, let i = index">
+                <input [id]="product.id" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
+
+            <div class="col s12 m6 l6">
+              <h6 >Día siguiente</h6>
+              <div class="input-field col s12 m12 l12" *ngFor="let product of this.productNextDayFedEx, let i = index">
+                <input [id]="product.id" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -959,16 +1096,31 @@
         </div>
 
         <div *ngIf="estafetaForm && this.productsEstafeta && this.existProductsEstafeta && this.loadedEstafeta">
-          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPriceEstafeta, let i = index">
-            <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
-            <label class="active" for="usernameEstafeta">{{product.name}}</label>
+          <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPriceEstafeta, let i = index">
+            <div class="col s12 m6 l6">
+              <div *ngIf="i < 12" class="input-field col s12 m12 l12">
+                <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="2" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
+            <div class="col s12 m6 l6">
+              <div *ngIf="i > 11" class="input-field col s12 m12 l12">
+                <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="2" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
           </div>
         </div>
 
         <div *ngIf="estafetaForm && this.productsEstafeta.length > 0 && this.loadProductsEstafeta && this.existProductsEstafeta == false && this.loadedEstafeta">
-          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsEstafeta, let i = index">
-            <input [id]="product.id" [name]="product.name" placeholder="0" value="0" type="number" class="validate" minlength="3" >
-            <label class="active" for="usernameEstafeta">{{product.name}}</label>
+          <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsEstafeta, let i = index">
+            <h6 *ngIf="i == 0">Económico</h6>
+            <div class="col s12 m6 l6">
+              <div class="input-field col s12 m12 l12">
+                <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="2" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1054,16 +1206,26 @@
         </div>
 
         <div *ngIf="paqueteExpressForm && this.productsPaqueteExpress && this.existProductsPaqueteExpress && this.loadedPaquetexpress">
-          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPricePaqueteExpress, let i = index">
-            <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" minlength="3" >
-            <label class="active" for="usernamePaqueteExpress">{{product.name}}</label>
+          <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productUserPricePaqueteExpress, let i = index">
+            <h6 *ngIf="i == 0">Económico</h6>
+            <div class="col s12 m6 l6">
+              <div *ngIf="i < 8" class="input-field col s12 m12 l12">
+                <input [id]="product.productId" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
           </div>
         </div>
 
         <div *ngIf="paqueteExpressForm && this.productsPaqueteExpress.length > 0 && this.loadProductsPaqueteExpress && !this.existProductsPaqueteExpress && this.loadedPaquetexpress">
-          <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsPaqueteExpress, let i = index">
-            <input [id]="product.id" [name]="product.name" placeholder="0" value="0" type="number" class="validate" minlength="3" >
-            <label class="active" for="usernamePaqueteExpress">{{product.name}}</label>
+          <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsPaqueteExpress, let i = index">
+            <h6 *ngIf="i == 0">Económico</h6>
+            <div class="col s12 m6 l6">
+              <div *ngIf="i < 8" class="input-field col s12 m12 l12">
+                <input [id]="product.id" [name]="product.name" placeholder="{{product.amount}}" value="{{product.amount}}" type="number" class="validate" required>
+                <label class="active" for="usernameEstafeta">{{product.name}}</label>
+              </div>
+            </div>
           </div>
         </div>
 

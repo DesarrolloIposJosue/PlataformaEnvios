@@ -8,6 +8,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
+    "allowJs": true,
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -15,5 +16,9 @@
       "es2017",
       "dom"
     ]
-  }
+  },
+  "typeRoots": [ "node_modules/@types", "../src/typings.d.ts" ],
+  "include":[
+    "./src/"
+  ]
 }

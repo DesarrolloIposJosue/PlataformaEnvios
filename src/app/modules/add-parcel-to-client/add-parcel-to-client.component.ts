@@ -6,6 +6,7 @@ import { Product } from '../../classes/Product';
 import { ParcelService } from '../../services/parcel-service/parcel.service';
 import { ProductService } from '../../services/product-service/product.service';
 import { User_Parcel } from '../../classes/UserParcel';
+import { User } from '../../classes/Client';
 import { User_Product } from '../../classes/UserProduct';
 import { User_Product_Price } from '../../classes/UserProductPrice';
 import { Observable } from 'rxjs/Rx';
@@ -38,11 +39,23 @@ export class AddParcelToClientComponent implements OnInit {
   public productsFedEx:Product[] = [];
   public productsPaqueteExpress:Product[] = [];
 
+  private productNextDayFedEx:Product[] = [];
+  private productEconomicFedEx:Product[] = [];
+
+  private productNextDayRedPack:Product[] = [];
+  private productEconomicRedPack:Product[] = [];
+
   public productUserPriceEstafeta:User_Product_Price[] = [];
   public productUserPriceDHL:User_Product_Price[] = [];
   public productUserPriceRedPack:User_Product_Price[] = [];
   public productUserPriceFedEx:User_Product_Price[] = [];
   public productUserPricePaqueteExpress:User_Product_Price[] = [];
+
+  public productUserPriceNextDayFedEx:User_Product_Price[] = [];
+  public productUserPriceEconomicFedEx:User_Product_Price[] = [];
+
+  public productUserPriceNextDayRedPack:User_Product_Price[] = [];
+  public productUserPriceEconomicRedPack:User_Product_Price[] = [];
 
   public userParcelEstafeta:User_Parcel;
   public userParcelDHL:User_Parcel;
@@ -93,6 +106,9 @@ export class AddParcelToClientComponent implements OnInit {
 
   private nextDayFedEx:string = "N";
   private economicFedEx:string = "N";
+  private nextDayRedPack:string = "N";
+  private economicRedPack:string = "N";
+
 
   constructor(
     private parcelService:ParcelService,
@@ -121,34 +137,44 @@ export class AddParcelToClientComponent implements OnInit {
             for(let i=0; i<productArray.length; i++){
               if(productArray[i].parcelId == 1){
                 //DHL test6
-                var element = <HTMLInputElement>document.getElementById("test6");
-                element = <HTMLInputElement>document.getElementById("test6");
-                element.checked = true;
-                this.checkDHL();
+                if(productArray[i].economic != "n"){
+                  var element = <HTMLInputElement>document.getElementById("test6");
+                  element = <HTMLInputElement>document.getElementById("test6");
+                  element.checked = true;
+                  this.checkDHL();
+                }
               }else if(productArray[i].parcelId == 2){
                 //RedPack test5
-                var element = <HTMLInputElement>document.getElementById("test5");
-                element = <HTMLInputElement>document.getElementById("test5");
-                element.checked = true;
-                this.checkRedPack();
+                if(productArray[i].economic != "n"){
+                  var element = <HTMLInputElement>document.getElementById("test5");
+                  element = <HTMLInputElement>document.getElementById("test5");
+                  element.checked = true;
+                  this.checkRedPack();
+                }
               }else if(productArray[i].parcelId == 3){
                 //FedEx test7
-                var element = <HTMLInputElement>document.getElementById("test7");
-                element = <HTMLInputElement>document.getElementById("test7");
-                element.checked = true;
-                this.checkFedEx();
+                if(productArray[i].economic != "n"){
+                  var element = <HTMLInputElement>document.getElementById("test7");
+                  element = <HTMLInputElement>document.getElementById("test7");
+                  element.checked = true;
+                  this.checkFedEx();
+                }
               }else if(productArray[i].parcelId == 4){
                 //Estafeta test8
-                var element = <HTMLInputElement>document.getElementById("test8");
-                element = <HTMLInputElement>document.getElementById("test8");
-                element.checked = true;
-                this.checkEstafeta();
+                if(productArray[i].economic != "n"){
+                  var element = <HTMLInputElement>document.getElementById("test8");
+                  element = <HTMLInputElement>document.getElementById("test8");
+                  element.checked = true;
+                  this.checkEstafeta();
+                }
               }else if(productArray[i].parcelId == 5){
                 //Paquetexpress paqueteExpress
-                var element = <HTMLInputElement>document.getElementById("paqueteExpress");
-                element = <HTMLInputElement>document.getElementById("paqueteExpress");
-                element.checked = true;
-                this.checkPaqueteExpress();
+                if(productArray[i].economic != "n"){
+                  var element = <HTMLInputElement>document.getElementById("paqueteExpress");
+                  element = <HTMLInputElement>document.getElementById("paqueteExpress");
+                  element.checked = true;
+                  this.checkPaqueteExpress();
+                }
               }
             }
           }
@@ -176,8 +202,8 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.extendedArea = forma.controls["extAreaRedPack"].value;
         parcInfoInd.percentageDeclared = forma.controls["porcValDeclRedPack"].value;
         parcInfoInd.reference = forma.controls["referenceRedPack"].value;
-        parcInfoInd.economic = "Y";
-        parcInfoInd.nextDay = "Y";
+        parcInfoInd.economic = this.economicRedPack;
+        parcInfoInd.nextDay = this.nextDayRedPack;
         parcInfoInd.printType = "P";
         if(this.guidesRedPack){
           parcInfoInd.limitGuides = 'Y';
@@ -244,23 +270,27 @@ export class AddParcelToClientComponent implements OnInit {
       }
     }else{
       //Redpack
-      if(this.userParcelRedPack && this.userParcelRedPack.extendedArea != undefined){
+
+      var x = sessionStorage.getItem('NewUserId');
+      var userId = +x; // y: number
+      if(this.userParcelRedPack){
         parcInfoInd = new User_Parcel;
-        parcInfoInd.parcelId = this.userParcelRedPack.parcelId;
-        parcInfoInd.userId = this.userParcelRedPack.userId;
-        parcInfoInd.username = this.userParcelRedPack.username;
-        parcInfoInd.password = this.userParcelRedPack.password;
-        parcInfoInd.commissionDeclared = this.userParcelRedPack.commissionDeclared;
-        parcInfoInd.extendedArea = this.userParcelRedPack.extendedArea;
-        parcInfoInd.percentageDeclared = this.userParcelRedPack.percentageDeclared;
-        parcInfoInd.reference = this.userParcelRedPack.reference;
-        parcInfoInd.limitGuides = this.userParcelRedPack.limitGuides;
-        parcInfoInd.limitedGuidesNumber = this.userParcelRedPack.limitedGuidesNumber;
-        parcInfoInd.multiPieces = this.userParcelRedPack.multiPieces;
-        parcInfoInd.thirdAccount = "";
-        parcInfoInd.economic = "Y";
-        parcInfoInd.nextDay = "Y";
-        parcInfoInd.printType = "P";
+        parcInfoInd.parcelId = 2;
+        parcInfoInd.userId = userId;
+        parcInfoInd.username = "n";
+        parcInfoInd.password = "n";
+        parcInfoInd.commissionDeclared = 0;
+        parcInfoInd.extendedArea = 0;
+        parcInfoInd.percentageDeclared = 0;
+        parcInfoInd.reference = "n";
+        parcInfoInd.limitGuides = "n";
+        parcInfoInd.limitedGuidesNumber = 0;
+        parcInfoInd.multiPieces = "n";
+        parcInfoInd.thirdAccount = "n";
+        parcInfoInd.economic = "n";
+        parcInfoInd.nextDay = "n";
+        parcInfoInd.printType = "n";
+
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPriceRedPack.length; j++)
         {
@@ -363,22 +393,27 @@ export class AddParcelToClientComponent implements OnInit {
       }
     }else{
       //FedEx
-      if(this.userParcelFedEx && this.userParcelFedEx.extendedArea != undefined){
+      var x = sessionStorage.getItem('NewUserId');
+      var userId = +x; // y: number
+      if(this.userParcelFedEx){
         parcInfoInd = new User_Parcel;
-        parcInfoInd.parcelId = this.userParcelFedEx.parcelId;
-        parcInfoInd.userId = this.userParcelFedEx.userId;
-        parcInfoInd.username = this.userParcelFedEx.username;
-        parcInfoInd.password = this.userParcelFedEx.password;
-        parcInfoInd.commissionDeclared = this.userParcelFedEx.commissionDeclared;
-        parcInfoInd.extendedArea = this.userParcelFedEx.extendedArea;
-        parcInfoInd.percentageDeclared = this.userParcelFedEx.percentageDeclared;
-        parcInfoInd.reference = this.userParcelFedEx.reference;
-        parcInfoInd.limitGuides = this.userParcelFedEx.limitGuides;
-        parcInfoInd.limitedGuidesNumber = this.userParcelFedEx.limitedGuidesNumber;
-        parcInfoInd.multiPieces = this.userParcelFedEx.multiPieces;
-        parcInfoInd.printType= forma.controls["printType"].value;
-        parcInfoInd.thirdAccount = forma.controls["thirdAccountFedEx"].value;
-        var element = <HTMLInputElement>document.getElementById("nextDayFedEx");
+        parcInfoInd.parcelId = 3;
+        parcInfoInd.userId = userId;
+        parcInfoInd.username = "n";
+        parcInfoInd.password = "n";
+        parcInfoInd.commissionDeclared = 0;
+        parcInfoInd.extendedArea = 0;
+        parcInfoInd.percentageDeclared = 0;
+        parcInfoInd.reference = "n";
+        parcInfoInd.limitGuides = "n";
+        parcInfoInd.limitedGuidesNumber = 0;
+        parcInfoInd.multiPieces = "n";
+        parcInfoInd.thirdAccount = "n";
+        parcInfoInd.economic = "n";
+        parcInfoInd.nextDay = "n";
+        parcInfoInd.printType = "n";
+
+        /*var element = <HTMLInputElement>document.getElementById("nextDayFedEx");
         if(element.checked == true){
           this.nextDayFedEx = "Y";
         }else{
@@ -389,16 +424,14 @@ export class AddParcelToClientComponent implements OnInit {
           this.economicFedEx = "Y";
         }else{
           this.economicFedEx = "N";
-        }
-        parcInfoInd.economic = this.economicFedEx;
-        parcInfoInd.nextDay = this.nextDayFedEx;
+        }*/
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPriceFedEx.length; j++)
         {
           prodUserInfo.push(new User_Product(0, this.productUserPriceFedEx[j].productId, this.productUserPriceFedEx[j].amount));
         }
       }
-    } 
+    }
 
     if(this.dhlForm){
       parcInfoInd = new User_Parcel;
@@ -483,23 +516,26 @@ export class AddParcelToClientComponent implements OnInit {
       }
     }else{
       //DHL
-      if(this.userParcelDHL && this.userParcelDHL.extendedArea != undefined){
+      var x = sessionStorage.getItem('NewUserId');
+      var userId = +x; // y: number
+      if(this.userParcelDHL){
         parcInfoInd = new User_Parcel;
-        parcInfoInd.parcelId = this.userParcelDHL.parcelId;
-        parcInfoInd.userId = this.userParcelDHL.userId;
-        parcInfoInd.username = this.userParcelDHL.username;
-        parcInfoInd.password = this.userParcelDHL.password;
-        parcInfoInd.commissionDeclared = this.userParcelDHL.commissionDeclared;
-        parcInfoInd.extendedArea = this.userParcelDHL.extendedArea;
-        parcInfoInd.percentageDeclared = this.userParcelDHL.percentageDeclared;
-        parcInfoInd.reference = this.userParcelDHL.reference;
-        parcInfoInd.limitGuides = this.userParcelDHL.limitGuides;
-        parcInfoInd.limitedGuidesNumber = this.userParcelDHL.limitedGuidesNumber;
-        parcInfoInd.multiPieces = 'N';
-        parcInfoInd.economic = "Y";
-        parcInfoInd.nextDay = "Y";
-        parcInfoInd.thirdAccount = "";
-        parcInfoInd.printType = "P";
+        parcInfoInd.parcelId = 1;
+        parcInfoInd.userId = userId;
+        parcInfoInd.username = "n";
+        parcInfoInd.password = "n";
+        parcInfoInd.commissionDeclared = 0;
+        parcInfoInd.extendedArea = 0;
+        parcInfoInd.percentageDeclared = 0;
+        parcInfoInd.reference = "n";
+        parcInfoInd.limitGuides = "n";
+        parcInfoInd.limitedGuidesNumber = 0;
+        parcInfoInd.multiPieces = "n";
+        parcInfoInd.thirdAccount = "n";
+        parcInfoInd.economic = "n";
+        parcInfoInd.nextDay = "n";
+        parcInfoInd.printType = "n";
+
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPriceDHL.length; j++)
         {
@@ -588,23 +624,26 @@ export class AddParcelToClientComponent implements OnInit {
       }
     }else{
       //Estafeta
-      if(this.userParcelEstafeta && this.userParcelEstafeta.extendedArea != undefined){
+      if(this.userParcelEstafeta){
+        var x = sessionStorage.getItem('NewUserId');
+        var userId = +x; // y: number
         parcInfoInd = new User_Parcel;
-        parcInfoInd.parcelId = this.userParcelEstafeta.parcelId;
-        parcInfoInd.userId = this.userParcelEstafeta.userId;
-        parcInfoInd.username = this.userParcelEstafeta.username;
-        parcInfoInd.password = this.userParcelEstafeta.password;
-        parcInfoInd.commissionDeclared = this.userParcelEstafeta.commissionDeclared;
-        parcInfoInd.extendedArea = this.userParcelEstafeta.extendedArea;
-        parcInfoInd.percentageDeclared = this.userParcelEstafeta.percentageDeclared;
-        parcInfoInd.reference = this.userParcelEstafeta.reference;
-        parcInfoInd.limitGuides = this.userParcelEstafeta.limitGuides;
-        parcInfoInd.limitedGuidesNumber = this.userParcelEstafeta.limitedGuidesNumber;
-        parcInfoInd.thirdAccount = "";
-        parcInfoInd.multiPieces = 'N';
-        parcInfoInd.economic = "Y";
-        parcInfoInd.nextDay = "Y";
-        parcInfoInd.printType = "P";
+        parcInfoInd.parcelId = 4;
+        parcInfoInd.userId = userId;
+        parcInfoInd.username = "n";
+        parcInfoInd.password = "n";
+        parcInfoInd.commissionDeclared = 0;
+        parcInfoInd.extendedArea = 0;
+        parcInfoInd.percentageDeclared = 0;
+        parcInfoInd.reference = "n";
+        parcInfoInd.limitGuides = "n";
+        parcInfoInd.limitedGuidesNumber = 0;
+        parcInfoInd.multiPieces = "n";
+        parcInfoInd.thirdAccount = "n";
+        parcInfoInd.economic = "n";
+        parcInfoInd.nextDay = "n";
+        parcInfoInd.printType = "n";
+
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPriceEstafeta.length; j++)
         {
@@ -695,28 +734,53 @@ export class AddParcelToClientComponent implements OnInit {
       }
     }else{
       //Paquete express
-      if(this.userParcelPaqueteExpress && this.userParcelPaqueteExpress.extendedArea != undefined){
+
+      if(this.userParcelPaqueteExpress){
+        var x = sessionStorage.getItem('NewUserId');
+        var userId = +x; // y: number
         parcInfoInd = new User_Parcel;
-        parcInfoInd.parcelId = this.userParcelPaqueteExpress.parcelId;
-        parcInfoInd.userId = this.userParcelPaqueteExpress.userId;
-        parcInfoInd.username = this.userParcelPaqueteExpress.username;
-        parcInfoInd.password = this.userParcelPaqueteExpress.password;
-        parcInfoInd.commissionDeclared = this.userParcelPaqueteExpress.commissionDeclared;
-        parcInfoInd.extendedArea = this.userParcelPaqueteExpress.extendedArea;
-        parcInfoInd.percentageDeclared = this.userParcelPaqueteExpress.percentageDeclared;
-        parcInfoInd.reference = this.userParcelPaqueteExpress.reference;
-        parcInfoInd.limitGuides = this.userParcelPaqueteExpress.limitGuides;
-        parcInfoInd.limitedGuidesNumber = this.userParcelPaqueteExpress.limitedGuidesNumber;
-        parcInfoInd.multiPieces = 'N';
-        parcInfoInd.economic = "Y";
-        parcInfoInd.nextDay = "Y";
-        parcInfoInd.printType = "P";
-        parcInfoInd.thirdAccount = "";
+        parcInfoInd.parcelId = 5;
+        parcInfoInd.userId = userId;
+        parcInfoInd.username = "n";
+        parcInfoInd.password = "n";
+        parcInfoInd.commissionDeclared = 0;
+        parcInfoInd.extendedArea = 0;
+        parcInfoInd.percentageDeclared = 0;
+        parcInfoInd.reference = "n";
+        parcInfoInd.limitGuides = "n";
+        parcInfoInd.limitedGuidesNumber = 0;
+        parcInfoInd.multiPieces = "n";
+        parcInfoInd.thirdAccount = "n";
+        parcInfoInd.economic = "n";
+        parcInfoInd.nextDay = "n";
+        parcInfoInd.printType = "n";
+
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPricePaqueteExpress.length; j++)
         {
           prodUserInfo.push(new User_Product(0, this.productUserPricePaqueteExpress[j].productId, this.productUserPricePaqueteExpress[j].amount));
         }
+      }else{
+        var x = sessionStorage.getItem('NewUserId');
+        var userId = +x; // y: number
+        parcInfoInd = new User_Parcel;
+        parcInfoInd.parcelId = 5;
+        parcInfoInd.userId = userId;
+        parcInfoInd.username = "n";
+        parcInfoInd.password = "n";
+        parcInfoInd.commissionDeclared = 0;
+        parcInfoInd.extendedArea = 0;
+        parcInfoInd.percentageDeclared = 0;
+        parcInfoInd.reference = "n";
+        parcInfoInd.limitGuides = "n";
+        parcInfoInd.limitedGuidesNumber = 0;
+        parcInfoInd.multiPieces = "n";
+        parcInfoInd.thirdAccount = "n";
+        parcInfoInd.economic = "n";
+        parcInfoInd.nextDay = "n";
+        parcInfoInd.printType = "n";
+
+        parcInfo.push(parcInfoInd);
       }
     }
     if(!this.errorParcelData && !this.errorProductDHL && !this.errorProdPriceDHL && !this.errorProductFedEx  && !this.errorProdPriceFedEx
@@ -725,16 +789,11 @@ export class AddParcelToClientComponent implements OnInit {
       //Entra a enviar
       this.loading = true;
       this.parcelService.addParcelToClient(parcInfo).subscribe(jsonData => {
-          console.log("Entro?");
             var checkUser = jsonData;
-            console.log(jsonData);
             if (jsonData == "SUCCESS: Parcels assigned to User") {
-                console.log("Entro?");
               this.parcelService.addProductsToClient(prodUserInfo).subscribe(jsonData2 => {
                 if(jsonData2 == "SUCCESS: Products assigned to User")
                 {
-                    console.log("Entro?");
-                    console.log(jsonData2);
                    sessionStorage.removeItem('NewUserId');
                    this.router.navigate(['/home']);
                 }
@@ -776,6 +835,18 @@ export class AddParcelToClientComponent implements OnInit {
                 this.response = successResponse;
                 this.productsRedPack = [];
                 for (var i = 0; i < productArray.length; i++) {
+                  if(productArray[i].name.indexOf('Economico') >= 0){
+                    this.productEconomicRedPack.push(new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                            productArray[i].kg, productArray[i].factor));
+                  }else if(productArray[i].name.indexOf('Dia Siguiente') >= 0){
+                    this.productNextDayRedPack.push(
+                      new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                              productArray[i].kg, productArray[i].factor)
+                    );
+                  }else{
+                    this.productEconomicRedPack.push(new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                            productArray[i].kg, productArray[i].factor));
+                  }
                   this.productsRedPack.push(
                     new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
                             productArray[i].kg, productArray[i].factor)
@@ -806,27 +877,93 @@ export class AddParcelToClientComponent implements OnInit {
                   this.userParcelRedPack.userId = productArray[i].userId;
                   this.userParcelRedPack.parcelId = productArray[i].parcelId;
                   this.userParcelRedPack.password = productArray[i].password;
-                  this.userParcelRedPack.username = productArray[i].username;
-                  this.userParcelRedPack.commissionDeclared = productArray[i].commissionDeclared;
-                  this.userParcelRedPack.extendedArea = productArray[i].extendedArea;
-                  this.userParcelRedPack.limitGuides = productArray[i].limitGuides;
-                  this.userParcelRedPack.multiPieces = productArray[i].multiPieces;
-                  this.userParcelRedPack.printType= "P";
-                  if(this.userParcelRedPack.multiPieces == "Y"){
-                    var element = <HTMLInputElement>document.getElementById("multipackRedPack");
-                    element = <HTMLInputElement>document.getElementById("multipackRedPack");
-                    element.checked = true;
-                    this.multiPackRedPack = "Y";
+                  if(this.userParcelRedPack.password == "n"){
+                    this.userParcelRedPack.password = "";
+                    this.userParcelRedPack.username = "";
+                    this.userParcelRedPack.commissionDeclared = 0;
+                    this.userParcelRedPack.extendedArea = 0;
+                    this.userParcelRedPack.limitGuides = "";
+                    this.userParcelRedPack.multiPieces = "";
+                    this.userParcelRedPack.printType= "";
+                    if(this.userParcelRedPack.multiPieces == "Y"){
+                      var element = <HTMLInputElement>document.getElementById("multipackRedPack");
+                      element = <HTMLInputElement>document.getElementById("multipackRedPack");
+                      element.checked = true;
+                      this.multiPackRedPack = "Y";
+                    }else{
+                      this.multiPackRedPack = "N";
+                    }
+                    this.userParcelRedPack.nextDay = "";
+                    if(this.userParcelRedPack.nextDay == "Y"){
+                      var element = <HTMLInputElement>document.getElementById("nextDayRedPack");
+                      element = <HTMLInputElement>document.getElementById("nextDayRedPack");
+                      element.checked = true;
+                      this.nextDayRedPack = "Y";
+                    }else{
+                      this.nextDayRedPack = "N";
+                    }
+
+                    this.userParcelRedPack.economic = "";
+                    if(this.userParcelRedPack.economic == "Y"){
+                      var element = <HTMLInputElement>document.getElementById("economicRedPack");
+                      element = <HTMLInputElement>document.getElementById("economicRedPack");
+                      element.checked = true;
+                      this.economicRedPack = "Y";
+                    }else{
+                      this.economicRedPack = "N";
+                    }
+
+                    if(productArray[i].limitedGuidesNumber > 0){
+                      this.userParcelRedPack.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
+                    }else{
+                      this.userParcelRedPack.limitedGuidesNumber = 0;
+                    }
+                    this.userParcelRedPack.percentageDeclared = 0;
+                    this.userParcelRedPack.reference = "";
+
                   }else{
-                    this.multiPackRedPack = "N";
+                    this.userParcelRedPack.username = productArray[i].username;
+                    this.userParcelRedPack.commissionDeclared = productArray[i].commissionDeclared;
+                    this.userParcelRedPack.extendedArea = productArray[i].extendedArea;
+                    this.userParcelRedPack.limitGuides = productArray[i].limitGuides;
+                    this.userParcelRedPack.multiPieces = productArray[i].multiPieces;
+                    this.userParcelRedPack.printType= "P";
+                    if(this.userParcelRedPack.multiPieces == "Y"){
+                      var element = <HTMLInputElement>document.getElementById("multipackRedPack");
+                      element = <HTMLInputElement>document.getElementById("multipackRedPack");
+                      element.checked = true;
+                      this.multiPackRedPack = "Y";
+                    }else{
+                      this.multiPackRedPack = "N";
+                    }
+                    this.userParcelRedPack.nextDay = productArray[i].nextDay;
+                    if(this.userParcelRedPack.nextDay == "Y"){
+                      var element = <HTMLInputElement>document.getElementById("nextDayRedPack");
+                      element = <HTMLInputElement>document.getElementById("nextDayRedPack");
+                      element.checked = true;
+                      this.nextDayRedPack = "Y";
+                    }else{
+                      this.nextDayRedPack = "N";
+                    }
+
+                    this.userParcelRedPack.economic = productArray[i].economic;
+                    if(this.userParcelRedPack.economic == "Y"){
+                      var element = <HTMLInputElement>document.getElementById("economicRedPack");
+                      element = <HTMLInputElement>document.getElementById("economicRedPack");
+                      element.checked = true;
+                      this.economicRedPack = "Y";
+                    }else{
+                      this.economicRedPack = "N";
+                    }
+
+                    if(productArray[i].limitedGuidesNumber > 0){
+                      this.userParcelRedPack.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
+                    }else{
+                      this.userParcelRedPack.limitedGuidesNumber = 0;
+                    }
+                    this.userParcelRedPack.percentageDeclared = productArray[i].percentageDeclared;
+                    this.userParcelRedPack.reference = productArray[i].reference;
                   }
-                  if(productArray[i].limitedGuidesNumber > 0){
-                    this.userParcelRedPack.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
-                  }else{
-                    this.userParcelRedPack.limitedGuidesNumber = 0;
-                  }
-                  this.userParcelRedPack.percentageDeclared = productArray[i].percentageDeclared;
-                  this.userParcelRedPack.reference = productArray[i].reference;
                 }
               }
               this.loadProductsRedPack = true;
@@ -848,6 +985,18 @@ export class AddParcelToClientComponent implements OnInit {
                             this.response = successResponse;
                             this.productsRedPack = [];
                             for (var i = 0; i < productArray.length; i++) {
+                              if(productArray[i].name.indexOf('Economico') >= 0){
+                                this.productEconomicRedPack.push(new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                        productArray[i].kg, productArray[i].factor));
+                              }else if(productArray[i].name.indexOf('Dia Siguiente') >= 0){
+                                this.productNextDayRedPack.push(
+                                  new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                          productArray[i].kg, productArray[i].factor)
+                                );
+                              }else{
+                                this.productEconomicRedPack.push(new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                        productArray[i].kg, productArray[i].factor));
+                              }
                               this.productsRedPack.push(
                                 new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
                                         productArray[i].kg, productArray[i].factor)
@@ -879,6 +1028,18 @@ export class AddParcelToClientComponent implements OnInit {
                               this.response = successResponse;
                               this.productsRedPack = [];
                               for (var i = 0; i < productArray.length; i++) {
+                                if(productArray[i].name.indexOf('Economico') >= 0){
+                                  this.productEconomicRedPack.push(new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                          productArray[i].kg, productArray[i].factor));
+                                }else if(productArray[i].name.indexOf('Dia Siguiente') >= 0){
+                                  this.productNextDayRedPack.push(
+                                    new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                            productArray[i].kg, productArray[i].factor)
+                                  );
+                                }else{
+                                  this.productEconomicRedPack.push(new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                          productArray[i].kg, productArray[i].factor));
+                                }
                                 this.productsRedPack.push(
                                   new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
                                           productArray[i].kg, productArray[i].factor)
@@ -895,6 +1056,19 @@ export class AddParcelToClientComponent implements OnInit {
                               for(var i = 0; i < responseProductsUser.length; i++) {
                                 for(var j=0; j < this.productsRedPack.length; j++){
                                   if(responseProductsUser[i].productId == this.productsRedPack[j].id){
+                                    if(this.productsRedPack[j].name.indexOf('Economico') >= 0){
+                                      this.productUserPriceEconomicRedPack.push(
+                                        new User_Product_Price(responseProductsUser[i].userId, responseProductsUser[i].productId, responseProductsUser[i].amount, this.productsRedPack[j].name)
+                                      );
+                                    }else if(this.productsRedPack[j].name.indexOf('Dia Siguiente') >= 0){
+                                      this.productUserPriceNextDayRedPack.push(
+                                        new User_Product_Price(responseProductsUser[i].userId, responseProductsUser[i].productId, responseProductsUser[i].amount, this.productsRedPack[j].name)
+                                      );
+                                    }else{
+                                      this.productUserPriceEconomicRedPack.push(
+                                        new User_Product_Price(responseProductsUser[i].userId, responseProductsUser[i].productId, responseProductsUser[i].amount, this.productsRedPack[j].name)
+                                      );
+                                    }
                                     this.productUserPriceRedPack.push(
                                       new User_Product_Price(responseProductsUser[i].userId, responseProductsUser[i].productId, responseProductsUser[i].amount, this.productsRedPack[j].name)
                                     );
@@ -976,18 +1150,36 @@ export class AddParcelToClientComponent implements OnInit {
                   this.userParcelPaqueteExpress.userId = productArray[i].userId;
                   this.userParcelPaqueteExpress.parcelId = productArray[i].parcelId;
                   this.userParcelPaqueteExpress.password = productArray[i].password;
-                  this.userParcelPaqueteExpress.username = productArray[i].username;
-                  this.userParcelPaqueteExpress.commissionDeclared = productArray[i].commissionDeclared;
-                  this.userParcelPaqueteExpress.extendedArea = productArray[i].extendedArea;
-                  this.userParcelPaqueteExpress.limitGuides = productArray[i].limitGuides;
-                  this.userParcelPaqueteExpress.printType = "P";
-                  if(productArray[i].limitedGuidesNumber > 0){
-                    this.userParcelPaqueteExpress.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
+                  if(this.userParcelPaqueteExpress.password == "n"){
+                    this.userParcelPaqueteExpress.password = "";
+                    this.userParcelPaqueteExpress.username = "";
+                    this.userParcelPaqueteExpress.commissionDeclared = 0;
+                    this.userParcelPaqueteExpress.extendedArea = 0;
+                    this.userParcelPaqueteExpress.limitGuides = "";
+                    this.userParcelPaqueteExpress.printType = "";
+                    if(productArray[i].limitedGuidesNumber > 0){
+                      this.userParcelPaqueteExpress.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
+                    }else{
+                      this.userParcelPaqueteExpress.limitedGuidesNumber = 0;
+                    }
+                    this.userParcelPaqueteExpress.percentageDeclared = 0;
+                    this.userParcelPaqueteExpress.reference = "";
+
                   }else{
-                    this.userParcelPaqueteExpress.limitedGuidesNumber = 0;
+                    this.userParcelPaqueteExpress.username = productArray[i].username;
+                    this.userParcelPaqueteExpress.commissionDeclared = productArray[i].commissionDeclared;
+                    this.userParcelPaqueteExpress.extendedArea = productArray[i].extendedArea;
+                    this.userParcelPaqueteExpress.limitGuides = productArray[i].limitGuides;
+                    this.userParcelPaqueteExpress.printType = "P";
+                    if(productArray[i].limitedGuidesNumber > 0){
+                      this.userParcelPaqueteExpress.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
+                    }else{
+                      this.userParcelPaqueteExpress.limitedGuidesNumber = 0;
+                    }
+                    this.userParcelPaqueteExpress.percentageDeclared = productArray[i].percentageDeclared;
+                    this.userParcelPaqueteExpress.reference = productArray[i].reference;
                   }
-                  this.userParcelPaqueteExpress.percentageDeclared = productArray[i].percentageDeclared;
-                  this.userParcelPaqueteExpress.reference = productArray[i].reference;
+
                 }
               }
               this.loadProductsPaqueteExpress = true;
@@ -1107,6 +1299,18 @@ export class AddParcelToClientComponent implements OnInit {
                 this.response = successResponse;
                 this.productsFedEx = [];
                 for (var i = 0; i < productArray.length; i++) {
+                  if(productArray[i].name.indexOf('Economico') >= 0){
+                    this.productEconomicFedEx.push(new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                            productArray[i].kg, productArray[i].factor));
+                  }else if(productArray[i].name.indexOf('Dia Siguiente') >= 0){
+                    this.productNextDayFedEx.push(
+                      new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                              productArray[i].kg, productArray[i].factor)
+                    );
+                  }else{
+                    this.productEconomicFedEx.push(new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                            productArray[i].kg, productArray[i].factor));
+                  }
                   this.productsFedEx.push(
                     new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
                             productArray[i].kg, productArray[i].factor)
@@ -1137,55 +1341,109 @@ export class AddParcelToClientComponent implements OnInit {
                   this.userParcelFedEx.userId = productArray[i].userId;
                   this.userParcelFedEx.parcelId = productArray[i].parcelId;
                   this.userParcelFedEx.password = productArray[i].password;
-                  this.userParcelFedEx.username = productArray[i].username;
-                  this.userParcelFedEx.commissionDeclared = productArray[i].commissionDeclared;
-                  this.userParcelFedEx.extendedArea = productArray[i].extendedArea;
-                  this.userParcelFedEx.limitGuides = productArray[i].limitGuides;
-                  this.userParcelFedEx.multiPieces = productArray[i].multiPieces;
-                  this.userParcelFedEx.economic = productArray[i].economic;
-                  this.userParcelFedEx.nextDay = productArray[i].nextDay;
-                  this.userParcelFedEx.thirdAccount = productArray[i].thirdAccount;
-                  this.userParcelFedEx.printType = productArray[i].printType;
-
-                  if(this.userParcelFedEx.printType =="P"){
-                    setTimeout( () =>{
-                      var eleemnt = <HTMLInputElement>document.getElementById("pdf");
-                      element.checked = true; }, 100);
-                    
-                    }else if(this.userParcelFedEx.printType =="Z"){
+                  if(this.userParcelFedEx.password == "n"){
+                    this.userParcelFedEx.password = "";
+                    this.userParcelFedEx.username = "";
+                    this.userParcelFedEx.commissionDeclared = 0;
+                    this.userParcelFedEx.extendedArea = 0;
+                    this.userParcelFedEx.limitGuides = "";
+                    this.userParcelFedEx.multiPieces = "";
+                    this.userParcelFedEx.economic = "";
+                    this.userParcelFedEx.nextDay = "";
+                    this.userParcelFedEx.thirdAccount = "";
+                    this.userParcelFedEx.printType = "";
+                    if(this.userParcelFedEx.printType =="P"){
                       setTimeout( () =>{
-                        var eleemnt = <HTMLInputElement>document.getElementById("zebra");
-                        element.checked = true; }, 100);
-                    
-                  }
-                  if(this.userParcelFedEx.multiPieces == "Y"){
-                    var element = <HTMLInputElement>document.getElementById("multipackFedEx");
-                    element.checked = true;
-                    this.multiPackFedEx = "Y";
+                        var element = <HTMLInputElement>document.getElementById("pdf");
+                        element.checked = true; }, 500);
+                    }else if(this.userParcelFedEx.printType =="Z"){
+                        setTimeout( () =>{
+                        var element = <HTMLInputElement>document.getElementById("zebra");
+                        element.checked = true; }, 500);
+                    }
+                    if(this.userParcelFedEx.multiPieces == "Y"){
+                      var element = <HTMLInputElement>document.getElementById("multipackFedEx");
+                      element.checked = true;
+                      this.multiPackFedEx = "Y";
+                    }else{
+                      this.multiPackFedEx = "N";
+                    }
+                    if(this.userParcelFedEx.economic == "Y"){
+                      var element = <HTMLInputElement>document.getElementById("economicFedEx");
+                      element.checked = true;
+                      this.economicFedEx = "Y";
+                    }else{
+                      this.economicFedEx = "N";
+                    }
+                    if(this.userParcelFedEx.nextDay == "Y"){
+                      var element = <HTMLInputElement>document.getElementById("nextDayFedEx");
+                      element.checked = true;
+                      this.nextDayFedEx = "Y";
+                    }else{
+                      this.nextDayFedEx = "N";
+                    }
+                    if(productArray[i].limitedGuidesNumber > 0){
+                      this.userParcelFedEx.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
+                    }else{
+                      this.userParcelFedEx.limitedGuidesNumber = 0;
+                    }
+                    this.userParcelFedEx.percentageDeclared = 0;
+                    this.userParcelFedEx.reference = "";
+
                   }else{
-                    this.multiPackFedEx = "N";
+                    this.userParcelFedEx.username = productArray[i].username;
+                    this.userParcelFedEx.commissionDeclared = productArray[i].commissionDeclared;
+                    this.userParcelFedEx.extendedArea = productArray[i].extendedArea;
+                    this.userParcelFedEx.limitGuides = productArray[i].limitGuides;
+                    this.userParcelFedEx.multiPieces = productArray[i].multiPieces;
+                    this.userParcelFedEx.economic = productArray[i].economic;
+                    this.userParcelFedEx.nextDay = productArray[i].nextDay;
+                    this.userParcelFedEx.thirdAccount = productArray[i].thirdAccount;
+                    this.userParcelFedEx.printType = productArray[i].printType;
+                    if(this.userParcelFedEx.printType =="P"){
+                      setTimeout( () =>{
+                        var element = <HTMLInputElement>document.getElementById("pdf");
+                        element.checked = true; }, 500);
+                    }else if(this.userParcelFedEx.printType =="Z"){
+                        setTimeout( () =>{
+                        var element = <HTMLInputElement>document.getElementById("zebra");
+                        element.checked = true; }, 500);
+                    }
+                    if(this.userParcelFedEx.multiPieces == "Y"){
+                      setTimeout( () =>{
+                        var element = <HTMLInputElement>document.getElementById("multipackFedEx");
+                        element.checked = true;
+                        this.multiPackFedEx = "Y";
+                      }, 500);
+                    }else{
+                      this.multiPackFedEx = "N";
+                    }
+                    if(this.userParcelFedEx.economic == "Y"){
+                      setTimeout( () =>{
+                        var element = <HTMLInputElement>document.getElementById("economicFedEx");
+                        element.checked = true;
+                        this.economicFedEx = "Y";
+                      }, 500);
+                    }else{
+                      this.economicFedEx = "N";
+                    }
+                    if(this.userParcelFedEx.nextDay == "Y"){
+                      setTimeout( () =>{
+                        var element = <HTMLInputElement>document.getElementById("nextDayFedEx");
+                        element.checked = true;
+                        this.nextDayFedEx = "Y";
+                      }, 500);
+                    }else{
+                      this.nextDayFedEx = "N";
+                    }
+                    if(productArray[i].limitedGuidesNumber > 0){
+                      this.userParcelFedEx.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
+                    }else{
+                      this.userParcelFedEx.limitedGuidesNumber = 0;
+                    }
+                    this.userParcelFedEx.percentageDeclared = productArray[i].percentageDeclared;
+                    this.userParcelFedEx.reference = productArray[i].reference;
                   }
-                  if(this.userParcelFedEx.economic == "Y"){
-                    var element = <HTMLInputElement>document.getElementById("economicFedEx");
-                    element.checked = true;
-                    this.economicFedEx = "Y";
-                  }else{
-                    this.economicFedEx = "N";
-                  }
-                  if(this.userParcelFedEx.nextDay == "Y"){
-                    var element = <HTMLInputElement>document.getElementById("nextDayFedEx");
-                    element.checked = true;
-                    this.nextDayFedEx = "Y";
-                  }else{
-                    this.nextDayFedEx = "N";
-                  }
-                  if(productArray[i].limitedGuidesNumber > 0){
-                    this.userParcelFedEx.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
-                  }else{
-                    this.userParcelFedEx.limitedGuidesNumber = 0;
-                  }
-                  this.userParcelFedEx.percentageDeclared = productArray[i].percentageDeclared;
-                  this.userParcelFedEx.reference = productArray[i].reference;
                 }
               }
               this.loadProductsFedEx = true;
@@ -1207,6 +1465,18 @@ export class AddParcelToClientComponent implements OnInit {
                             this.response = successResponse;
                             this.productsFedEx = [];
                             for (var i = 0; i < productArray.length; i++) {
+                              if(productArray[i].name.indexOf('Economico') >= 0){
+                                this.productEconomicFedEx.push(new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                        productArray[i].kg, productArray[i].factor));
+                              }else if(productArray[i].name.indexOf('Dia Siguiente') >= 0){
+                                this.productNextDayFedEx.push(
+                                  new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                          productArray[i].kg, productArray[i].factor)
+                                );
+                              }else{
+                                this.productEconomicFedEx.push(new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                        productArray[i].kg, productArray[i].factor));
+                              }
                               this.productsFedEx.push(
                                 new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
                                         productArray[i].kg, productArray[i].factor)
@@ -1238,6 +1508,18 @@ export class AddParcelToClientComponent implements OnInit {
                               this.response = successResponse;
                               this.productsFedEx = [];
                               for (var i = 0; i < productArray.length; i++) {
+                                if(productArray[i].name.indexOf('Economico') >= 0){
+                                  this.productEconomicFedEx.push(new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                          productArray[i].kg, productArray[i].factor));
+                                }else if(productArray[i].name.indexOf('Dia Siguiente') >= 0){
+                                  this.productNextDayFedEx.push(
+                                    new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                            productArray[i].kg, productArray[i].factor)
+                                  );
+                                }else{
+                                  this.productEconomicFedEx.push(new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
+                                          productArray[i].kg, productArray[i].factor));
+                                }
                                 this.productsFedEx.push(
                                   new Product(productArray[i].id, productArray[i].parcelId, productArray[i].name, productArray[i].description,
                                           productArray[i].kg, productArray[i].factor)
@@ -1254,6 +1536,19 @@ export class AddParcelToClientComponent implements OnInit {
                               for(var i = 0; i < responseProductsUser.length; i++) {
                                 for(var j=0; j < this.productsFedEx.length; j++){
                                   if(responseProductsUser[i].productId == this.productsFedEx[j].id){
+                                    if(this.productsFedEx[j].name.indexOf('Economico') >= 0){
+                                      this.productUserPriceEconomicFedEx.push(
+                                        new User_Product_Price(responseProductsUser[i].userId, responseProductsUser[i].productId, responseProductsUser[i].amount, this.productsFedEx[j].name)
+                                      );
+                                    }else if(this.productsFedEx[j].name.indexOf('Dia Siguiente') >= 0){
+                                      this.productUserPriceNextDayFedEx.push(
+                                        new User_Product_Price(responseProductsUser[i].userId, responseProductsUser[i].productId, responseProductsUser[i].amount, this.productsFedEx[j].name)
+                                      );
+                                    }else{
+                                      this.productUserPriceEconomicFedEx.push(
+                                        new User_Product_Price(responseProductsUser[i].userId, responseProductsUser[i].productId, responseProductsUser[i].amount, this.productsFedEx[j].name)
+                                      );
+                                    }
                                     this.productUserPriceFedEx.push(
                                       new User_Product_Price(responseProductsUser[i].userId, responseProductsUser[i].productId, responseProductsUser[i].amount, this.productsFedEx[j].name)
                                     );
@@ -1336,18 +1631,35 @@ export class AddParcelToClientComponent implements OnInit {
                   this.userParcelDHL.userId = productArray[i].userId;
                   this.userParcelDHL.parcelId = productArray[i].parcelId;
                   this.userParcelDHL.password = productArray[i].password;
-                  this.userParcelDHL.username = productArray[i].username;
-                  this.userParcelDHL.commissionDeclared = productArray[i].commissionDeclared;
-                  this.userParcelDHL.extendedArea = productArray[i].extendedArea;
-                  this.userParcelDHL.limitGuides = productArray[i].limitGuides;
-                  this.userParcelDHL.printType = "P";
-                  if(productArray[i].limitedGuidesNumber > 0){
-                    this.userParcelDHL.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
+                  if(this.userParcelDHL.password == "n"){
+                    this.userParcelDHL.password = ""
+                    this.userParcelDHL.username = "";
+                    this.userParcelDHL.commissionDeclared = 0;
+                    this.userParcelDHL.extendedArea = 0;
+                    this.userParcelDHL.limitGuides = "";
+                    this.userParcelDHL.printType = "";
+                    if(productArray[i].limitedGuidesNumber > 0){
+                      this.userParcelDHL.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
+                    }else{
+                      this.userParcelDHL.limitedGuidesNumber = 0;
+                    }
+                    this.userParcelDHL.percentageDeclared = 0;
+                    this.userParcelDHL.reference = "";
+
                   }else{
-                    this.userParcelDHL.limitedGuidesNumber = 0;
+                    this.userParcelDHL.username = productArray[i].username;
+                    this.userParcelDHL.commissionDeclared = productArray[i].commissionDeclared;
+                    this.userParcelDHL.extendedArea = productArray[i].extendedArea;
+                    this.userParcelDHL.limitGuides = productArray[i].limitGuides;
+                    this.userParcelDHL.printType = "P";
+                    if(productArray[i].limitedGuidesNumber > 0){
+                      this.userParcelDHL.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
+                    }else{
+                      this.userParcelDHL.limitedGuidesNumber = 0;
+                    }
+                    this.userParcelDHL.percentageDeclared = productArray[i].percentageDeclared;
+                    this.userParcelDHL.reference = productArray[i].reference;
                   }
-                  this.userParcelDHL.percentageDeclared = productArray[i].percentageDeclared;
-                  this.userParcelDHL.reference = productArray[i].reference;
                 }
               }
               this.loadProductsDHL = true;
@@ -1497,18 +1809,34 @@ export class AddParcelToClientComponent implements OnInit {
                   this.userParcelEstafeta.userId = productArray[i].userId;
                   this.userParcelEstafeta.parcelId = productArray[i].parcelId;
                   this.userParcelEstafeta.password = productArray[i].password;
-                  this.userParcelEstafeta.username = productArray[i].username;
-                  this.userParcelEstafeta.commissionDeclared = productArray[i].commissionDeclared;
-                  this.userParcelEstafeta.extendedArea = productArray[i].extendedArea;
-                  this.userParcelEstafeta.limitGuides = productArray[i].limitGuides;
-                  this.userParcelDHL.printType = "P";
-                  if(productArray[i].limitedGuidesNumber > 0){
-                    this.userParcelEstafeta.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
+                  if(this.userParcelEstafeta.password == "n"){
+                    this.userParcelEstafeta.username = "";
+                    this.userParcelEstafeta.commissionDeclared = 0;
+                    this.userParcelEstafeta.extendedArea = 0;
+                    this.userParcelEstafeta.limitGuides = "";
+                    this.userParcelEstafeta.printType = "";
+                    if(productArray[i].limitedGuidesNumber > 0){
+                      this.userParcelEstafeta.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
+                    }else{
+                      this.userParcelEstafeta.limitedGuidesNumber = 0;
+                    }
+                    this.userParcelEstafeta.percentageDeclared = 0;
+                    this.userParcelEstafeta.reference = "";
+
                   }else{
-                    this.userParcelEstafeta.limitedGuidesNumber = 0;
+                    this.userParcelEstafeta.username = productArray[i].username;
+                    this.userParcelEstafeta.commissionDeclared = productArray[i].commissionDeclared;
+                    this.userParcelEstafeta.extendedArea = productArray[i].extendedArea;
+                    this.userParcelEstafeta.limitGuides = productArray[i].limitGuides;
+                    this.userParcelEstafeta.printType = "P";
+                    if(productArray[i].limitedGuidesNumber > 0){
+                      this.userParcelEstafeta.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
+                    }else{
+                      this.userParcelEstafeta.limitedGuidesNumber = 0;
+                    }
+                    this.userParcelEstafeta.percentageDeclared = productArray[i].percentageDeclared;
+                    this.userParcelEstafeta.reference = productArray[i].reference;
                   }
-                  this.userParcelEstafeta.percentageDeclared = productArray[i].percentageDeclared;
-                  this.userParcelEstafeta.reference = productArray[i].reference;
                 }
               }
               this.loadProductsEstafeta = true;
@@ -1637,6 +1965,26 @@ export class AddParcelToClientComponent implements OnInit {
       this.multiPackRedPack = "Y";
     }else{
       this.multiPackRedPack = "N";
+    }
+  }
+
+  validateNextDayRedPack(){
+    var element = <HTMLInputElement>document.getElementById("nextDayRedPack");
+    element = <HTMLInputElement>document.getElementById("nextDayRedPack");
+    if(element.checked == true){
+      this.nextDayRedPack = "Y";
+    }else{
+      this.nextDayRedPack = "N";
+    }
+  }
+
+  validateEconomicRedPack(){
+    var element = <HTMLInputElement>document.getElementById("economicRedPack");
+    element = <HTMLInputElement>document.getElementById("economicRedPack");
+    if(element.checked == true){
+      this.economicRedPack = "Y";
+    }else{
+      this.economicRedPack = "N";
     }
   }
 

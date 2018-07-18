@@ -30,38 +30,79 @@ export class RateComponent implements OnInit {
     private productService:ProductService
   ) {
     sessionStorage.setItem("NewUserId", sessionStorage.getItem("Id"));
-    console.log(this.rateService.dataProducts);
     this.productService.getParcelsFromUser().subscribe(
       (response) => {
         if(response){
           let index:number=0;
-          let economic:boolean = false;
-          let nextDay:boolean = false;
+          let economicFedEx:boolean = false;
+          let nextDayFedEx:boolean = false;
+          let economicRedPack:boolean = false;
+          let nextDayRedPack:boolean = false;
+
+          let paquete:boolean = false;
+          let fedex:boolean = false;
+          let redPack:boolean = false;
           for(let item of response){
+            if(item.parcelId == 5){
+              if(item.password != "n"){
+                paquete = true;
+              }
+            }
+            if(item.parcelId == 2){
+              if(item.password != "n"){
+                redPack = true;
+              }
+            }
+            if(item.parcelId == 3){
+              if(item.password != "n"){
+                fedex = true;
+              }
+            }
             if(item.parcelId == 3 && item.economic == "Y"){
-              economic = true;
+              economicFedEx = true;
               this.quantityOfPerm++;
             }
             if(item.parcelId == 3 && item.nextDay == "Y"){
-              nextDay = true;
+              nextDayFedEx = true;
+              this.quantityOfPerm++;
+            }
+            if(item.parcelId == 2 && item.economic == "Y"){
+              economicRedPack = true;
+              this.quantityOfPerm++;
+            }
+            if(item.parcelId == 2 && item.nextDay == "Y"){
+              nextDayRedPack = true;
+              this.quantityOfPerm++;
+            }
+            if(item.parcelId == 1 || item.parcelId == 4 || item.parcelId == 5 ){
               this.quantityOfPerm++;
             }
           }
           if(this.quantityOfPerm > 1 && this.rateService.dataProducts.length > 1){
             for(let item of this.rateService.dataProducts){
-              if(item.description.indexOf('Economico') >= 0 && item.parcelId == 3){
-                if(3 == item.parcelId && economic){
+              if(item.description.indexOf('Economico') >= 0 && (item.parcelId == 3 || item.parcelId == 2 )){
+                if(3 == item.parcelId && economicFedEx && fedex){
                   this.validRates.push(new ValidRate(item.id, item.name, item.description, item.kg, item.volumetricWeight, item.factor,
                     item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y"));
                 }
-              }else if(item.description.indexOf('Dia Siguiente') >= 0 && item.parcelId == 3){
-                if(3 == item.parcelId && nextDay){
+                if(2 == item.parcelId && economicRedPack && redPack){
+                  this.validRates.push(new ValidRate(item.id, item.name, item.description, item.kg, item.volumetricWeight, item.factor,
+                    item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y"));
+                }
+              }else if(item.description.indexOf('Dia Siguiente') >= 0 && (item.parcelId == 3 || item.parcelId == 2 )){
+                if(3 == item.parcelId && nextDayFedEx && fedex){
+                  this.validRates.push(new ValidRate(item.id, item.name, item.description, item.kg, item.volumetricWeight, item.factor,
+                    item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y"));
+                }
+                if(2 == item.parcelId && nextDayRedPack && redPack){
                   this.validRates.push(new ValidRate(item.id, item.name, item.description, item.kg, item.volumetricWeight, item.factor,
                     item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y"));
                 }
               }else{
-                this.validRates.push(new ValidRate(item.id, item.name, item.description, item.kg, item.volumetricWeight, item.factor,
-                  item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y"));
+                if(paquete){
+                  this.validRates.push(new ValidRate(item.id, item.name, item.description, item.kg, item.volumetricWeight, item.factor,
+                    item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y"));
+                }
               }
               index++;
             }

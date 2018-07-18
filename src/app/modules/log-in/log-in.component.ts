@@ -22,6 +22,7 @@ export class LogInComponent implements OnInit {
   private invalidForm = false;
   private petitionError = false;
   private invalidUser = false;
+  private countErrors:number = 0;
 
   constructor(
     private router:Router,
@@ -48,7 +49,6 @@ export class LogInComponent implements OnInit {
   }
 
   login(forma:NgForm){
-    console.log("Entro?");
     if(!forma.valid){
       this.invalidForm = true;
     }else{
@@ -58,7 +58,6 @@ export class LogInComponent implements OnInit {
         password: forma.controls["password"].value
       }
       this.loading = true;
-      console.log("Antes de la llamada");
       this.clientService.getUserLogged(logInData.username, logInData.password).subscribe(
         (successResponse) => {
             if(!successResponse){
@@ -92,12 +91,15 @@ export class LogInComponent implements OnInit {
             }
         },
         (errorResponse) => {
-          console.log(errorResponse);
-          this.loading = false;
-          this.petitionError = true;
+          if(this.countErrors < 2){
+            this.login(forma);
+          }else{
+            this.loading = false;
+            this.petitionError = true;
+          }
+          this.countErrors++;
         }
       );
-      console.log("Despues de la llamada");
     }
   }
 }

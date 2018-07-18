@@ -58,8 +58,6 @@ export class CreateGuideService {
     // Body or Search
     let myParams: URLSearchParams = new URLSearchParams();
     let options = new RequestOptions({ headers: myHeaders, search: myParams });
-    
-    
 
     return this.http.post(operation, JSON.stringify(Ship), options).map((res:Response) => res.json());
   }
@@ -84,12 +82,14 @@ export class CreateGuideService {
     var operation:string = this.apiBase + 'GenerateGuide';
     // Headers
     let myHeaders = new Headers();
+    let date = new Date();
     const Ship:Shipment = shipment;
+    let numClient:string = date.getFullYear().toString() + date.getMonth().toString() + date.getDay().toString() + date.getMinutes().toString() + date.getSeconds().toString();
     // Body or Search
 
     let myParams: URLSearchParams = new URLSearchParams();
     myHeaders.set('ContentPackage', contentPackage);
-    myHeaders.set('NumberClient', numberClient.toString());
+    myHeaders.set('NumberClient', numClient);
     myHeaders.set('DlvyType', dlvyType);
     myHeaders.set('ShpCode', shpCode);
     myHeaders.set('NumberHouse', numberHouse);

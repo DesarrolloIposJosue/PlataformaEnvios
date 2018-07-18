@@ -155,22 +155,23 @@
     <thead *ngIf="this.validDateGuide && this.loaded">
       <tr>
         <th>Guia</th>
+        <th>Paqueteria</th>
+        <th></th>
         <th>Monto</th>
         <th>Piezas</th>
         <th>Nombre origen</th>
         <th>Nombre destino</th>
-        <th>Fecha (mm/dd/aaaaa)</th>
+        <th>Fecha (mm/dd/aaaa)</th>
         <th *ngIf="shipment.validDate && shipment.status != 'CANCELADO'"></th>
-        <th *ngIf="shipment.validDate && this.createGuideService.userActual.typeId == 1"></th>
+        <th *ngIf="shipment.validDate && shipment.status != 'CANCELADO' && this.createGuideService.userActual.typeId == 1"></th>
         <th></th>
       </tr>
     </thead>
 
-
-
     <tbody >
       <tr *ngFor="let shipment of this.validDateGuide">
         <td *ngIf="shipment.multiPieces == 'N'">{{shipment.trackingKey}}</td>
+        <td *ngIf="shipment.multiPieces == 'N'">{{shipment.parcelName}}<td>
         <td *ngIf="shipment.multiPieces == 'N'">${{shipment.totalAmount}}</td>
         <td *ngIf="shipment.multiPieces == 'N'">1</td>
         <td *ngIf="shipment.multiPieces == 'N'">{{shipment.originUserName}}</td>
@@ -185,10 +186,14 @@
         <td *ngIf="shipment.multiPieces == 'N'">
           <a (click)="loadReport(shipment.id)" class="btn-small blue accent-3">Mostrar</a>
         </td>
+        <!--<td *ngIf="shipment.multiPieces == 'N' && this.createGuideService.userActual.typeId == 1 && shipment.status != 'CANCELADO'">
+          <a (click)="tracking(shipment)" class="btn-small blue accent-3">Rastreo</a>
+        </td>-->
       </tr>
 
       <tr *ngFor="let shipment of this.multipiecesObject">
         <td *ngIf="shipment.quantity > 0">{{shipment.trackingKey}}</td>
+        <td *ngIf="shipment.quantity > 0">{{shipment.parcelName}}</td>
         <td *ngIf="shipment.quantity > 0">${{shipment.amount}}</td>
         <td *ngIf="shipment.quantity > 0">{{shipment.quantity}}</td>
         <td *ngIf="shipment.quantity > 0">{{shipment.originUserName}}</td>
@@ -203,6 +208,9 @@
         <td *ngIf="shipment.quantity > 0">
           <a (click)="loadReportMultiguides(shipment.shipmentsId)" class="btn-small blue accent-3">Mostrar</a>
         </td>
+        <!--<td *ngIf="shipment.quantity > 0 && shipment.id == 5 && this.createGuideService.userActual.typeId == 1 && shipment.status != 'CANCELADO'">
+          <a (click)="tracking(shipment)" class="btn-small blue accent-3">Rastreo</a>
+        </td>-->
       </tr>
     </tbody>
   </table>

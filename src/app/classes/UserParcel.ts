@@ -13,5 +13,5 @@ export class User_Parcel{
   public economic: string;
   public nextDay: string;
   public thirdAccount: string;
-  public printType:String;
+  public printType:string;
 }

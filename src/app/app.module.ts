@@ -50,6 +50,7 @@ import { GuidesService } from './services/guides/guides.service';
 import { CreateGuideService } from './services/create-guide-service/create-guide.service';
 import { DownloadGuideService} from './services/download-guide-service/download-guide.service';
 import { ExcelService} from './services/excel-service/excel.service';
+import { PrintLabelComponent } from './modules/print-label/print-label.component';
 
 //Pipes
 
@@ -79,7 +80,8 @@ import { ExcelService} from './services/excel-service/excel.service';
     SummaryGuideComponent,
     ReportsComponent,
     BuyGuidesComponent,
-    DefineGuidesRedpackComponent
+    DefineGuidesRedpackComponent,
+    PrintLabelComponent
   ],
   imports: [
     BrowserModule,

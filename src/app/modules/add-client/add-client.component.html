@@ -5,7 +5,7 @@
     <h5 class="s12 m12 l12">Registrar nuevo cliente</h5>
     <div class="row">
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': name.errors?.required && name.touched}">
+      <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': name.errors?.required && name.touched}">
         <i class="material-icons prefix">account_circle</i>
         <input id="name" name="name" ngModel #name="ngModel" type="text" class="validate" minlength="3" #name required>
         <label for="name">Nombre del cliente*</label>
@@ -17,7 +17,7 @@
         </p>
       </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': lastname.errors?.required && lastname.touched}">
+      <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': lastname.errors?.required && lastname.touched}">
         <i class="material-icons prefix">account_circle</i>
         <input id="lastname" name="lastname" ngModel #lastname="ngModel" type="text" class="validate" minlength="3" required>
         <label for="lastname">Apellido del cliente*</label>
@@ -29,21 +29,7 @@
         </p>
       </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10">
-        <i class="material-icons prefix">location_city</i>
-        <input disabled id="country" name="country" type="text" placeholder="{{this.countryName}}" value="{{this.countryName}}" [ngModel]="this.countryName" #country="ngModel">
-        <label class="active" for="country">País*</label>
-      </div>
-
-      <!--<div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': country.errors?.required && country.touched}">
-        <select materialize="material_select" [materializeSelectOptions]="options" name="country" ngModel required #country="ngModel">
-          <option class="blue-text text-darken-4" value="" disabled selected>Elija una opción</option>
-          <option *ngIf="this.userType=='1' || this.userType=='2'" class="blue-text text-darken-4" value="Mexico">México</option>
-        </select>
-        <label>País</label>
-      </div>-->
-
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': zip.errors?.required && zip.touched}">
+      <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': zip.errors?.required && zip.touched}">
         <i class="material-icons prefix">local_post_office</i>
         <input (click)="setArrayEmptyOrig()"  (blur)="loseFocusOrig($event.target.value)" (change)="checkOrigCP($event.target.value)" id="zip" name="zip" type="number" min="0" ngModel #zip="ngModel" class="validate" pattern=".{5,}" maxlength="8" required>
         <label for="zip">Código postal*</label>
@@ -58,25 +44,65 @@
         </p>
       </div>
 
-      <div *ngIf="this.responseCP.colonies.length > 0" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10">
+      <div *ngIf="this.responseCP.colonies.length > 0" class="input-field col s12 m6 l6">
         <i class="material-icons prefix">location_city</i>
         <input disabled id="state" name="state" type="text" placeholder="{{this.responseCP.state}}" value="{{this.responseCP.state}}" [ngModel]="this.responseCP.state" #state="ngModel">
         <label for="state">Estado*</label>
       </div>
 
-      <div *ngIf="this.responseCP.colonies.length > 0" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10">
+      <div *ngIf="this.responseCP.colonies.length > 0" class="input-field col s12 m6 l6">
         <i class="material-icons prefix">location_city</i>
         <input disabled id="city" name="city" type="text" placeholder="{{this.responseCP.municipality}}" value="{{this.responseCP.municipality}}" [ngModel]="this.responseCP.municipality" #city="ngModel">
         <label for="city">Municipio*</label>
       </div>
 
-      <div *ngIf="this.responseCP.colonies.length > 0" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': colony.errors?.required && colony.touched}">
+      <div *ngIf="this.responseCP.colonies.length > 0" class="input-field col s12 m6 l6" [ngClass]="{'has-danger': colony.errors?.required && colony.touched}">
         <select materialize="material_select" [materializeSelectOptions]="options" name="colony" ngModel required #colony="ngModel">
           <option class="blue-text text-darken-4" value="" disabled selected>Elija una opción</option>
           <option class="blue-text text-darken-4" value="{{item}}" *ngFor="let item of this.responseCP.colonies">{{item}}</option>
         </select>
         <label>Colonia*</label>
       </div>
+
+      <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': address.errors?.required && address.touched}">
+        <i class="material-icons prefix">location_city</i>
+        <input id="address" name="address" ngModel #address="ngModel" type="text" class="validate" minlength="3" required>
+        <label for="address">Dirección calle*</label>
+        <p class="red-text text-darken-4" *ngIf="address.errors?.required&&address.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="address.errors?.minlength&&address.touched">
+          Por lo menos escriba {{address.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': noHouse.errors?.required && noHouse.touched}">
+        <i class="material-icons prefix">location_city</i>
+        <input id="noHouse" name="noHouse" ngModel #noHouse="ngModel" type="text" class="validate" minlength="1" required>
+        <label for="noHouse">Número dirección*</label>
+        <p class="red-text text-darken-4" *ngIf="noHouse.errors?.required&&noHouse.touched">
+          *Este campo es requerido.
+        </p>
+        <p class="red-text text-darken-4" *ngIf="noHouse.errors?.minlength&&noHouse.touched">
+          Por lo menos escriba {{noHouse.errors.minlength.requiredLength}} caracteres.
+        </p>
+      </div>
+
+      <div class="input-field col s12 m6 l6">
+        <i class="material-icons prefix">font_download</i>
+        <input id="address2" name="address2" ngModel #address2="ngModel" type="text" class="validate" minlength="3">
+        <label for="address2">Entre calles</label>
+      </div>
+
+
+      <!--<div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': country.errors?.required && country.touched}">
+        <select materialize="material_select" [materializeSelectOptions]="options" name="country" ngModel required #country="ngModel">
+          <option class="blue-text text-darken-4" value="" disabled selected>Elija una opción</option>
+          <option *ngIf="this.userType=='1' || this.userType=='2'" class="blue-text text-darken-4" value="Mexico">México</option>
+        </select>
+        <label>País</label>
+    </div>-->
+
 
       <!--<div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': state.errors?.required && state.touched}">
         <select materialize="material_select" [materializeSelectOptions]="options" name="state" ngModel required #state="ngModel">
@@ -141,37 +167,7 @@
         </p>
       </div>-->
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': address.errors?.required && address.touched}">
-        <i class="material-icons prefix">location_city</i>
-        <input id="address" name="address" ngModel #address="ngModel" type="text" class="validate" minlength="5" required>
-        <label for="address">Dirección calle*</label>
-        <p class="red-text text-darken-4" *ngIf="address.errors?.required&&address.touched">
-          *Este campo es requerido.
-        </p>
-        <p class="red-text text-darken-4" *ngIf="address.errors?.minlength&&address.touched">
-          Por lo menos escriba {{address.errors.minlength.requiredLength}} caracteres.
-        </p>
-      </div>
-
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': noHouse.errors?.required && noHouse.touched}">
-        <i class="material-icons prefix">location_city</i>
-        <input id="noHouse" name="noHouse" ngModel #noHouse="ngModel" type="text" class="validate" minlength="1" required>
-        <label for="noHouse">Número dirección*</label>
-        <p class="red-text text-darken-4" *ngIf="noHouse.errors?.required&&noHouse.touched">
-          *Este campo es requerido.
-        </p>
-        <p class="red-text text-darken-4" *ngIf="noHouse.errors?.minlength&&noHouse.touched">
-          Por lo menos escriba {{noHouse.errors.minlength.requiredLength}} caracteres.
-        </p>
-      </div>
-
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10">
-        <i class="material-icons prefix">font_download</i>
-        <input id="address2" name="address2" ngModel #address2="ngModel" type="text" class="validate" minlength="3">
-        <label for="address2">Entre calles</label>
-      </div>
-
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': phoneNumber.errors?.required && phoneNumber.touched}">
+      <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': phoneNumber.errors?.required && phoneNumber.touched}">
         <i class="material-icons prefix">font_download</i>
         <input id="phoneNumber" name="phoneNumber" ngModel #phoneNumber="ngModel" type="number" class="validate" minlength="6" required>
         <label for="password">Teléfono*</label>
@@ -183,7 +179,7 @@
         </p>
       </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': email.errors?.required && email.touched}">
+      <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': email.errors?.required && email.touched}">
         <i class="material-icons prefix">email</i>
         <input id="email" name="email" ngModel #email="ngModel" type="email" class="validate" minlength="5" required>
         <label for="email">Correo electrónico*</label>
@@ -195,7 +191,7 @@
         </p>
       </div>
 
-      <div *ngIf="this.userType == '1'" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': username.errors?.required && username.touched}">
+      <div *ngIf="this.userType == '1'" class="input-field col s12 m6 l6" [ngClass]="{'has-danger': username.errors?.required && username.touched}">
         <i class="material-icons prefix">assignment_ind</i>
         <input id="username" name="username" ngModel #username="ngModel" type="text" class="validate" minlength="6" required>
         <label for="username">Username*</label>
@@ -207,7 +203,7 @@
         </p>
       </div>
 
-      <div *ngIf="this.userType == '1'" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': password.errors?.required && password.touched}">
+      <div *ngIf="this.userType == '1'" class="input-field col s12 m6 l6" [ngClass]="{'has-danger': password.errors?.required && password.touched}">
         <i class="material-icons prefix">font_download</i>
         <input id="password" name="password" ngModel #password="ngModel" type="password" class="validate" minlength="6" required>
         <label for="password">Contraseña*</label>
@@ -219,7 +215,7 @@
         </p>
       </div>
 
-      <div *ngIf="this.userType=='1'" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': clientType.errors?.required && clientType.touched}">
+      <div *ngIf="this.userType=='1'" class="input-field col s12 m6 l6" [ngClass]="{'has-danger': clientType.errors?.required && clientType.touched}">
         <select materialize="material_select" [materializeSelectOptions]="options" name="clientType" ngModel required #clientType="ngModel">
           <option class="blue-text text-darken-4" value="" disabled selected>Elija una opción</option>
           <option *ngIf="this.userType=='1'" class="blue-text text-darken-4" value="1">Super administrador</option>
@@ -260,8 +256,8 @@
         <button [disabled]="loading" class="btn waves-effect  blue accent-3">Guardar</button>
       </div>
       <div *ngIf="error" class="alert alert-danger">{{error}}</div>
-     
-      
+
+
     </div>
   </form>
 </div>
@@ -275,7 +271,7 @@
     <h5 class="s12 m12 l12">Modificar cliente</h5>
     <div class="row">
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': name.errors?.required && name.touched}">
+      <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': name.errors?.required && name.touched}">
         <i class="material-icons prefix">account_circle</i>
         <input id="name" name="name" placeholder="{{this.clientService.userEdit.name}}" value="{{this.clientService.userEdit.name}}" [ngModel]="this.clientService.userEdit.name" #name="ngModel" type="text" class="validate" minlength="3" #name required>
         <label class="active" for="name">Nombre del cliente</label>
@@ -287,7 +283,7 @@
         </p>
       </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': lastname.errors?.required && lastname.touched}">
+      <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': lastname.errors?.required && lastname.touched}">
         <i class="material-icons prefix">account_circle</i>
         <input id="lastname" name="lastname" placeholder="{{this.clientService.userEdit.lastName}}" value="{{this.clientService.userEdit.lastName}}" [ngModel]="this.clientService.userEdit.lastName" #lastname="ngModel" type="text" class="validate" minlength="3" required>
         <label class="active" for="lastname">Apellido del cliente</label>
@@ -299,7 +295,7 @@
         </p>
       </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': zip.errors?.required && zip.touched}">
+      <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': zip.errors?.required && zip.touched}">
         <i class="material-icons prefix">font_download</i>
         <input (click)="setArrayEmptyOrig()"  (blur)="loseFocusOrig($event.target.value)" (change)="checkOrigCP($event.target.value)" id="zip" name="zip" placeholder="{{this.clientService.userEdit.zip}}" value="{{this.clientService.userEdit.zip}}" [ngModel]="this.clientService.userEdit.zip" #zip="ngModel" type="text" class="validate" minlength="5" required>
         <label class="active" for="zip">Código postal</label>
@@ -311,7 +307,7 @@
         </p>
       </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': state.errors?.required && state.touched}">
+      <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': state.errors?.required && state.touched}">
         <i class="material-icons prefix">font_download</i>
         <input disabled id="state" name="state" placeholder="{{this.clientService.userEdit.state}}" value="{{this.clientService.userEdit.state}}" [ngModel]="this.clientService.userEdit.state" #state="ngModel" type="text" class="validate" minlength="6" required>
         <label class="active" for="state">Estado</label>
@@ -323,7 +319,7 @@
         </p>
       </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': city.errors?.required && city.touched}">
+      <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': city.errors?.required && city.touched}">
         <i class="material-icons prefix">font_download</i>
         <input disabled id="city" name="city" placeholder="{{this.clientService.userEdit.city}}" value="{{this.clientService.userEdit.city}}" [ngModel]="this.clientService.userEdit.city" #city="ngModel" type="text" class="validate" minlength="6" required>
         <label class="active" for="city">Ciudad</label>
@@ -336,7 +332,7 @@
       </div>
 
 
-      <div *ngIf="this.responseCP.colonies.length < 1" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': colony.errors?.required && colony.touched}">
+      <div *ngIf="this.responseCP.colonies.length < 1" class="input-field col s12 m6 l6" [ngClass]="{'has-danger': colony.errors?.required && colony.touched}">
         <i class="material-icons prefix">font_download</i>
         <input disabled id="colony" name="colony" placeholder="{{this.clientService.userEdit.colony}}" value="{{this.clientService.userEdit.colony}}" [ngModel]="this.clientService.userEdit.colony" #colony="ngModel" type="text" class="validate" minlength="4" required>
         <label class="active" for="colony">Colonia</label>
@@ -348,7 +344,7 @@
         </p>
       </div>
 
-      <div *ngIf="this.responseCP.colonies.length > 0" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': colony.errors?.required && colony.touched}">
+      <div *ngIf="this.responseCP.colonies.length > 0" class="input-field col s12 m6 l6" [ngClass]="{'has-danger': colony.errors?.required && colony.touched}">
         <select materialize="material_select" [materializeSelectOptions]="options" name="colony" ngModel required #colony="ngModel">
           <option class="blue-text text-darken-4" value="{{this.clientService.userEdit.colony}}" disabled selected>{{this.clientService.userEdit.colony}}</option>
           <option class="blue-text text-darken-4" value="{{item}}" *ngFor="let item of this.responseCP.colonies">{{item}}</option>
@@ -356,9 +352,9 @@
         <label>Colonia*</label>
       </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': address.errors?.required && address.touched}">
+      <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': address.errors?.required && address.touched}">
         <i class="material-icons prefix">location_city</i>
-        <input id="address" name="address" placeholder="{{this.clientService.userEdit.address}}" value="{{this.clientService.userEdit.address}}" [ngModel]="this.clientService.userEdit.address" #address="ngModel" type="text" class="validate" minlength="5" required>
+        <input id="address" name="address" placeholder="{{this.clientService.userEdit.address}}" value="{{this.clientService.userEdit.address}}" [ngModel]="this.clientService.userEdit.address" #address="ngModel" type="text" class="validate" minlength="3" required>
         <label class="active" for="address">Dirección calle</label>
         <p class="red-text text-darken-4" *ngIf="address.errors?.required&&address.touched">
           *Este campo es requerido.
@@ -368,7 +364,7 @@
         </p>
       </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': noHouse.errors?.required && noHouse.touched}">
+      <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': noHouse.errors?.required && noHouse.touched}">
         <i class="material-icons prefix">location_city</i>
         <input id="noHouse" name="noHouse" placeholder="{{this.clientService.userEdit.numberHouse}}" value="{{this.clientService.userEdit.numberHouse}}" [ngModel]="this.clientService.userEdit.numberHouse" #noHouse="ngModel" type="text" class="validate" minlength="1" required>
         <label class="active" for="noHouse">Número dirección*</label>
@@ -380,7 +376,7 @@
         </p>
       </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': address2.errors?.required && address2.touched}">
+      <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': address2.errors?.required && address2.touched}">
         <i class="material-icons prefix">font_download</i>
         <input id="address2" name="address2" placeholder="{{this.clientService.userEdit.address2}}" value="{{this.clientService.userEdit.address2}}" [ngModel]="this.clientService.userEdit.address2" #address2="ngModel" type="text" class="validate" minlength="6">
         <label class="active" for="address2">Entre calles</label>
@@ -392,7 +388,7 @@
         </p>
       </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': phoneNumber.errors?.required && phoneNumber.touched}">
+      <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': phoneNumber.errors?.required && phoneNumber.touched}">
         <i class="material-icons prefix">font_download</i>
         <input id="phoneNumber" name="phoneNumber" placeholder="{{this.clientService.userEdit.phoneNumber}}" value="{{this.clientService.userEdit.phoneNumber}}" [ngModel]="this.clientService.userEdit.phoneNumber" #phoneNumber="ngModel" type="number" class="validate" minlength="6" required>
         <label class="active" for="password">Teléfono*</label>
@@ -404,7 +400,7 @@
         </p>
       </div>
 
-      <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': email.errors?.required && email.touched}">
+      <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': email.errors?.required && email.touched}">
         <i class="material-icons prefix">email</i>
         <input id="email" name="email" placeholder="{{this.clientService.userEdit.email}}" value="{{this.clientService.userEdit.email}}" [ngModel]="this.clientService.userEdit.email" #email="ngModel" type="email" class="validate" minlength="5" required>
         <label class="active" for="email">Correo electrónico*</label>
@@ -416,7 +412,7 @@
         </p>
       </div>
 
-      <div *ngIf="this.userType == '1'" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': username.errors?.required && username.touched}">
+      <div *ngIf="this.userType == '1'" class="input-field col s12 m6 l6" [ngClass]="{'has-danger': username.errors?.required && username.touched}">
         <i class="material-icons prefix">assignment_ind</i>
         <input disabled id="username" name="username" placeholder="{{this.clientService.userEdit.userName}}" [ngModel]="this.clientService.userEdit.userName" #username="ngModel" type="text" class="validate" minlength="6" required>
         <label class="active" for="username">Username</label>
@@ -428,7 +424,7 @@
         </p>
       </div>
 
-      <div *ngIf="this.userType == '1'" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': password.errors?.required && password.touched}">
+      <div *ngIf="this.userType == '1'" class="input-field col s12 m6 l6" [ngClass]="{'has-danger': password.errors?.required && password.touched}">
         <i class="material-icons prefix">font_download</i>
         <input id="password" placeholder="{{this.clientService.userEdit.password}}" value="{{this.clientService.userEdit.password}}" name="password" [ngModel]="this.clientService.userEdit.password" #password="ngModel" type="password" class="validate" minlength="6" required>
         <label class="active" for="password">Contraseña</label>

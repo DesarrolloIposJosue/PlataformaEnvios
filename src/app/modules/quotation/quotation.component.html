@@ -16,114 +16,116 @@
       <h5 class="blue lighten-2 s12 m12 l12">Recorrido</h5>
 
       <div class="row">
+        <div class="col s12 m6 l6">
+          <div class="input-field col s12 m12 l12" [ngClass]="{'has-danger': postal_code_origin.errors?.required && postal_code_origin.touched}">
+            <i class="material-icons prefix">local_post_office</i>
+            <input id="postal_code_origin" name="postal_code_origin" type="number" min="0" placeholder="{{this.createGuideService.userActual.zip}}" value="{{this.createGuideService.userActual.zip}}" [ngModel]="this.createGuideService.userActual.zip" #postal_code_origin="ngModel" class="validate" pattern=".{5,}" required>
+            <label class="active" for="postal_code_origin">C.P. Origen</label>
+            <p class="red-text text-darken-4" *ngIf="postal_code_origin.errors?.required&&postal_code_origin.touched">
+              *Este campo es requerido.
+            </p>
+            <p class="red-text text-darken-4" *ngIf="postal_code_origin.errors?.minlength&&postal_code_origin.touched">
+              Por lo menos escriba {{postal_code_origin.errors.minlength.requiredLength}} caracteres.
+            </p>
+          </div>
 
-        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': postal_code_origin.errors?.required && postal_code_origin.touched}">
-          <i class="material-icons prefix">local_post_office</i>
-          <input id="postal_code_origin" name="postal_code_origin" type="number" min="0" placeholder="{{this.createGuideService.userActual.zip}}" value="{{this.createGuideService.userActual.zip}}" [ngModel]="this.createGuideService.userActual.zip" #postal_code_origin="ngModel" class="validate" pattern=".{5,}" required>
-          <label class="active" for="postal_code_origin">C.P. Origen</label>
-          <p class="red-text text-darken-4" *ngIf="postal_code_origin.errors?.required&&postal_code_origin.touched">
-            *Este campo es requerido.
-          </p>
-          <p class="red-text text-darken-4" *ngIf="postal_code_origin.errors?.minlength&&postal_code_origin.touched">
-            Por lo menos escriba {{postal_code_origin.errors.minlength.requiredLength}} caracteres.
-          </p>
+          <div class="input-field col s12 m12 l12" [ngClass]="{'has-danger': origin_city.errors?.required && origin_city.touched}">
+            <i class="material-icons prefix">location_city</i>
+            <input id="origin_city" name="origin_city" ngControl="origin_city" type="text" placeholder="{{this.createGuideService.userActual.city}}" value="{{this.createGuideService.userActual.city}}" [ngModel]="this.createGuideService.userActual.city" #origin_city="ngModel" class="validate" minlength="5" required>
+            <label class="active" for="origin_city">Municipio origen</label>
+            <p class="red-text text-darken-4" *ngIf="origin_city.errors?.required&&origin_city.touched">
+              *Este campo es requerido.
+            </p>
+            <p class="red-text text-darken-4" *ngIf="origin_city.errors?.minlength&&origin_city.touched">
+              Por lo menos escriba {{origin_city.errors.minlength.requiredLength}} caracteres.
+            </p>
+          </div>
         </div>
 
-        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': origin_city.errors?.required && origin_city.touched}">
-          <i class="material-icons prefix">location_city</i>
-          <input id="origin_city" name="origin_city" ngControl="origin_city" type="text" placeholder="{{this.createGuideService.userActual.city}}" value="{{this.createGuideService.userActual.city}}" [ngModel]="this.createGuideService.userActual.city" #origin_city="ngModel" class="validate" minlength="5" required>
-          <label class="active" for="origin_city">Municipio origen</label>
-          <p class="red-text text-darken-4" *ngIf="origin_city.errors?.required&&origin_city.touched">
-            *Este campo es requerido.
-          </p>
-          <p class="red-text text-darken-4" *ngIf="origin_city.errors?.minlength&&origin_city.touched">
-            Por lo menos escriba {{origin_city.errors.minlength.requiredLength}} caracteres.
-          </p>
+        <div class="col s12 m6 l6">
+          <div *ngIf="!this.selectedClientInfo">
+            <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': postal_code_dest.errors?.required && postal_code_dest.touched}">
+              <i class="material-icons prefix">local_post_office</i>
+              <input (click)="setArrayEmptyDest()"  (blur)="loseFocusDest($event.target.value)" (change)="checkDestCP($event.target.value)" id="postal_code_dest" name="postal_code_dest" type="number" min="0" ngModel #postal_code_dest="ngModel" class="validate" pattern=".{5,}" maxlength="8" required>
+              <label for="postal_code_dest">C.P. Destino</label>
+              <p class="red-text text-darken-4" *ngIf="postal_code_dest.errors?.required&&postal_code_dest.touched">
+                *Este campo es requerido.
+              </p>
+              <p class="red-text text-darken-4" *ngIf="postal_code_dest.errors?.minlength&&postal_code_dest.touched">
+                Por lo menos escriba {{postal_code_dest.errors.minlength.requiredLength}} caracteres.
+              </p>
+              <p class="red-text text-darken-4" *ngIf="this.noCP">
+                No existe ese código postal
+              </p>
+            </div>
+
+            <div *ngIf="this.responseCP.colonies.length > 0" class="input-field col s12 m6 l6">
+              <i class="material-icons prefix">location_city</i>
+              <input disabled id="dest_state" name="dest_state" type="text" placeholder="{{this.responseCP.state}}" value="{{this.responseCP.state}}" [ngModel]="this.responseCP.state" #dest_state="ngModel">
+              <label for="dest_state">Estado destino</label>
+            </div>
+
+            <div *ngIf="this.responseCP.colonies.length > 0" class="input-field col s12 m12 l12">
+              <i class="material-icons prefix">location_city</i>
+              <input disabled id="dest_city" name="dest_city" type="text" placeholder="{{this.responseCP.municipality}}" value="{{this.responseCP.municipality}}" [ngModel]="this.responseCP.municipality" #dest_city="ngModel">
+              <label for="dest_city">Municipio destino</label>
+            </div>
+
+            <div *ngIf="this.responseCP.colonies.length > 0" class="input-field col s12 m12 l12" [ngClass]="{'has-danger': colonyDest.errors?.required && colonyDest.touched}">
+              <select materialize="material_select" [materializeSelectOptions]="options" name="colonyDest" ngModel required #colonyDest="ngModel">
+                <option class="blue-text text-darken-4" value="" disabled selected>Elija una opción</option>
+                <option class="blue-text text-darken-4" value="{{item}}" *ngFor="let item of this.responseCP.colonies">{{item}}</option>
+              </select>
+              <label>Colonia destino</label>
+              <p class="red-text text-darken-4" *ngIf="colonyDest.errors?.required&&colonyDest.touched">
+                *Este campo es requerido.
+              </p>
+            </div>
+          </div>
+
+          <div *ngIf="this.selectedClientInfo" class="row">
+            <div class="input-field col s12 m6 l6">
+              <i class="material-icons prefix">location_city</i>
+              <input disabled id="dest_state" name="dest_state" type="text" placeholder="{{this.selectedClientInfo.state}}" value="{{this.selectedClientInfo.state}}" [ngModel]="this.selectedClientInfo.state" #dest_state="ngModel">
+              <label class="active" for="dest_state">Estado destino</label>
+            </div>
+
+            <div class="input-field col s12 m6 l6">
+              <i class="material-icons prefix">location_city</i>
+              <input disabled id="postal_code_dest" name="postal_code_dest" type="text" placeholder="{{this.selectedClientInfo.zip}}" value="{{this.selectedClientInfo.zip}}" [ngModel]="this.selectedClientInfo.zip" #postal_code_dest="ngModel">
+              <label class="active" for="postal_code_dest">CP destino</label>
+            </div>
+
+            <div class="input-field col s12 m12 l12">
+              <i class="material-icons prefix">location_city</i>
+              <input disabled id="dest_city" name="dest_city" type="text" placeholder="{{this.selectedClientInfo.city}}" value="{{this.selectedClientInfo.city}}" [ngModel]="this.selectedClientInfo.city" #dest_city="ngModel">
+              <label class="active" for="dest_city">Municipio destino</label>
+            </div>
+
+            <div class="input-field col s12 m12 l12">
+              <i class="material-icons prefix">location_city</i>
+              <input disabled id="colonyDest" name="colonyDest" type="text" placeholder="{{this.selectedClientInfo.colony}}" value="{{this.selectedClientInfo.colony}}" [ngModel]="this.selectedClientInfo.colony" #colonyDest="ngModel">
+              <label class="active" for="colonyDest">Colonia destino</label>
+            </div>
+          </div>
+
         </div>
-
-
 
       </div>
 
-      <div *ngIf="!this.selectedClientInfo" class="row">
 
-        <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': postal_code_dest.errors?.required && postal_code_dest.touched}">
-          <i class="material-icons prefix">local_post_office</i>
-          <input (click)="setArrayEmptyDest()"  (blur)="loseFocusDest($event.target.value)" (change)="checkDestCP($event.target.value)" id="postal_code_dest" name="postal_code_dest" type="number" min="0" ngModel #postal_code_dest="ngModel" class="validate" pattern=".{5,}" maxlength="8" required>
-          <label for="postal_code_dest">C.P. Destino</label>
-          <p class="red-text text-darken-4" *ngIf="postal_code_dest.errors?.required&&postal_code_dest.touched">
-            *Este campo es requerido.
-          </p>
-          <p class="red-text text-darken-4" *ngIf="postal_code_dest.errors?.minlength&&postal_code_dest.touched">
-            Por lo menos escriba {{postal_code_dest.errors.minlength.requiredLength}} caracteres.
-          </p>
-          <p class="red-text text-darken-4" *ngIf="this.noCP">
-            No existe ese código postal
-          </p>
-        </div>
 
-        <div *ngIf="this.responseCP.colonies.length > 0" class="input-field col s12 m6 l6">
-          <i class="material-icons prefix">location_city</i>
-          <input disabled id="dest_state" name="dest_state" type="text" placeholder="{{this.responseCP.state}}" value="{{this.responseCP.state}}" [ngModel]="this.responseCP.state" #dest_state="ngModel">
-          <label for="dest_state">Estado destino</label>
-        </div>
 
-        <div *ngIf="this.responseCP.colonies.length > 0" class="input-field col s12 m6 l6">
-          <i class="material-icons prefix">location_city</i>
-          <input disabled id="dest_city" name="dest_city" type="text" placeholder="{{this.responseCP.municipality}}" value="{{this.responseCP.municipality}}" [ngModel]="this.responseCP.municipality" #dest_city="ngModel">
-          <label for="dest_city">Municipio destino</label>
-        </div>
-
-        <div *ngIf="this.responseCP.colonies.length > 0" class="input-field col s12 m6 l6" [ngClass]="{'has-danger': colonyDest.errors?.required && colonyDest.touched}">
-          <select materialize="material_select" [materializeSelectOptions]="options" name="colonyDest" ngModel required #colonyDest="ngModel">
-            <option class="blue-text text-darken-4" value="" disabled selected>Elija una opción</option>
-            <option class="blue-text text-darken-4" value="{{item}}" *ngFor="let item of this.responseCP.colonies">{{item}}</option>
-          </select>
-          <label>Colonia destino</label>
-          <p class="red-text text-darken-4" *ngIf="colonyDest.errors?.required&&colonyDest.touched">
-            *Este campo es requerido.
-          </p>
-        </div>
-
-      </div>
-
-      <div *ngIf="this.selectedClientInfo" class="row">
-
-        <div class="input-field col s12 m6 l6">
-          <i class="material-icons prefix">location_city</i>
-          <input disabled id="dest_state" name="dest_state" type="text" placeholder="{{this.selectedClientInfo.state}}" value="{{this.selectedClientInfo.state}}" [ngModel]="this.selectedClientInfo.state" #dest_state="ngModel">
-          <label class="active" for="dest_state">Estado destino</label>
-        </div>
-
-        <div class="input-field col s12 m6 l6">
-          <i class="material-icons prefix">location_city</i>
-          <input disabled id="postal_code_dest" name="postal_code_dest" type="text" placeholder="{{this.selectedClientInfo.zip}}" value="{{this.selectedClientInfo.zip}}" [ngModel]="this.selectedClientInfo.zip" #postal_code_dest="ngModel">
-          <label class="active" for="postal_code_dest">CP destino</label>
-        </div>
-
-        <div class="input-field col s12 m6 l6">
-          <i class="material-icons prefix">location_city</i>
-          <input disabled id="dest_city" name="dest_city" type="text" placeholder="{{this.selectedClientInfo.city}}" value="{{this.selectedClientInfo.city}}" [ngModel]="this.selectedClientInfo.city" #dest_city="ngModel">
-          <label class="active" for="dest_city">Municipio destino</label>
-        </div>
-
-        <div class="input-field col s12 m6 l6">
-          <i class="material-icons prefix">location_city</i>
-          <input disabled id="colonyDest" name="colonyDest" type="text" placeholder="{{this.selectedClientInfo.colony}}" value="{{this.selectedClientInfo.colony}}" [ngModel]="this.selectedClientInfo.colony" #colonyDest="ngModel">
-          <label class="active" for="colonyDest">Colonia destino</label>
-        </div>
-
-      </div>
 
       <h5 class="blue lighten-2">Tipo</h5>
 
       <div class="row radio-buttons" [ngClass]="{'has-danger': kindPackage.errors?.required && kindPackage.touched}">
           <p class="col s6 m6 l6 ">
-            <input class="with-gap" value="1" ngModel #kindPackage="ngModel" name="kindPackage" type="radio" id="test1" />
+            <input class="with-gap" value="1" ngModel #kindPackage="ngModel" name="kindPackage" type="radio" id="test1" required/>
             <label for="test1">Sobre</label>
           </p>
           <p class="col s6 m6 l6">
-            <input class="with-gap" value="2" ngModel #kindPackage="ngModel" name="kindPackage" type="radio" id="test2" />
+            <input class="with-gap" value="2" ngModel #kindPackage="ngModel" name="kindPackage" type="radio" id="test2" required/>
             <label for="test2">Paquete</label>
           </p>
       </div>
@@ -153,32 +155,29 @@
           <div class="row">
             <h5>Paquete {{i+1}}</h5>
 
-            <div class="input-field col s12 m6 l6">
+            <div class="input-field col s6 m3 l3">
               <input [id]="pack.weight" [name]="pack.weight" type="number" min="0" class="validate" pattern=".{1,5}" required>
               <label for="weight">Peso (kg)</label>
             </div>
 
-            <div class="input-field col s12 m6 l6">
+            <div class="input-field col s6 m3 l3">
               <input [id]="pack.length" [name]="pack.length" type="number" min="0" class="validate" pattern=".{1,6}" required>
               <label for="long">Largo (cm)</label>
             </div>
 
-          </div>
-
-          <div class="row">
-            <div class="input-field col s12 m6 l6">
+            <div class="input-field col s6 m3 l3">
               <input [id]="pack.width" [name]="pack.width" type="number" min="0" class="validate" pattern=".{1,6}" required>
               <label for="width">Ancho (cm)</label>
             </div>
 
-            <div class="input-field col s12 m6 l6">
+            <div class="input-field col s6 m3 l3">
               <input [id]="pack.height" [name]="pack.height" type="number" min="0" class="validate" pattern=".{1,6}" required>
               <label for="hight">Alto (cm)</label>
             </div>
           </div>
 
-          <div class="row">
-            <div class="input-field col s12 m6 l6">
+          <div *ngIf="!this.noInsurance" class="row">
+            <div class="input-field col s6 m3 l3">
               <input [id]="pack.insurance" [name]="pack.insurance" type="number" placeholder="0" value=0 min="0" class="validate" pattern=".{1,6}">
               <label class="active" for="insurance">Monto seguro</label>
             </div>
@@ -192,7 +191,7 @@
       <div *ngIf="!multiPackActive">
         <h5 class="blue lighten-2">Características</h5>
         <div class="row">
-          <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': weight.errors?.required && weight.touched}">
+          <div class="input-field col s6 m3 l3" [ngClass]="{'has-danger': weight.errors?.required && weight.touched}">
             <input id="weight" name="weight" type="number" min="0" ngModel #weight="ngModel" class="validate" pattern=".{1,5}" required>
             <label for="weight">Peso (kg)</label>
             <p class="red-text text-darken-4" *ngIf="weight.errors?.required&&weight.touched">
@@ -203,7 +202,7 @@
             </p>
           </div>
 
-          <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': long.errors?.required && long.touched}">
+          <div class="input-field col s6 m3 l3" [ngClass]="{'has-danger': long.errors?.required && long.touched}">
             <input id="long" name="long" type="number" min="0" ngModel #long="ngModel" class="validate" pattern=".{1,6}" required>
             <label for="long">Largo (cm)</label>
             <p class="red-text text-darken-4" *ngIf="long.errors?.required&&long.touched">
@@ -214,10 +213,7 @@
             </p>
           </div>
 
-        </div>
-
-        <div class="row">
-          <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': width.errors?.required && width.touched}">
+          <div class="input-field col s6 m3 l3" [ngClass]="{'has-danger': width.errors?.required && width.touched}">
             <input id="width" name="width" type="number" min="0" ngModel #width="ngModel" class="validate" pattern=".{1,6}" required>
             <label for="width">Ancho (cm)</label>
             <p class="red-text text-darken-4" *ngIf="width.errors?.required&&width.touched">
@@ -228,7 +224,7 @@
             </p>
           </div>
 
-          <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': hight.errors?.required && hight.touched}">
+          <div class="input-field col s6 m3 l3" [ngClass]="{'has-danger': hight.errors?.required && hight.touched}">
             <input id="hight" name="hight" type="number" min="0" ngModel #hight="ngModel" class="validate" pattern=".{1,6}" required>
             <label for="hight">Alto (cm)</label>
             <p class="red-text text-darken-4" *ngIf="hight.errors?.required&&hight.touched">
@@ -240,14 +236,14 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="col offset-m2 m4 s4 offset-l2 l4">
+        <div *ngIf="!this.noInsurance" class="row">
+          <div class="col offset-m3 m3 s4 offset-l3 l3">
             <p>
               <input (click)="checkSeguro()" class="filled-in checkbox-blue" type="checkbox" id="seguro" />
               <label class="label-checkbox" for="seguro">Habilitar seguro</label>
             </p>
           </div>
-          <div *ngIf="this.seguro" class="input-field col s8 m4 l4" [ngClass]="{'has-danger': insurance.errors?.required && insurance.touched}">
+          <div *ngIf="this.seguro" class="input-field col s8 m3 l3" [ngClass]="{'has-danger': insurance.errors?.required && insurance.touched}">
             <input id="insurance" name="insurance" type="number" min="0" ngModel #insurance="ngModel" class="validate" pattern=".{1,6}" required>
             <label for="insurance">Monto seguro</label>
             <p class="red-text text-darken-4" *ngIf="insurance.errors?.required&&insurance.touched">

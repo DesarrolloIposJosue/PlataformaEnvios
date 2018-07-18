@@ -39,7 +39,6 @@ export class AddClientComponent implements OnInit {
     });
     this.userType = sessionStorage.getItem('Type');
 
-    console.log(this.clientService.userEdit);
 
     if(this.userType == '1' && this.clientService.operation == 1 && this.clientService.userEdit.lockInfo == "Y"){
       setTimeout(() =>
@@ -151,12 +150,13 @@ export class AddClientComponent implements OnInit {
             city: forma.controls["city"].value,
             state: forma.controls["state"].value,
             zip: forma.controls["zip"].value,
-            country: forma.controls["country"].value,
+            country: this.countryName,
             phoneNumber: forma.controls["phoneNumber"].value,
             numberHouse: forma.controls["noHouse"].value,
             lockInfo: this.lockInfoValue,
             setCompany: this.setCompanyValue
           }
+          console.log(clientData);
           this.clientService.addClient(clientData).subscribe(jsonData => {
                 var checkUser = jsonData;
                 if (jsonData == "SUCCESS: User Created") {

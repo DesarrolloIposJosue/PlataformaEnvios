@@ -19,6 +19,7 @@ import { ReportsComponent } from './modules/reports/reports.component';
 import { SummaryGuideComponent } from './modules/summary-guide/summary-guide.component';
 import { BuyGuidesComponent } from './modules/buy-guides/buy-guides.component';
 import { DefineGuidesRedpackComponent } from './modules/define-guides-redpack/define-guides-redpack.component';
+import { PrintLabelComponent } from './modules/print-label/print-label.component';
 
 const APP_ROUTES: Routes = [
   { path: 'home', component: HomeComponent },
@@ -42,6 +43,7 @@ const APP_ROUTES: Routes = [
   { path: 'tracking', component: TrackingComponent, canActivate:[AuthGuardService]},
   { path: 'buy-guides', component: BuyGuidesComponent, canActivate:[AuthGuardService]},
   { path: 'define-guides-redpack', component: DefineGuidesRedpackComponent, canActivate:[AuthGuardService]},
+  { path: 'print-label', component: PrintLabelComponent, canActivate:[AuthGuardService]},
   { path: '', pathMatch: 'full', redirectTo: 'log-in' },
   { path: '**', component: LogInComponent }
 ];

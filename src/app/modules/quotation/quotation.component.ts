@@ -53,11 +53,13 @@ export class QuotationComponent implements OnInit {
 
   private noLoad:boolean = false;
   private thirdAccount:string = "";
-  private printType:string;
+  private printType:string = "";
 
   private extAreaFedEx:number = 0;
   private extAreaPaquete:number = 0;
   private extAreaRedPack:number = 0;
+
+  private noInsurance:boolean = false;
 
   constructor(
     private el: ElementRef,
@@ -124,7 +126,16 @@ export class QuotationComponent implements OnInit {
             if(productArray[i].extendedArea > 0 && productArray[i].parcelId == 3){
               this.extAreaFedEx = productArray[i].extendedArea;
             }
+            if(productArray[i].percentageDeclared > 0){
+              this.noInsurance = false;
+            }else{
+              this.noInsurance = true
+            }
+          }
 
+          if(this.printType != "Z"){
+            console.log("Entre");
+            this.printType = "P";
           }
 
           this.clientService.getUsersByUserID().subscribe(
@@ -280,15 +291,22 @@ export class QuotationComponent implements OnInit {
             var elementInsurance = <HTMLInputElement>document.getElementById(this.objectCreateMultipieces[j].insurance.toString());
             var elementLength = <HTMLInputElement>document.getElementById(this.objectCreateMultipieces[j].length.toString());
             var elementWeight = <HTMLInputElement>document.getElementById(this.objectCreateMultipieces[j].weight.toString());
-            if(Number(elementHeight.value) > 0 && Number(elementWidth.value) > 0 && Number(elementLength.value) > 0 && Number(elementWeight.value) > 0 ){
+            if(Number(elementHeight.value) > 0 && Number(elementWidth.value) > 0 && Number(elementLength.value) > 0 && Number(elementWeight.value) > 0 && elementInsurance != null){
               this.packs.push(new Multipieces(forma.controls["postal_code_origin"].value, forma.controls["postal_code_dest"].value,
               Number(elementWeight.value),Number(elementLength.value), Number(elementWidth.value), Number(elementHeight.value),
               Number(elementInsurance.value)));
               counter++;
               totalWeight = Number(elementWeight.value) + totalWeight;
+            }else if(Number(elementHeight.value) > 0 && Number(elementWidth.value) > 0 && Number(elementLength.value) > 0 && Number(elementWeight.value) > 0){
+              this.packs.push(new Multipieces(forma.controls["postal_code_origin"].value, forma.controls["postal_code_dest"].value,
+              Number(elementWeight.value),Number(elementLength.value), Number(elementWidth.value), Number(elementHeight.value),
+              0));
+              counter++;
+              totalWeight = Number(elementWeight.value) + totalWeight;
             }else{
-              //Error de producto y no procede a guardar
-              //this.errorProductPaqueteExpress = true;
+              x.style.display = "none";
+              this.invalidForm = true;
+              this.loading = false;
             }
           }
           if(counter == this.packs.length){
@@ -316,6 +334,7 @@ export class QuotationComponent implements OnInit {
             this.createGuideService.packageType = forma.controls["kindPackage"].value;
             this.createGuideService.thirdAccount = this.thirdAccount;
             this.createGuideService.printType = this.printType;
+            this.download.printType = this.printType;
 
             this.rateService.weight = totalWeight;
             this.rateService.dataCpDest.colony = forma.controls["colonyDest"].value;
@@ -397,6 +416,7 @@ export class QuotationComponent implements OnInit {
             this.createGuideService.packageType = forma.controls["kindPackage"].value;
             this.createGuideService.thirdAccount = this.thirdAccount;
             this.createGuideService.printType = this.printType;
+            this.download.printType = this.printType;
 
             this.rateService.weight = forma.controls["weight"].value;
 

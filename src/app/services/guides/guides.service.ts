@@ -87,6 +87,7 @@ export class GuidesService {
   }
 
   CancelGuide(shipment:Shipment){
+    console.log(shipment);
     var operation:string = this.apiBase + 'CancelShipment';
     // Headers
     let myHeaders = new Headers();
@@ -96,5 +97,14 @@ export class GuidesService {
     return this.http.post(operation, JSON.stringify(shipment), options).map((res:Response) => res.json());
   }
 
+  TrackingGuide(shipment:Shipment){
+    var operation:string = this.apiBase + 'GetTracking';
+    // Headers
+    let myHeaders = new Headers();
+    // Body or Search
+    let myParams: URLSearchParams = new URLSearchParams();
+    let options = new RequestOptions({ headers: myHeaders});
+    return this.http.post(operation, JSON.stringify(shipment), options).map((res:Response) => res.json());
+  }
 
 }

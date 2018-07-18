@@ -45,6 +45,7 @@ export class Shipment{
   public multiPiecesMasterTracking: string;
   public multiPiecesMasterId:number;
   public multiPiecesSequenceNumber:number;
+  public printType:string;
 
   public productName:string;
 
@@ -54,7 +55,7 @@ export class Shipment{
 _originCountry:string, _originPhoneNumber:string, _originUserName:string, _destinyCompany:string, _destinyAddress:string, _destinyAddress2:string, _destinyColony:string,
 _destinyCity:string, _destinyState:string, _destinyZip:number, _destinyCountry:string, _destinyPhoneNumber:string, _destinyUserName:string, _trackingKey:string,
 _status:string, _weight:number, _length:number, _width:number, _height:number, _insurance:number, _creationDate:Date, _creationDateString:string, _numGuide:string,
-_multiPieces:string, _multiPiecesMasterTracking:string, _multiPiecesMasterId:number, _multiPiecesSequenceNumber:number, _productName:string){
+_multiPieces:string, _multiPiecesMasterTracking:string, _multiPiecesMasterId:number, _multiPiecesSequenceNumber:number, _printType:string, _productName:string){
     this.id = _id;
     this.userId = _userId;
     this.parcelId = _parcelId;
@@ -102,6 +103,7 @@ _multiPieces:string, _multiPiecesMasterTracking:string, _multiPiecesMasterId:num
     this.multiPiecesMasterId = _multiPiecesMasterId;
     this.multiPiecesSequenceNumber = _multiPiecesSequenceNumber;
 
+    this.printType = _printType;
     this.productName = _productName;
   }
 

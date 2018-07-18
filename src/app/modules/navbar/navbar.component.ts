@@ -150,7 +150,7 @@ export class NavbarComponent implements OnInit {
      this.guideService.selectedGuides = [];
      this.guideService.selectedMultiguides = [];
      this.closeSideNav();
-     this._router.navigate(['/tracking']);
+     this._router.navigate(['/print-label']);
    }
 
    logOut(){

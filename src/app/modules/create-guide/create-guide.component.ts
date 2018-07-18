@@ -68,6 +68,7 @@ export class CreateGuideComponent implements OnInit {
     private guides:GuidesService,
     private rateService:RateService
   ) {
+    console.log(this.createGuideservice.productName);
     this.router.events.subscribe((evt) => {
         if (!(evt instanceof NavigationEnd)) {
             return;
@@ -121,7 +122,8 @@ export class CreateGuideComponent implements OnInit {
     forma.controls["destinyAddress2"].value,forma.controls["destinyColony"].value,forma.controls["destinyCity"].value,forma.controls["destinyState"].value,
   this.createGuideservice.multipiecesData[i].destinyCP,forma.controls["destinyCountry"].value,forma.controls["destinyPhoneNumber"].value,forma.controls["destinyUserName"].value,
   "","Generando",this.createGuideservice.multipiecesData[i].weight,this.createGuideservice.multipiecesData[i].length,
-  this.createGuideservice.multipiecesData[i].width,this.createGuideservice.multipiecesData[i].height,this.createGuideservice.multipiecesData[i].insurance,new Date(),"","","Y","",0,0,this.productName))
+  this.createGuideservice.multipiecesData[i].width,this.createGuideservice.multipiecesData[i].height,this.createGuideservice.multipiecesData[i].insurance,new Date(),"","","Y","",0,0,
+  this.createGuideservice.printType,this.productName))
         }
       }else{
         this.shipment = new Shipment(0,this.client.id,this.parcelId,this.productId,this.totalAmount,this.amountDetail,forma.controls["originCompany"].value,
@@ -130,7 +132,8 @@ export class CreateGuideComponent implements OnInit {
     forma.controls["originUserName"].value,forma.controls["destinyCompany"].value, forma.controls["destinyAddress"].value,
   forma.controls["destinyAddress2"].value,forma.controls["destinyColony"].value,forma.controls["destinyCity"].value,forma.controls["destinyState"].value,
 forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.controls["destinyPhoneNumber"].value,forma.controls["destinyUserName"].value,
-"","Generando",this.dataGuide.weight,this.dataGuide.long,this.dataGuide.width,this.dataGuide.hight,this.dataGuide.insurance,new Date(),"","","N","",0,0,this.productName);
+"","Generando",this.dataGuide.weight,this.dataGuide.long,this.dataGuide.width,this.dataGuide.hight,this.dataGuide.insurance,new Date(),"","","N","",0,0,
+this.createGuideservice.printType,this.productName);
 
       }
 
@@ -152,19 +155,36 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
                   if(!document){
 
                   }else{
-                    var byteCharacters = document;
-                    var byteArray = new Uint8Array(byteCharacters);
-                    var blob = new Blob([byteArray], {type: 'application/pdf'});
-                    var url= window.URL.createObjectURL(blob);
-                    //window.open(url);
-                    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                        window.navigator.msSaveOrOpenBlob(blob);
+                    if(this.download.printType == "Z"){
+                      var byteCharacters = document;
+                      var byteArray = new Uint8Array(byteCharacters);
+                      var blob = new Blob([byteArray], {type: 'text/plain'});
+                      var url= window.URL.createObjectURL(blob);
+                      //window.open(url);
+                      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                          window.navigator.msSaveOrOpenBlob(blob);
+                      }
+                      else {
+                          //var objectUrl = URL.createObjectURL(blob);
+                          //window.open(objectUrl);
+                          window.open(url);
+                      }
+                    }else{
+                      var byteCharacters = document;
+                      var byteArray = new Uint8Array(byteCharacters);
+                      var blob = new Blob([byteArray], {type: 'application/pdf'});
+                      var url= window.URL.createObjectURL(blob);
+                      //window.open(url);
+                      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                          window.navigator.msSaveOrOpenBlob(blob);
+                      }
+                      else {
+                          //var objectUrl = URL.createObjectURL(blob);
+                          //window.open(objectUrl);
+                          window.open(url);
+                      }
                     }
-                    else {
-                        //var objectUrl = URL.createObjectURL(blob);
-                        //window.open(objectUrl);
-                        window.open(url);
-                    }
+
                     /*this.guides.selectedGuide = this.shipment;
                     this.router.navigate(['/summary']);*/
                   }
@@ -199,19 +219,39 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
                   if(!document){
 
                   }else{
-                    var byteCharacters = document;
-                    var byteArray = new Uint8Array(byteCharacters);
-                    var blob = new Blob([byteArray], {type: 'application/pdf'});
-                    var url= window.URL.createObjectURL(blob);
-                    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                        window.navigator.msSaveOrOpenBlob(blob);
-                    }
-                    else {
-                        //var objectUrl = URL.createObjectURL(blob);
-                        //window.open(objectUrl);
-                        window.open(url);
+                    if(this.download.printType == "Z"){
+                      var byteCharacters = document;
+                      var byteArray = new Uint8Array(byteCharacters);
+                      var blob = new Blob([byteArray], {type: 'text/plain'});
 
+                      var url= window.URL.createObjectURL(blob);
+                      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                          window.navigator.msSaveOrOpenBlob(blob);
+                      }
+                      else {
+                          //var objectUrl = URL.createObjectURL(blob);
+                          //window.open(objectUrl);
+                          window.open(url);
+
+                      }
+
+                    }else{
+                      var byteCharacters = document;
+                      var byteArray = new Uint8Array(byteCharacters);
+                      var blob = new Blob([byteArray], {type: 'application/pdf'});
+
+                      var url= window.URL.createObjectURL(blob);
+                      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                          window.navigator.msSaveOrOpenBlob(blob);
+                      }
+                      else {
+                          //var objectUrl = URL.createObjectURL(blob);
+                          //window.open(objectUrl);
+                          window.open(url);
+
+                      }
                     }
+
                     this.guides.selectedGuide = this.shipment;
                     this.router.navigate(['/summary']);
                   }
