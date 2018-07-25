@@ -17,22 +17,40 @@
 
         <!-- Modal Structure -->
         <div id="modal1" class="modal top-sheet" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
-          <div *ngIf="this.canceledGuide" class="modal-content">
+          <div *ngIf="this.canceledGuide && this.canceledPressed == 1" class="modal-content">
             <h4>Cancelación exitosa</h4>
             <p>La guía se canceló correctamente</p>
           </div>
-          <div *ngIf="this.canceledGuide" class="modal-footer">
+          <div *ngIf="this.canceledGuide && this.canceledPressed == 1" class="modal-footer">
             <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Cerrar</a>
-            <a class="modal-action modal-close waves-effect waves-green btn-flat">Aceptar</a>
+            <a class="modal-action modal-close waves-effect waves-green btn-flat" (click)="closeModal()">Aceptar</a>
           </div>
 
-          <div *ngIf="!this.canceledGuide" class="modal-content">
+          <div *ngIf="!this.canceledGuide && this.canceledPressed == 1" class="modal-content">
             <h4>Error</h4>
             <p>La cancelación no pudo realizarse</p>
           </div>
-          <div *ngIf="!this.canceledGuide" class="modal-footer">
+          <div *ngIf="!this.canceledGuide && this.canceledPressed == 1" class="modal-footer">
             <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Cerrar</a>
-            <a class="modal-action modal-close waves-effect waves-green btn-flat">Aceptar</a>
+            <a class="modal-action modal-close waves-effect waves-green btn-flat" (click)="closeModal()">Aceptar</a>
+          </div>
+
+          <div *ngIf="!this.existPrinter && this.canceledPressed == 0" class="modal-content">
+            <h4>Error de impresión</h4>
+            <p>Es posible que se necesite el software para imprimir</p>
+          </div>
+          <div *ngIf="!this.existPrinter && this.canceledPressed == 0" class="modal-footer">
+            <a class="waves-effect waves-red btn-flat" (click)="closeModal()">Cerrar</a>
+            <a class="modal-action modal-close waves-effect waves-green btn-flat" (click)="closeModal()">Aceptar</a>
+          </div>
+
+          <div *ngIf="this.errorGuideModal == 1 && this.canceledPressed == 0" class="modal-content">
+            <h4>Error de impresión</h4>
+            <p>Puede que haya un problema con la impresora, revise que esta encendida y conectada, o que todo este correcto</p>
+          </div>
+          <div *ngIf="this.errorGuideModal == 1 && this.canceledPressed == 0" class="modal-footer">
+            <a class="waves-effect waves-red btn-flat" (click)="closeModal()">Cerrar</a>
+            <a class="modal-action modal-close waves-effect waves-green btn-flat" (click)="closeModal()">Aceptar</a>
           </div>
         </div>
 
@@ -162,7 +180,8 @@
         <th>Nombre origen</th>
         <th>Nombre destino</th>
         <th>Fecha (mm/dd/aaaa)</th>
-        <th *ngIf="shipment.validDate && shipment.status != 'CANCELADO'"></th>
+        <th>Formato</th>
+        <th *ngIf="shipment.validDate "></th>
         <th *ngIf="shipment.validDate && shipment.status != 'CANCELADO' && this.createGuideService.userActual.typeId == 1"></th>
         <th></th>
       </tr>
@@ -177,8 +196,10 @@
         <td *ngIf="shipment.multiPieces == 'N'">{{shipment.originUserName}}</td>
         <td *ngIf="shipment.multiPieces == 'N'">{{shipment.destinyUserName}}
         <td *ngIf="shipment.multiPieces == 'N'">{{shipment.creationDateString}}</td>
+        <td *ngIf="shipment.multiPieces == 'N' && shipment.printType == 'Z'"><img src="./assets/Zebra.png" alt="zebra"></td>
+        <td *ngIf="shipment.multiPieces == 'N' && shipment.printType == 'P'"><img src="./assets/PDF.png" alt="pdf"></td>
         <td *ngIf="shipment.multiPieces == 'N'">
-          <a *ngIf="shipment.validDate && shipment.status != 'CANCELADO'" (click)="checkGuide(shipment.parcelId, shipment.trackingKey)" class="btn-small blue accent-3">Reimprimir</a>
+          <a (click)="checkGuide(shipment.parcelId, shipment.trackingKey, shipment.printType)" class="btn-small blue accent-3">Reimprimir</a>
         </td>
         <td *ngIf="shipment.multiPieces == 'N' && this.createGuideService.userActual.typeId == 1 && shipment.status != 'CANCELADO'">
           <a (click)="cancelGuide(shipment)" class="btn-small blue accent-3">Cancelar</a>
@@ -194,16 +215,19 @@
       <tr *ngFor="let shipment of this.multipiecesObject">
         <td *ngIf="shipment.quantity > 0">{{shipment.trackingKey}}</td>
         <td *ngIf="shipment.quantity > 0">{{shipment.parcelName}}</td>
+        <td *ngIf="shipment.quantity > 0"></td>
         <td *ngIf="shipment.quantity > 0">${{shipment.amount}}</td>
         <td *ngIf="shipment.quantity > 0">{{shipment.quantity}}</td>
         <td *ngIf="shipment.quantity > 0">{{shipment.originUserName}}</td>
         <td *ngIf="shipment.quantity > 0">{{shipment.destinyUserName}}
         <td *ngIf="shipment.quantity > 0">{{shipment.date}}</td>
-        <td *ngIf="shipment.quantity > 0 && shipment.validDate && shipment.status != 'CANCELADO'">
-          <a (click)="checkMultiguides(shipment.parcelId, shipment.trackings)" class="btn-small blue accent-3">Reimprimir</a>
+        <td *ngIf="shipment.quantity > 0 && shipment.printType == 'Z'"><img src="./assets/Zebra.png" alt="zebra"></td>
+        <td *ngIf="shipment.quantity > 0 && shipment.printType == 'P'"><img src="./assets/PDF.png" alt="pdf"></td>
+        <td *ngIf="shipment.quantity > 0 && shipment.status != 'CANCELADO'">
+          <a (click)="checkMultiguides(shipment.parcelId, shipment.trackings, shipment.printType)" class="btn-small blue accent-3">Reimprimir</a>
         </td>
         <td *ngIf="shipment.quantity > 0 && this.createGuideService.userActual.typeId == 1 && shipment.status != 'CANCELADO'">
-          <a (click)="cancelGuide(shipment)" class="btn-small blue accent-3">Cancelar</a>
+          <a (click)="cancelGuideMPS(shipment)" class="btn-small blue accent-3">Cancelar</a>
         </td>
         <td *ngIf="shipment.quantity > 0">
           <a (click)="loadReportMultiguides(shipment.shipmentsId)" class="btn-small blue accent-3">Mostrar</a>

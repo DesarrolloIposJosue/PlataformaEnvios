@@ -28,7 +28,8 @@ var selected_printer = null;
 var format_start = "^XA^LL200^FO80,50^A0N36,36^FD";
 var format_end = "^FS^XZ";
 var default_mode = true;
-
+var existPrinters:boolean = false;
+var errorGuide:number = 0;
 
 function setup_web_print()
 {
@@ -46,6 +47,9 @@ function setup_web_print()
     if((printer != null) && (printer.connection != undefined))
     {
       selected_printer = printer;
+      if(printer){
+        existPrinters = true;
+      }
       var printer_details = $('#printer_details');
       var selected_printer_div = $('#selected_printer');
 
@@ -58,11 +62,13 @@ function setup_web_print()
     BrowserPrint.getLocalDevices(function(printers)
       {
         available_printers = printers;
+
         var sel = document.getElementById("printers");
         var printers_available = false;
         sel.innerHTML = "";
         if (printers != undefined)
         {
+
           for(var i = 0; i < printers.length; i++)
           {
             if (printers[i].connection == 'usb')
@@ -94,6 +100,7 @@ function setup_web_print()
   },
   function(error_response)
   {
+    errorGuide = 1;
     showBrowserPrintNotFound();
   });
 };
@@ -110,10 +117,7 @@ function sendData()
     {
 
       var zpl="^XA^CF,0,0,0^PR12^MD30^PW800^POI^CI13^LH0,20\n^FO12,301^GB753,2,2^FS\n^FO12,567^GB777,2,2^FS\n^FO464,170^GB2,129,2^FS\n^FO32,172^AdN,0,0^FWN^FH^FDORIGIN ID:LOMA ^FS\n^FO224,172^AdN,0,0^FWN^FH^FD36755558^FS\n^FO32,190^AdN,0,0^FWN^FH^FDDANIEL LOPEZ^FS\n^FO32,208^AdN,0,0^FWN^FH^FD^FS\n^FO32,226^AdN,0,0^FWN^FH^FDANDADOR VALERIO PRIETO 591 COL MIRA^FS\n^FO32,244^AdN,0,0^FWN^FH^FD^FS\n^FO32,262^AdN,0,0^FWN^FH^FDGUADALAJARA, JA 45590^FS\n^FO32,280^AdN,0,0^FWN^FH^FDMEXICO MX^FS\n^FO478,208^AdN,0,0^FWN^FH^FDCAD: 112926237/WSXI3300^FS\n^FO28,909^A0N,24,24^FWN^FH^FDTRK#^FS\n^FO28,967^A0N,27,32^FWN^FH^FD^FS\n^FO136,879^A0N,27,36^FWN^FH^FD^FS\n^FO15,313^A0N,21,21^FWN^FH^FDTO^FS\n^FO60,311^A0N,38,38^FWN^FH^FDLUKA MODRIC^FS\n^FO60,353^A0N,38,38^FWN^FH^FD^FS\n^FO60,395^A0N,38,38^FWN^FH^FDPLAN DE SAN LUIS 3465 COL EL PALOMO^FS\n^FO60,437^A0N,38,38^FWN^FH^FD^FS\n^FO60,479^A0N,43,40^FWN^FH^FDSAN PEDRO TLAQUEPAQU JA 45580^FS\n^FO35,521^A0N,21,21^FWN^FH^FD31456879^FS\n^FO677,673^GB104,10,10^FS\n^FO677,683^GB10,112,10^FS\n^FO771,683^GB10,112,10^FS\n^FO677,795^GB104,10,10^FS\n^FO652,611^A0N,43,58^FWN^FH^FDFedEx^FS\n^FO708,650^A0N,19,26^FWN^FH^FDExpress^FS\n^FO697,691^A0N,128,137^FWN^FH^FDE^FS\n^FO21,575^BY2,2^B7N,10,5,14^FH^FWN^FH^FD[)>_1E01_1D0245580_1D484_1D20_1D7818258222440455_1DFDE_1D873385448_1D193_1D_1D1/1_1D3.00KG_1DN_1DPLAN DE SAN LUIS 3465 Col El Palomo_1DSan Pedro Tlaquepaque_1D  _1DLuka Modric_1E06_1D10ZXI001_1D12Z31456879_1D15Z112926237_1D20Z_1C_1D31Z1013486121941137761600781825822244_1D32Z02_1D39ZLOMA_1D_1E09_1DFDX_1Dz_1D8_1D(%_13_12;7_7F@_1E_04^FS\n^FO478,262^AdN,0,0^FWN^FH^FDBILL SENDER^FS\n^FO12,856^GB777,2,2^FS\n^FO494,1052^A0N,43,43^FWN^FH^FD^FS\n^FO791,282^AbN,11,7^FWB^FH^FD552J2/8532/DCA5^FS\n^FO95,913^A0N,53,40^FWN^FH^FD7818 2582 2244^FS\n^FO409,862^A0N,51,38^FWN^FH^FB390,,,R,^FD                 AM^FS\n^FO309,914^A0N,51,38^FWN^FH^FB490,,,R,^FD            ECONOMY^FS\n^FO413,966^A0N,40,40^FWN^FH^FB386,,,R,^FD                ^FS\n^FO495,1008^A0N,44,44^FWN^FH^FB298,,,R,^FD     45580^FS\n^FO574,1068^A0N,24,24^FWN^FH^FB120,,,R,^FD   -MX^FS\n^FO695,1052^A0N,43,43^FWN^FH^FB100,,,R,^FDGDL^FS\n^FO39,1094^A0N,27,32^FWN^FH^FD^FS\n^FO75,1155^BY3,2^BCN,200,N,N,N,N^FWN^FD>;1013486121941137761600781825822244^FS\n^FO28,1004^A0N,107,96^FWN^FH^FD8Z LOMA ^FS\n^FO790,675^A0N,13,18^FWB^FH^FDJ181118012601uv^FS\n^FO478,172^AdN,0,0^FWN^FH^FDSHIP DATE: 12JUL18^FS\n^FO478,190^AdN,0,0^FWN^FH^FDACTWGT: 3.00 KG^FS\n^FO478,226^AdN,0,0^FWN^FH^FDDIMS: 30x30x30 CM^FS\n^FO708,482^A0N,35,45^FWN^FH^FD(MX)^FS\n^FO328,526^AbN,11,7^FWN^FH^FDREF: ^FS\n^FO38,540^AbN,11,7^FWN^FH^FDINV: ^FS\n^FO38,554^AbN,11,7^FWN^FH^FDPO: ^FS\n^FO428,554^AbN,11,7^FWN^FH^FDDEPT: ^FS\n^FO25,930^GB58,1,1^FS\n^FO25,930^GB1,26,1^FS\n^FO83,930^GB1,26,1^FS\n^FO25,956^GB58,1,1^FS\n^FO31,936^AdN,0,0^FWN^FH^FD0455^FS\n^PQ1\n^XZ\n"
-
-
         selected_printer.send(zpl, printComplete, printerError);
-
     }
     else
     {
@@ -160,6 +164,10 @@ function checkPrinterStatus(finishedFunction)
               statuses.push("Error: Unknown Error");
             finishedFunction(statuses.join());
       }, printerError);
+      var error = printerError.toString()
+      if(error.indexOf('An error occurred while printing.') >= 0){
+        errorGuide = 1;
+      }
 };
 function hidePrintForm()
 {
@@ -181,6 +189,7 @@ function printComplete()
 {
   hideLoading();
   alert ("Printing complete");
+  errorGuide = 2;
 }
 function hideLoading()
 {
@@ -272,8 +281,12 @@ export class ReportsComponent implements OnInit {
   private tryExcel:ValidDateGuide[] = [];
 
   private canceledGuide:boolean = false;
+  private canceledPressed:number = 0;
 
   private stringPrint:string = "";
+  private existPrinter:boolean = false;
+
+  private errorGuideModal:number = 0;
 
   constructor(
     private clientService:ClientService,
@@ -300,7 +313,7 @@ export class ReportsComponent implements OnInit {
     var obj = JSON.parse(sessionStorage.getItem('ActualUser')); // An object :D
     this.user = new User(obj.id, obj.name, obj.lastName, obj.userName, obj.password, obj.address, obj.email, obj.typeId, obj.address2,
   obj.colony, obj.city, obj.state, obj.zip, obj.country, obj.phoneNumber, obj.numberHouse, obj.setCompany, obj.lockInfo);
-  console.log(this.user);
+
 
   if(this.user.typeId == 2){
     this.reportType = 2;
@@ -318,7 +331,7 @@ export class ReportsComponent implements OnInit {
             this.response = successResponse;
             this.dataUser = [];
             for (var i = 0; i < userArray.length; i++) {
-              //console.log(countryArray[i].name);
+
               this.dataUser[userArray[i].name + " " + userArray[i].lastName] = null; //countryArray[i].flag or null
             }
             this.petitionError = false;
@@ -338,10 +351,13 @@ export class ReportsComponent implements OnInit {
 
   modalActions = new EventEmitter<string|MaterializeAction>();
   openModal() {
+
     this.modalActions.emit({action:"modal",params:['open']});
+
   }
   closeModal() {
     this.modalActions.emit({action:"modal",params:['close']});
+    this.canceledPressed = 0
   }
 
   ngOnInit() {
@@ -391,6 +407,7 @@ export class ReportsComponent implements OnInit {
 
       this.guideService.GetShipmentsByUserAndDates(startDateValid, finishDateValid, 0).subscribe(response =>{
         if(response){
+          let parcelName:string;
             for(let i = 0; i < response.length; i++){
               let valid:boolean = false;
               let x = response[i].CreationDateString.split("/");
@@ -398,7 +415,7 @@ export class ReportsComponent implements OnInit {
               let month:string = x[1];
               let year:string = x[2];
               let dateString:string = year + "-" + day + "-" + month;
-              let parcelName:string;
+
 
               let newDate:Date = new Date(dateString);
 
@@ -428,8 +445,10 @@ export class ReportsComponent implements OnInit {
         parcelName, valid, response[i].PrintType));
             }
 
+
           if(this.shipments.length > 0 || this.validDateGuide.length > 0){
             this.loaded = true;
+            let masterGuide:Shipment;
             let masterId:number = 0;
             let lastMasterId:number = 0;
             let counterMatches:number = 0;
@@ -441,7 +460,7 @@ export class ReportsComponent implements OnInit {
                   this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                     this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
                   this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
-                  this.trackings, this.guidesId));
+                  this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
                   this.shipments = [];
                   this.trackings = [];
                   counterMatches = 0;
@@ -460,21 +479,29 @@ export class ReportsComponent implements OnInit {
                   this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                     this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
                   this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
-                  this.trackings, this.guidesId));
+                  this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
                 }else{
                   this.total = this.validDateGuide[i].totalAmount + this.total;
                   this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                     this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
                   this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
-                  this.trackings, this.guidesId));
+                  this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
                 }
               }else if(this.validDateGuide[i].multiPieces == "Y"){
                 if(this.validDateGuide[i].multiPiecesMasterId == 0){
+                  masterGuide = new Shipment(this.validDateGuide[i].id, this.validDateGuide[i].userId, this.validDateGuide[i].parcelId, this.validDateGuide[i].productId,
+                  this.validDateGuide[i].totalAmount, this.validDateGuide[i].amountDetail, this.validDateGuide[i].originCompany, this.validDateGuide[i].originAddress, this.validDateGuide[i].originAddress2,
+                  this.validDateGuide[i].originColony, this.validDateGuide[i].originCity, this.validDateGuide[i].originState, this.validDateGuide[i].originZip, this.validDateGuide[i].originCountry, this.validDateGuide[i].originPhoneNumber,
+                  this.validDateGuide[i].originUserName, this.validDateGuide[i].destinyCompany, this.validDateGuide[i].destinyAddress, this.validDateGuide[i].destinyAddress2, this.validDateGuide[i].destinyColony, this.validDateGuide[i].destinyCity,
+                  this.validDateGuide[i].destinyState, this.validDateGuide[i].destinyZip, this.validDateGuide[i].destinyCountry, this.validDateGuide[i].destinyPhoneNumber, this.validDateGuide[i].destinyUserName, this.validDateGuide[i].trackingKey,
+                  this.validDateGuide[i].status, this.validDateGuide[i].weight, this.validDateGuide[i].length, this.validDateGuide[i].width, this.validDateGuide[i].height, this.validDateGuide[i].insurance, this.validDateGuide[i].creationDate,
+                  this.validDateGuide[i].creationDateString, this.validDateGuide[i].numGuide, this.validDateGuide[i].multiPieces, this.validDateGuide[i].multiPiecesMasterTracking, this.validDateGuide[i].multiPiecesMasterId, this.validDateGuide[i].multiPiecesSequenceNumber,
+                  this.validDateGuide[i].printType, this.validDateGuide[i].productName);
                   if(counterMatches > 0){
                     this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                     this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
                   this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
-                  this.trackings, this.guidesId));
+                  this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
                   }
                   counterMatches = 1;
                   this.trackings = [];
@@ -512,7 +539,7 @@ export class ReportsComponent implements OnInit {
                   this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                   this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
                   this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
-                  this.trackings, this.guidesId));
+                  this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
                   this.trackings = [];
                   this.guidesId = [];
                   counterMatches = 0;
@@ -520,6 +547,7 @@ export class ReportsComponent implements OnInit {
                 }
               }
             }
+
 
             if(this.total > 0){
               this.totalCalculated = true;
@@ -558,7 +586,7 @@ export class ReportsComponent implements OnInit {
               if(newDate > this.limitDate){
                 valid = true;
               }
-
+              parcelName = "";
               if(response[i].ParcelId == 1){
                 parcelName = "DHL";
               }else if(response[i].ParcelId == 2){
@@ -581,10 +609,11 @@ export class ReportsComponent implements OnInit {
         parcelName, valid, response[i].PrintType));
             }
 
-            console.log(this.validDateGuide);
+
 
           if(this.shipments.length > 0 || this.validDateGuide.length > 0){
             this.loaded = true;
+            let masterGuide:Shipment;
             let masterId:number = 0;
             let lastMasterId:number = 0;
             let counterMatches:number = 0;
@@ -596,7 +625,7 @@ export class ReportsComponent implements OnInit {
                   this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                     this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
                   this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
-                  this.trackings, this.guidesId));
+                  this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
                   this.shipments = [];
                   this.trackings = [];
                   counterMatches = 0;
@@ -615,21 +644,29 @@ export class ReportsComponent implements OnInit {
                   this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                     this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
                   this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
-                  this.trackings, this.guidesId));
+                  this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
                 }else{
                   this.total = this.validDateGuide[i].totalAmount + this.total;
                   this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                     this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
                   this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
-                  this.trackings, this.guidesId));
+                  this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
                 }
               }else if(this.validDateGuide[i].multiPieces == "Y"){
                 if(this.validDateGuide[i].multiPiecesMasterId == 0){
+                  masterGuide = new Shipment(this.validDateGuide[i].id, this.validDateGuide[i].userId, this.validDateGuide[i].parcelId, this.validDateGuide[i].productId,
+                  this.validDateGuide[i].totalAmount, this.validDateGuide[i].amountDetail, this.validDateGuide[i].originCompany, this.validDateGuide[i].originAddress, this.validDateGuide[i].originAddress2,
+                  this.validDateGuide[i].originColony, this.validDateGuide[i].originCity, this.validDateGuide[i].originState, this.validDateGuide[i].originZip, this.validDateGuide[i].originCountry, this.validDateGuide[i].originPhoneNumber,
+                  this.validDateGuide[i].originUserName, this.validDateGuide[i].destinyCompany, this.validDateGuide[i].destinyAddress, this.validDateGuide[i].destinyAddress2, this.validDateGuide[i].destinyColony, this.validDateGuide[i].destinyCity,
+                  this.validDateGuide[i].destinyState, this.validDateGuide[i].destinyZip, this.validDateGuide[i].destinyCountry, this.validDateGuide[i].destinyPhoneNumber, this.validDateGuide[i].destinyUserName, this.validDateGuide[i].trackingKey,
+                  this.validDateGuide[i].status, this.validDateGuide[i].weight, this.validDateGuide[i].length, this.validDateGuide[i].width, this.validDateGuide[i].height, this.validDateGuide[i].insurance, this.validDateGuide[i].creationDate,
+                  this.validDateGuide[i].creationDateString, this.validDateGuide[i].numGuide, this.validDateGuide[i].multiPieces, this.validDateGuide[i].multiPiecesMasterTracking, this.validDateGuide[i].multiPiecesMasterId, this.validDateGuide[i].multiPiecesSequenceNumber,
+                  this.validDateGuide[i].printType, this.validDateGuide[i].productName);
                   if(counterMatches > 0){
                     this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                     this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
                   this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
-                  this.trackings, this.guidesId));
+                  this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
                   }
                   counterMatches = 1;
                   this.trackings = [];
@@ -667,7 +704,7 @@ export class ReportsComponent implements OnInit {
                   this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                   this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
                   this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
-                  this.trackings, this.guidesId));
+                  this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
                   this.trackings = [];
                   this.guidesId = [];
                   counterMatches = 0;
@@ -675,7 +712,6 @@ export class ReportsComponent implements OnInit {
                 }
               }
             }
-
             if(this.total > 0){
               this.totalCalculated = true;
             }
@@ -705,7 +741,7 @@ export class ReportsComponent implements OnInit {
               this.response = successResponse;
               this.dataUser = [];
               for (var i = 0; i < userArray.length; i++) {
-                //console.log(countryArray[i].name);
+
                 this.dataUser[userArray[i].name + " " + userArray[i].lastName] = null; //countryArray[i].flag or null
               }
               this.petitionError = false;
@@ -735,19 +771,16 @@ export class ReportsComponent implements OnInit {
         //this.shipment[0] = this.validDateGuide[i];
       }
     }
-
-    //let data = JSON.stringify(this.shipment);
-      //this.downloadReport(data);
       let data:ObjectExcel[] = this.PrepareDataCSV(this.tryExcel);
-      console.log(data);
+
       let json = JSON.stringify(data);
       this.excelService.try(data);
-      //this.downloadReport(json);
     this.router.navigate(['/summary']);
   }
 
   checkGuide(parcelId:number, trackingKey:string, printType:string){
-    console.log(printType);
+
+    this.download.printType = printType;
     if(parcelId == 3){
       this.download.DownloadFileFedEx(trackingKey).subscribe(document => {
         if(!document){
@@ -755,36 +788,47 @@ export class ReportsComponent implements OnInit {
         }else{
           var byteCharacters = document;
           var byteArray = new Uint8Array(byteCharacters);
+
           if(printType == "Z"){
-            const extraByteMap = [ 1, 1, 1, 1, 2, 2, 3, 0 ];
-            var count = byteCharacters.length;
-            var str = "";
-            for (var index = 0;index < count;)
-            {
-              var ch = byteCharacters[index++];
-              if (ch & 0x80)
+            if(existPrinters){
+              const extraByteMap = [ 1, 1, 1, 1, 2, 2, 3, 0 ];
+              var count = byteCharacters.length;
+              var str = "";
+              for (var index = 0;index < count;)
               {
-                var extra = extraByteMap[(ch >> 3) & 0x07];
-                if (!(ch & 0x40) || !extra || ((index + extra) > count))
-                  return null;
-
-                ch = ch & (0x3F >> extra);
-                for (;extra > 0;extra -= 1)
+                var ch = byteCharacters[index++];
+                if (ch & 0x80)
                 {
-                  var chx = byteCharacters[index++];
-                  if ((chx & 0xC0) != 0x80)
-                    return null;
+                  var extra = extraByteMap[(ch >> 3) & 0x07];
+                  if (!(ch & 0x40) || !extra || ((index + extra) > count)){
 
-                  ch = (ch << 6) | (chx & 0x3F);
+                  }
+
+                  ch = ch & (0x3F >> extra);
+                  for (;extra > 0;extra -= 1)
+                  {
+                    var chx = byteCharacters[index++];
+                    if ((chx & 0xC0) != 0x80){
+
+                    }
+
+                    ch = (ch << 6) | (chx & 0x3F);
+                  }
                 }
+                str += String.fromCharCode(ch);
               }
+              this.existPrinter = existPrinters;
+              this.sendDataPro(str);
 
-              str += String.fromCharCode(ch);
+            }else{
+
+              this.existPrinter = existPrinters;
+              this.openModal();
             }
-            this.sendDataPro(str);
+
           }else{
             var blob = new Blob([byteArray], {type: 'application/pdf'});
-            console.log(blob);
+
             var url= window.URL.createObjectURL(blob);
             if (window.navigator && window.navigator.msSaveOrOpenBlob) {
                 window.navigator.msSaveOrOpenBlob(blob);
@@ -819,12 +863,59 @@ export class ReportsComponent implements OnInit {
       });
     }
     if(parcelId == 5){
-      let url:string = "http://webbooking-pruebas.paquetexpress.com.mx:8082/wsReportPaquetexpress/GenCartaPorte?trackingNoGen=" + trackingKey;
-      window.open(url, "_blank");
+      if(printType == "Z"){
+        this.download.DownloadFilePaquete(trackingKey).subscribe(document => {
+          if(!document){
+
+          }else{
+            var byteCharacters = document;
+            if(existPrinters){
+              const extraByteMap = [ 1, 1, 1, 1, 2, 2, 3, 0 ];
+              var count = byteCharacters.length;
+              var str = "";
+              for (var index = 0;index < count;)
+              {
+                var ch = byteCharacters[index++];
+                if (ch & 0x80)
+                {
+                  var extra = extraByteMap[(ch >> 3) & 0x07];
+                  if (!(ch & 0x40) || !extra || ((index + extra) > count)){
+
+                  }
+
+                  ch = ch & (0x3F >> extra);
+                  for (;extra > 0;extra -= 1)
+                  {
+                    var chx = byteCharacters[index++];
+                    if ((chx & 0xC0) != 0x80){
+
+                    }
+
+                    ch = (ch << 6) | (chx & 0x3F);
+                  }
+                }
+                str += String.fromCharCode(ch);
+              }
+              this.existPrinter = existPrinters;
+              this.sendDataPro(str);
+
+            }else{
+
+              this.existPrinter = existPrinters;
+              this.openModal();
+            }
+          }
+        });
+      }else{
+        let url:string = "http://webbooking-pruebas.paquetexpress.com.mx:8082/wsReportPaquetexpress/GenCartaPorte?trackingNoGen=" + trackingKey;
+        window.open(url, "_blank");
+      }
     }
   }
 
-  checkMultiguides(parcelId:number, trackingKeys:string[]){
+  checkMultiguides(parcelId:number, trackingKeys:string[], printType:string){
+    this.download.printType = printType;
+    var strCommand = "";
     for(let tracking = 0; tracking < trackingKeys.length; tracking++){
       if(parcelId == 3){
         this.download.DownloadFileFedEx(trackingKeys[tracking]).subscribe(document => {
@@ -833,17 +924,55 @@ export class ReportsComponent implements OnInit {
           }else{
             var byteCharacters = document;
             var byteArray = new Uint8Array(byteCharacters);
-            var blob = new Blob([byteArray], {type: 'application/pdf'});
-            var url= window.URL.createObjectURL(blob);
-            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                window.navigator.msSaveOrOpenBlob(blob);
-                console.log("Edge");
-            }
-            else {
-                //var objectUrl = URL.createObjectURL(blob);
-                //window.open(objectUrl);
-                window.open(url);
-                console.log("Otros");
+            if(printType == "Z"){
+              if(existPrinters){
+                const extraByteMap = [ 1, 1, 1, 1, 2, 2, 3, 0 ];
+                var count = byteCharacters.length;
+
+                for (var index = 0;index < count;)
+                {
+                  var ch = byteCharacters[index++];
+                  if (ch & 0x80)
+                  {
+                    var extra = extraByteMap[(ch >> 3) & 0x07];
+                    if (!(ch & 0x40) || !extra || ((index + extra) > count)){
+
+                    }
+
+                    ch = ch & (0x3F >> extra);
+                    for (;extra > 0;extra -= 1)
+                    {
+                      var chx = byteCharacters[index++];
+                      if ((chx & 0xC0) != 0x80){
+
+                      }
+
+                      ch = (ch << 6) | (chx & 0x3F);
+                    }
+                  }
+
+                  strCommand += String.fromCharCode(ch);
+                }
+                this.existPrinter = existPrinters;
+                if(tracking == trackingKeys.length-1){
+                  this.sendDataPro(strCommand);
+                }
+              }else{
+                this.existPrinter = existPrinters;
+                this.openModal();
+              }
+            }else{
+              var blob = new Blob([byteArray], {type: 'application/pdf'});
+
+              var url= window.URL.createObjectURL(blob);
+              if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                  window.navigator.msSaveOrOpenBlob(blob);
+              }
+              else {
+                  //var objectUrl = URL.createObjectURL(blob);
+                  //window.open(objectUrl);
+                  window.open(url);
+              }
             }
           }
         });
@@ -858,16 +987,16 @@ export class ReportsComponent implements OnInit {
             var blob = new Blob([byteArray], {type: 'application/pdf'});
             var url= window.URL.createObjectURL(blob);
             if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-              console.log("Edge");
+
                 window.navigator.msSaveOrOpenBlob(blob);
 
             }
             else {
                 //var objectUrl = URL.createObjectURL(blob);
                 //window.open(objectUrl);
-                console.log("Otros");
+
                 window.open(url);
-                console.log("Otros");
+
             }
           }
         });
@@ -877,6 +1006,7 @@ export class ReportsComponent implements OnInit {
         window.open(url, "_blank");
       }
     }
+
   }
 
   loadReportMultiguides(shipmentsId:string[]){
@@ -893,7 +1023,7 @@ export class ReportsComponent implements OnInit {
     this.guideService.selectedMultiguides = shipments;
       //this.downloadReport(data);
       let data:ObjectExcel[] = this.PrepareDataCSV(shipments);
-      console.log(data);
+
       let json = JSON.stringify(data);
       this.excelService.try(data);
       //this.downloadReport(json);
@@ -918,7 +1048,7 @@ export class ReportsComponent implements OnInit {
 
   downloadReports(){
     let data:ObjectExcel[] = this.PrepareDataCSV(this.validDateGuide);
-    console.log(data);
+
     let json = JSON.stringify(data);
     this.excelService.try(data);
   }
@@ -948,14 +1078,30 @@ export class ReportsComponent implements OnInit {
   }
 
   cancelGuide(shipment:Shipment){
+    this.canceledPressed = 1
     this.guideService.CancelGuide(shipment).subscribe(response =>{
       if(response){
         if(response == "SUCCESS: Shipment Canceled"){
-          console.log("Se cancelo correctamente la guía");
+
           this.canceledGuide = true;
           this.openModal();
         }else{
-          console.log("La guía no se canceló");
+
+          this.canceledGuide = false;
+          this.openModal();
+        }
+      }
+    });
+  }
+
+  cancelGuideMPS(shipment:ShowMultiPieces){
+    this.canceledPressed = 1;
+    this.guideService.CancelGuide(shipment.masterGuide).subscribe(response =>{
+      if(response){
+        if(response == "SUCCESS: Shipment Canceled"){
+          this.canceledGuide = true;
+          this.openModal();
+        }else{
           this.canceledGuide = false;
           this.openModal();
         }
@@ -1005,23 +1151,23 @@ export class ReportsComponent implements OnInit {
           if(item.amountDetail.indexOf(',P') >= 0){
             let indexNo:number = item.amountDetail.indexOf(',P');
             let porcentajeString = item.amountDetail.substring(indexNo);
-            console.log(porcentajeString);
+
             indexNo = porcentajeString.indexOf('ro');
             let indexEnd = porcentajeString.indexOf('%');
             porcentajeString = porcentajeString.substring(indexNo+2, indexEnd);
-            console.log(porcentajeString);
+
             let porcentajeValue = +porcentajeString;
             insurancePerc = (item.insurance * porcentajeValue)/100;
-            console.log(insurancePerc);
+
             indexNo = item.amountDetail.indexOf('C');
             let comiString = item.amountDetail.substring(indexNo);
             indexNo = comiString.indexOf('$');
-            console.log(comiString);
+
             if(comiString.indexOf(',')){
               indexEnd = comiString.indexOf(',');
-              console.log(indexNo);
+
               comiString = comiString.substring(indexNo+1);
-              console.log(comiString);
+
               insuranceComi = +comiString;
               if(item.multiPiecesMasterId == 0){
                 insuranceCost = insurancePerc + insuranceComi;
@@ -1096,7 +1242,7 @@ export class ReportsComponent implements OnInit {
 
   tracking(shipment:Shipment){
     this.guideService.TrackingGuide(shipment).subscribe(response =>{
-      console.log(response);
+
     });
   }
 
@@ -1106,11 +1252,7 @@ export class ReportsComponent implements OnInit {
     checkPrinterStatus( function (text){
       if (text == "Ready to Print")
       {
-
-        var zpl="^XA^CF,0,0,0^PR12^MD30^PW800^POI^CI13^LH0,20\n^FO12,301^GB753,2,2^FS\n^FO12,567^GB777,2,2^FS\n^FO464,170^GB2,129,2^FS\n^FO32,172^AdN,0,0^FWN^FH^FDORIGIN ID:LOMA ^FS\n^FO224,172^AdN,0,0^FWN^FH^FD36755558^FS\n^FO32,190^AdN,0,0^FWN^FH^FDDANIEL LOPEZ^FS\n^FO32,208^AdN,0,0^FWN^FH^FD^FS\n^FO32,226^AdN,0,0^FWN^FH^FDANDADOR VALERIO PRIETO 591 COL MIRA^FS\n^FO32,244^AdN,0,0^FWN^FH^FD^FS\n^FO32,262^AdN,0,0^FWN^FH^FDGUADALAJARA, JA 45590^FS\n^FO32,280^AdN,0,0^FWN^FH^FDMEXICO MX^FS\n^FO478,208^AdN,0,0^FWN^FH^FDCAD: 112926237/WSXI3300^FS\n^FO28,909^A0N,24,24^FWN^FH^FDTRK#^FS\n^FO28,967^A0N,27,32^FWN^FH^FD^FS\n^FO136,879^A0N,27,36^FWN^FH^FD^FS\n^FO15,313^A0N,21,21^FWN^FH^FDTO^FS\n^FO60,311^A0N,38,38^FWN^FH^FDLUKA MODRIC^FS\n^FO60,353^A0N,38,38^FWN^FH^FD^FS\n^FO60,395^A0N,38,38^FWN^FH^FDPLAN DE SAN LUIS 3465 COL EL PALOMO^FS\n^FO60,437^A0N,38,38^FWN^FH^FD^FS\n^FO60,479^A0N,43,40^FWN^FH^FDSAN PEDRO TLAQUEPAQU JA 45580^FS\n^FO35,521^A0N,21,21^FWN^FH^FD31456879^FS\n^FO677,673^GB104,10,10^FS\n^FO677,683^GB10,112,10^FS\n^FO771,683^GB10,112,10^FS\n^FO677,795^GB104,10,10^FS\n^FO652,611^A0N,43,58^FWN^FH^FDFedEx^FS\n^FO708,650^A0N,19,26^FWN^FH^FDExpress^FS\n^FO697,691^A0N,128,137^FWN^FH^FDE^FS\n^FO21,575^BY2,2^B7N,10,5,14^FH^FWN^FH^FD[)>_1E01_1D0245580_1D484_1D20_1D7818258222440455_1DFDE_1D873385448_1D193_1D_1D1/1_1D3.00KG_1DN_1DPLAN DE SAN LUIS 3465 Col El Palomo_1DSan Pedro Tlaquepaque_1D  _1DLuka Modric_1E06_1D10ZXI001_1D12Z31456879_1D15Z112926237_1D20Z_1C_1D31Z1013486121941137761600781825822244_1D32Z02_1D39ZLOMA_1D_1E09_1DFDX_1Dz_1D8_1D(%_13_12;7_7F@_1E_04^FS\n^FO478,262^AdN,0,0^FWN^FH^FDBILL SENDER^FS\n^FO12,856^GB777,2,2^FS\n^FO494,1052^A0N,43,43^FWN^FH^FD^FS\n^FO791,282^AbN,11,7^FWB^FH^FD552J2/8532/DCA5^FS\n^FO95,913^A0N,53,40^FWN^FH^FD7818 2582 2244^FS\n^FO409,862^A0N,51,38^FWN^FH^FB390,,,R,^FD                 AM^FS\n^FO309,914^A0N,51,38^FWN^FH^FB490,,,R,^FD            ECONOMY^FS\n^FO413,966^A0N,40,40^FWN^FH^FB386,,,R,^FD                ^FS\n^FO495,1008^A0N,44,44^FWN^FH^FB298,,,R,^FD     45580^FS\n^FO574,1068^A0N,24,24^FWN^FH^FB120,,,R,^FD   -MX^FS\n^FO695,1052^A0N,43,43^FWN^FH^FB100,,,R,^FDGDL^FS\n^FO39,1094^A0N,27,32^FWN^FH^FD^FS\n^FO75,1155^BY3,2^BCN,200,N,N,N,N^FWN^FD>;1013486121941137761600781825822244^FS\n^FO28,1004^A0N,107,96^FWN^FH^FD8Z LOMA ^FS\n^FO790,675^A0N,13,18^FWB^FH^FDJ181118012601uv^FS\n^FO478,172^AdN,0,0^FWN^FH^FDSHIP DATE: 12JUL18^FS\n^FO478,190^AdN,0,0^FWN^FH^FDACTWGT: 3.00 KG^FS\n^FO478,226^AdN,0,0^FWN^FH^FDDIMS: 30x30x30 CM^FS\n^FO708,482^A0N,35,45^FWN^FH^FD(MX)^FS\n^FO328,526^AbN,11,7^FWN^FH^FDREF: ^FS\n^FO38,540^AbN,11,7^FWN^FH^FDINV: ^FS\n^FO38,554^AbN,11,7^FWN^FH^FDPO: ^FS\n^FO428,554^AbN,11,7^FWN^FH^FDDEPT: ^FS\n^FO25,930^GB58,1,1^FS\n^FO25,930^GB1,26,1^FS\n^FO83,930^GB1,26,1^FS\n^FO25,956^GB58,1,1^FS\n^FO31,936^AdN,0,0^FWN^FH^FD0455^FS\n^PQ1\n^XZ\n"
-
         //selected_printer.send(zpl, printComplete, printerError);
-        console.log(print);
         selected_printer.send(print, printComplete, printerError);
 
       }
@@ -1119,5 +1261,9 @@ export class ReportsComponent implements OnInit {
         printerError(text);
       }
     });
+    if(errorGuide == 1){
+      this.errorGuideModal = errorGuide;
+      this.openModal();
+    }
   };
 }

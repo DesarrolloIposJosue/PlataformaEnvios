@@ -1,4 +1,25 @@
 <div class="row main col s12 m12 l12">
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal top-sheet" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
+    <div *ngIf="!this.errorGuideModal == 1" class="modal-content">
+      <h4>Error de impresión</h4>
+      <p>Es necesario instalar un software adicional para imprimir la guía https://www.zebra.com/us/en/forms/browser-print-request-pc.html</p>
+      <p>Puede encontrar su guía generada en el módulo "Guías"</p>
+    </div>
+    <div *ngIf="!this.errorGuideModal == 1" class="modal-footer">
+      <a class="waves-effect waves-red btn-flat" (click)="closeModal()">Cerrar</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat" (click)="closeModal()">Aceptar</a>
+    </div>
+    <div *ngIf="this.errorGuideModal == 1" class="modal-content">
+      <h4>Error de impresión</h4>
+      <p>Puede que haya un problema con la impresora, revise que esta encendida y conectada, o que todo este correcto</p>
+    </div>
+    <div *ngIf="this.errorGuideModal == 1" class="modal-footer">
+      <a class="waves-effect waves-red btn-flat" (click)="closeModal()">Cerrar</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat" (click)="closeModal()">Aceptar</a>
+    </div>
+  </div>
+
   <div class="col s12 m9 l9">
     <form name="form" (ngSubmit)="createGuide(forma)" #forma="ngForm" novalidate class="col s12 offset-m1 offset-l1 m10 l10 blue lighten-5">
       <h3 class="s12 m12 l12 center-align">Creando guía</h3>
@@ -199,7 +220,7 @@
           </div>
 
           <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': numberAddress.errors?.required && numberAddress.touched}">
-            <input disabled id="numberAddress" name="numberAddress"  placeholder="{{this.rateService.selectedUser.numberHouse}}" value="{{this.rateService.selectedUser.numberHouse}}" [ngModel]="this.rateService.selectedUser.numberHouse" #numberAddress="ngModel" type="text" class="validate" minlength="3" required>
+            <input disabled id="numberAddress" name="numberAddress"  placeholder="{{this.rateService.selectedUser.numberHouse}}" value="{{this.rateService.selectedUser.numberHouse}}" [ngModel]="this.rateService.selectedUser.numberHouse" #numberAddress="ngModel" type="text" class="validate" minlength="1" required>
             <label class="active" for="numberAddress">Numero dirección*</label>
             <!--<p class="red-text text-darken-4" *ngIf="numberAddress.errors?.required&&numberAddress.touched">
               *Este campo es requerido.
@@ -227,12 +248,12 @@
 
           <div *ngIf="parcelId != 3" class="input-field col s12 m6 l6">
             <input disabled id="destinyPhoneNumber" name="destinyPhoneNumber"  placeholder="{{this.rateService.selectedUser.phoneNumber}}" value="{{this.rateService.selectedUser.phoneNumber}}" [ngModel]="this.rateService.selectedUser.phoneNumber" #destinyPhoneNumber="ngModel" type="text" class="validate" >
-            <label class="active" for="destinyPhoneNumber">Número de teléfono destinatario</label>
+            <label class="active" for="destinyPhoneNumber">Teléfono destinatario</label>
           </div>
 
           <div *ngIf="parcelId == 3" class="input-field col s12 m6 l6" [ngClass]="{'has-danger': destinyPhoneNumber.errors?.required && destinyPhoneNumber.touched}">
             <input disabled id="destinyPhoneNumber" name="destinyPhoneNumber" placeholder="{{this.rateService.selectedUser.phoneNumber}}" value="{{this.rateService.selectedUser.phoneNumber}}" [ngModel]="this.rateService.selectedUser.phoneNumber" #destinyPhoneNumber="ngModel" type="text" class="validate" minlength="3" required>
-            <label class="active" for="destinyPhoneNumber">Número de teléfono destinatario*</label>
+            <label class="active" for="destinyPhoneNumber">Teléfono destinatario*</label>
             <!--<p class="red-text text-darken-4" *ngIf="destinyPhoneNumber.errors?.required&&destinyPhoneNumber.touched">
               *Este campo es requerido.
             </p>
@@ -243,7 +264,7 @@
 
           <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': destinyUserName.errors?.required && destinyUserName.touched}">
             <input disabled id="destinyUserName" name="destinyUserName" placeholder="{{this.selectedName}}" value="{{this.selectedName}}" [ngModel]="this.selectedName" #destinyUserName="ngModel" type="text" class="validate" required>
-            <label class="active" for="destinyUserName">Nombre del cliente destinatario*</label>
+            <label class="active" for="destinyUserName">Nombre destinatario*</label>
             <!--<p class="red-text text-darken-4" *ngIf="destinyUserName.errors?.required&&destinyUserName.touched">
               *Este campo es requerido.
             </p>
@@ -366,7 +387,7 @@
           </div>
 
           <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': numberAddress.errors?.required && numberAddress.touched}">
-            <input id="numberAddress" name="numberAddress" ngModel #numberAddress="ngModel" type="text" class="validate" minlength="3" required>
+            <input id="numberAddress" name="numberAddress" ngModel #numberAddress="ngModel" type="text" class="validate" minlength="1" required>
             <label for="numberAddress">Numero dirección*</label>
             <p class="red-text text-darken-4" *ngIf="numberAddress.errors?.required&&numberAddress.touched">
               *Este campo es requerido.
@@ -394,12 +415,12 @@
 
           <div *ngIf="parcelId != 3" class="input-field col s12 m6 l6">
             <input id="destinyPhoneNumber" name="destinyPhoneNumber" ngModel #destinyPhoneNumber="ngModel" type="text" class="validate" >
-            <label for="destinyPhoneNumber">Número de teléfono destinatario</label>
+            <label class="active" for="destinyPhoneNumber">Teléfono destinatario</label>
           </div>
 
           <div *ngIf="parcelId == 3" class="input-field col s12 m6 l6" [ngClass]="{'has-danger': destinyPhoneNumber.errors?.required && destinyPhoneNumber.touched}">
             <input id="destinyPhoneNumber" name="destinyPhoneNumber" ngModel #destinyPhoneNumber="ngModel" type="text" class="validate" minlength="3" required>
-            <label for="destinyPhoneNumber">Número de teléfono destinatario*</label>
+            <label class="active" for="destinyPhoneNumber">Teléfono destinatario*</label>
             <p class="red-text text-darken-4" *ngIf="destinyPhoneNumber.errors?.required&&destinyPhoneNumber.touched">
               *Este campo es requerido.
             </p>
@@ -410,7 +431,7 @@
 
           <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': destinyUserName.errors?.required && destinyUserName.touched}">
             <input id="destinyUserName" name="destinyUserName" ngModel #destinyUserName="ngModel" type="text" class="validate" required>
-            <label for="destinyUserName">Nombre del cliente destinatario*</label>
+            <label for="destinyUserName">Nombre destinatario*</label>
             <p class="red-text text-darken-4" *ngIf="destinyUserName.errors?.required&&destinyUserName.touched">
               *Este campo es requerido.
             </p>

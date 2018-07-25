@@ -9,8 +9,8 @@ import '../../rxjs/index';
 
 @Injectable()
 export class CreateGuideService {
-  //private apiBase = 'http://162.248.52.104/WSGombar/Gombar.svc/';
-  private apiBase = 'http://localhost:55679/Gombar.svc/';
+  private apiBase = 'http://162.248.52.104/WSGombar/Gombar.svc/';
+  //private apiBase = 'http://localhost:55679/Gombar.svc/';
   public multipiecesData:Multipieces[] = [];
 
   public dataAuxGuide:DataAuxGuide;
@@ -27,7 +27,7 @@ export class CreateGuideService {
   public totalAmount:number;
   public amountDetail:string;
   public printType:string;
-
+  public printTypePaquete:string;
   public thirdAccount:string;
   constructor(private http: Http) {
 
@@ -86,13 +86,13 @@ export class CreateGuideService {
     const Ship:Shipment = shipment;
     let numClient:string = date.getFullYear().toString() + date.getMonth().toString() + date.getDay().toString() + date.getMinutes().toString() + date.getSeconds().toString();
     // Body or Search
-
     let myParams: URLSearchParams = new URLSearchParams();
     myHeaders.set('ContentPackage', contentPackage);
     myHeaders.set('NumberClient', numClient);
     myHeaders.set('DlvyType', dlvyType);
     myHeaders.set('ShpCode', shpCode);
     myHeaders.set('NumberHouse', numberHouse);
+    myHeaders.set('PrintType', this.printType);
     let options = new RequestOptions({ headers: myHeaders, search: myParams });
 
     return this.http.post(operation, JSON.stringify(Ship), options).map((res:Response) => res.json());
@@ -103,6 +103,7 @@ export class CreateGuideService {
     // Headers
     let myHeaders = new Headers();
     // Body or Search
+    myHeaders.set('PrintType', this.printType);
     myHeaders.set('ThirdAccount', this.thirdAccount);
 
     let myParams: URLSearchParams = new URLSearchParams();

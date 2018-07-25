@@ -541,6 +541,17 @@
           </p>
         </div>
 
+        <div *ngIf="guidesPaqueteExpress" class="row radio-buttons" [ngClass]="{'has-danger': printTypePaquete.errors?.required && printTypePaquete.touched}">
+          <p class="col offset-s1 s5 offset-m1 m5 offset-l1 l5 ">
+            <input class="with-gap" value="P" ngModel #printTypePaquete="ngModel" name="printTypePaquete" type="radio" id="pdfPaquete" required/>
+            <label for="pdfPaquete">PDF</label>
+          </p>
+          <p class="col s6 m6 16">
+            <input class="with-gap" value="Z" ngModel #printTypePaquete="ngModel" name="printTypePaquete" type="radio" id="zebraPaquete" required/>
+            <label for="zebraPaquete">Etiqueta</label>
+          </p>
+        </div>
+
         <div *ngIf="paqueteExpressForm && this.productsPaqueteExpress.length > 0">
           <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngFor="let product of this.productsPaqueteExpress, let i = index">
 
@@ -1189,6 +1200,17 @@
             *Este campo es requerido.
           </p>
         </div>
+
+        <div *ngIf="this.userParcelPaqueteExpress && paqueteExpressForm" class="row radio-buttons" [ngClass]="{'has-danger': printTypePaquete.errors?.required && printTypePaquete.touched}">
+        <p class="col offset-s1 s5 offset-m1 m5 offset-l1 l5 ">
+          <input class="with-gap" value="P" [ngModel]="this.userParcelPaqueteExpress.printType" #printTypePaquete="ngModel" name="printTypePaquete" type="radio" id="pdfPaquete" required/>
+          <label for="pdfPaquete">PDF</label>
+        </p>
+        <p class="col s6 m6 16">
+          <input class="with-gap" value="Z" [ngModel]="this.userParcelPaqueteExpress.printType" #printTypePaquete="ngModel" name="printTypePaquete" type="radio" id="zebraPaquete" required/>
+          <label for="zebraPaquete">Etiqueta</label>
+        </p>
+      </div>
 
         <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="paqueteExpressForm">
           <p>

@@ -131,6 +131,9 @@ export class QuotationComponent implements OnInit {
             }else{
               this.noInsurance = true
             }
+            if(productArray[i].parcelId == 5){
+              this.createGuideService.printTypePaquete = productArray[i].printType;
+            }
           }
 
           if(this.printType != "Z"){
@@ -325,6 +328,16 @@ export class QuotationComponent implements OnInit {
                         rateArray[i].amount, rateArray[i].parcelName, rateArray[i].deliveryDateSpecified,
                         rateArray[i].deliveryDate, rateArray[i].amountDetails));
             }
+
+            var obj = {};
+
+            for ( var i=0, len=this.dataProducts.length; i < len; i++ )
+                obj[this.dataProducts[i]['name']] = this.dataProducts[i];
+
+            this.dataProducts = new Array();
+            for ( var key in obj )
+                this.dataProducts.push(obj[key]);
+
             this.rateService.dataProducts = this.dataProducts;
             this.petitionError = false;
             this.createGuideService.city = forma.controls["origin_city"].value;
@@ -406,6 +419,16 @@ export class QuotationComponent implements OnInit {
                         rateArray[i].amount, rateArray[i].parcelName, rateArray[i].deliveryDateSpecified,
                          rateArray[i].deliveryDate, rateArray[i].amountDetails));
             }
+
+            var obj = {};
+
+            for ( var i=0, len=this.dataProducts.length; i < len; i++ )
+                obj[this.dataProducts[i]['name']] = this.dataProducts[i];
+
+            this.dataProducts = new Array();
+            for ( var key in obj )
+                this.dataProducts.push(obj[key]);
+
             this.rateService.dataProducts = this.dataProducts;
             this.petitionError = false;
 

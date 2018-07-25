@@ -668,7 +668,7 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.reference = forma.controls["referencePaqueteExpress"].value;
         parcInfoInd.economic = "Y";
         parcInfoInd.nextDay = "Y";
-        parcInfoInd.printType = "P";
+        parcInfoInd.printType = forma.controls["printTypePaquete"].value;
         parcInfoInd.thirdAccount = "";
         if(this.guidesPaqueteExpress){
           parcInfoInd.limitGuides = 'Y';
@@ -1170,7 +1170,16 @@ export class AddParcelToClientComponent implements OnInit {
                     this.userParcelPaqueteExpress.commissionDeclared = productArray[i].commissionDeclared;
                     this.userParcelPaqueteExpress.extendedArea = productArray[i].extendedArea;
                     this.userParcelPaqueteExpress.limitGuides = productArray[i].limitGuides;
-                    this.userParcelPaqueteExpress.printType = "P";
+                    this.userParcelPaqueteExpress.printType =  productArray[i].printType;
+                    if(this.userParcelPaqueteExpress.printType =="P"){
+                      setTimeout( () =>{
+                        var element = <HTMLInputElement>document.getElementById("pdfPaquete");
+                        element.checked = true; }, 500);
+                    }else if(this.userParcelFedEx.printType =="Z"){
+                        setTimeout( () =>{
+                        var element = <HTMLInputElement>document.getElementById("zebraPaquete");
+                        element.checked = true; }, 500);
+                    }
                     if(productArray[i].limitedGuidesNumber > 0){
                       this.userParcelPaqueteExpress.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
                     }else{

@@ -79,6 +79,7 @@ export class RateComponent implements OnInit {
             }
           }
           if(this.quantityOfPerm > 1 && this.rateService.dataProducts.length > 1){
+            console.log(this.rateService.dataProducts.length);
             for(let item of this.rateService.dataProducts){
               if(item.description.indexOf('Economico') >= 0 && (item.parcelId == 3 || item.parcelId == 2 )){
                 if(3 == item.parcelId && economicFedEx && fedex){
@@ -106,6 +107,7 @@ export class RateComponent implements OnInit {
               }
               index++;
             }
+            console.log(this.validRates);
           }else{
             for(let item of this.rateService.dataProducts){
               this.selectProduct(item.id, item.parcelId, item.amount, item.amountDetails, item.description)
