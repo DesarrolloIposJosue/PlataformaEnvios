@@ -14,4 +14,5 @@ export class User_Parcel{
   public nextDay: string;
   public thirdAccount: string;
   public printType:string;
+  public limitWeight:number;
 }

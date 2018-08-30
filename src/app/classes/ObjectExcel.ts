@@ -1,5 +1,6 @@
 export class ObjectExcel{
   public Folio_guia_creada: number;
+  public Rastreo: string;
   public Paqueteria: string;
   public Nombre_Producto:string;
   public Precio_total: number;
@@ -7,6 +8,7 @@ export class ObjectExcel{
   public Costo_seguro: number;
   public Monto_kilo_extra: number;
   public Detalles_de_la_cotizacion: string;
+  public Costo_area_extendida: number;
 
   public Nombre_cliente_origen:string;
   public Compania_origen: string;
@@ -37,10 +39,14 @@ export class ObjectExcel{
   public Largo: number;
   public Ancho: number;
   public Alto: number;
+  public Peso_volumetrico: number;
 
   public Fecha_creacion: string;
+  public Status_guia: string;
 
   public Multipieza: string; //contiene si o no
+  public Referencia:string;
+  public Usuario:string;
 
   constructor(_folioGuia:number, _paqueteria:string, _nombreProducto:string, _precioTotal:number, _detallesCotizacion:string,
     _nombreClienteOrigen:string, _companiaOrigen:string, _paisOrigen:string, _estadoOrigen:string, _ciudadOrigen:string, _cpOrigen:number,
@@ -48,14 +54,18 @@ export class ObjectExcel{
     _nombreClienteDestino:string, _companiaDestino:string, _paisDestino:string, _estadoDestino:string, _ciudadDestino:string, _cpDestino:number,
     _coloniaDestino:string, _direccionDestino:string, _entreCallesDestino:string, _numTelefonicoDestino:string,
     _numRastreo:string, _estatus:string, _peso:number, _largo:number, _ancho:number, _alto:number, _montoSeguro:number,
-    _fecha:string, _multipieza:string, _monto_kilo_extra:number, _costoSeguro:number){
+    _fecha:string, _multipieza:string, _monto_kilo_extra:number, _costoSeguro:number, _rastreo:string, _referencia:string,
+    _usuario:string, _pesoVolumetrico:number, _statusGuia:string, _costoAreaExtendida:number){
 
       this.Folio_guia_creada = _folioGuia;
+      this.Status_guia = _statusGuia;
+      this.Rastreo = _rastreo;
       this.Paqueteria = _paqueteria,
       this.Nombre_Producto = _nombreProducto;
       this.Precio_total = _precioTotal;
       this.Monto_asegurado = _montoSeguro;
       this.Costo_seguro = _costoSeguro;
+      this.Costo_area_extendida = _costoAreaExtendida;
       this.Monto_kilo_extra = _monto_kilo_extra;
       this.Detalles_de_la_cotizacion = _detallesCotizacion;
 
@@ -85,10 +95,13 @@ export class ObjectExcel{
       this.Largo = _largo;
       this.Ancho = _ancho;
       this.Alto = _alto;
+      this.Peso_volumetrico = _pesoVolumetrico;
 
       this.Fecha_creacion = _fecha;
 
       this.Multipieza = _multipieza;
+      this.Referencia = _referencia
+      this.Usuario = _usuario;
 
   }
 }

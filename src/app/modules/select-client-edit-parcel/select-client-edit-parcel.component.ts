@@ -47,7 +47,7 @@ export class SelectClientEditParcelComponent implements OnInit {
             this.response = successResponse;
             this.dataUser = [];
             for (var i = 0; i < userArray.length; i++) {
-              //console.log(countryArray[i].name);
+            
               this.dataUser[userArray[i].name + " " + userArray[i].lastName] = null; //countryArray[i].flag or null
             }
             this.petitionError = false;
@@ -58,6 +58,7 @@ export class SelectClientEditParcelComponent implements OnInit {
 
           }
       },
+
       (errorResponse) => {
         this.loading = false;
         this.petitionError = true;

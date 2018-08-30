@@ -204,12 +204,14 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.reference = forma.controls["referenceRedPack"].value;
         parcInfoInd.economic = this.economicRedPack;
         parcInfoInd.nextDay = this.nextDayRedPack;
-        parcInfoInd.printType = "P";
+        parcInfoInd.printType = forma.controls["printTypeRed"].value;
         if(this.guidesRedPack){
           parcInfoInd.limitGuides = 'Y';
+          parcInfoInd.limitWeight = forma.controls["maxWeighRed"].value;
           parcInfoInd.limitedGuidesNumber = forma.controls["qtyGuidesRedPack"].value;
         }else{
           parcInfoInd.limitGuides = 'N';
+          parcInfoInd.limitWeight = -1;
           parcInfoInd.limitedGuidesNumber = 0;
         }
         parcInfoInd.multiPieces = this.multiPackRedPack;
@@ -221,7 +223,7 @@ export class AddParcelToClientComponent implements OnInit {
             let counter:number = 0;
             for(var j=0; j<this.productUserPriceRedPack.length; j++){
               var elementAux = <HTMLInputElement>document.getElementById(this.productUserPriceRedPack[j].productId.toString());
-              if(Number(elementAux.value) > 0){
+              if(elementAux){
                 prodUserInfo.push(new User_Product(0, this.productUserPriceRedPack[j].productId, Number(elementAux.value)));
                 counter++;
               }else{
@@ -237,7 +239,7 @@ export class AddParcelToClientComponent implements OnInit {
             for(var j=0; j<this.productsRedPack.length; j++)
             {
               var elementAux = <HTMLInputElement>document.getElementById(this.productsRedPack[j].id.toString());
-              if(Number(elementAux.value) > 0){
+              if(elementAux){
                 prodUserInfo.push(new User_Product(0, this.productsRedPack[j].id, Number(elementAux.value)));
                 counter++;
               }else{
@@ -255,7 +257,7 @@ export class AddParcelToClientComponent implements OnInit {
           for(var j=0; j<this.productsRedPack.length; j++)
           {
             var elementAux = <HTMLInputElement>document.getElementById(this.productsRedPack[j].id.toString());
-            if(Number(elementAux.value) > 0){
+            if(elementAux){
               prodUserInfo.push(new User_Product(0, this.productsRedPack[j].id, Number(elementAux.value)));
               counter++;
             }else{
@@ -290,6 +292,7 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.economic = "n";
         parcInfoInd.nextDay = "n";
         parcInfoInd.printType = "n";
+        parcInfoInd.limitWeight = -1;
 
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPriceRedPack.length; j++)
@@ -314,6 +317,7 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.percentageDeclared = forma.controls["porcValDeclFedEx"].value;
         parcInfoInd.reference = forma.controls["referenceFedEx"].value;
         parcInfoInd.printType = forma.controls["printType"].value;
+
         var element = <HTMLInputElement>document.getElementById("nextDayFedEx");
         if(element.checked == true){
           this.nextDayFedEx = "Y";
@@ -330,9 +334,11 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.nextDay = this.nextDayFedEx;
         parcInfoInd.thirdAccount = forma.controls["thirdAccountFedEx"].value;
         if(this.guidesFedEx){
+          parcInfoInd.limitWeight = forma.controls["maxWeighFedEx"].value;
           parcInfoInd.limitGuides = 'Y';
           parcInfoInd.limitedGuidesNumber = forma.controls["qtyGuidesFedEx"].value;
         }else{
+          parcInfoInd.limitWeight = -1;
           parcInfoInd.limitGuides = 'N';
           parcInfoInd.limitedGuidesNumber = 0;
         }
@@ -344,7 +350,7 @@ export class AddParcelToClientComponent implements OnInit {
             let counter:number = 0;
             for(var j=0; j<this.productUserPriceFedEx.length; j++){
               var elementAux = <HTMLInputElement>document.getElementById(this.productUserPriceFedEx[j].productId.toString());
-              if(Number(elementAux.value) > 0){
+              if(elementAux){
                 prodUserInfo.push(new User_Product(0, this.productUserPriceFedEx[j].productId, Number(elementAux.value)));
                 counter++;
               }else{
@@ -360,7 +366,7 @@ export class AddParcelToClientComponent implements OnInit {
             for(var j=0; j<this.productsFedEx.length; j++)
             {
               var elementAux = <HTMLInputElement>document.getElementById(this.productsFedEx[j].id.toString());
-              if(Number(elementAux.value) > 0){
+              if(elementAux){
                 prodUserInfo.push(new User_Product(0, this.productsFedEx[j].id, Number(elementAux.value)));
                 counter++;
               }else{
@@ -378,7 +384,7 @@ export class AddParcelToClientComponent implements OnInit {
           for(var j=0; j<this.productsFedEx.length; j++)
           {
             var elementAux = <HTMLInputElement>document.getElementById(this.productsFedEx[j].id.toString());
-            if(Number(elementAux.value) > 0){
+            if(elementAux){
               prodUserInfo.push(new User_Product(0, this.productsFedEx[j].id, Number(elementAux.value)));
               counter++;
             }else{
@@ -412,6 +418,7 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.economic = "n";
         parcInfoInd.nextDay = "n";
         parcInfoInd.printType = "n";
+        parcInfoInd.limitWeight = -1;
 
         /*var element = <HTMLInputElement>document.getElementById("nextDayFedEx");
         if(element.checked == true){
@@ -451,10 +458,13 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.nextDay = "Y";
         parcInfoInd.thirdAccount = "";
         parcInfoInd.printType = "P";
+
         if(this.guidesDHL){
+          parcInfoInd.limitWeight = forma.controls["maxWeighDhl"].value;
           parcInfoInd.limitGuides = 'Y';
           parcInfoInd.limitedGuidesNumber = forma.controls["qtyGuidesDHL"].value;
         }else{
+          parcInfoInd.limitWeight = -1;
           parcInfoInd.limitGuides = 'N';
           parcInfoInd.limitedGuidesNumber = 0;
         }
@@ -466,7 +476,7 @@ export class AddParcelToClientComponent implements OnInit {
             let counter:number = 0;
             for(var j=0; j<this.productUserPriceDHL.length; j++){
               var elementAux = <HTMLInputElement>document.getElementById(this.productUserPriceDHL[j].productId.toString());
-              if(Number(elementAux.value) > 0){
+              if(elementAux){
                 prodUserInfo.push(new User_Product(0, this.productUserPriceDHL[j].productId, Number(elementAux.value)));
                 counter++;
               }else{
@@ -482,7 +492,7 @@ export class AddParcelToClientComponent implements OnInit {
             for(var j=0; j<this.productsDHL.length; j++)
             {
               var elementAux = <HTMLInputElement>document.getElementById(this.productsDHL[j].id.toString());
-              if(Number(elementAux.value) > 0){
+              if(elementAux){
                 prodUserInfo.push(new User_Product(0, this.productsDHL[j].id, Number(elementAux.value)));
                 counter++;
               }else{
@@ -500,7 +510,7 @@ export class AddParcelToClientComponent implements OnInit {
           for(var j=0; j<this.productsDHL.length; j++)
           {
             var elementAux = <HTMLInputElement>document.getElementById(this.productsDHL[j].id.toString());
-            if(Number(elementAux.value) > 0){
+            if(elementAux){
               prodUserInfo.push(new User_Product(0, this.productsDHL[j].id, Number(elementAux.value)));
               counter++;
             }else{
@@ -535,6 +545,7 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.economic = "n";
         parcInfoInd.nextDay = "n";
         parcInfoInd.printType = "n";
+        parcInfoInd.limitWeight = -1;
 
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPriceDHL.length; j++)
@@ -560,10 +571,13 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.economic = "Y";
         parcInfoInd.nextDay = "Y";
         parcInfoInd.thirdAccount = "";
+
         if(this.guidesEstafeta){
+          parcInfoInd.limitWeight = forma.controls["maxWeighEstafeta"].value;
           parcInfoInd.limitGuides = 'Y';
           parcInfoInd.limitedGuidesNumber = forma.controls["qtyGuidesEstafeta"].value;
         }else{
+          parcInfoInd.limitWeight = -1;
           parcInfoInd.limitGuides = 'N';
           parcInfoInd.limitedGuidesNumber = 0;
         }
@@ -575,7 +589,7 @@ export class AddParcelToClientComponent implements OnInit {
             let counter:number = 0;
             for(var j=0; j<this.productUserPriceEstafeta.length; j++){
               var elementAux = <HTMLInputElement>document.getElementById(this.productUserPriceEstafeta[j].productId.toString());
-              if(Number(elementAux.value) > 0){
+              if(elementAux){
                 prodUserInfo.push(new User_Product(0, this.productUserPriceEstafeta[j].productId, Number(elementAux.value)));
                 counter++;
               }else{
@@ -591,7 +605,7 @@ export class AddParcelToClientComponent implements OnInit {
             for(var j=0; j<this.productsEstafeta.length; j++)
             {
               var elementAux = <HTMLInputElement>document.getElementById(this.productsEstafeta[j].id.toString());
-              if(Number(elementAux.value) > 0){
+              if(elementAux){
                 prodUserInfo.push(new User_Product(0, this.productsEstafeta[j].id, Number(elementAux.value)));
                 counter++;
               }else{
@@ -609,7 +623,7 @@ export class AddParcelToClientComponent implements OnInit {
           for(var j=0; j<this.productsEstafeta.length; j++)
           {
             var elementAux = <HTMLInputElement>document.getElementById(this.productsEstafeta[j].id.toString());
-            if(Number(elementAux.value) > 0){
+            if(elementAux){
               prodUserInfo.push(new User_Product(0, this.productsEstafeta[j].id, Number(elementAux.value)));
               counter++;
             }else{
@@ -643,6 +657,7 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.economic = "n";
         parcInfoInd.nextDay = "n";
         parcInfoInd.printType = "n";
+        parcInfoInd.limitWeight = -1;
 
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPriceEstafeta.length; j++)
@@ -669,11 +684,14 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.economic = "Y";
         parcInfoInd.nextDay = "Y";
         parcInfoInd.printType = forma.controls["printTypePaquete"].value;
+
         parcInfoInd.thirdAccount = "";
         if(this.guidesPaqueteExpress){
+          parcInfoInd.limitWeight = forma.controls["maxWeighPaquete"].value;
           parcInfoInd.limitGuides = 'Y';
           parcInfoInd.limitedGuidesNumber = forma.controls["qtyGuidesPaqueteExpress"].value;
         }else{
+          parcInfoInd.limitWeight = -1;
           parcInfoInd.limitGuides = 'N';
           parcInfoInd.limitedGuidesNumber = 0;
         }
@@ -685,7 +703,7 @@ export class AddParcelToClientComponent implements OnInit {
             let counter:number = 0;
             for(var j=0; j<this.productUserPricePaqueteExpress.length; j++){
               var elementAux = <HTMLInputElement>document.getElementById(this.productUserPricePaqueteExpress[j].productId.toString());
-              if(Number(elementAux.value) > 0){
+              if(elementAux){
                 prodUserInfo.push(new User_Product(0, this.productUserPricePaqueteExpress[j].productId, Number(elementAux.value)));
                 counter++;
               }else{
@@ -701,7 +719,7 @@ export class AddParcelToClientComponent implements OnInit {
             for(var j=0; j<this.productsPaqueteExpress.length; j++)
             {
               var elementAux = <HTMLInputElement>document.getElementById(this.productsPaqueteExpress[j].id.toString());
-              if(Number(elementAux.value) > 0){
+              if(elementAux){
                 prodUserInfo.push(new User_Product(0, this.productsPaqueteExpress[j].id, Number(elementAux.value)));
                 counter++;
               }else{
@@ -719,7 +737,7 @@ export class AddParcelToClientComponent implements OnInit {
           for(var j=0; j<this.productsPaqueteExpress.length; j++)
           {
             var elementAux = <HTMLInputElement>document.getElementById(this.productsPaqueteExpress[j].id.toString());
-            if(Number(elementAux.value) > 0){
+            if(elementAux){
               prodUserInfo.push(new User_Product(0, this.productsPaqueteExpress[j].id, Number(elementAux.value)));
               counter++;
             }else{
@@ -754,6 +772,7 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.economic = "n";
         parcInfoInd.nextDay = "n";
         parcInfoInd.printType = "n";
+        parcInfoInd.limitWeight = -1;
 
         parcInfo.push(parcInfoInd);
         for(var j=0; j<this.productUserPricePaqueteExpress.length; j++)
@@ -779,6 +798,7 @@ export class AddParcelToClientComponent implements OnInit {
         parcInfoInd.economic = "n";
         parcInfoInd.nextDay = "n";
         parcInfoInd.printType = "n";
+        parcInfoInd.limitWeight = 0;
 
         parcInfo.push(parcInfoInd);
       }
@@ -885,6 +905,7 @@ export class AddParcelToClientComponent implements OnInit {
                     this.userParcelRedPack.limitGuides = "";
                     this.userParcelRedPack.multiPieces = "";
                     this.userParcelRedPack.printType= "";
+                    this.userParcelRedPack.limitWeight = 0;
                     if(this.userParcelRedPack.multiPieces == "Y"){
                       var element = <HTMLInputElement>document.getElementById("multipackRedPack");
                       element = <HTMLInputElement>document.getElementById("multipackRedPack");
@@ -927,7 +948,19 @@ export class AddParcelToClientComponent implements OnInit {
                     this.userParcelRedPack.extendedArea = productArray[i].extendedArea;
                     this.userParcelRedPack.limitGuides = productArray[i].limitGuides;
                     this.userParcelRedPack.multiPieces = productArray[i].multiPieces;
-                    this.userParcelRedPack.printType= "P";
+
+                    this.userParcelRedPack.limitWeight = productArray[i].limitWeight;
+
+                    this.userParcelRedPack.printType = productArray[i].printType;
+                    if(this.userParcelRedPack.printType =="P"){
+                      setTimeout( () =>{
+                        var element = <HTMLInputElement>document.getElementById("pdfRed");
+                        element.checked = true; }, 500);
+                    }else if(this.userParcelRedPack.printType =="Z"){
+                        setTimeout( () =>{
+                        var element = <HTMLInputElement>document.getElementById("zebraRed");
+                        element.checked = true; }, 500);
+                    }
                     if(this.userParcelRedPack.multiPieces == "Y"){
                       var element = <HTMLInputElement>document.getElementById("multipackRedPack");
                       element = <HTMLInputElement>document.getElementById("multipackRedPack");
@@ -1002,6 +1035,7 @@ export class AddParcelToClientComponent implements OnInit {
                                         productArray[i].kg, productArray[i].factor)
                               );
                             }
+
                             for(let i=0; i<productsUser.length; i++){
                               for(let j=0; j<this.productsRedPack.length; j++){
                                 if(productsUser[i].productId == this.productsRedPack[j].id){
@@ -1157,6 +1191,7 @@ export class AddParcelToClientComponent implements OnInit {
                     this.userParcelPaqueteExpress.extendedArea = 0;
                     this.userParcelPaqueteExpress.limitGuides = "";
                     this.userParcelPaqueteExpress.printType = "";
+                    this.userParcelPaqueteExpress.limitWeight = 0;
                     if(productArray[i].limitedGuidesNumber > 0){
                       this.userParcelPaqueteExpress.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
                     }else{
@@ -1171,6 +1206,7 @@ export class AddParcelToClientComponent implements OnInit {
                     this.userParcelPaqueteExpress.extendedArea = productArray[i].extendedArea;
                     this.userParcelPaqueteExpress.limitGuides = productArray[i].limitGuides;
                     this.userParcelPaqueteExpress.printType =  productArray[i].printType;
+                    this.userParcelPaqueteExpress.limitWeight = productArray[i].limitWeight;
                     if(this.userParcelPaqueteExpress.printType =="P"){
                       setTimeout( () =>{
                         var element = <HTMLInputElement>document.getElementById("pdfPaquete");
@@ -1361,6 +1397,7 @@ export class AddParcelToClientComponent implements OnInit {
                     this.userParcelFedEx.nextDay = "";
                     this.userParcelFedEx.thirdAccount = "";
                     this.userParcelFedEx.printType = "";
+                    this.userParcelFedEx.limitWeight = 0;
                     if(this.userParcelFedEx.printType =="P"){
                       setTimeout( () =>{
                         var element = <HTMLInputElement>document.getElementById("pdf");
@@ -1409,6 +1446,7 @@ export class AddParcelToClientComponent implements OnInit {
                     this.userParcelFedEx.nextDay = productArray[i].nextDay;
                     this.userParcelFedEx.thirdAccount = productArray[i].thirdAccount;
                     this.userParcelFedEx.printType = productArray[i].printType;
+                    this.userParcelFedEx.limitWeight = productArray[i].limitWeight;
                     if(this.userParcelFedEx.printType =="P"){
                       setTimeout( () =>{
                         var element = <HTMLInputElement>document.getElementById("pdf");
@@ -1647,6 +1685,7 @@ export class AddParcelToClientComponent implements OnInit {
                     this.userParcelDHL.extendedArea = 0;
                     this.userParcelDHL.limitGuides = "";
                     this.userParcelDHL.printType = "";
+                    this.userParcelDHL.limitWeight = 0;
                     if(productArray[i].limitedGuidesNumber > 0){
                       this.userParcelDHL.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
                     }else{
@@ -1660,6 +1699,7 @@ export class AddParcelToClientComponent implements OnInit {
                     this.userParcelDHL.commissionDeclared = productArray[i].commissionDeclared;
                     this.userParcelDHL.extendedArea = productArray[i].extendedArea;
                     this.userParcelDHL.limitGuides = productArray[i].limitGuides;
+                    this.userParcelDHL.limitWeight = productArray[i].limitWeight;
                     this.userParcelDHL.printType = "P";
                     if(productArray[i].limitedGuidesNumber > 0){
                       this.userParcelDHL.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
@@ -1824,6 +1864,7 @@ export class AddParcelToClientComponent implements OnInit {
                     this.userParcelEstafeta.extendedArea = 0;
                     this.userParcelEstafeta.limitGuides = "";
                     this.userParcelEstafeta.printType = "";
+                    this.userParcelEstafeta.limitWeight = 0;
                     if(productArray[i].limitedGuidesNumber > 0){
                       this.userParcelEstafeta.limitedGuidesNumber = productArray[i].limitedGuidesNumber;
                     }else{
@@ -1837,6 +1878,7 @@ export class AddParcelToClientComponent implements OnInit {
                     this.userParcelEstafeta.commissionDeclared = productArray[i].commissionDeclared;
                     this.userParcelEstafeta.extendedArea = productArray[i].extendedArea;
                     this.userParcelEstafeta.limitGuides = productArray[i].limitGuides;
+                    this.userParcelEstafeta.limitWeight = productArray[i].limitWeight;
                     this.userParcelEstafeta.printType = "P";
                     if(productArray[i].limitedGuidesNumber > 0){
                       this.userParcelEstafeta.limitedGuidesNumber = productArray[i].limitedGuidesNumber;

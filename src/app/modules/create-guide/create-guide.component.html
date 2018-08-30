@@ -12,9 +12,17 @@
     </div>
     <div *ngIf="this.errorGuideModal == 1" class="modal-content">
       <h4>Error de impresión</h4>
-      <p>Puede que haya un problema con la impresora, revise que esta encendida y conectada, o que todo este correcto</p>
+      <p>Puede que haya un problema con la impresora, revise que esta encendida y conectada, o que todo este correcto.</p>
+      <p>Puede encontrar su guía generada en el módulo "Guías"</p>
     </div>
     <div *ngIf="this.errorGuideModal == 1" class="modal-footer">
+      <a class="waves-effect waves-red btn-flat" (click)="closeModal()">Cerrar</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat" (click)="closeModal()">Aceptar</a>
+    </div>
+    <div *ngIf="this.errorGuideModal == 2" class="modal-content">
+      <h4>Impresión realizada</h4>
+    </div>
+    <div *ngIf="this.errorGuideModal == 2" class="modal-footer">
       <a class="waves-effect waves-red btn-flat" (click)="closeModal()">Cerrar</a>
       <a class="modal-action modal-close waves-effect waves-green btn-flat" (click)="closeModal()">Aceptar</a>
     </div>
@@ -22,15 +30,6 @@
 
   <div class="col s12 m9 l9">
     <form name="form" (ngSubmit)="createGuide(forma)" #forma="ngForm" novalidate class="col s12 offset-m1 offset-l1 m10 l10 blue lighten-5">
-      <h3 class="s12 m12 l12 center-align">Creando guía</h3>
-
-      <div class="center-align">
-        <img *ngIf="this.parcelId == 4" src="./assets/estafeta-logo.png">
-        <img *ngIf="this.parcelId == 3" src="./assets/Logo-FedEx.png">
-        <img *ngIf="this.parcelId == 2" src="./assets/redpac-logo.png">
-        <img *ngIf="this.parcelId == 1" src="./assets/dhl-logo.png">
-        <img *ngIf="this.parcelId == 5" src="./assets/paqueteExpress.png">
-      </div>
 
       <div class="row">
         <div class="col s12 m6 l6">
@@ -56,94 +55,151 @@
             <label class="active" for="originCountry">País de origen*</label>
           </div>
 
-          <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': originState.errors?.required && originState.touched}">
-            <select materialize="material_select" [materializeSelectOptions]="options" name="originState" [ngModel]="this.client.state" required #originState="ngModel">
-              <option class="blue-text text-darken-4" value="{{this.client.state}}" disabled selected>{{this.client.state}}</option>
-              <option class="blue-text text-darken-4" value="Aguascalientes">Aguascalientes</option>
-              <option class="blue-text text-darken-4" value="Baja California Norte">Baja California Norte</option>
-              <option class="blue-text text-darken-4" value="Baja California Sur">Baja California Sur</option>
-              <option class="blue-text text-darken-4" value="Campeche">Campeche</option>
-              <option class="blue-text text-darken-4" value="Chiapas">Chiapas</option>
-              <option class="blue-text text-darken-4" value="Chihuahua">Chihuahua</option>
-              <option class="blue-text text-darken-4" value="Coahuila">Coahuila</option>
-              <option class="blue-text text-darken-4" value="Colima">Colima</option>
-              <option class="blue-text text-darken-4" value="Distrito Federal">Distrito Federal</option>
-              <option class="blue-text text-darken-4" value="Durango">Durango</option>
-              <option class="blue-text text-darken-4" value="Guanajuato">Guanajuato</option>
-              <option class="blue-text text-darken-4" value="Guerrero">Guerrero</option>
-              <option class="blue-text text-darken-4" value="Hidalgo">Hidalgo</option>
-              <option class="blue-text text-darken-4" value="Jalisco">Jalisco</option>
-              <option class="blue-text text-darken-4" value="Mexico">Mexico</option>
-              <option class="blue-text text-darken-4" value="Michoacán">Michoacán</option>
-              <option class="blue-text text-darken-4" value="Morelos">Morelos</option>
-              <option class="blue-text text-darken-4" value="Nayarit">Nayarit</option>
-              <option class="blue-text text-darken-4" value="Nuevo Leon">Nuevo Leon</option>
-              <option class="blue-text text-darken-4" value="Oaxaca">Oaxaca</option>
-              <option class="blue-text text-darken-4" value="Puebla">Puebla</option>
-              <option class="blue-text text-darken-4" value="Queretaro">Queretaro</option>
-              <option class="blue-text text-darken-4" value="Quintana Roo">Quintana Roo</option>
-              <option class="blue-text text-darken-4" value="San Luis Potosi">San Luis Potosi</option>
-              <option class="blue-text text-darken-4" value="Sinaloa">Sinaloa</option>
-              <option class="blue-text text-darken-4" value="Sonora">Sonora</option>
-              <option class="blue-text text-darken-4" value="Tabasco">Tabasco</option>
-              <option class="blue-text text-darken-4" value="Tamaulipas">Tamaulipas</option>
-              <option class="blue-text text-darken-4" value="Tlaxcala">Tlaxcala</option>
-              <option class="blue-text text-darken-4" value="Veracruz">Veracruz</option>
-              <option class="blue-text text-darken-4" value="Yucatan">Yucatan</option>
-              <option class="blue-text text-darken-4" value="Zacatecas">Zacatecas</option>
-            </select>
-            <label>Estado de la república*</label>
-            <p class="red-text text-darken-4" *ngIf="originState.errors?.required&&originState.touched">
-              *Este campo es requerido.
-            </p>
+          <div *ngIf="this.createGuideservice.originZipChange">
+            <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': originState.errors?.required && originState.touched}">
+              <select materialize="material_select" [materializeSelectOptions]="options" name="originState" [ngModel]="this.createGuideservice.originState" required #originState="ngModel">
+                <option class="blue-text text-darken-4" value="{{this.createGuideservice.originState}}" disabled selected>{{this.createGuideservice.originState}}</option>
+              </select>
+              <label>Estado de la república*</label>
+              <p class="red-text text-darken-4" *ngIf="originState.errors?.required&&originState.touched">
+                *Este campo es requerido.
+              </p>
+            </div>
+
+            <div class="input-field col col s12 m6 l6">
+              <input disabled id="originCity" name="originCity" placeholder="{{this.createGuideservice.originCity}}" value="{{this.createGuideservice.originCity}}" [ngModel]="this.createGuideservice.originCity" #originCity="ngModel" type="text" class="validate" >
+              <label class="active" for="originCity">Ciudad de origen*</label>
+            </div>
+
+            <div class="input-field col col s12 m12 l12" [ngClass]="{'has-danger': originColony.errors?.required && originColony.touched}">
+              <input disabled id="originColony" name="originColony" placeholder="{{this.createGuideservice.originColony}}" value="{{this.createGuideservice.originColony}}" [ngModel]="this.createGuideservice.originColony" #originColony="ngModel" type="text" class="validate" minlength="3" required>
+              <label class="active" for="originColony">Colonia de origen*</label>
+            </div>
+
+            <div class="input-field col s12 m12 l12" [ngClass]="{'has-danger': originAddress.errors?.required && originAddress.touched}">
+              <input id="originAddress" name="originAddress" placeholder="{{this.originAddressComplete}}" value="{{this.originAddressComplete}}" [ngModel]="this.originAddressComplete" #originAddress="ngModel" type="text" class="validate" minlength="3"  required>
+              <label class="active" for="originAddress">Dirección de origen*</label>
+              <p class="red-text text-darken-4" *ngIf="originAddress.errors?.required&&originAddress.touched">
+                *Este campo es requerido.
+              </p>
+              <p class="red-text text-darken-4" *ngIf="originAddress.errors?.minlength&&originAddress.touched">
+                Por lo menos escriba {{originAddress.errors.minlength.requiredLength}} caracteres.
+              </p>
+            </div>
+
+            <div class="input-field col s12 m6 l6">
+              <input id="originAddress2" name="originAddress2" placeholder="{{this.client.address2}}" value="{{this.client.address2}}" [ngModel]="this.client.address2" #originAddress2="ngModel" type="text" class="validate" >
+              <label class="active"for="originAddress2">Entre calles</label>
+            </div>
+
+            <div class="input-field col s12 m6 l6">
+              <input disabled id="originZip" name="originZip" placeholder="{{this.createGuideservice.originZIP}}" value="{{this.createGuideservice.originZIP}}" [ngModel]="this.createGuideservice.originZIP" #originZip="ngModel" type="text" class="validate" >
+              <label class="active" for="originZip">Código postal de origen*</label>
+            </div>
+
+            <div class="input-field col s12 m6 l6">
+              <input id="originPhoneNumber" name="originPhoneNumber" placeholder="{{this.client.phoneNumber}}" value="{{this.client.phoneNumber}}" [ngModel]="this.client.phoneNumber" #originPhoneNumber="ngModel" type="text" class="validate" >
+              <label class="active" for="originPhoneNumber">Número de teléfono remitente</label>
+            </div>
+
+            <div class="input-field col s12 m6 l6">
+              <input id="originUserName" name="originUserName" placeholder="{{this.clientName}}" value="{{this.clientName}}" [ngModel]="this.clientName" #originUserName="ngModel" type="text" class="validate" >
+              <label class="active" for="originUserName">Nombre del cliente de origen*</label>
+            </div>
           </div>
 
-          <div class="input-field col col s12 m6 l6">
-            <input id="originCity" name="originCity" placeholder="{{this.city}}" value="{{this.city}}" [ngModel]="this.city" #originCity="ngModel" type="text" class="validate" >
-            <label class="active" for="originCity">Ciudad de origen*</label>
+          <div *ngIf="!this.createGuideservice.originZipChange">
+            <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': originState.errors?.required && originState.touched}">
+              <select materialize="material_select" [materializeSelectOptions]="options" name="originState" [ngModel]="this.client.state" required #originState="ngModel">
+                <option class="blue-text text-darken-4" value="{{this.client.state}}" disabled selected>{{this.client.state}}</option>
+                <option class="blue-text text-darken-4" value="Aguascalientes">Aguascalientes</option>
+                <option class="blue-text text-darken-4" value="Baja California Norte">Baja California Norte</option>
+                <option class="blue-text text-darken-4" value="Baja California Sur">Baja California Sur</option>
+                <option class="blue-text text-darken-4" value="Campeche">Campeche</option>
+                <option class="blue-text text-darken-4" value="Chiapas">Chiapas</option>
+                <option class="blue-text text-darken-4" value="Chihuahua">Chihuahua</option>
+                <option class="blue-text text-darken-4" value="Coahuila">Coahuila</option>
+                <option class="blue-text text-darken-4" value="Colima">Colima</option>
+                <option class="blue-text text-darken-4" value="Distrito Federal">Distrito Federal</option>
+                <option class="blue-text text-darken-4" value="Durango">Durango</option>
+                <option class="blue-text text-darken-4" value="Guanajuato">Guanajuato</option>
+                <option class="blue-text text-darken-4" value="Guerrero">Guerrero</option>
+                <option class="blue-text text-darken-4" value="Hidalgo">Hidalgo</option>
+                <option class="blue-text text-darken-4" value="Jalisco">Jalisco</option>
+                <option class="blue-text text-darken-4" value="Mexico">Mexico</option>
+                <option class="blue-text text-darken-4" value="Michoacán">Michoacán</option>
+                <option class="blue-text text-darken-4" value="Morelos">Morelos</option>
+                <option class="blue-text text-darken-4" value="Nayarit">Nayarit</option>
+                <option class="blue-text text-darken-4" value="Nuevo Leon">Nuevo Leon</option>
+                <option class="blue-text text-darken-4" value="Oaxaca">Oaxaca</option>
+                <option class="blue-text text-darken-4" value="Puebla">Puebla</option>
+                <option class="blue-text text-darken-4" value="Queretaro">Queretaro</option>
+                <option class="blue-text text-darken-4" value="Quintana Roo">Quintana Roo</option>
+                <option class="blue-text text-darken-4" value="San Luis Potosi">San Luis Potosi</option>
+                <option class="blue-text text-darken-4" value="Sinaloa">Sinaloa</option>
+                <option class="blue-text text-darken-4" value="Sonora">Sonora</option>
+                <option class="blue-text text-darken-4" value="Tabasco">Tabasco</option>
+                <option class="blue-text text-darken-4" value="Tamaulipas">Tamaulipas</option>
+                <option class="blue-text text-darken-4" value="Tlaxcala">Tlaxcala</option>
+                <option class="blue-text text-darken-4" value="Veracruz">Veracruz</option>
+                <option class="blue-text text-darken-4" value="Yucatan">Yucatan</option>
+                <option class="blue-text text-darken-4" value="Zacatecas">Zacatecas</option>
+              </select>
+              <label>Estado de la república*</label>
+              <p class="red-text text-darken-4" *ngIf="originState.errors?.required&&originState.touched">
+                *Este campo es requerido.
+              </p>
+            </div>
+
+            <div class="input-field col col s12 m6 l6">
+              <input id="originCity" name="originCity" placeholder="{{this.city}}" value="{{this.city}}" [ngModel]="this.city" #originCity="ngModel" type="text" class="validate" >
+              <label class="active" for="originCity">Ciudad de origen*</label>
+            </div>
+
+            <div class="input-field col col s12 m12 l12" [ngClass]="{'has-danger': originColony.errors?.required && originColony.touched}">
+              <input id="originColony" name="originColony" placeholder="{{this.client.colony}}" value="{{this.client.colony}}" [ngModel]="this.client.colony" #originColony="ngModel" type="text" class="validate" minlength="3" required>
+              <label class="active" for="originColony">Colonia de origen*</label>
+              <p class="red-text text-darken-4" *ngIf="originColony.errors?.required&&originColony.touched">
+                *Este campo es requerido.
+              </p>
+              <p class="red-text text-darken-4" *ngIf="originColony.errors?.minlength&&originColony.touched">
+                Por lo menos escriba {{originColony.errors.minlength.requiredLength}} caracteres.
+              </p>
+            </div>
+
+            <div class="input-field col s12 m12 l12" [ngClass]="{'has-danger': originAddress.errors?.required && originAddress.touched}">
+              <input id="originAddress" name="originAddress" placeholder="{{this.originAddressComplete}}" value="{{this.originAddressComplete}}" [ngModel]="this.originAddressComplete" #originAddress="ngModel" type="text" class="validate" minlength="3"  required>
+              <label class="active" for="originAddress">Dirección de origen*</label>
+              <p class="red-text text-darken-4" *ngIf="originAddress.errors?.required&&originAddress.touched">
+                *Este campo es requerido.
+              </p>
+              <p class="red-text text-darken-4" *ngIf="originAddress.errors?.minlength&&originAddress.touched">
+                Por lo menos escriba {{originAddress.errors.minlength.requiredLength}} caracteres.
+              </p>
+            </div>
+
+            <div class="input-field col s12 m6 l6">
+              <input id="originAddress2" name="originAddress2" placeholder="{{this.client.address2}}" value="{{this.client.address2}}" [ngModel]="this.client.address2" #originAddress2="ngModel" type="text" class="validate" >
+              <label class="active"for="originAddress2">Entre calles</label>
+            </div>
+
+            <div class="input-field col s12 m6 l6">
+              <input disabled id="originZip" name="originZip" placeholder="{{this.zip}}" value="{{this.zip}}" [ngModel]="this.zip" #originZip="ngModel" type="text" class="validate" >
+              <label class="active" for="originZip">Código postal de origen*</label>
+            </div>
+
+            <div class="input-field col s12 m6 l6">
+              <input id="originPhoneNumber" name="originPhoneNumber" placeholder="{{this.client.phoneNumber}}" value="{{this.client.phoneNumber}}" [ngModel]="this.client.phoneNumber" #originPhoneNumber="ngModel" type="text" class="validate" >
+              <label class="active" for="originPhoneNumber">Número de teléfono remitente</label>
+            </div>
+
+            <div class="input-field col s12 m6 l6">
+              <input id="originUserName" name="originUserName" placeholder="{{this.clientName}}" value="{{this.clientName}}" [ngModel]="this.clientName" #originUserName="ngModel" type="text" class="validate" >
+              <label class="active" for="originUserName">Nombre del cliente de origen*</label>
+            </div>
           </div>
 
-          <div class="input-field col col s12 m6 l6" [ngClass]="{'has-danger': originColony.errors?.required && originColony.touched}">
-            <input id="originColony" name="originColony" placeholder="{{this.client.colony}}" value="{{this.client.colony}}" [ngModel]="this.client.colony" #originColony="ngModel" type="text" class="validate" minlength="3" required>
-            <label class="active" for="originColony">Colonia de origen*</label>
-            <p class="red-text text-darken-4" *ngIf="originColony.errors?.required&&originColony.touched">
-              *Este campo es requerido.
-            </p>
-            <p class="red-text text-darken-4" *ngIf="originColony.errors?.minlength&&originColony.touched">
-              Por lo menos escriba {{originColony.errors.minlength.requiredLength}} caracteres.
-            </p>
-          </div>
 
-          <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': originAddress.errors?.required && originAddress.touched}">
-            <input id="originAddress" name="originAddress" placeholder="{{this.client.address}}" value="{{this.client.address}}" [ngModel]="this.client.address" #originAddress="ngModel" type="text" class="validate" minlength="3"  required>
-            <label class="active" for="originAddress">Dirección de origen*</label>
-            <p class="red-text text-darken-4" *ngIf="originAddress.errors?.required&&originAddress.touched">
-              *Este campo es requerido.
-            </p>
-            <p class="red-text text-darken-4" *ngIf="originAddress.errors?.minlength&&originAddress.touched">
-              Por lo menos escriba {{originAddress.errors.minlength.requiredLength}} caracteres.
-            </p>
-          </div>
-
-          <div class="input-field col s12 m6 l6">
-            <input disabled id="originAddress2" name="originAddress2" placeholder="{{this.client.address2}}" value="{{this.client.address2}}" [ngModel]="this.client.address2" #originAddress2="ngModel" type="text" class="validate" >
-            <label class="active"for="originAddress2">Entre calles</label>
-          </div>
-
-          <div class="input-field col s12 m6 l6">
-            <input disabled id="originZip" name="originZip" placeholder="{{this.zip}}" value="{{this.zip}}" [ngModel]="this.zip" #originZip="ngModel" type="text" class="validate" >
-            <label class="active" for="originZip">Código postal de origen*</label>
-          </div>
-
-          <div class="input-field col s12 m6 l6">
-            <input id="originPhoneNumber" name="originPhoneNumber" placeholder="{{this.client.phoneNumber}}" value="{{this.client.phoneNumber}}" [ngModel]="this.client.phoneNumber" #originPhoneNumber="ngModel" type="text" class="validate" >
-            <label class="active" for="originPhoneNumber">Número de teléfono remitente</label>
-          </div>
-
-          <div class="input-field col s12 m6 l6">
-            <input id="originUserName" name="originUserName" placeholder="{{this.clientName}}" value="{{this.clientName}}" [ngModel]="this.clientName" #originUserName="ngModel" type="text" class="validate" >
-            <label class="active" for="originUserName">Nombre del cliente de origen*</label>
-          </div>
 
           <!-- ---------------------------- Campos RedPack ------------------------------- -->
 
@@ -193,41 +249,20 @@
             <label class="active" for="destinyColony">Colonia de destino*</label>
           </div>
 
-          <div *ngIf="parcelId == 5 || parcelId == 2" class="col s12 m12 l12">
-            <h6>Tipo entrega*</h6>
-          </div>
-
-          <div *ngIf="parcelId == 5 || parcelId == 2" class="col s12 m12 l12 radio-buttons" [ngClass]="{'has-danger': dlvyType.errors?.required && dlvyType.touched}">
-              <p class="col s6 m6 l6 ">
-                <input class="with-gap" value="2" ngModel #dlvyType="ngModel" name="dlvyType" type="radio" id="test1" required/>
-                <label for="test1">Domicilio</label>
-              </p>
-              <p class="col s6 m6 l6">
-                <input class="with-gap" value="1" ngModel #dlvyType="ngModel" name="dlvyType" type="radio" id="test2" required/>
-                <label for="test2">Ocurre</label>
-              </p>
-          </div>
-
           <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': destinyAddress.errors?.required && destinyAddress.touched}">
             <input disabled id="destinyAddress" name="destinyAddress" placeholder="{{this.rateService.selectedUser.address}}" value="{{this.rateService.selectedUser.address}}" [ngModel]="this.rateService.selectedUser.address" #destinyAddress="ngModel" type="text" class="validate" minlength="3" required>
             <label class="active" for="destinyAddress">Dirección de destino*</label>
-            <!--<p class="red-text text-darken-4" *ngIf="destinyAddress.errors?.required&&destinyAddress.touched">
+            <p class="red-text text-darken-4" *ngIf="destinyAddress.errors?.required&&destinyAddress.touched">
               *Este campo es requerido.
             </p>
             <p class="red-text text-darken-4" *ngIf="destinyAddress.errors?.minlength&&destinyAddress.touched">
               Por lo menos escriba {{destinyAddress.errors.minlength.requiredLength}} caracteres.
-            </p>-->
+            </p>
           </div>
 
           <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': numberAddress.errors?.required && numberAddress.touched}">
             <input disabled id="numberAddress" name="numberAddress"  placeholder="{{this.rateService.selectedUser.numberHouse}}" value="{{this.rateService.selectedUser.numberHouse}}" [ngModel]="this.rateService.selectedUser.numberHouse" #numberAddress="ngModel" type="text" class="validate" minlength="1" required>
             <label class="active" for="numberAddress">Numero dirección*</label>
-            <!--<p class="red-text text-darken-4" *ngIf="numberAddress.errors?.required&&numberAddress.touched">
-              *Este campo es requerido.
-            </p>
-            <p class="red-text text-darken-4" *ngIf="numberAddress.errors?.minlength&&numberAddress.touched">
-              Por lo menos escriba {{numberAddress.errors.minlength.requiredLength}} caracteres.
-            </p>-->
           </div>
 
           <div class="input-field col s12 m6 l6">
@@ -326,7 +361,26 @@
           </div>
 
           <!-- ---------------------------- Termina campos paquetexpress ----------------------- -->
+
+          <div class="input-field col s12 m12 l12">
+            <input id="references" name="references" ngModel #references="ngModel" type="text" class="validate" >
+            <label for="references">Referencia</label>
+          </div>
+
+          <div class="row radio-buttons" [ngClass]="{'has-danger': printType.errors?.required && printType.touched}">
+            <p class="col offset-s1 s5 offset-m1 m5 offset-l1 l5 ">
+              <input class="with-gap" value="P" [ngModel]="this.printing" #printType="ngModel" name="printType" type="radio" id="printPDF" required/>
+              <label for="printPDF">PDF</label>
+            </p>
+            <p class="col s6 m6 16">
+              <input class="with-gap" value="Z" [ngModel]="this.printing" #printType="ngModel" name="printType" type="radio" id="printZebra" required/>
+              <label for="printZebra">Etiqueta</label>
+            </p>
+          </div>
+
         </div>
+
+
 
         <!-- -------------------------------------Client no selected------------------------------------ -->
 
@@ -358,21 +412,6 @@
           <div class="input-field col s12 m6 l6">
             <input disabled id="destinyColony" name="destinyColony" placeholder="{{this.rateService.dataCpDest.colony}}" value="{{this.rateService.dataCpDest.colony}}" [ngModel]="this.rateService.dataCpDest.colony" #destinyColony="ngModel" type="text" class="validate" required>
             <label for="destinyColony">Colonia de destino*</label>
-          </div>
-
-          <div *ngIf="parcelId == 5 || parcelId == 2" class="col s12 m12 l12">
-            <h6>Tipo entrega*</h6>
-          </div>
-
-          <div *ngIf="parcelId == 5 || parcelId == 2" class="col s12 m12 l12 radio-buttons" [ngClass]="{'has-danger': dlvyType.errors?.required && dlvyType.touched}">
-              <p class="col s6 m6 l6 ">
-                <input class="with-gap" value="2" ngModel #dlvyType="ngModel" name="dlvyType" type="radio" id="test1" required/>
-                <label for="test1">Domicilio</label>
-              </p>
-              <p class="col s6 m6 l6">
-                <input class="with-gap" value="1" ngModel #dlvyType="ngModel" name="dlvyType" type="radio" id="test2" required/>
-                <label for="test2">Ocurre</label>
-              </p>
           </div>
 
           <div class="input-field col s12 m6 l6" [ngClass]="{'has-danger': destinyAddress.errors?.required && destinyAddress.touched}">
@@ -493,6 +532,23 @@
           </div>
 
           <!-- ---------------------------- Termina campos paquetexpress ----------------------- -->
+
+          <div class="input-field col s12 m12 l12">
+            <input id="references" name="references" ngModel #references="ngModel" type="text" class="validate" >
+            <label class="active" for="references">Referencia</label>
+          </div>
+
+          <div class="row radio-buttons" [ngClass]="{'has-danger': printType.errors?.required && printType.touched}">
+            <p class="col offset-s1 s5 offset-m1 m5 offset-l1 l5 ">
+              <input class="with-gap" value="P" [ngModel]="this.printing" #printType="ngModel" name="printType" type="radio" id="printPDF" required/>
+              <label for="printPDF">PDF</label>
+            </p>
+            <p class="col s6 m6 16">
+              <input class="with-gap" value="Z" [ngModel]="this.printing" #printType="ngModel" name="printType" type="radio" id="printZebra" required/>
+              <label for="printZebra">Etiqueta</label>
+            </p>
+          </div>
+
         </div>
 
         <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="invalidForm">
@@ -519,6 +575,13 @@
   </div>
   <div class="col s12 m3 l3">
     <div class="blue lighten-5 col offset-s1 s10 offset-m1 m10 offset-l1 l10">
+      <div class="center-align">
+        <img *ngIf="this.parcelId == 4" src="./assets/estafeta-logo.png">
+        <img *ngIf="this.parcelId == 3" src="./assets/Logo-FedEx.png">
+        <img *ngIf="this.parcelId == 2" src="./assets/redpac-logo.png">
+        <img *ngIf="this.parcelId == 1" src="./assets/dhl-logo.png">
+        <img *ngIf="this.parcelId == 5" src="./assets/paqueteExpress.png">
+      </div>
       <h5 class="center-align">Resumen</h5>
       <p>Producto: {{this.createGuideservice.productName}}</p>
       <p>Total: ${{this.createGuideservice.totalAmount}}</p>

@@ -88,6 +88,7 @@ export class ClientService {
       // Headers
       let myHeaders = new Headers();
       // Body or Search
+      console.log(sessionStorage.getItem('Id'));
       let myParams: URLSearchParams = new URLSearchParams();
       myHeaders.set('UserId', sessionStorage.getItem('Id'));
       let options = new RequestOptions({ headers: myHeaders, search: myParams });

@@ -71,6 +71,7 @@ export class AddClientComponent implements OnInit {
   private countryName:string = "Mexico";
   private lockInfoValue:string = "N";
   private setCompanyValue:string = "N";
+  private userExists:boolean = false;
   ngOnInit() {
 
   }
@@ -91,15 +92,19 @@ export class AddClientComponent implements OnInit {
     if(deviceValue.length > 4){
       this.rateService.getInfoByPostalCode(deviceValue).subscribe(
         (response) => {
-          console.log(response);
           this.responseCP.postalCode = response.codigo_postal;
           this.responseCP.colonies = response.colonias;
           this.responseCP.municipality = response.municipio;
           this.responseCP.state = response.estado;
-          console.log(this.responseCP);
+
 
           if(response.colonias.length < 1){
             this.noCP = true;
+          }else if(response.colonias.length > 0 && this.clientService.operation == 1){
+            this.clientService.userEdit.state = response.estado;
+            this.clientService.userEdit.zip = response.codigo_postal;
+            this.clientService.userEdit.city = response.estado;
+            this.clientService.userEdit.colony = "Elija una colonia";
           }
         }
       )
@@ -122,13 +127,19 @@ export class AddClientComponent implements OnInit {
 
         if(response.colonias.length < 1){
           this.noCP = true;
+        }else if(response.colonias.length > 0 && this.clientService.operation == 1){
+          this.clientService.userEdit.state = response.estado;
+          this.clientService.userEdit.zip = response.codigo_postal;
+          this.clientService.userEdit.city = response.estado;
+          this.clientService.userEdit.colony = "Elija una colonia";
         }
       }
     )
   }
 
   saveClient(forma:NgForm){
-    console.log(forma);
+    this.userExists = false;
+
     if(!forma.valid){
       this.formInvalid = true;
     }else{
@@ -156,21 +167,30 @@ export class AddClientComponent implements OnInit {
             lockInfo: this.lockInfoValue,
             setCompany: this.setCompanyValue
           }
-          console.log(clientData);
+
           this.clientService.addClient(clientData).subscribe(jsonData => {
                 var checkUser = jsonData;
+
                 if (jsonData == "SUCCESS: User Created") {
                   sessionStorage.setItem('NewUserName', forma.controls["username"].value);
                   this.prodSer.operation = 0;
                   this.router.navigate(['/add-parcel-to-client']);
-                } else {
+                } else if(jsonData == "ERROR: Object reference not set to an instance of an object."){
+                  this.loading = false;
+                  this.userExists = true;
+                }else{
                     this.loading = false;
                 }
+            },
+            (errorResponse) => {
+
+              this.loading = false;
             });
         }else{
+          let date = new Date();
           let userNameAux:string = forma.controls["name"].value;
           let lastNameAux:string = forma.controls["lastname"].value;
-          let userPass:string = userNameAux.substr(0,3) + lastNameAux.substr(0,3);
+          let userPass:string = userNameAux.substr(0,3) + lastNameAux.substr(0,3) + date.getDay().toString() + date.getHours().toString() + date.getSeconds().toString();
           const clientData: User = {
             id: 0,
             name: forma.controls["name"].value,
@@ -185,7 +205,7 @@ export class AddClientComponent implements OnInit {
             city: forma.controls["city"].value,
             state: forma.controls["state"].value,
             zip: forma.controls["zip"].value,
-            country: forma.controls["country"].value,
+            country: "Mexico",
             phoneNumber: forma.controls["phoneNumber"].value,
             numberHouse: forma.controls["noHouse"].value,
             lockInfo: this.lockInfoValue,
@@ -193,12 +213,17 @@ export class AddClientComponent implements OnInit {
           }
           this.clientService.addClient(clientData).subscribe(jsonData => {
                 var checkUser = jsonData;
-                console.log(jsonData);
                 if (jsonData == "SUCCESS: User Created") {
                   this.router.navigate(['/home']);
-                } else {
+                } else if(jsonData == "ERROR: Object reference not set to an instance of an object."){
+                  this.loading = false;
+                  this.userExists = true;
+                }else {
                     this.loading = false;
                 }
+            },
+            (errorResponse) => {
+              this.loading = false;
             });
         }
       }else if(this.clientService.operation == 1 && this.userType == '1'){
@@ -232,7 +257,7 @@ export class AddClientComponent implements OnInit {
               }
           });
       }else if(this.clientService.operation == 1 && this.userType == '2'){
-        console.log("Hola");
+
         const updateClientData:User = {
           id: this.clientService.userEdit.id,
           name: forma.controls["name"].value,
@@ -253,10 +278,9 @@ export class AddClientComponent implements OnInit {
           lockInfo: this.clientService.userEdit.lockInfo,
           setCompany: this.clientService.userEdit.setCompany
         }
-        console.log(updateClientData);
         this.clientService.updateClient(updateClientData).subscribe(jsonData => {
               var checkUser = jsonData;
-              console.log(jsonData);
+
               if (jsonData == "SUCCESS: User Updated.") {
                 this.clientService.operation = 0;
                 this.router.navigate(['/home']);

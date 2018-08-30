@@ -29,6 +29,7 @@ export class RateComponent implements OnInit {
     private download:DownloadGuideService,
     private productService:ProductService
   ) {
+    this.createGuideService.volumetricWeight = 0;
     sessionStorage.setItem("NewUserId", sessionStorage.getItem("Id"));
     this.productService.getParcelsFromUser().subscribe(
       (response) => {
@@ -43,6 +44,7 @@ export class RateComponent implements OnInit {
           let fedex:boolean = false;
           let redPack:boolean = false;
           for(let item of response){
+
             if(item.parcelId == 5){
               if(item.password != "n"){
                 paquete = true;
@@ -74,43 +76,125 @@ export class RateComponent implements OnInit {
               nextDayRedPack = true;
               this.quantityOfPerm++;
             }
-            if(item.parcelId == 1 || item.parcelId == 4 || item.parcelId == 5 ){
+            if(paquete){
               this.quantityOfPerm++;
             }
           }
           if(this.quantityOfPerm > 1 && this.rateService.dataProducts.length > 1){
-            console.log(this.rateService.dataProducts.length);
             for(let item of this.rateService.dataProducts){
               if(item.description.indexOf('Economico') >= 0 && (item.parcelId == 3 || item.parcelId == 2 )){
                 if(3 == item.parcelId && economicFedEx && fedex){
                   this.validRates.push(new ValidRate(item.id, item.name, item.description, item.kg, item.volumetricWeight, item.factor,
-                    item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y"));
+                    item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y",
+                    item.outOfArea));
+                    if(item.volumetricWeight > this.rateService.weight){
+                      this.createGuideService.volumetricWeight = item.volumetricWeight;
+                    }else{
+                      this.createGuideService.volumetricWeight = this.rateService.weight;
+                    }
+
                 }
                 if(2 == item.parcelId && economicRedPack && redPack){
                   this.validRates.push(new ValidRate(item.id, item.name, item.description, item.kg, item.volumetricWeight, item.factor,
-                    item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y"));
+                    item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y",
+                  item.outOfArea));
+                  if(item.volumetricWeight > this.rateService.weight){
+                    this.createGuideService.volumetricWeight = item.volumetricWeight;
+                  }else{
+                    this.createGuideService.volumetricWeight = this.rateService.weight;
+                  }
                 }
               }else if(item.description.indexOf('Dia Siguiente') >= 0 && (item.parcelId == 3 || item.parcelId == 2 )){
                 if(3 == item.parcelId && nextDayFedEx && fedex){
                   this.validRates.push(new ValidRate(item.id, item.name, item.description, item.kg, item.volumetricWeight, item.factor,
-                    item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y"));
+                    item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y",
+                  item.outOfArea));
+                  if(item.volumetricWeight > this.rateService.weight){
+                    this.createGuideService.volumetricWeight = item.volumetricWeight;
+                  }else{
+                    this.createGuideService.volumetricWeight = this.rateService.weight;
+                  }
                 }
                 if(2 == item.parcelId && nextDayRedPack && redPack){
                   this.validRates.push(new ValidRate(item.id, item.name, item.description, item.kg, item.volumetricWeight, item.factor,
-                    item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y"));
+                    item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y",
+                  item.outOfArea));
+                  if(item.volumetricWeight > this.rateService.weight){
+                    this.createGuideService.volumetricWeight = item.volumetricWeight;
+                  }else{
+                    this.createGuideService.volumetricWeight = this.rateService.weight;
+                  }
                 }
               }else{
                 if(paquete){
                   this.validRates.push(new ValidRate(item.id, item.name, item.description, item.kg, item.volumetricWeight, item.factor,
-                    item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y"));
+                    item.parcelId, item.amount, item.parcelName, item.deliveryDateSpecified, item.deliveryDate, item.amountDetails, "Y",
+                  item.outOfArea));
+                  if(item.volumetricWeight > this.rateService.weight){
+                    this.createGuideService.volumetricWeight = item.volumetricWeight;
+                  }else{
+                    this.createGuideService.volumetricWeight = this.rateService.weight;
+                  }
                 }
               }
               index++;
             }
-            console.log(this.validRates);
           }else{
             for(let item of this.rateService.dataProducts){
-              this.selectProduct(item.id, item.parcelId, item.amount, item.amountDetails, item.description)
+              if(item.parcelId == 2){
+                if(economicRedPack){
+                  if(item.description.indexOf('Economico') > 0){
+                    this.selectProduct(item.id, item.parcelId, item.amount, item.amountDetails, item.description, item.outOfArea);
+                    if(item.volumetricWeight > this.rateService.weight){
+                      this.createGuideService.volumetricWeight = item.volumetricWeight;
+                    }else{
+                      this.createGuideService.volumetricWeight = this.rateService.weight;
+                    }
+                    this.createGuideService.outOfArea = item.outOfArea;
+                  }
+                }else{
+                  if(item.description.indexOf('Dia Siguiente') > 0){
+                    this.selectProduct(item.id, item.parcelId, item.amount, item.amountDetails, item.description, item.outOfArea);
+                    if(item.volumetricWeight > this.rateService.weight){
+                      this.createGuideService.volumetricWeight = item.volumetricWeight;
+                    }else{
+                      this.createGuideService.volumetricWeight = this.rateService.weight;
+                    }
+                    this.createGuideService.outOfArea = item.outOfArea;
+                  }
+                }
+              }else if(item.parcelId == 3){
+                if(economicFedEx){
+                  if(item.description.indexOf('Economico') > 0){
+                    this.selectProduct(item.id, item.parcelId, item.amount, item.amountDetails, item.description, item.outOfArea);
+                    if(item.volumetricWeight > this.rateService.weight){
+                      this.createGuideService.volumetricWeight = item.volumetricWeight;
+                    }else{
+                      this.createGuideService.volumetricWeight = this.rateService.weight;
+                    }
+                    this.createGuideService.outOfArea = item.outOfArea;
+                  }
+                }else{
+                  if(item.description.indexOf('Dia Siguiente') > 0){
+                    this.selectProduct(item.id, item.parcelId, item.amount, item.amountDetails, item.description, item.outOfArea);
+                    if(item.volumetricWeight > this.rateService.weight){
+                      this.createGuideService.volumetricWeight = item.volumetricWeight;
+                    }else{
+                      this.createGuideService.volumetricWeight = this.rateService.weight;
+                    }
+                    this.createGuideService.outOfArea = item.outOfArea;
+                  }
+                }
+              }else{
+                this.selectProduct(item.id, item.parcelId, item.amount, item.amountDetails, item.description, item.outOfArea);
+                if(item.volumetricWeight > this.rateService.weight){
+                  this.createGuideService.volumetricWeight = item.volumetricWeight;
+                }else{
+                  this.createGuideService.volumetricWeight = this.rateService.weight;
+                }
+                this.createGuideService.outOfArea = item.outOfArea;
+              }
+
             }
           }
         }
@@ -142,13 +226,15 @@ export class RateComponent implements OnInit {
 
   }
 
-  selectProduct(productId:number, parcelId:number, amount:number, amountDetails:string[], description:string){
+  selectProduct(productId:number, parcelId:number, amount:number, amountDetails:string[], description:string, outOfArea:number){
     this.createGuideService.GetPrepaidGuide(parcelId).subscribe(json => {
       if(json == -2){
         this.createGuideService.parcelId = parcelId;
         this.createGuideService.productId = productId;
         this.createGuideService.totalAmount = amount;
         this.createGuideService.productName = description;
+        this.createGuideService.outOfArea = outOfArea;
+        console.log(this.createGuideService.outOfArea);
         let amountDetail:string;
         for(let i=0; i<amountDetails.length; i++){
           if(i == 0){

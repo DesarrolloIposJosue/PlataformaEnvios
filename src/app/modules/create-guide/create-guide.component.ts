@@ -164,9 +164,9 @@ function checkPrinterStatus(finishedFunction)
               statuses.push("Error: Unknown Error");
             finishedFunction(statuses.join());
       }, printerError);
-      var error = printerError.toString()
+      var error = printerError.toString();
       if(error.indexOf('An error occurred while printing.') >= 0){
-        console.log("Sip hay error");
+
         errorGuide = 1;
       }
 };
@@ -189,7 +189,6 @@ function showLoading(text)
 function printComplete()
 {
   hideLoading();
-  alert ("Printing complete");
   errorGuide = 2;
 }
 function hideLoading()
@@ -263,6 +262,8 @@ export class CreateGuideComponent implements OnInit {
   private destZip:string;
   private clientName:string
 
+  private originAddressComplete:string;
+
   loading:boolean;
   private invalidForm:boolean = false;
   private petitionError = false;
@@ -288,6 +289,7 @@ export class CreateGuideComponent implements OnInit {
   private errorPetition:boolean = false;
 
   private errorGuideModal:number = 0;
+  private printing:string;
 
   constructor(
     private router: Router,
@@ -306,8 +308,46 @@ export class CreateGuideComponent implements OnInit {
     });
       this.dataGuide = createGuideservice.dataAuxGuide;
       this.client = createGuideservice.userActual;
+      this.originAddressComplete = this.client.address + " " + this.client.numberHouse;
       this.productId = createGuideservice.productId;
       this.parcelId = createGuideservice.parcelId;
+      if(this.parcelId == 2){
+        if(this.createGuideservice.printTypeRedPack =="P"){
+          this.printing = "P";
+          setTimeout( () =>{
+            var element = <HTMLInputElement>document.getElementById("printPDF");
+            element.checked = true; }, 500);
+        }else if(this.createGuideservice.printTypeRedPack  =="Z"){
+          this.printing = "Z";
+            setTimeout( () =>{
+            var element = <HTMLInputElement>document.getElementById("printZebra");
+            element.checked = true; }, 500);
+        }
+      }else if(this.parcelId == 3){
+        if(this.createGuideservice.printTypeFedEx  =="P"){
+          this.printing = "P";
+          setTimeout( () =>{
+            var element = <HTMLInputElement>document.getElementById("printPDF");
+            element.checked = true; }, 500);
+        }else if(this.createGuideservice.printTypeFedEx =="Z"){
+          this.printing = "Z";
+            setTimeout( () =>{
+            var element = <HTMLInputElement>document.getElementById("printZebra");
+            element.checked = true; }, 500);
+        }
+      }if(this.parcelId == 5){
+        if(this.createGuideservice.printTypePaquete =="P"){
+          this.printing = "P";
+          setTimeout( () =>{
+            var element = <HTMLInputElement>document.getElementById("printPDF");
+            element.checked = true; }, 500);
+        }else if(this.createGuideservice.printTypePaquete =="Z"){
+          this.printing = "Z";
+            setTimeout( () =>{
+            var element = <HTMLInputElement>document.getElementById("printZebra");
+            element.checked = true; }, 500);
+        }
+      }
       this.packageType = createGuideservice.packageType;
       this.city = createGuideservice.city;
       this.destCity = createGuideservice.destinyCity;
@@ -332,6 +372,7 @@ export class CreateGuideComponent implements OnInit {
   }
 
   createGuide(forma:NgForm){
+
     this.petitionError = false;
     this.loading = true;
 
@@ -343,18 +384,23 @@ export class CreateGuideComponent implements OnInit {
       x.style.display = "block";
       this.invalidForm = false;
       if(this.createGuideservice.multipiecesData.length > 0){
+        this.createGuideservice.reference = forma.controls["references"].value;
+
         for(let i=0; i<this.createGuideservice.multipiecesData.length; i++){
           if(this.parcelId == 3){
+            this.createGuideservice.printTypeFedEx = forma.controls["printType"].value;
             this.arrayShipment.push(new Shipment(0,this.client.id,this.parcelId,this.productId,this.totalAmount,this.amountDetail,forma.controls["originCompany"].value,
           forma.controls["originAddress"].value,forma.controls["originAddress2"].value,forma.controls["originColony"].value,forma.controls["originCity"].value,
-          forma.controls["originState"].value,this.createGuideservice.multipiecesData[i].originCP,forma.controls["originCountry"].value,forma.controls["originPhoneNumber"].value,
+          this.createGuideservice.stateOriginCode,this.createGuideservice.multipiecesData[i].originCP,forma.controls["originCountry"].value,forma.controls["originPhoneNumber"].value,
         forma.controls["originUserName"].value,forma.controls["destinyCompany"].value, forma.controls["destinyAddress"].value,
-      forma.controls["destinyAddress2"].value,forma.controls["destinyColony"].value,forma.controls["destinyCity"].value,forma.controls["destinyState"].value,
+      forma.controls["destinyAddress2"].value,forma.controls["destinyColony"].value,forma.controls["destinyCity"].value,this.createGuideservice.stateCode,
     this.createGuideservice.multipiecesData[i].destinyCP,forma.controls["destinyCountry"].value,forma.controls["destinyPhoneNumber"].value,forma.controls["destinyUserName"].value,
     "","Generando",this.createGuideservice.multipiecesData[i].weight,this.createGuideservice.multipiecesData[i].length,
     this.createGuideservice.multipiecesData[i].width,this.createGuideservice.multipiecesData[i].height,this.createGuideservice.multipiecesData[i].insurance,new Date(),"","","Y","",0,0,
-    this.createGuideservice.printType,this.productName))
+    forma.controls["printType"].value,this.productName, forma.controls["references"].value, sessionStorage.getItem('UserName'), this.createGuideservice.volumetricWeight,
+    this.createGuideservice.outOfArea));
   }else if(this.parcelId == 5){
+    this.createGuideservice.printTypePaquete = forma.controls["printType"].value;
     this.arrayShipment.push(new Shipment(0,this.client.id,this.parcelId,this.productId,this.totalAmount,this.amountDetail,forma.controls["originCompany"].value,
   forma.controls["originAddress"].value,forma.controls["originAddress2"].value,forma.controls["originColony"].value,forma.controls["originCity"].value,
   forma.controls["originState"].value,this.createGuideservice.multipiecesData[i].originCP,forma.controls["originCountry"].value,forma.controls["originPhoneNumber"].value,
@@ -363,8 +409,21 @@ forma.controls["destinyAddress2"].value,forma.controls["destinyColony"].value,fo
 this.createGuideservice.multipiecesData[i].destinyCP,forma.controls["destinyCountry"].value,forma.controls["destinyPhoneNumber"].value,forma.controls["destinyUserName"].value,
 "","Generando",this.createGuideservice.multipiecesData[i].weight,this.createGuideservice.multipiecesData[i].length,
 this.createGuideservice.multipiecesData[i].width,this.createGuideservice.multipiecesData[i].height,this.createGuideservice.multipiecesData[i].insurance,new Date(),"","","Y","",0,0,
-this.createGuideservice.printTypePaquete,this.productName))
-  }else{
+forma.controls["printType"].value,this.productName, forma.controls["references"].value, sessionStorage.getItem('UserName'), this.createGuideservice.volumetricWeight,
+this.createGuideservice.outOfArea))
+}else if(this.parcelId == 2){
+  this.createGuideservice.printTypeRedPack = forma.controls["printType"].value
+  this.arrayShipment.push(new Shipment(0,this.client.id,this.parcelId,this.productId,this.totalAmount,this.amountDetail,forma.controls["originCompany"].value,
+forma.controls["originAddress"].value,forma.controls["originAddress2"].value,forma.controls["originColony"].value,forma.controls["originCity"].value,
+forma.controls["originState"].value,this.createGuideservice.multipiecesData[i].originCP,forma.controls["originCountry"].value,forma.controls["originPhoneNumber"].value,
+forma.controls["originUserName"].value,forma.controls["destinyCompany"].value, forma.controls["destinyAddress"].value + " " + forma.controls["numberAddress"].value,
+forma.controls["destinyAddress2"].value,forma.controls["destinyColony"].value,forma.controls["destinyCity"].value,forma.controls["destinyState"].value,
+this.createGuideservice.multipiecesData[i].destinyCP,forma.controls["destinyCountry"].value,forma.controls["destinyPhoneNumber"].value,forma.controls["destinyUserName"].value,
+"","Generando",this.createGuideservice.multipiecesData[i].weight,this.createGuideservice.multipiecesData[i].length,
+this.createGuideservice.multipiecesData[i].width,this.createGuideservice.multipiecesData[i].height,this.createGuideservice.multipiecesData[i].insurance,new Date(),"","","Y","",0,0,
+forma.controls["printType"].value,this.productName, forma.controls["references"].value, sessionStorage.getItem('UserName'), this.createGuideservice.volumetricWeight,
+this.createGuideservice.outOfArea))
+}else{
             this.arrayShipment.push(new Shipment(0,this.client.id,this.parcelId,this.productId,this.totalAmount,this.amountDetail,forma.controls["originCompany"].value,
           forma.controls["originAddress"].value,forma.controls["originAddress2"].value,forma.controls["originColony"].value,forma.controls["originCity"].value,
           forma.controls["originState"].value,this.createGuideservice.multipiecesData[i].originCP,forma.controls["originCountry"].value,forma.controls["originPhoneNumber"].value,
@@ -373,21 +432,26 @@ this.createGuideservice.printTypePaquete,this.productName))
     this.createGuideservice.multipiecesData[i].destinyCP,forma.controls["destinyCountry"].value,forma.controls["destinyPhoneNumber"].value,forma.controls["destinyUserName"].value,
     "","Generando",this.createGuideservice.multipiecesData[i].weight,this.createGuideservice.multipiecesData[i].length,
     this.createGuideservice.multipiecesData[i].width,this.createGuideservice.multipiecesData[i].height,this.createGuideservice.multipiecesData[i].insurance,new Date(),"","","Y","",0,0,
-    "P",this.productName))
+    "P",this.productName, forma.controls["references"].value, sessionStorage.getItem('UserName'), this.createGuideservice.volumetricWeight, this.createGuideservice.outOfArea))
           }
 
         }
       }else{
+        this.createGuideservice.reference = forma.controls["references"].value;
+
         if(this.parcelId == 3){
+          this.createGuideservice.printTypeFedEx = forma.controls["printType"].value;
           this.shipment = new Shipment(0,this.client.id,this.parcelId,this.productId,this.totalAmount,this.amountDetail,forma.controls["originCompany"].value,
         forma.controls["originAddress"].value,forma.controls["originAddress2"].value,forma.controls["originColony"].value,forma.controls["originCity"].value,
-        forma.controls["originState"].value,forma.controls["originZip"].value,forma.controls["originCountry"].value,forma.controls["originPhoneNumber"].value,
+        this.createGuideservice.stateOriginCode,forma.controls["originZip"].value,forma.controls["originCountry"].value,forma.controls["originPhoneNumber"].value,
       forma.controls["originUserName"].value,forma.controls["destinyCompany"].value, forma.controls["destinyAddress"].value,
-    forma.controls["destinyAddress2"].value,forma.controls["destinyColony"].value,forma.controls["destinyCity"].value,forma.controls["destinyState"].value,
+    forma.controls["destinyAddress2"].value, forma.controls["destinyColony"].value, forma.controls["destinyCity"].value, this.createGuideservice.stateCode,
   forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.controls["destinyPhoneNumber"].value,forma.controls["destinyUserName"].value,
   "","Generando",this.dataGuide.weight,this.dataGuide.long,this.dataGuide.width,this.dataGuide.hight,this.dataGuide.insurance,new Date(),"","","N","",0,0,
-  this.createGuideservice.printType,this.productName);
+  forma.controls["printType"].value,this.productName, forma.controls["references"].value, sessionStorage.getItem('UserName'), this.createGuideservice.volumetricWeight,
+this.createGuideservice.outOfArea);
 }else if(this.parcelId == 5){
+  this.createGuideservice.printTypePaquete = forma.controls["printType"].value;
   this.shipment = new Shipment(0,this.client.id,this.parcelId,this.productId,this.totalAmount,this.amountDetail,forma.controls["originCompany"].value,
 forma.controls["originAddress"].value,forma.controls["originAddress2"].value,forma.controls["originColony"].value,forma.controls["originCity"].value,
 forma.controls["originState"].value,forma.controls["originZip"].value,forma.controls["originCountry"].value,forma.controls["originPhoneNumber"].value,
@@ -395,7 +459,20 @@ forma.controls["originUserName"].value,forma.controls["destinyCompany"].value, f
 forma.controls["destinyAddress2"].value,forma.controls["destinyColony"].value,forma.controls["destinyCity"].value,forma.controls["destinyState"].value,
 forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.controls["destinyPhoneNumber"].value,forma.controls["destinyUserName"].value,
 "","Generando",this.dataGuide.weight,this.dataGuide.long,this.dataGuide.width,this.dataGuide.hight,this.dataGuide.insurance,new Date(),"","","N","",0,0,
-this.createGuideservice.printTypePaquete,this.productName);
+forma.controls["printType"].value,this.productName, forma.controls["references"].value, sessionStorage.getItem('UserName'), this.createGuideservice.volumetricWeight,
+this.createGuideservice.outOfArea);
+}else if(this.parcelId == 2){
+  this.createGuideservice.printTypeRedPack = forma.controls["printType"].value;
+  this.shipment = new Shipment(0,this.client.id,this.parcelId,this.productId,this.totalAmount,this.amountDetail,forma.controls["originCompany"].value,
+forma.controls["originAddress"].value,forma.controls["originAddress2"].value,forma.controls["originColony"].value,forma.controls["originCity"].value,
+forma.controls["originState"].value,forma.controls["originZip"].value,forma.controls["originCountry"].value,forma.controls["originPhoneNumber"].value,
+forma.controls["originUserName"].value,forma.controls["destinyCompany"].value, forma.controls["destinyAddress"].value + " " + forma.controls["numberAddress"].value,
+forma.controls["destinyAddress2"].value,forma.controls["destinyColony"].value,forma.controls["destinyCity"].value,forma.controls["destinyState"].value,
+forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.controls["destinyPhoneNumber"].value,forma.controls["destinyUserName"].value,
+"","Generando",this.dataGuide.weight,this.dataGuide.long,this.dataGuide.width,this.dataGuide.hight,this.dataGuide.insurance,new Date(),"","","N","",0,0,
+forma.controls["printType"].value,this.productName, forma.controls["references"].value, sessionStorage.getItem('UserName'), this.createGuideservice.volumetricWeight,
+this.createGuideservice.outOfArea);
+
 }else{
         this.shipment = new Shipment(0,this.client.id,this.parcelId,this.productId,this.totalAmount,this.amountDetail,forma.controls["originCompany"].value,
       forma.controls["originAddress"].value,forma.controls["originAddress2"].value,forma.controls["originColony"].value,forma.controls["originCity"].value,
@@ -404,7 +481,8 @@ this.createGuideservice.printTypePaquete,this.productName);
   forma.controls["destinyAddress2"].value,forma.controls["destinyColony"].value,forma.controls["destinyCity"].value,forma.controls["destinyState"].value,
 forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.controls["destinyPhoneNumber"].value,forma.controls["destinyUserName"].value,
 "","Generando",this.dataGuide.weight,this.dataGuide.long,this.dataGuide.width,this.dataGuide.hight,this.dataGuide.insurance,new Date(),"","","N","",0,0,
-"P",this.productName)
+"P",this.productName, forma.controls["references"].value, sessionStorage.getItem('UserName'), this.createGuideservice.volumetricWeight,
+this.createGuideservice.outOfArea)
       }
 
 
@@ -419,16 +497,19 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
             this.arrayShipment[i].originColony = "Col " + forma.controls["originColony"].value;
             this.arrayShipment[i].destinyColony = "Col " + forma.controls["destinyColony"].value;
           }
+          this.download.printType = this.createGuideservice.printTypeFedEx;
           this.createGuideservice.GenerateGuideMPS(this.arrayShipment).subscribe(jsonData => {
             this.dataMultipieces.response = jsonData.response;
             this.dataMultipieces.trackings = jsonData.trackings;
             if(this.dataMultipieces.response == "SUCCESS: Guides Generated"){
               var str = "";
+              this.download.printType = this.createGuideservice.printTypeFedEx;
               for(let i=0; i<this.dataMultipieces.trackings.length; i++){
                 this.download.DownloadFileFedEx(this.dataMultipieces.trackings[i]).subscribe(document => {
                   if(!document){
 
                   }else{
+                    this.download.printType = this.createGuideservice.printTypeFedEx
                     if(this.download.printType == "Z"){
 
                       if(existPrinters){
@@ -458,9 +539,10 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
                           str += String.fromCharCode(ch);
                         }
                         if(i == this.dataMultipieces.trackings.length-1){
-                          this.sendDataPro(str);
                           this.guides.selectedGuides = this.arrayShipment;
-                          this.router.navigate(['/summary']);
+                          this.sendDataPro(str);
+
+                          //this.router.navigate(['/summary']);
                         }
                       }else{
                         x.style.display = "none";
@@ -508,7 +590,7 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
           this.shipment.originColony = "Col " + forma.controls["originColony"].value;
 
           this.shipment.destinyColony = "Col " + forma.controls["destinyColony"].value;
-
+          this.download.printType = this.createGuideservice.printTypeFedEx;
           this.createGuideservice.GenerateGuideFedEx(this.shipment).subscribe(jsonData => {
             if(!jsonData){
               this.loading = false;
@@ -517,6 +599,7 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
               if(jsonData == "ERROR: BUY MORE PREPAID GUIDES"){
                 this.router.navigate(['/buy-guides']);
               }else{
+                this.download.printType = this.createGuideservice.printTypeFedEx;
                 this.download.DownloadFileFedEx(jsonData).subscribe(document => {
                   if(!document){
 
@@ -550,9 +633,10 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
 
                           str += String.fromCharCode(ch);
                         }
-                        this.sendDataPro(str);
                         this.guides.selectedGuide = this.shipment;
-                        this.router.navigate(['/summary']);
+                        this.sendDataPro(str);
+
+                        //this.router.navigate(['/summary']);
                       }else{
                         x.style.display = "none";
                         this.petitionError = true;
@@ -591,40 +675,79 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
 
       //RedPack
       if(this.parcelId == 2){
-      this.download.printType == "P";
+      this.download.printType == this.createGuideservice.printTypeRedPack;
+
         if(this.createGuideservice.multipiecesData.length > 0){
-          this.dlvyType = forma.controls["dlvyType"].value;
           this.email = forma.controls["email"].value;
-          this.createGuideservice.GenerateGuideMPSRedPack(this.arrayShipment, this.dlvyType, this.email).subscribe(jsonData => {
+          this.createGuideservice.GenerateGuideMPSRedPack(this.arrayShipment,this.email).subscribe(jsonData => {
 
             this.dataMultipieces.response = jsonData.response;
             this.dataMultipieces.trackings = jsonData.trackings;
             if(this.dataMultipieces.response == "SUCCESS: Guides Generated"){
+              var str = "";
               for(let i=0; i<this.dataMultipieces.trackings.length; i++){
+                this.download.printType = this.createGuideservice.printTypeRedPack;
                 this.download.DownloadFileRedPack(this.dataMultipieces.trackings[i]).subscribe(document => {
                   if(!document){
 
                   }else{
                     var byteCharacters = document;
-                    var byteArray = new Uint8Array(byteCharacters);
-                    var blob = new Blob([byteArray], {type: 'application/pdf'});
-                    var url= window.URL.createObjectURL(blob);
-                    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                        window.navigator.msSaveOrOpenBlob(blob);
-                    }
-                    else {
-                        //var objectUrl = URL.createObjectURL(blob);
-                        //window.open(objectUrl);
-                        window.open(url);
+                    if(this.createGuideservice.printTypeRedPack == "Z"){
+                      const extraByteMap = [ 1, 1, 1, 1, 2, 2, 3, 0 ];
+                      var count = byteCharacters.length;
+
+                      for (var index = 0;index < count;)
+                      {
+                        var ch = byteCharacters[index++];
+                        if (ch & 0x80)
+                        {
+                          var extra = extraByteMap[(ch >> 3) & 0x07];
+                          if (!(ch & 0x40) || !extra || ((index + extra) > count)){
+
+                          }
+                          ch = ch & (0x3F >> extra);
+                          for (;extra > 0;extra -= 1)
+                          {
+                            var chx = byteCharacters[index++];
+                            if ((chx & 0xC0) != 0x80){
+
+                            }
+                            ch = (ch << 6) | (chx & 0x3F);
+                          }
+                        }
+
+                        str += String.fromCharCode(ch);
+                      }
+                      if(this.createGuideservice.printTypeRedPack == "Z" && i == this.dataMultipieces.trackings.length - 1){
+                        this.guides.selectedGuides = this.arrayShipment;
+                        this.sendDataPro(str);
+
+                        //this.router.navigate(['/summary']);
+                      }
+                    }else{
+                      var byteArray = new Uint8Array(byteCharacters);
+                      var blob = new Blob([byteArray], {type: 'application/pdf'});
+                      var url= window.URL.createObjectURL(blob);
+                      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                          window.navigator.msSaveOrOpenBlob(blob);
+                      }
+                      else {
+                          //var objectUrl = URL.createObjectURL(blob);
+                          //window.open(objectUrl);
+                          window.open(url);
+
+                      }
+                      this.guides.selectedGuides = this.arrayShipment;
+                      this.router.navigate(['/summary']);
 
                     }
                     /*this.guides.selectedGuide = this.shipment;
                     this.router.navigate(['/summary']);*/
                   }
                 });
-                this.guides.selectedGuides = this.arrayShipment;
-                this.router.navigate(['/summary']);
               }
+
+
             }else if(this.dataMultipieces.response == "ERROR: BUY MORE PREPAID GUIDES"){
               this.router.navigate(['/buy-guides']);
             }
@@ -634,9 +757,11 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
             this.loading = false;
           });
         }else{
-          this.dlvyType = forma.controls["dlvyType"].value;
+
           this.email = forma.controls["email"].value;
-          this.createGuideservice.GenerateGuideRedPack(this.shipment, this.dlvyType, this.email).subscribe(jsonData => {
+          this.download.printType = this.createGuideservice.printTypeRedPack;
+
+          this.createGuideservice.GenerateGuideRedPack(this.shipment, this.email).subscribe(jsonData => {
             if(!jsonData){
               this.loading = false;
               this.petitionError = true;
@@ -649,19 +774,54 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
 
                 }else{
                   var byteCharacters = document;
-                  var byteArray = new Uint8Array(byteCharacters);
-                  var blob = new Blob([byteArray], {type: 'application/pdf'});
-                  var url= window.URL.createObjectURL(blob);
-                  if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                      window.navigator.msSaveOrOpenBlob(blob);
+                  if(this.createGuideservice.printTypeRedPack == "Z"){
+                    const extraByteMap = [ 1, 1, 1, 1, 2, 2, 3, 0 ];
+                    var count = byteCharacters.length;
+                    var str = "";
+                    for (var index = 0;index < count;)
+                    {
+                      var ch = byteCharacters[index++];
+                      if (ch & 0x80)
+                      {
+                        var extra = extraByteMap[(ch >> 3) & 0x07];
+                        if (!(ch & 0x40) || !extra || ((index + extra) > count)){
+
+                        }
+                        ch = ch & (0x3F >> extra);
+                        for (;extra > 0;extra -= 1)
+                        {
+                          var chx = byteCharacters[index++];
+                          if ((chx & 0xC0) != 0x80){
+
+                          }
+                          ch = (ch << 6) | (chx & 0x3F);
+                        }
+                      }
+
+                      str += String.fromCharCode(ch);
+                    }
+
+                    this.guides.selectedGuide = this.shipment;
+                    this.sendDataPro(str);
+
+
+                    //this.router.navigate(['/summary']);
+                  }else{
+                    var byteArray = new Uint8Array(byteCharacters);
+                    var blob = new Blob([byteArray], {type: 'application/pdf'});
+                    var url= window.URL.createObjectURL(blob);
+                    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                        window.navigator.msSaveOrOpenBlob(blob);
+                    }
+                    else {
+                        //var objectUrl = URL.createObjectURL(blob);
+                        //window.open(objectUrl);
+                        window.open(url);
+                    }
+                    this.guides.selectedGuide = this.shipment;
+                    this.router.navigate(['/summary']);
                   }
-                  else {
-                      //var objectUrl = URL.createObjectURL(blob);
-                      //window.open(objectUrl);
-                      window.open(url);
-                  }
-                  this.guides.selectedGuide = this.shipment;
-                  this.router.navigate(['/summary']);
+
                 }
               });
               }
@@ -683,10 +843,10 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
         }else{
           this.shpCode = forma.controls["shpCode"].value;
         }
-        this.dlvyType = forma.controls["dlvyType"].value;
         this.packageContent = forma.controls["packageContent"].value;
         this.numberHouse = forma.controls["numberAddress"].value;
-        this.createGuideservice.GenerateGuidePaquetexpress(this.shipment, this.packageContent, this.client.id, this.dlvyType, this.shpCode, this.numberHouse).subscribe(jsonData => {
+        this.download.printType = this.createGuideservice.printTypePaquete;
+        this.createGuideservice.GenerateGuidePaquetexpress(this.shipment, this.packageContent, this.client.id, this.shpCode, this.numberHouse).subscribe(jsonData => {
           if(!jsonData){
             this.loading = false;
             this.petitionError = true;
@@ -696,6 +856,7 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
               this.router.navigate(['/buy-guides']);
             }else{
               let tracking:string = jsonData;
+              this.download.printType = this.createGuideservice.printTypePaquete;
               if(this.createGuideservice.printTypePaquete == "Z"){
                 this.download.DownloadFilePaquete(tracking).subscribe(document => {
                   if(!document){
@@ -728,9 +889,11 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
 
                       str += String.fromCharCode(ch);
                     }
-                    this.sendDataPro(str);
+
                     this.guides.selectedGuide = this.shipment;
-                    this.router.navigate(['/summary']);
+                    this.sendDataPro(str);
+
+                    //this.router.navigate(['/summary']);
                   }else{
                     x.style.display = "none";
                     this.petitionError = true;
@@ -739,7 +902,7 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
                   }
                 });
               }else{
-                let url:string = "http://webbooking-pruebas.paquetexpress.com.mx:8082/wsReportPaquetexpress/GenCartaPorte?trackingNoGen=" + tracking;
+                let url:string = "http://webbooking.paquetexpress.com.mx:8104/wsReportPaquetexpress/GenCartaPorte?trackingNoGen=" + tracking;
                 window.open(url, "_blank");
                 this.guides.selectedGuide = this.shipment;
                 this.router.navigate(['/summary']);
@@ -755,24 +918,29 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
     }
   }
 
-  sendDataPro(print:string)
-  {
+  sendDataPro(print:string){
     showLoading("Printing...");
     checkPrinterStatus( function (text){
-      if (text == "Ready to Print"){
+      if (text.indexOf("Ready to Print") >= 0){
         //selected_printer.send(zpl, printComplete, printerError);
 
         selected_printer.send(print, printComplete, printerError);
+        //this.openModal();
       }
       else
       {
         printerError(text);
       }
     });
-    if(errorGuide == 1){
-      this.errorGuideModal = errorGuide;
-      this.openModal();
-    }
+    setTimeout( () => { /*Your Code*/
+      if(errorGuide == 1){
+        this.errorGuideModal = errorGuide;
+        this.openModal();
+      }else{
+        this.errorGuideModal = errorGuide;
+        this.openModal();
+      }
+    }, 2000 );
   };
 
   modalActions = new EventEmitter<string|MaterializeAction>();
@@ -781,6 +949,6 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
   }
   closeModal() {
     this.modalActions.emit({action:"modal",params:['close']});
-    this.router.navigate(['/home']);
+    this.router.navigate(['/summary']);
   }
 }

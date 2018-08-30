@@ -252,6 +252,12 @@
         </p>
       </div>
 
+      <div class="col offset-s1 s10 offset-m1 m10 offset-l1 l10" *ngIf="this.userExists">
+        <p class="red-text text-darken-4">
+          Error al crear el usuario, el usuario ya existe.
+        </p>
+      </div>
+
       <div class="row col offset-s1 s10 offset-m1 m10 offset-l1 l10 center-align">
         <button [disabled]="loading" class="btn waves-effect  blue accent-3">Guardar</button>
       </div>
@@ -263,7 +269,9 @@
 </div>
 
 <!--
+-----------------------------------------------------------------------------------------------------
   Formulario de editar
+-----------------------------------------------------------------------------------------------------
 -->
 
 <div *ngIf="this.clientService.operation == 1" class="row  main">

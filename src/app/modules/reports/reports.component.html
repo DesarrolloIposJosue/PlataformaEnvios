@@ -112,6 +112,45 @@
 
       <div *ngIf="this.createGuideService.userActual.typeId == 2">
 
+        <!-- Modal Structure -->
+        <div id="modal1" class="modal top-sheet" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
+          <div *ngIf="this.canceledGuide && this.canceledPressed == 1" class="modal-content">
+            <h4>Cancelación exitosa</h4>
+            <p>La guía se canceló correctamente</p>
+          </div>
+          <div *ngIf="this.canceledGuide && this.canceledPressed == 1" class="modal-footer">
+            <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Cerrar</a>
+            <a class="modal-action modal-close waves-effect waves-green btn-flat" (click)="closeModal()">Aceptar</a>
+          </div>
+
+          <div *ngIf="!this.canceledGuide && this.canceledPressed == 1" class="modal-content">
+            <h4>Error</h4>
+            <p>La cancelación no pudo realizarse</p>
+          </div>
+          <div *ngIf="!this.canceledGuide && this.canceledPressed == 1" class="modal-footer">
+            <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Cerrar</a>
+            <a class="modal-action modal-close waves-effect waves-green btn-flat" (click)="closeModal()">Aceptar</a>
+          </div>
+
+          <div *ngIf="!this.existPrinter && this.canceledPressed == 0" class="modal-content">
+            <h4>Error de impresión</h4>
+            <p>Es posible que se necesite el software para imprimir</p>
+          </div>
+          <div *ngIf="!this.existPrinter && this.canceledPressed == 0" class="modal-footer">
+            <a class="waves-effect waves-red btn-flat" (click)="closeModal()">Cerrar</a>
+            <a class="modal-action modal-close waves-effect waves-green btn-flat" (click)="closeModal()">Aceptar</a>
+          </div>
+
+          <div *ngIf="this.errorGuideModal == 1 && this.canceledPressed == 0" class="modal-content">
+            <h4>Error de impresión</h4>
+            <p>Puede que haya un problema con la impresora, revise que esta encendida y conectada, o que todo este correcto</p>
+          </div>
+          <div *ngIf="this.errorGuideModal == 1 && this.canceledPressed == 0" class="modal-footer">
+            <a class="waves-effect waves-red btn-flat" (click)="closeModal()">Cerrar</a>
+            <a class="modal-action modal-close waves-effect waves-green btn-flat" (click)="closeModal()">Aceptar</a>
+          </div>
+        </div>
+
         <div class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10" [ngClass]="{'has-danger': startDate.errors?.required && startDate.touched}">
           <i class="material-icons prefix">date_range</i>
           <input id="startDate" materialize="pickadate" [materializeParams]="[{format:'dd/mm/yyyy'}]" name="startDate" ngModel #startDate="ngModel" type="text" class="validate" class="datepicker" #startDate required>
@@ -165,7 +204,7 @@
 
   <div *ngIf="totalCalculated" class="input-field col offset-s1 s10 offset-m1 m10 offset-l1 l10 blue lighten-5 ">
     <h6>Total calculado: {{total}}</h6>
-    <a (click)="downloadReports()" class="btn-small blue accent-3">Descargar reporte Excel</a>
+    <a *ngIf="this.validReport" (click)="downloadReports()" class="btn-small blue accent-3">Descargar reporte Excel</a>
   </div>
 
 
@@ -198,10 +237,11 @@
         <td *ngIf="shipment.multiPieces == 'N'">{{shipment.creationDateString}}</td>
         <td *ngIf="shipment.multiPieces == 'N' && shipment.printType == 'Z'"><img src="./assets/Zebra.png" alt="zebra"></td>
         <td *ngIf="shipment.multiPieces == 'N' && shipment.printType == 'P'"><img src="./assets/PDF.png" alt="pdf"></td>
-        <td *ngIf="shipment.multiPieces == 'N'">
+        <td *ngIf="shipment.multiPieces == 'N' && shipment.status != 'CANCELADO'">
           <a (click)="checkGuide(shipment.parcelId, shipment.trackingKey, shipment.printType)" class="btn-small blue accent-3">Reimprimir</a>
         </td>
-        <td *ngIf="shipment.multiPieces == 'N' && this.createGuideService.userActual.typeId == 1 && shipment.status != 'CANCELADO'">
+        <!-- *ngIf="shipment.multiPieces == 'N' && this.createGuideService.userActual.typeId == 1 && shipment.status != 'CANCELADO' && shipment.parcelId != 2" -->
+        <td *ngIf="shipment.multiPieces == 'N' && shipment.status != 'CANCELADO' && shipment.parcelId != 2">
           <a (click)="cancelGuide(shipment)" class="btn-small blue accent-3">Cancelar</a>
         </td>
         <td *ngIf="shipment.multiPieces == 'N'">
@@ -226,7 +266,7 @@
         <td *ngIf="shipment.quantity > 0 && shipment.status != 'CANCELADO'">
           <a (click)="checkMultiguides(shipment.parcelId, shipment.trackings, shipment.printType)" class="btn-small blue accent-3">Reimprimir</a>
         </td>
-        <td *ngIf="shipment.quantity > 0 && this.createGuideService.userActual.typeId == 1 && shipment.status != 'CANCELADO'">
+        <td *ngIf="shipment.quantity > 0 && shipment.status != 'CANCELADO' && shipment.parcelId != 2">
           <a (click)="cancelGuideMPS(shipment)" class="btn-small blue accent-3">Cancelar</a>
         </td>
         <td *ngIf="shipment.quantity > 0">

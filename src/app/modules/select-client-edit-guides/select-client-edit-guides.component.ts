@@ -159,7 +159,7 @@ export class SelectClientEditGuidesComponent implements OnInit {
       var elementAux = <HTMLInputElement>document.getElementById(this.guidesUser[j].parcelId.toString());
       this.updateUserGuides.push(new User_PrepaidGuides(this.guidesUser[j].userId, Number(elementAux.value), this.guidesUser[j].parcelId));
     }
-    console.log(this.updateUserGuides);
+    
 
     this.guideService.updatePrepaidGuides(this.updateUserGuides).subscribe(
       (successResponse) => {

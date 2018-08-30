@@ -27,8 +27,25 @@ export class CreateGuideService {
   public totalAmount:number;
   public amountDetail:string;
   public printType:string;
+  public printTypeFedEx:string;
   public printTypePaquete:string;
+  public printTypeRedPack:string;
   public thirdAccount:string;
+  public reference:string;
+  public stateCode:string;
+  public stateOriginCode:string;
+
+  public deliveryType:number;
+  public volumetricWeight:number;
+  public outOfArea:number;
+
+  public originState:string;
+  public originColony:string;
+  public originCity:string;
+  public originZIP:string;
+  public originZipChange:boolean;
+
+
   constructor(private http: Http) {
 
   }
@@ -49,11 +66,14 @@ export class CreateGuideService {
   }
 
   GenerateGuideFedEx(shipment:Shipment){
+    this.printType = this.printTypeFedEx;
     var operation:string = this.apiBase + 'GenerateGuide';
     // Headers
     let myHeaders = new Headers();
     myHeaders.set('ThirdAccount', this.thirdAccount);
+    myHeaders.set('DeliveryType', this.deliveryType.toString());
     myHeaders.set('PrintType', this.printType);
+    myHeaders.set('Reference', this.reference);
     const Ship:Shipment = shipment;
     // Body or Search
     let myParams: URLSearchParams = new URLSearchParams();
@@ -62,7 +82,8 @@ export class CreateGuideService {
     return this.http.post(operation, JSON.stringify(Ship), options).map((res:Response) => res.json());
   }
 
-  GenerateGuideRedPack(shipment:Shipment, dlvyType:string, email:string){
+  GenerateGuideRedPack(shipment:Shipment, email:string){
+    this.printType = this.printTypeRedPack;
     var operation:string = this.apiBase + 'GenerateGuide';
 
     // Headers
@@ -72,13 +93,16 @@ export class CreateGuideService {
     // Body or Search
     let myParams: URLSearchParams = new URLSearchParams();
     myHeaders.set('RDPCKOriginEmail', email);
-    myHeaders.set('RDPCKTipoEntrega', dlvyType);
+    myHeaders.set('RDPCKTipoEntrega', this.deliveryType.toString());
+    myHeaders.set('Reference', this.reference);
+    myHeaders.set('PrintType', this.printType);
     let options = new RequestOptions({ headers: myHeaders, search: myParams });
 
     return this.http.post(operation, JSON.stringify(Ship), options).map((res:Response) => res.json());
   }
 
-  GenerateGuidePaquetexpress(shipment:Shipment, contentPackage:string, numberClient:number, dlvyType:string, shpCode:string, numberHouse:string){
+  GenerateGuidePaquetexpress(shipment:Shipment, contentPackage:string, numberClient:number, shpCode:string, numberHouse:string){
+    this.printType = this.printTypePaquete;
     var operation:string = this.apiBase + 'GenerateGuide';
     // Headers
     let myHeaders = new Headers();
@@ -89,8 +113,9 @@ export class CreateGuideService {
     let myParams: URLSearchParams = new URLSearchParams();
     myHeaders.set('ContentPackage', contentPackage);
     myHeaders.set('NumberClient', numClient);
-    myHeaders.set('DlvyType', dlvyType);
+    myHeaders.set('DeliveryType', (this.deliveryType).toString());
     myHeaders.set('ShpCode', shpCode);
+    myHeaders.set('Reference', this.reference);
     myHeaders.set('NumberHouse', numberHouse);
     myHeaders.set('PrintType', this.printType);
     let options = new RequestOptions({ headers: myHeaders, search: myParams });
@@ -99,12 +124,15 @@ export class CreateGuideService {
   }
 
   GenerateGuideMPS(shipments:Shipment[]){
+    this.printType = this.printTypeFedEx;
     var operation:string = this.apiBase + 'GenerateGuideMPS';
     // Headers
     let myHeaders = new Headers();
     // Body or Search
     myHeaders.set('PrintType', this.printType);
     myHeaders.set('ThirdAccount', this.thirdAccount);
+    myHeaders.set('DeliveryType', this.deliveryType.toString());
+    myHeaders.set('Reference', this.reference);
 
     let myParams: URLSearchParams = new URLSearchParams();
     let options = new RequestOptions({ headers: myHeaders, search: myParams });
@@ -112,7 +140,8 @@ export class CreateGuideService {
     return this.http.post(operation, JSON.stringify(shipments), options).map((res:Response) => res.json());
   }
 
-  GenerateGuideMPSRedPack(shipments:Shipment[], dlvyType:string, email:string){
+  GenerateGuideMPSRedPack(shipments:Shipment[], email:string){
+    this.printType = this.printTypeRedPack;
     var operation:string = this.apiBase + 'GenerateGuideMPS';
 
     // Headers
@@ -121,7 +150,9 @@ export class CreateGuideService {
     // Body or Search
     let myParams: URLSearchParams = new URLSearchParams();
     myHeaders.set('RDPCKOriginEmail', email);
-    myHeaders.set('RDPCKTipoEntrega', dlvyType);
+    myHeaders.set('RDPCKTipoEntrega', this.deliveryType.toString());
+    myHeaders.set('Reference', this.reference);
+    myHeaders.set('PrintType', this.printType);
     let options = new RequestOptions({ headers: myHeaders, search: myParams });
 
     return this.http.post(operation, JSON.stringify(shipments), options).map((res:Response) => res.json());

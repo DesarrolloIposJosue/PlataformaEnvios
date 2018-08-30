@@ -127,8 +127,10 @@ function sendData()
 };
 function checkPrinterStatus(finishedFunction)
 {
+
   selected_printer.sendThenRead("~HQES",
         function(text){
+
             var that = this;
             var statuses = new Array();
             var ok = false;
@@ -164,6 +166,7 @@ function checkPrinterStatus(finishedFunction)
               statuses.push("Error: Unknown Error");
             finishedFunction(statuses.join());
       }, printerError);
+
       var error = printerError.toString()
       if(error.indexOf('An error occurred while printing.') >= 0){
         errorGuide = 1;
@@ -268,6 +271,7 @@ export class ReportsComponent implements OnInit {
   private limitDate:Date;
 
   private validDateGuide:ValidDateGuide[] = [];
+  private validDateGuideForReports:ValidDateGuide[] = [];
   private validDateGuideAux:ValidDateGuide;
 
   private multipiecesObject:ShowMultiPieces[] = [];
@@ -287,6 +291,11 @@ export class ReportsComponent implements OnInit {
   private existPrinter:boolean = false;
 
   private errorGuideModal:number = 0;
+
+  private startingDate:string;
+  private endingDate:string;
+
+  private validReport:boolean = true;
 
   constructor(
     private clientService:ClientService,
@@ -364,6 +373,9 @@ export class ReportsComponent implements OnInit {
   }
 
   checkReports(forma:NgForm){
+    this.validReport = true;
+    this.validDateGuide = [];
+    this.validDateGuideForReports = [];
     this.total = 0;
     this.validDateGuide = [];
     this.multipiecesObject = [];
@@ -377,7 +389,9 @@ export class ReportsComponent implements OnInit {
 
     if(this.reportType == 2 || this.reportType == 1){
       startDate = forma.controls["startDate"].value;
+      this.startingDate = startDate;
       finishDate = forma.controls["finishDate"].value;
+      this.endingDate = finishDate;
     }
 
     if((this.reportType == 2) && this.user.typeId == 1){
@@ -435,6 +449,7 @@ export class ReportsComponent implements OnInit {
                 parcelName = "Paquetexpress";
               }
 
+
               this.validDateGuide.push(new ValidDateGuide(response[i].Id, response[i].UserId, response[i].ParcelId, response[i].ProductId,
               response[i].TotalAmount, response[i].AmountDetail, response[i].OriginCompany, response[i].OriginAddress, response[i].OriginAddress2,
             response[i].OriginColony, response[i].OriginCity, response[i].OriginState, response[i].OriginZIP, response[i].OriginCountry, response[i].OriginPhoneNumber,
@@ -442,8 +457,18 @@ export class ReportsComponent implements OnInit {
           response[i].DestinyState, response[i].DestinyZIP, response[i].DestinyCountry, response[i].DestinyPhoneNumber, response[i].DestinyUserName, response[i].TrackingKey,
         response[i].Status, response[i].Weight, response[i].Length, response[i].Width, response[i].Height, response[i].Insurance, response[i].CreationDate, response[i].CreationDateString,
         response[i].NumGuide, response[i].MultiPieces, response[i].MultiPiecesMasterTracking, response[i].MultiPiecesMasterId, response[i].MultiPiecesSequenceNumber, response[i].ProductName,
-        parcelName, valid, response[i].PrintType));
+        parcelName, valid, response[i].PrintType, response[i].Reference,  response[i].Username, response[i].VolumetricWeight, response[i].OutOfArea));
+
+        this.validDateGuideForReports.push(new ValidDateGuide(response[i].Id, response[i].UserId, response[i].ParcelId, response[i].ProductId,
+        response[i].TotalAmount, response[i].AmountDetail, response[i].OriginCompany, response[i].OriginAddress, response[i].OriginAddress2,
+      response[i].OriginColony, response[i].OriginCity, response[i].OriginState, response[i].OriginZIP, response[i].OriginCountry, response[i].OriginPhoneNumber,
+    response[i].OriginUserName, response[i].DestinyCompany, response[i].DestinyAddress, response[i].DestinyAddress2, response[i].DestinyColony, response[i].DestinyCity,
+    response[i].DestinyState, response[i].DestinyZIP, response[i].DestinyCountry, response[i].DestinyPhoneNumber, response[i].DestinyUserName, response[i].TrackingKey,
+  response[i].Status, response[i].Weight, response[i].Length, response[i].Width, response[i].Height, response[i].Insurance, response[i].CreationDate, response[i].CreationDateString,
+  response[i].NumGuide, response[i].MultiPieces, response[i].MultiPiecesMasterTracking, response[i].MultiPiecesMasterId, response[i].MultiPiecesSequenceNumber, response[i].ProductName,
+  parcelName, valid, response[i].PrintType, response[i].Reference, response[i].Username, response[i].VolumetricWeight, response[i].OutOfArea));
             }
+
 
 
           if(this.shipments.length > 0 || this.validDateGuide.length > 0){
@@ -459,7 +484,7 @@ export class ReportsComponent implements OnInit {
                 if(counterMatches > 0){
                   this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                     this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
-                  this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                    masterGuide.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
                   this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
                   this.shipments = [];
                   this.trackings = [];
@@ -478,13 +503,14 @@ export class ReportsComponent implements OnInit {
                   this.validDateGuideAux = this.validDateGuide[i];
                   this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                     this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
-                  this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                    masterGuide.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
                   this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+
                 }else{
                   this.total = this.validDateGuide[i].totalAmount + this.total;
                   this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                     this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
-                  this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                    masterGuide.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
                   this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
                 }
               }else if(this.validDateGuide[i].multiPieces == "Y"){
@@ -496,11 +522,11 @@ export class ReportsComponent implements OnInit {
                   this.validDateGuide[i].destinyState, this.validDateGuide[i].destinyZip, this.validDateGuide[i].destinyCountry, this.validDateGuide[i].destinyPhoneNumber, this.validDateGuide[i].destinyUserName, this.validDateGuide[i].trackingKey,
                   this.validDateGuide[i].status, this.validDateGuide[i].weight, this.validDateGuide[i].length, this.validDateGuide[i].width, this.validDateGuide[i].height, this.validDateGuide[i].insurance, this.validDateGuide[i].creationDate,
                   this.validDateGuide[i].creationDateString, this.validDateGuide[i].numGuide, this.validDateGuide[i].multiPieces, this.validDateGuide[i].multiPiecesMasterTracking, this.validDateGuide[i].multiPiecesMasterId, this.validDateGuide[i].multiPiecesSequenceNumber,
-                  this.validDateGuide[i].printType, this.validDateGuide[i].productName);
+                  this.validDateGuide[i].printType, this.validDateGuide[i].productName, this.validDateGuide[i].reference, this.validDateGuide[i].username, this.validDateGuide[i].volumetricWeight, this.validDateGuide[i].outOfArea);
                   if(counterMatches > 0){
                     this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                     this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
-                  this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                  masterGuide.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
                   this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
                   }
                   counterMatches = 1;
@@ -538,7 +564,7 @@ export class ReportsComponent implements OnInit {
                 if(counterMatches > 1){
                   this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                   this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
-                  this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                    masterGuide.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
                   this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
                   this.trackings = [];
                   this.guidesId = [];
@@ -547,7 +573,13 @@ export class ReportsComponent implements OnInit {
                 }
               }
             }
-
+            let tempFiles = this.validDateGuide.slice(0);
+            tempFiles.forEach((element) => {
+              if(element.multiPieces == "Y"){
+                let removeIndex = this.validDateGuide.map((item) => item['multiPieces']).indexOf(element['multiPieces']);
+                this.validDateGuide.splice(removeIndex, 1);
+              }
+            });
 
             if(this.total > 0){
               this.totalCalculated = true;
@@ -574,6 +606,7 @@ export class ReportsComponent implements OnInit {
 
       this.guideService.GetShipmentsByUserAndDates(startDateValid, finishDateValid, idClient).subscribe(response =>{
         if(response){
+
             for(let i = 0; i < response.length; i++){
               let valid:boolean = false;
               let x = response[i].CreationDateString.split("/");
@@ -606,10 +639,18 @@ export class ReportsComponent implements OnInit {
           response[i].DestinyState, response[i].DestinyZIP, response[i].DestinyCountry, response[i].DestinyPhoneNumber, response[i].DestinyUserName, response[i].TrackingKey,
         response[i].Status, response[i].Weight, response[i].Length, response[i].Width, response[i].Height, response[i].Insurance, response[i].CreationDate, response[i].CreationDateString,
         response[i].NumGuide, response[i].MultiPieces, response[i].MultiPiecesMasterTracking, response[i].MultiPiecesMasterId, response[i].MultiPiecesSequenceNumber, response[i].ProductName,
-        parcelName, valid, response[i].PrintType));
+        parcelName, valid, response[i].PrintType, response[i].Reference, response[i].Username, response[i].VolumetricWeight, response[i].OutOfArea));
+
+        this.validDateGuideForReports.push(new ValidDateGuide(response[i].Id, response[i].UserId, response[i].ParcelId, response[i].ProductId,
+        response[i].TotalAmount, response[i].AmountDetail, response[i].OriginCompany, response[i].OriginAddress, response[i].OriginAddress2,
+      response[i].OriginColony, response[i].OriginCity, response[i].OriginState, response[i].OriginZIP, response[i].OriginCountry, response[i].OriginPhoneNumber,
+    response[i].OriginUserName, response[i].DestinyCompany, response[i].DestinyAddress, response[i].DestinyAddress2, response[i].DestinyColony, response[i].DestinyCity,
+    response[i].DestinyState, response[i].DestinyZIP, response[i].DestinyCountry, response[i].DestinyPhoneNumber, response[i].DestinyUserName, response[i].TrackingKey,
+  response[i].Status, response[i].Weight, response[i].Length, response[i].Width, response[i].Height, response[i].Insurance, response[i].CreationDate, response[i].CreationDateString,
+  response[i].NumGuide, response[i].MultiPieces, response[i].MultiPiecesMasterTracking, response[i].MultiPiecesMasterId, response[i].MultiPiecesSequenceNumber, response[i].ProductName,
+  parcelName, valid, response[i].PrintType, response[i].Reference, response[i].Username, response[i].VolumetricWeight, response[i].OutOfArea));
+
             }
-
-
 
           if(this.shipments.length > 0 || this.validDateGuide.length > 0){
             this.loaded = true;
@@ -661,7 +702,7 @@ export class ReportsComponent implements OnInit {
                   this.validDateGuide[i].destinyState, this.validDateGuide[i].destinyZip, this.validDateGuide[i].destinyCountry, this.validDateGuide[i].destinyPhoneNumber, this.validDateGuide[i].destinyUserName, this.validDateGuide[i].trackingKey,
                   this.validDateGuide[i].status, this.validDateGuide[i].weight, this.validDateGuide[i].length, this.validDateGuide[i].width, this.validDateGuide[i].height, this.validDateGuide[i].insurance, this.validDateGuide[i].creationDate,
                   this.validDateGuide[i].creationDateString, this.validDateGuide[i].numGuide, this.validDateGuide[i].multiPieces, this.validDateGuide[i].multiPiecesMasterTracking, this.validDateGuide[i].multiPiecesMasterId, this.validDateGuide[i].multiPiecesSequenceNumber,
-                  this.validDateGuide[i].printType, this.validDateGuide[i].productName);
+                  this.validDateGuide[i].printType, this.validDateGuide[i].productName, this.validDateGuide[i].reference, this.validDateGuide[i].username, this.validDateGuide[i].volumetricWeight, this.validDateGuide[i].outOfArea);
                   if(counterMatches > 0){
                     this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
                     this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
@@ -712,6 +753,14 @@ export class ReportsComponent implements OnInit {
                 }
               }
             }
+
+            let tempFiles = this.validDateGuide.slice(0);
+            tempFiles.forEach((element) => {
+              if(element.multiPieces == "Y"){
+                let removeIndex = this.validDateGuide.map((item) => item['multiPieces']).indexOf(element['multiPieces']);
+                this.validDateGuide.splice(removeIndex, 1);
+              }
+            });
             if(this.total > 0){
               this.totalCalculated = true;
             }
@@ -848,16 +897,54 @@ export class ReportsComponent implements OnInit {
 
         }else{
           var byteCharacters = document;
-          var byteArray = new Uint8Array(byteCharacters);
-          var blob = new Blob([byteArray], {type: 'application/pdf'});
-          var url= window.URL.createObjectURL(blob);
-          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-              window.navigator.msSaveOrOpenBlob(blob);
-          }
-          else {
-              //var objectUrl = URL.createObjectURL(blob);
-              //window.open(objectUrl);
-              window.open(url);
+          if(printType == "Z"){
+            if(existPrinters){
+              const extraByteMap = [ 1, 1, 1, 1, 2, 2, 3, 0 ];
+              var count = byteCharacters.length;
+              var str = "";
+              for (var index = 0;index < count;)
+              {
+                var ch = byteCharacters[index++];
+                if (ch & 0x80)
+                {
+                  var extra = extraByteMap[(ch >> 3) & 0x07];
+                  if (!(ch & 0x40) || !extra || ((index + extra) > count)){
+
+                  }
+
+                  ch = ch & (0x3F >> extra);
+                  for (;extra > 0;extra -= 1)
+                  {
+                    var chx = byteCharacters[index++];
+                    if ((chx & 0xC0) != 0x80){
+
+                    }
+
+                    ch = (ch << 6) | (chx & 0x3F);
+                  }
+                }
+                str += String.fromCharCode(ch);
+              }
+              this.existPrinter = existPrinters;
+              this.sendDataPro(str);
+
+            }else{
+
+              this.existPrinter = existPrinters;
+              this.openModal();
+            }
+          }else{
+            var byteArray = new Uint8Array(byteCharacters);
+            var blob = new Blob([byteArray], {type: 'application/pdf'});
+            var url= window.URL.createObjectURL(blob);
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(blob);
+            }
+            else {
+                //var objectUrl = URL.createObjectURL(blob);
+                //window.open(objectUrl);
+                window.open(url);
+            }
           }
         }
       });
@@ -907,7 +994,7 @@ export class ReportsComponent implements OnInit {
           }
         });
       }else{
-        let url:string = "http://webbooking-pruebas.paquetexpress.com.mx:8082/wsReportPaquetexpress/GenCartaPorte?trackingNoGen=" + trackingKey;
+        let url:string = "http://webbooking.paquetexpress.com.mx:8104/wsReportPaquetexpress/GenCartaPorte?trackingNoGen=" + trackingKey;
         window.open(url, "_blank");
       }
     }
@@ -984,25 +1071,61 @@ export class ReportsComponent implements OnInit {
           }else{
             var byteCharacters = document;
             var byteArray = new Uint8Array(byteCharacters);
-            var blob = new Blob([byteArray], {type: 'application/pdf'});
-            var url= window.URL.createObjectURL(blob);
-            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            if(printType == "Z"){
+              if(existPrinters){
+                const extraByteMap = [ 1, 1, 1, 1, 2, 2, 3, 0 ];
+                var count = byteCharacters.length;
 
-                window.navigator.msSaveOrOpenBlob(blob);
+                for (var index = 0;index < count;)
+                {
+                  var ch = byteCharacters[index++];
+                  if (ch & 0x80)
+                  {
+                    var extra = extraByteMap[(ch >> 3) & 0x07];
+                    if (!(ch & 0x40) || !extra || ((index + extra) > count)){
 
-            }
-            else {
-                //var objectUrl = URL.createObjectURL(blob);
-                //window.open(objectUrl);
+                    }
 
-                window.open(url);
+                    ch = ch & (0x3F >> extra);
+                    for (;extra > 0;extra -= 1)
+                    {
+                      var chx = byteCharacters[index++];
+                      if ((chx & 0xC0) != 0x80){
 
+                      }
+
+                      ch = (ch << 6) | (chx & 0x3F);
+                    }
+                  }
+
+                  strCommand += String.fromCharCode(ch);
+                }
+                this.existPrinter = existPrinters;
+                if(tracking == trackingKeys.length-1){
+                  this.sendDataPro(strCommand);
+                }
+              }else{
+                this.existPrinter = existPrinters;
+                this.openModal();
+              }
+            }else{
+              var blob = new Blob([byteArray], {type: 'application/pdf'});
+
+              var url= window.URL.createObjectURL(blob);
+              if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                  window.navigator.msSaveOrOpenBlob(blob);
+              }
+              else {
+                  //var objectUrl = URL.createObjectURL(blob);
+                  //window.open(objectUrl);
+                  window.open(url);
+              }
             }
           }
         });
       }
       if(parcelId == 5){
-        let url:string = "http://webbooking-pruebas.paquetexpress.com.mx:8082/wsReportPaquetexpress/GenCartaPorte?trackingNoGen=" + trackingKeys[tracking];
+        let url:string = "http://webbooking.paquetexpress.com.mx:8104/wsReportPaquetexpress/GenCartaPorte?trackingNoGen=" + trackingKeys[tracking];
         window.open(url, "_blank");
       }
     }
@@ -1047,10 +1170,12 @@ export class ReportsComponent implements OnInit {
   }
 
   downloadReports(){
-    let data:ObjectExcel[] = this.PrepareDataCSV(this.validDateGuide);
+
+    let data:ObjectExcel[] = this.PrepareDataCSV(this.validDateGuideForReports);
 
     let json = JSON.stringify(data);
     this.excelService.try(data);
+    this.validReport = false;
   }
 
    ConvertToCSV(objArray) {
@@ -1078,13 +1203,402 @@ export class ReportsComponent implements OnInit {
   }
 
   cancelGuide(shipment:Shipment){
+    this.validReport = true;
+    this.validDateGuideForReports = [];
+    this.validDateGuide = [];
     this.canceledPressed = 1
     this.guideService.CancelGuide(shipment).subscribe(response =>{
       if(response){
         if(response == "SUCCESS: Shipment Canceled"){
-
           this.canceledGuide = true;
           this.openModal();
+          this.total = 0;
+          this.validDateGuide = [];
+          this.multipiecesObject = [];
+          var element = <HTMLInputElement>document.getElementById("userData");
+          this.shipments = [];
+          this.trackings = [];
+
+          let startDate:string;
+          let finishDate:string;
+          let idClient:number;
+
+          if(this.reportType == 2 || this.reportType == 1){
+            startDate = this.startingDate;
+            finishDate = this.endingDate;
+          }
+
+          if((this.reportType == 2) && this.user.typeId == 1){
+            for(var i = 0; i < this.response.length; i++){
+              var userNameLastName = this.response[i].name + " " + this.response[i].lastName;
+              if(element.value == userNameLastName){
+                idClient = this.response[i].id;
+              }
+            }
+          }else{
+            idClient = this.user.id;
+          }
+
+          if(this.reportType == 1){
+            //Código para reportes por cliente
+            let x = startDate.split("/");
+            let day:string = x[0];
+            let month:string = x[1];
+            let year:string = x[2];
+            let startDateValid:string = year + "-" + month + "-" + day;
+
+            x = finishDate.split("/");
+            day = x[0];
+            month = x[1];
+            year = x[2];
+            let finishDateValid:string = year + "-" + month + "-" + day;
+
+            this.guideService.GetShipmentsByUserAndDates(startDateValid, finishDateValid, 0).subscribe(response =>{
+              if(response){
+                let parcelName:string;
+                  for(let i = 0; i < response.length; i++){
+                    let valid:boolean = false;
+                    let x = response[i].CreationDateString.split("/");
+                    let day:string = x[0];
+                    let month:string = x[1];
+                    let year:string = x[2];
+                    let dateString:string = year + "-" + day + "-" + month;
+
+
+                    let newDate:Date = new Date(dateString);
+
+                    if(newDate > this.limitDate){
+                      valid = true;
+                    }
+
+                    if(response[i].ParcelId == 1){
+                      parcelName = "DHL";
+                    }else if(response[i].ParcelId == 2){
+                      parcelName = "RedPack";
+                    }else if(response[i].ParcelId == 3){
+                      parcelName = "FedEx";
+                    }else if(response[i].ParcelId == 4){
+                      parcelName = "Estafeta";
+                    }else{
+                      parcelName = "Paquetexpress";
+                    }
+
+                    this.validDateGuide.push(new ValidDateGuide(response[i].Id, response[i].UserId, response[i].ParcelId, response[i].ProductId,
+                    response[i].TotalAmount, response[i].AmountDetail, response[i].OriginCompany, response[i].OriginAddress, response[i].OriginAddress2,
+                  response[i].OriginColony, response[i].OriginCity, response[i].OriginState, response[i].OriginZIP, response[i].OriginCountry, response[i].OriginPhoneNumber,
+                response[i].OriginUserName, response[i].DestinyCompany, response[i].DestinyAddress, response[i].DestinyAddress2, response[i].DestinyColony, response[i].DestinyCity,
+                response[i].DestinyState, response[i].DestinyZIP, response[i].DestinyCountry, response[i].DestinyPhoneNumber, response[i].DestinyUserName, response[i].TrackingKey,
+              response[i].Status, response[i].Weight, response[i].Length, response[i].Width, response[i].Height, response[i].Insurance, response[i].CreationDate, response[i].CreationDateString,
+              response[i].NumGuide, response[i].MultiPieces, response[i].MultiPiecesMasterTracking, response[i].MultiPiecesMasterId, response[i].MultiPiecesSequenceNumber, response[i].ProductName,
+              parcelName, valid, response[i].PrintType, response[i].Reference, response[i].Username, response[i].VolumetricWeight, response[i].OutOfArea));
+
+              this.validDateGuideForReports.push(new ValidDateGuide(response[i].Id, response[i].UserId, response[i].ParcelId, response[i].ProductId,
+              response[i].TotalAmount, response[i].AmountDetail, response[i].OriginCompany, response[i].OriginAddress, response[i].OriginAddress2,
+            response[i].OriginColony, response[i].OriginCity, response[i].OriginState, response[i].OriginZIP, response[i].OriginCountry, response[i].OriginPhoneNumber,
+          response[i].OriginUserName, response[i].DestinyCompany, response[i].DestinyAddress, response[i].DestinyAddress2, response[i].DestinyColony, response[i].DestinyCity,
+          response[i].DestinyState, response[i].DestinyZIP, response[i].DestinyCountry, response[i].DestinyPhoneNumber, response[i].DestinyUserName, response[i].TrackingKey,
+        response[i].Status, response[i].Weight, response[i].Length, response[i].Width, response[i].Height, response[i].Insurance, response[i].CreationDate, response[i].CreationDateString,
+        response[i].NumGuide, response[i].MultiPieces, response[i].MultiPiecesMasterTracking, response[i].MultiPiecesMasterId, response[i].MultiPiecesSequenceNumber, response[i].ProductName,
+        parcelName, valid, response[i].PrintType,  response[i].Reference, response[i].Username, response[i].VolumetricWeight, response[i].OutOfArea));
+                  }
+
+
+                if(this.shipments.length > 0 || this.validDateGuide.length > 0){
+                  this.loaded = true;
+                  let masterGuide:Shipment;
+                  let masterId:number = 0;
+                  let lastMasterId:number = 0;
+                  let counterMatches:number = 0;
+                  let start:boolean = false;
+                  for(let i=0; i<this.validDateGuide.length; i++){
+                    if(this.validDateGuide[i].multiPieces == "N"){
+                      this.total = this.validDateGuide[i].totalAmount + this.total;
+                      if(counterMatches > 0){
+                        this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                          this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                        this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                        this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                        this.shipments = [];
+                        this.trackings = [];
+                        counterMatches = 0;
+                      }
+                    }else if(i == this.validDateGuide.length-1){
+                      if(this.validDateGuide[i].multiPieces == "Y"){
+                        this.total = this.validDateGuide[i].totalAmount + this.total;
+                        counterMatches++;
+                        if(this.validDateGuide[i].parcelId == 2){
+                          this.trackings.push(this.validDateGuide[i].numGuide);
+                        }else{
+                          this.trackings.push(this.validDateGuide[i].trackingKey);
+                        }
+                        this.guidesId.push(this.validDateGuide[i].id.toString());
+                        this.validDateGuideAux = this.validDateGuide[i];
+                        this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                          this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                        this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                        this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                      }else{
+                        this.total = this.validDateGuide[i].totalAmount + this.total;
+                        this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                          this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                        this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                        this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                      }
+                    }else if(this.validDateGuide[i].multiPieces == "Y"){
+                      if(this.validDateGuide[i].multiPiecesMasterId == 0){
+                        masterGuide = new Shipment(this.validDateGuide[i].id, this.validDateGuide[i].userId, this.validDateGuide[i].parcelId, this.validDateGuide[i].productId,
+                        this.validDateGuide[i].totalAmount, this.validDateGuide[i].amountDetail, this.validDateGuide[i].originCompany, this.validDateGuide[i].originAddress, this.validDateGuide[i].originAddress2,
+                        this.validDateGuide[i].originColony, this.validDateGuide[i].originCity, this.validDateGuide[i].originState, this.validDateGuide[i].originZip, this.validDateGuide[i].originCountry, this.validDateGuide[i].originPhoneNumber,
+                        this.validDateGuide[i].originUserName, this.validDateGuide[i].destinyCompany, this.validDateGuide[i].destinyAddress, this.validDateGuide[i].destinyAddress2, this.validDateGuide[i].destinyColony, this.validDateGuide[i].destinyCity,
+                        this.validDateGuide[i].destinyState, this.validDateGuide[i].destinyZip, this.validDateGuide[i].destinyCountry, this.validDateGuide[i].destinyPhoneNumber, this.validDateGuide[i].destinyUserName, this.validDateGuide[i].trackingKey,
+                        this.validDateGuide[i].status, this.validDateGuide[i].weight, this.validDateGuide[i].length, this.validDateGuide[i].width, this.validDateGuide[i].height, this.validDateGuide[i].insurance, this.validDateGuide[i].creationDate,
+                        this.validDateGuide[i].creationDateString, this.validDateGuide[i].numGuide, this.validDateGuide[i].multiPieces, this.validDateGuide[i].multiPiecesMasterTracking, this.validDateGuide[i].multiPiecesMasterId, this.validDateGuide[i].multiPiecesSequenceNumber,
+                        this.validDateGuide[i].printType, this.validDateGuide[i].productName, this.validDateGuide[i].reference, this.validDateGuide[i].username, this.validDateGuide[i].volumetricWeight, this.validDateGuide[i].outOfArea);
+                        if(counterMatches > 0){
+                          this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                          this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                        this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                        this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                        }
+                        counterMatches = 1;
+                        this.trackings = [];
+                        this.guidesId = []
+                        if(this.validDateGuide[i].parcelId == 2){
+                          this.trackings.push(this.validDateGuide[i].numGuide);
+                        }else{
+                          this.trackings.push(this.validDateGuide[i].trackingKey);
+                        }
+                        this.guidesId.push(this.validDateGuide[i].id.toString());
+                        if(i != this.validDateGuide.length-2){
+                          this.total = this.validDateGuide[i].totalAmount + this.total;
+                        }
+                      }else if(i == this.validDateGuide.length-1){
+                        counterMatches++;
+                        if(this.validDateGuide[i].parcelId == 2){
+                          this.trackings.push(this.validDateGuide[i].numGuide);
+                        }else{
+                          this.trackings.push(this.validDateGuide[i].trackingKey);
+                        }
+                        this.guidesId.push(this.validDateGuide[i].id.toString());
+                      }else{
+                        counterMatches++;
+                        if(this.validDateGuide[i].parcelId == 2){
+                          this.trackings.push(this.validDateGuide[i].numGuide);
+                        }else{
+                          this.trackings.push(this.validDateGuide[i].trackingKey);
+                        }
+                        this.guidesId.push(this.validDateGuide[i].id.toString());
+                      }
+                      start = true;
+                      this.validDateGuideAux = this.validDateGuide[i];
+                    }else{
+                      if(counterMatches > 1){
+                        this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                        this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                        this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                        this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                        this.trackings = [];
+                        this.guidesId = [];
+                        counterMatches = 0;
+                        this.total = this.validDateGuide[i].totalAmount + this.total;
+                      }
+                    }
+                  }
+                  let tempFiles = this.validDateGuide.slice(0);
+                  tempFiles.forEach((element) => {
+                    if(element.multiPieces == "Y"){
+                      let removeIndex = this.validDateGuide.map((item) => item['multiPieces']).indexOf(element['multiPieces']);
+                      this.validDateGuide.splice(removeIndex, 1);
+                    }
+                  });
+
+                  if(this.total > 0){
+                    this.totalCalculated = true;
+                  }
+                }else{
+                  this.loaded = false;
+                }
+              }
+            });
+          }
+
+          if(this.reportType == 2){
+            let x = startDate.split("/");
+            let day:string = x[0];
+            let month:string = x[1];
+            let year:string = x[2];
+            let startDateValid:string = year + "-" + month + "-" + day;
+            x = finishDate.split("/");
+            day = x[0];
+            month = x[1];
+            year = x[2];
+            let finishDateValid:string = year + "-" + month + "-" + day;
+            let parcelName:string;
+
+            this.guideService.GetShipmentsByUserAndDates(startDateValid, finishDateValid, idClient).subscribe(response =>{
+              if(response){
+                  for(let i = 0; i < response.length; i++){
+                    let valid:boolean = false;
+                    let x = response[i].CreationDateString.split("/");
+                    let day:string = x[0];
+                    let month:string = x[1];
+                    let year:string = x[2];
+                    let dateString:string = year + "-" + day + "-" + month;
+
+                    let newDate:Date = new Date(dateString);
+                    if(newDate > this.limitDate){
+                      valid = true;
+                    }
+                    parcelName = "";
+                    if(response[i].ParcelId == 1){
+                      parcelName = "DHL";
+                    }else if(response[i].ParcelId == 2){
+                      parcelName = "RedPack";
+                    }else if(response[i].ParcelId == 3){
+                      parcelName = "FedEx";
+                    }else if(response[i].ParcelId == 4){
+                      parcelName = "Estafeta";
+                    }else{
+                      parcelName = "Paquetexpress";
+                    }
+
+                    this.validDateGuide.push(new ValidDateGuide(response[i].Id, response[i].UserId, response[i].ParcelId, response[i].ProductId,
+                    response[i].TotalAmount, response[i].AmountDetail, response[i].OriginCompany, response[i].OriginAddress, response[i].OriginAddress2,
+                  response[i].OriginColony, response[i].OriginCity, response[i].OriginState, response[i].OriginZIP, response[i].OriginCountry, response[i].OriginPhoneNumber,
+                response[i].OriginUserName, response[i].DestinyCompany, response[i].DestinyAddress, response[i].DestinyAddress2, response[i].DestinyColony, response[i].DestinyCity,
+                response[i].DestinyState, response[i].DestinyZIP, response[i].DestinyCountry, response[i].DestinyPhoneNumber, response[i].DestinyUserName, response[i].TrackingKey,
+              response[i].Status, response[i].Weight, response[i].Length, response[i].Width, response[i].Height, response[i].Insurance, response[i].CreationDate, response[i].CreationDateString,
+              response[i].NumGuide, response[i].MultiPieces, response[i].MultiPiecesMasterTracking, response[i].MultiPiecesMasterId, response[i].MultiPiecesSequenceNumber, response[i].ProductName,
+              parcelName, valid, response[i].PrintType, response[i].Reference, response[i].Username, response[i].VolumetricWeight, response[i].OutOfArea));
+
+                  this.validDateGuideForReports.push(new ValidDateGuide(response[i].Id, response[i].UserId, response[i].ParcelId, response[i].ProductId,
+                  response[i].TotalAmount, response[i].AmountDetail, response[i].OriginCompany, response[i].OriginAddress, response[i].OriginAddress2,
+                response[i].OriginColony, response[i].OriginCity, response[i].OriginState, response[i].OriginZIP, response[i].OriginCountry, response[i].OriginPhoneNumber,
+              response[i].OriginUserName, response[i].DestinyCompany, response[i].DestinyAddress, response[i].DestinyAddress2, response[i].DestinyColony, response[i].DestinyCity,
+              response[i].DestinyState, response[i].DestinyZIP, response[i].DestinyCountry, response[i].DestinyPhoneNumber, response[i].DestinyUserName, response[i].TrackingKey,
+            response[i].Status, response[i].Weight, response[i].Length, response[i].Width, response[i].Height, response[i].Insurance, response[i].CreationDate, response[i].CreationDateString,
+            response[i].NumGuide, response[i].MultiPieces, response[i].MultiPiecesMasterTracking, response[i].MultiPiecesMasterId, response[i].MultiPiecesSequenceNumber, response[i].ProductName,
+            parcelName, valid, response[i].PrintType, response[i].Reference, response[i].Username, response[i].VolumetricWeight, response[i].OutOfArea));
+                  }
+
+
+                if(this.shipments.length > 0 || this.validDateGuide.length > 0){
+                  this.loaded = true;
+                  let masterGuide:Shipment;
+                  let masterId:number = 0;
+                  let lastMasterId:number = 0;
+                  let counterMatches:number = 0;
+                  let start:boolean = false;
+                  for(let i=0; i<this.validDateGuide.length; i++){
+                    if(this.validDateGuide[i].multiPieces == "N"){
+                      this.total = this.validDateGuide[i].totalAmount + this.total;
+                      if(counterMatches > 0){
+                        this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                          this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                        this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                        this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                        this.shipments = [];
+                        this.trackings = [];
+                        counterMatches = 0;
+                      }
+                    }else if(i == this.validDateGuide.length-1){
+                      if(this.validDateGuide[i].multiPieces == "Y"){
+                        this.total = this.validDateGuide[i].totalAmount + this.total;
+                        counterMatches++;
+                        if(this.validDateGuide[i].parcelId == 2){
+                          this.trackings.push(this.validDateGuide[i].numGuide);
+                        }else{
+                          this.trackings.push(this.validDateGuide[i].trackingKey);
+                        }
+                        this.guidesId.push(this.validDateGuide[i].id.toString());
+                        this.validDateGuideAux = this.validDateGuide[i];
+                        this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                          this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                        this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                        this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                      }else{
+                        this.total = this.validDateGuide[i].totalAmount + this.total;
+                        this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                          this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                        this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                        this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                      }
+                    }else if(this.validDateGuide[i].multiPieces == "Y"){
+                      if(this.validDateGuide[i].multiPiecesMasterId == 0){
+                        masterGuide = new Shipment(this.validDateGuide[i].id, this.validDateGuide[i].userId, this.validDateGuide[i].parcelId, this.validDateGuide[i].productId,
+                        this.validDateGuide[i].totalAmount, this.validDateGuide[i].amountDetail, this.validDateGuide[i].originCompany, this.validDateGuide[i].originAddress, this.validDateGuide[i].originAddress2,
+                        this.validDateGuide[i].originColony, this.validDateGuide[i].originCity, this.validDateGuide[i].originState, this.validDateGuide[i].originZip, this.validDateGuide[i].originCountry, this.validDateGuide[i].originPhoneNumber,
+                        this.validDateGuide[i].originUserName, this.validDateGuide[i].destinyCompany, this.validDateGuide[i].destinyAddress, this.validDateGuide[i].destinyAddress2, this.validDateGuide[i].destinyColony, this.validDateGuide[i].destinyCity,
+                        this.validDateGuide[i].destinyState, this.validDateGuide[i].destinyZip, this.validDateGuide[i].destinyCountry, this.validDateGuide[i].destinyPhoneNumber, this.validDateGuide[i].destinyUserName, this.validDateGuide[i].trackingKey,
+                        this.validDateGuide[i].status, this.validDateGuide[i].weight, this.validDateGuide[i].length, this.validDateGuide[i].width, this.validDateGuide[i].height, this.validDateGuide[i].insurance, this.validDateGuide[i].creationDate,
+                        this.validDateGuide[i].creationDateString, this.validDateGuide[i].numGuide, this.validDateGuide[i].multiPieces, this.validDateGuide[i].multiPiecesMasterTracking, this.validDateGuide[i].multiPiecesMasterId, this.validDateGuide[i].multiPiecesSequenceNumber,
+                        this.validDateGuide[i].printType, this.validDateGuide[i].productName, this.validDateGuide[i].reference, this.validDateGuide[i].username, this.validDateGuide[i].volumetricWeight, this.validDateGuide[i].outOfArea);
+                        if(counterMatches > 0){
+                          this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                          this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                        this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                        this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                        }
+                        counterMatches = 1;
+                        this.trackings = [];
+                        this.guidesId = []
+                        if(this.validDateGuide[i].parcelId == 2){
+                          this.trackings.push(this.validDateGuide[i].numGuide);
+                        }else{
+                          this.trackings.push(this.validDateGuide[i].trackingKey);
+                        }
+                        this.guidesId.push(this.validDateGuide[i].id.toString());
+                        if(i != this.validDateGuide.length-2){
+                          this.total = this.validDateGuide[i].totalAmount + this.total;
+                        }
+                      }else if(i == this.validDateGuide.length-1){
+                        counterMatches++;
+                        if(this.validDateGuide[i].parcelId == 2){
+                          this.trackings.push(this.validDateGuide[i].numGuide);
+                        }else{
+                          this.trackings.push(this.validDateGuide[i].trackingKey);
+                        }
+                        this.guidesId.push(this.validDateGuide[i].id.toString());
+                      }else{
+                        counterMatches++;
+                        if(this.validDateGuide[i].parcelId == 2){
+                          this.trackings.push(this.validDateGuide[i].numGuide);
+                        }else{
+                          this.trackings.push(this.validDateGuide[i].trackingKey);
+                        }
+                        this.guidesId.push(this.validDateGuide[i].id.toString());
+                      }
+                      start = true;
+                      this.validDateGuideAux = this.validDateGuide[i];
+                    }else{
+                      if(counterMatches > 1){
+                        this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                        this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                        this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                        this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                        this.trackings = [];
+                        this.guidesId = [];
+                        counterMatches = 0;
+                        this.total = this.validDateGuide[i].totalAmount + this.total;
+                      }
+                    }
+                  }
+                  let tempFiles = this.validDateGuide.slice(0);
+                  tempFiles.forEach((element) => {
+                    if(element.multiPieces == "Y"){
+                      let removeIndex = this.validDateGuide.map((item) => item['multiPieces']).indexOf(element['multiPieces']);
+                      this.validDateGuide.splice(removeIndex, 1);
+                    }
+                  });
+                  if(this.total > 0){
+                    this.totalCalculated = true;
+                  }
+                }else{
+                  this.loaded = false;
+                }
+              }
+            });
+          }
         }else{
 
           this.canceledGuide = false;
@@ -1095,18 +1609,397 @@ export class ReportsComponent implements OnInit {
   }
 
   cancelGuideMPS(shipment:ShowMultiPieces){
+    this.validReport = true;
+
     this.canceledPressed = 1;
-    this.guideService.CancelGuide(shipment.masterGuide).subscribe(response =>{
-      if(response){
-        if(response == "SUCCESS: Shipment Canceled"){
-          this.canceledGuide = true;
-          this.openModal();
-        }else{
-          this.canceledGuide = false;
-          this.openModal();
+    this.validDateGuide = [];
+    this.validDateGuideForReports = [];
+    if(shipment.parcelId == 3){
+      this.guideService.CancelGuide(shipment.masterGuide).subscribe(response =>{
+        if(response){
+          if(response == "SUCCESS: Shipment Canceled"){
+            this.canceledGuide = true;
+            this.openModal();
+            let startDate:string;
+            let finishDate:string;
+            let idClient:number;
+
+            if(this.reportType == 2 || this.reportType == 1){
+              startDate = this.startingDate;
+              finishDate = this.endingDate;
+            }
+            if(this.reportType == 1){
+              //Código para reportes por cliente
+              let x = startDate.split("/");
+              let day:string = x[0];
+              let month:string = x[1];
+              let year:string = x[2];
+              let startDateValid:string = year + "-" + month + "-" + day;
+
+              x = finishDate.split("/");
+              day = x[0];
+              month = x[1];
+              year = x[2];
+              let finishDateValid:string = year + "-" + month + "-" + day;
+
+              this.guideService.GetShipmentsByUserAndDates(startDateValid, finishDateValid, 0).subscribe(response =>{
+                if(response){
+                  let parcelName:string;
+                  this.validDateGuide = [];
+                    for(let i = 0; i < response.length; i++){
+                      let valid:boolean = false;
+                      let x = response[i].CreationDateString.split("/");
+                      let day:string = x[0];
+                      let month:string = x[1];
+                      let year:string = x[2];
+                      let dateString:string = year + "-" + day + "-" + month;
+
+
+                      let newDate:Date = new Date(dateString);
+
+                      if(newDate > this.limitDate){
+                        valid = true;
+                      }
+
+                      if(response[i].ParcelId == 1){
+                        parcelName = "DHL";
+                      }else if(response[i].ParcelId == 2){
+                        parcelName = "RedPack";
+                      }else if(response[i].ParcelId == 3){
+                        parcelName = "FedEx";
+                      }else if(response[i].ParcelId == 4){
+                        parcelName = "Estafeta";
+                      }else{
+                        parcelName = "Paquetexpress";
+                      }
+
+                      this.validDateGuide.push(new ValidDateGuide(response[i].Id, response[i].UserId, response[i].ParcelId, response[i].ProductId,
+                      response[i].TotalAmount, response[i].AmountDetail, response[i].OriginCompany, response[i].OriginAddress, response[i].OriginAddress2,
+                    response[i].OriginColony, response[i].OriginCity, response[i].OriginState, response[i].OriginZIP, response[i].OriginCountry, response[i].OriginPhoneNumber,
+                  response[i].OriginUserName, response[i].DestinyCompany, response[i].DestinyAddress, response[i].DestinyAddress2, response[i].DestinyColony, response[i].DestinyCity,
+                  response[i].DestinyState, response[i].DestinyZIP, response[i].DestinyCountry, response[i].DestinyPhoneNumber, response[i].DestinyUserName, response[i].TrackingKey,
+                response[i].Status, response[i].Weight, response[i].Length, response[i].Width, response[i].Height, response[i].Insurance, response[i].CreationDate, response[i].CreationDateString,
+                response[i].NumGuide, response[i].MultiPieces, response[i].MultiPiecesMasterTracking, response[i].MultiPiecesMasterId, response[i].MultiPiecesSequenceNumber, response[i].ProductName,
+                parcelName, valid, response[i].PrintType, response[i].Reference, response[i].Username, response[i].VolumetricWeight, response[i].OutOfArea));
+
+                this.validDateGuideForReports.push(new ValidDateGuide(response[i].Id, response[i].UserId, response[i].ParcelId, response[i].ProductId,
+                response[i].TotalAmount, response[i].AmountDetail, response[i].OriginCompany, response[i].OriginAddress, response[i].OriginAddress2,
+              response[i].OriginColony, response[i].OriginCity, response[i].OriginState, response[i].OriginZIP, response[i].OriginCountry, response[i].OriginPhoneNumber,
+            response[i].OriginUserName, response[i].DestinyCompany, response[i].DestinyAddress, response[i].DestinyAddress2, response[i].DestinyColony, response[i].DestinyCity,
+            response[i].DestinyState, response[i].DestinyZIP, response[i].DestinyCountry, response[i].DestinyPhoneNumber, response[i].DestinyUserName, response[i].TrackingKey,
+          response[i].Status, response[i].Weight, response[i].Length, response[i].Width, response[i].Height, response[i].Insurance, response[i].CreationDate, response[i].CreationDateString,
+          response[i].NumGuide, response[i].MultiPieces, response[i].MultiPiecesMasterTracking, response[i].MultiPiecesMasterId, response[i].MultiPiecesSequenceNumber, response[i].ProductName,
+          parcelName, valid, response[i].PrintType, response[i].Reference, response[i].Username, response[i].VolumetricWeight, response[i].OutOfArea));
+                    }
+
+
+                  if(this.shipments.length > 0 || this.validDateGuide.length > 0){
+                    this.loaded = true;
+                    let masterGuide:Shipment;
+                    let masterId:number = 0;
+                    let lastMasterId:number = 0;
+                    let counterMatches:number = 0;
+                    let start:boolean = false;
+                    for(let i=0; i<this.validDateGuide.length; i++){
+                      if(this.validDateGuide[i].multiPieces == "N"){
+                        this.total = this.validDateGuide[i].totalAmount + this.total;
+                        if(counterMatches > 0){
+                          this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                            this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                          this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                          this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                          this.shipments = [];
+                          this.trackings = [];
+                          counterMatches = 0;
+                        }
+                      }else if(i == this.validDateGuide.length-1){
+                        if(this.validDateGuide[i].multiPieces == "Y"){
+                          this.total = this.validDateGuide[i].totalAmount + this.total;
+                          counterMatches++;
+                          if(this.validDateGuide[i].parcelId == 2){
+                            this.trackings.push(this.validDateGuide[i].numGuide);
+                          }else{
+                            this.trackings.push(this.validDateGuide[i].trackingKey);
+                          }
+                          this.guidesId.push(this.validDateGuide[i].id.toString());
+                          this.validDateGuideAux = this.validDateGuide[i];
+                          this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                            this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                          this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                          this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                        }else{
+                          this.total = this.validDateGuide[i].totalAmount + this.total;
+                          this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                            this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                          this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                          this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                        }
+                      }else if(this.validDateGuide[i].multiPieces == "Y"){
+                        if(this.validDateGuide[i].multiPiecesMasterId == 0){
+                          masterGuide = new Shipment(this.validDateGuide[i].id, this.validDateGuide[i].userId, this.validDateGuide[i].parcelId, this.validDateGuide[i].productId,
+                          this.validDateGuide[i].totalAmount, this.validDateGuide[i].amountDetail, this.validDateGuide[i].originCompany, this.validDateGuide[i].originAddress, this.validDateGuide[i].originAddress2,
+                          this.validDateGuide[i].originColony, this.validDateGuide[i].originCity, this.validDateGuide[i].originState, this.validDateGuide[i].originZip, this.validDateGuide[i].originCountry, this.validDateGuide[i].originPhoneNumber,
+                          this.validDateGuide[i].originUserName, this.validDateGuide[i].destinyCompany, this.validDateGuide[i].destinyAddress, this.validDateGuide[i].destinyAddress2, this.validDateGuide[i].destinyColony, this.validDateGuide[i].destinyCity,
+                          this.validDateGuide[i].destinyState, this.validDateGuide[i].destinyZip, this.validDateGuide[i].destinyCountry, this.validDateGuide[i].destinyPhoneNumber, this.validDateGuide[i].destinyUserName, this.validDateGuide[i].trackingKey,
+                          this.validDateGuide[i].status, this.validDateGuide[i].weight, this.validDateGuide[i].length, this.validDateGuide[i].width, this.validDateGuide[i].height, this.validDateGuide[i].insurance, this.validDateGuide[i].creationDate,
+                          this.validDateGuide[i].creationDateString, this.validDateGuide[i].numGuide, this.validDateGuide[i].multiPieces, this.validDateGuide[i].multiPiecesMasterTracking, this.validDateGuide[i].multiPiecesMasterId, this.validDateGuide[i].multiPiecesSequenceNumber,
+                          this.validDateGuide[i].printType, this.validDateGuide[i].productName, this.validDateGuide[i].reference, this.validDateGuide[i].username, this.validDateGuide[i].volumetricWeight, this.validDateGuide[i].outOfArea);
+                          if(counterMatches > 0){
+                            this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                            this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                          this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                          this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                          }
+                          counterMatches = 1;
+                          this.trackings = [];
+                          this.guidesId = []
+                          if(this.validDateGuide[i].parcelId == 2){
+                            this.trackings.push(this.validDateGuide[i].numGuide);
+                          }else{
+                            this.trackings.push(this.validDateGuide[i].trackingKey);
+                          }
+                          this.guidesId.push(this.validDateGuide[i].id.toString());
+                          if(i != this.validDateGuide.length-2){
+                            this.total = this.validDateGuide[i].totalAmount + this.total;
+                          }
+                        }else if(i == this.validDateGuide.length-1){
+                          counterMatches++;
+                          if(this.validDateGuide[i].parcelId == 2){
+                            this.trackings.push(this.validDateGuide[i].numGuide);
+                          }else{
+                            this.trackings.push(this.validDateGuide[i].trackingKey);
+                          }
+                          this.guidesId.push(this.validDateGuide[i].id.toString());
+                        }else{
+                          counterMatches++;
+                          if(this.validDateGuide[i].parcelId == 2){
+                            this.trackings.push(this.validDateGuide[i].numGuide);
+                          }else{
+                            this.trackings.push(this.validDateGuide[i].trackingKey);
+                          }
+                          this.guidesId.push(this.validDateGuide[i].id.toString());
+                        }
+                        start = true;
+                        this.validDateGuideAux = this.validDateGuide[i];
+                      }else{
+                        if(counterMatches > 1){
+                          this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                          this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                          this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                          this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                          this.trackings = [];
+                          this.guidesId = [];
+                          counterMatches = 0;
+                          this.total = this.validDateGuide[i].totalAmount + this.total;
+                        }
+                      }
+                    }
+                    let tempFiles = this.validDateGuide.slice(0);
+                    tempFiles.forEach((element) => {
+                      if(element.multiPieces == "Y"){
+                        let removeIndex = this.validDateGuide.map((item) => item['multiPieces']).indexOf(element['multiPieces']);
+                        this.validDateGuide.splice(removeIndex, 1);
+                      }
+                    });
+
+                    if(this.total > 0){
+                      this.totalCalculated = true;
+                    }
+                  }else{
+                    this.loaded = false;
+                  }
+                }
+              });
+            }
+
+            if(this.reportType == 2){
+              let x = startDate.split("/");
+              let day:string = x[0];
+              let month:string = x[1];
+              let year:string = x[2];
+              let startDateValid:string = year + "-" + month + "-" + day;
+              x = finishDate.split("/");
+              day = x[0];
+              month = x[1];
+              year = x[2];
+              let finishDateValid:string = year + "-" + month + "-" + day;
+              let parcelName:string;
+
+              this.guideService.GetShipmentsByUserAndDates(startDateValid, finishDateValid, idClient).subscribe(response =>{
+                if(response){
+                    for(let i = 0; i < response.length; i++){
+                      let valid:boolean = false;
+                      let x = response[i].CreationDateString.split("/");
+                      let day:string = x[0];
+                      let month:string = x[1];
+                      let year:string = x[2];
+                      let dateString:string = year + "-" + day + "-" + month;
+
+                      let newDate:Date = new Date(dateString);
+                      if(newDate > this.limitDate){
+                        valid = true;
+                      }
+                      parcelName = "";
+                      if(response[i].ParcelId == 1){
+                        parcelName = "DHL";
+                      }else if(response[i].ParcelId == 2){
+                        parcelName = "RedPack";
+                      }else if(response[i].ParcelId == 3){
+                        parcelName = "FedEx";
+                      }else if(response[i].ParcelId == 4){
+                        parcelName = "Estafeta";
+                      }else{
+                        parcelName = "Paquetexpress";
+                      }
+
+                      this.validDateGuide.push(new ValidDateGuide(response[i].Id, response[i].UserId, response[i].ParcelId, response[i].ProductId,
+                      response[i].TotalAmount, response[i].AmountDetail, response[i].OriginCompany, response[i].OriginAddress, response[i].OriginAddress2,
+                    response[i].OriginColony, response[i].OriginCity, response[i].OriginState, response[i].OriginZIP, response[i].OriginCountry, response[i].OriginPhoneNumber,
+                  response[i].OriginUserName, response[i].DestinyCompany, response[i].DestinyAddress, response[i].DestinyAddress2, response[i].DestinyColony, response[i].DestinyCity,
+                  response[i].DestinyState, response[i].DestinyZIP, response[i].DestinyCountry, response[i].DestinyPhoneNumber, response[i].DestinyUserName, response[i].TrackingKey,
+                response[i].Status, response[i].Weight, response[i].Length, response[i].Width, response[i].Height, response[i].Insurance, response[i].CreationDate, response[i].CreationDateString,
+                response[i].NumGuide, response[i].MultiPieces, response[i].MultiPiecesMasterTracking, response[i].MultiPiecesMasterId, response[i].MultiPiecesSequenceNumber, response[i].ProductName,
+                parcelName, valid, response[i].PrintType, response[i].Reference, response[i].Username, response[i].VolumetricWeight, response[i].OutOfArea));
+
+                this.validDateGuideForReports.push(new ValidDateGuide(response[i].Id, response[i].UserId, response[i].ParcelId, response[i].ProductId,
+                response[i].TotalAmount, response[i].AmountDetail, response[i].OriginCompany, response[i].OriginAddress, response[i].OriginAddress2,
+              response[i].OriginColony, response[i].OriginCity, response[i].OriginState, response[i].OriginZIP, response[i].OriginCountry, response[i].OriginPhoneNumber,
+            response[i].OriginUserName, response[i].DestinyCompany, response[i].DestinyAddress, response[i].DestinyAddress2, response[i].DestinyColony, response[i].DestinyCity,
+            response[i].DestinyState, response[i].DestinyZIP, response[i].DestinyCountry, response[i].DestinyPhoneNumber, response[i].DestinyUserName, response[i].TrackingKey,
+          response[i].Status, response[i].Weight, response[i].Length, response[i].Width, response[i].Height, response[i].Insurance, response[i].CreationDate, response[i].CreationDateString,
+          response[i].NumGuide, response[i].MultiPieces, response[i].MultiPiecesMasterTracking, response[i].MultiPiecesMasterId, response[i].MultiPiecesSequenceNumber, response[i].ProductName,
+          parcelName, valid, response[i].PrintType, response[i].Reference, response[i].Username, response[i].VolumetricWeight, response[i].OutOfArea));
+                    }
+
+
+                  if(this.shipments.length > 0 || this.validDateGuide.length > 0){
+                    this.loaded = true;
+                    let masterGuide:Shipment;
+                    let masterId:number = 0;
+                    let lastMasterId:number = 0;
+                    let counterMatches:number = 0;
+                    let start:boolean = false;
+                    for(let i=0; i<this.validDateGuide.length; i++){
+                      if(this.validDateGuide[i].multiPieces == "N"){
+                        this.total = this.validDateGuide[i].totalAmount + this.total;
+                        if(counterMatches > 0){
+                          this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                            this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                          this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                          this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                          this.shipments = [];
+                          this.trackings = [];
+                          counterMatches = 0;
+                        }
+                      }else if(i == this.validDateGuide.length-1){
+                        if(this.validDateGuide[i].multiPieces == "Y"){
+                          this.total = this.validDateGuide[i].totalAmount + this.total;
+                          counterMatches++;
+                          if(this.validDateGuide[i].parcelId == 2){
+                            this.trackings.push(this.validDateGuide[i].numGuide);
+                          }else{
+                            this.trackings.push(this.validDateGuide[i].trackingKey);
+                          }
+                          this.guidesId.push(this.validDateGuide[i].id.toString());
+                          this.validDateGuideAux = this.validDateGuide[i];
+                          this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                            this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                          this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                          this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                        }else{
+                          this.total = this.validDateGuide[i].totalAmount + this.total;
+                          this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                            this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                          this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                          this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                        }
+                      }else if(this.validDateGuide[i].multiPieces == "Y"){
+                        if(this.validDateGuide[i].multiPiecesMasterId == 0){
+                          masterGuide = new Shipment(this.validDateGuide[i].id, this.validDateGuide[i].userId, this.validDateGuide[i].parcelId, this.validDateGuide[i].productId,
+                          this.validDateGuide[i].totalAmount, this.validDateGuide[i].amountDetail, this.validDateGuide[i].originCompany, this.validDateGuide[i].originAddress, this.validDateGuide[i].originAddress2,
+                          this.validDateGuide[i].originColony, this.validDateGuide[i].originCity, this.validDateGuide[i].originState, this.validDateGuide[i].originZip, this.validDateGuide[i].originCountry, this.validDateGuide[i].originPhoneNumber,
+                          this.validDateGuide[i].originUserName, this.validDateGuide[i].destinyCompany, this.validDateGuide[i].destinyAddress, this.validDateGuide[i].destinyAddress2, this.validDateGuide[i].destinyColony, this.validDateGuide[i].destinyCity,
+                          this.validDateGuide[i].destinyState, this.validDateGuide[i].destinyZip, this.validDateGuide[i].destinyCountry, this.validDateGuide[i].destinyPhoneNumber, this.validDateGuide[i].destinyUserName, this.validDateGuide[i].trackingKey,
+                          this.validDateGuide[i].status, this.validDateGuide[i].weight, this.validDateGuide[i].length, this.validDateGuide[i].width, this.validDateGuide[i].height, this.validDateGuide[i].insurance, this.validDateGuide[i].creationDate,
+                          this.validDateGuide[i].creationDateString, this.validDateGuide[i].numGuide, this.validDateGuide[i].multiPieces, this.validDateGuide[i].multiPiecesMasterTracking, this.validDateGuide[i].multiPiecesMasterId, this.validDateGuide[i].multiPiecesSequenceNumber,
+                          this.validDateGuide[i].printType, this.validDateGuide[i].productName, this.validDateGuide[i].reference, this.validDateGuide[i].username, this.validDateGuide[i].volumetricWeight, this.validDateGuide[i].outOfArea);
+                          if(counterMatches > 0){
+                            this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                            this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                          this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                          this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                          }
+                          counterMatches = 1;
+                          this.trackings = [];
+                          this.guidesId = []
+                          if(this.validDateGuide[i].parcelId == 2){
+                            this.trackings.push(this.validDateGuide[i].numGuide);
+                          }else{
+                            this.trackings.push(this.validDateGuide[i].trackingKey);
+                          }
+                          this.guidesId.push(this.validDateGuide[i].id.toString());
+                          if(i != this.validDateGuide.length-2){
+                            this.total = this.validDateGuide[i].totalAmount + this.total;
+                          }
+                        }else if(i == this.validDateGuide.length-1){
+                          counterMatches++;
+                          if(this.validDateGuide[i].parcelId == 2){
+                            this.trackings.push(this.validDateGuide[i].numGuide);
+                          }else{
+                            this.trackings.push(this.validDateGuide[i].trackingKey);
+                          }
+                          this.guidesId.push(this.validDateGuide[i].id.toString());
+                        }else{
+                          counterMatches++;
+                          if(this.validDateGuide[i].parcelId == 2){
+                            this.trackings.push(this.validDateGuide[i].numGuide);
+                          }else{
+                            this.trackings.push(this.validDateGuide[i].trackingKey);
+                          }
+                          this.guidesId.push(this.validDateGuide[i].id.toString());
+                        }
+                        start = true;
+                        this.validDateGuideAux = this.validDateGuide[i];
+                      }else{
+                        if(counterMatches > 1){
+                          this.multipiecesObject.push(new ShowMultiPieces(this.validDateGuideAux.id, this.validDateGuideAux.trackingKey, this.validDateGuideAux.numGuide,
+                          this.validDateGuideAux.totalAmount, counterMatches, this.validDateGuideAux.originUserName, this.validDateGuideAux.destinyUserName,
+                          this.validDateGuideAux.status, this.validDateGuideAux.creationDateString, this.validDateGuideAux.validDate, this.validDateGuideAux.parcelId,
+                          this.trackings, this.guidesId, this.validDateGuideAux.parcelName, this.validDateGuideAux.printType, masterGuide));
+                          this.trackings = [];
+                          this.guidesId = [];
+                          counterMatches = 0;
+                          this.total = this.validDateGuide[i].totalAmount + this.total;
+                        }
+                      }
+                    }
+                    let tempFiles = this.validDateGuide.slice(0);
+                    tempFiles.forEach((element) => {
+                      if(element.multiPieces == "Y"){
+                        let removeIndex = this.validDateGuide.map((item) => item['multiPieces']).indexOf(element['multiPieces']);
+                        this.validDateGuide.splice(removeIndex, 1);
+                      }
+                    });
+                    if(this.total > 0){
+                      this.totalCalculated = true;
+                    }
+                  }else{
+                    this.loaded = false;
+                  }
+                }
+              });
+            }
+          }else{
+            this.canceledGuide = false;
+            this.openModal();
+          }
         }
-      }
-    });
+      });
+    }else{
+      shipment.trackings.forEach((item) =>{
+
+      });
+    }
   }
 
   PrepareDataCSV(data:ValidDateGuide[]):ObjectExcel[]{
@@ -1162,18 +2055,36 @@ export class ReportsComponent implements OnInit {
             indexNo = item.amountDetail.indexOf('C');
             let comiString = item.amountDetail.substring(indexNo);
             indexNo = comiString.indexOf('$');
-
             if(comiString.indexOf(',')){
               indexEnd = comiString.indexOf(',');
-
-              comiString = comiString.substring(indexNo+1);
-
+              if(indexEnd > 0){
+                comiString = comiString.substring(indexNo+1, indexEnd);
+                insuranceComi = +comiString;
+                if(item.multiPiecesMasterId == 0){
+                  insuranceCost = insurancePerc + insuranceComi;
+                }else{
+                  insuranceCost = insurancePerc;
+                }
+              }else{
+                comiString = comiString.substring(indexNo+1);
+                insuranceComi = +comiString;
+                if(item.multiPiecesMasterId == 0){
+                  insuranceCost = insurancePerc + insuranceComi;
+                }else{
+                  insuranceCost = insurancePerc;
+                }
+              }
+              /*comiString = comiString.substring(indexNo+1);
+              console.log(comiString)
               insuranceComi = +comiString;
+              console.log(insuranceComi);
               if(item.multiPiecesMasterId == 0){
                 insuranceCost = insurancePerc + insuranceComi;
+                console.log(insuranceCost);
               }else{
                 insuranceCost = insurancePerc;
-              }
+                console.log(insuranceCost);
+              }*/
                //+ insuranceComi +;
             }else{
               comiString = comiString.substring(indexNo+1)
@@ -1198,9 +2109,16 @@ export class ReportsComponent implements OnInit {
             indexNo = comiString.indexOf('$');
             if(comiString.indexOf(',')){
               indexEnd = comiString.indexOf(',');
-              comiString = comiString.substring(indexNo+1, indexEnd);
-              insuranceComi = +comiString;
-              insuranceCost = insuranceComi + insurancePerc;
+              if(indexEnd > 0){
+                comiString = comiString.substring(indexNo+1, indexEnd);
+                insuranceComi = +comiString;
+                insuranceCost = insuranceComi + insurancePerc;
+              }else{
+                comiString = comiString.substring(indexNo+1);
+                insuranceComi = +comiString;
+                insuranceCost = insuranceComi + insurancePerc;
+              }
+
             }else{
               comiString = comiString.substring(indexNo+1);
               insuranceComi = +comiString;
@@ -1226,7 +2144,7 @@ export class ReportsComponent implements OnInit {
           item.destinyUserName, item.destinyCompany, item.destinyCountry, item.destinyState, item.destinyCity, item.destinyZip,
           item.destinyColony, item.destinyAddress, item.destinyAddress2, item.destinyPhoneNumber,
           item.trackingKey, item.status, item.weight, item.length, item.width, item.height, item.insurance, item.creationDateString,
-          multipieces, extraKg, insuranceCost));
+          multipieces, extraKg, insuranceCost, item.trackingKey, item.reference, item.username, item.volumetricWeight, item.status, item.outOfArea));
       }else{
         this.ObjectExcel.push(new ObjectExcel(item.id, parcel, item.productName, item.totalAmount, item.amountDetail,
           item.originUserName, item.originCompany, item.originCountry, item.originState, item.originCity, item.originZip,
@@ -1234,7 +2152,7 @@ export class ReportsComponent implements OnInit {
           item.destinyUserName, item.destinyCompany, item.destinyCountry, item.destinyState, item.destinyCity, item.destinyZip,
           item.destinyColony, item.destinyAddress, item.destinyAddress2, item.destinyPhoneNumber,
           item.trackingKey, item.status, item.weight, item.length, item.width, item.height, item.insurance, item.creationDateString,
-          multipieces, extraKg, insuranceCost));
+          multipieces, extraKg, insuranceCost, item.trackingKey, item.reference, item.username, item.volumetricWeight, item.status, item.outOfArea));
       }
     }
     return this.ObjectExcel;
@@ -1249,7 +2167,9 @@ export class ReportsComponent implements OnInit {
   sendDataPro(print:string)
   {
     showLoading("Printing...");
+
     checkPrinterStatus( function (text){
+
       if (text == "Ready to Print")
       {
         //selected_printer.send(zpl, printComplete, printerError);
@@ -1261,9 +2181,14 @@ export class ReportsComponent implements OnInit {
         printerError(text);
       }
     });
-    if(errorGuide == 1){
-      this.errorGuideModal = errorGuide;
-      this.openModal();
-    }
+    setTimeout( () => { /*Your Code*/
+
+      if(errorGuide == 1){
+
+        this.errorGuideModal = errorGuide;
+
+        this.openModal();
+      }
+    }, 2000 );
   };
 }
