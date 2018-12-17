@@ -3,7 +3,9 @@ import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { ClientService } from '../../services/client-service/client.service';
 import { CreateGuideService } from '../../services/create-guide-service/create-guide.service';
+import { ProductService } from '../../services/product-service/product.service';
 import { User } from '../../classes/Client';
+import { ClientReference } from '../../classes/ClienteReferences';
 import { AutoLogOutService } from '../../services/auto-log-out-service/auto-log-out.service';
 import { LogIn } from '../../classes/LogIn';
 import { Observable } from 'rxjs/Rx';
@@ -29,7 +31,8 @@ export class LogInComponent implements OnInit {
     private clientService: ClientService,
     private authService: AuthService,
     private autoLogOut: AutoLogOutService,
-    private createGuideservice:CreateGuideService
+    private createGuideservice:CreateGuideService,
+    private productService: ProductService
   ) {
     this.router.events.subscribe((evt) => {
         if (!(evt instanceof NavigationEnd)) {
@@ -46,6 +49,16 @@ export class LogInComponent implements OnInit {
         this.router.navigate(['/home']);
       }
     })
+  }
+
+  updateCP(){
+    this.clientService.updatePostalCode().subscribe(
+      (successResponse) => {
+        console.log("Holis");
+      }
+    ),(error) =>{
+      console.log("Error");
+    };
   }
 
   login(forma:NgForm){
@@ -80,6 +93,33 @@ export class LogInComponent implements OnInit {
                   sessionStorage.setItem('Password', logInData.password);
                   sessionStorage.setItem('Type', successResponse.typeId);
                   sessionStorage.setItem('Id', successResponse.id);
+
+                  this.productService.getParcelsFromUser().subscribe(
+                    responseParcels => {
+                      console.log(responseParcels);
+                      var productArray = responseParcels;
+                      let referencePaquete, referenceRedPack, referenceFedEx;
+                      for( let i=0; i < productArray.length; i++){
+                        switch(productArray[i].parcelId){
+                          case 2:{
+                            referenceRedPack = productArray[i].reference;
+                            break;
+                          }
+                          case 3:{
+                            referenceFedEx = productArray[i].reference;
+                            break;
+                          }
+                          case 5:{
+                            referencePaquete = productArray[i].reference;
+                            break;
+                          }
+                        }
+                      }
+                      let clientReference:ClientReference = new ClientReference(referenceRedPack, referenceFedEx, referencePaquete);
+                      this.clientService.clientReferences = clientReference;
+                      sessionStorage.setItem('ClientReference', JSON.stringify(clientReference));
+                    }
+                  );
 
                 }
                 this.petitionError = false;

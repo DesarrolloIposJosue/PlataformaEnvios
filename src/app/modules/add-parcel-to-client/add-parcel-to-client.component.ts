@@ -127,14 +127,17 @@ export class AddParcelToClientComponent implements OnInit {
       });
     });
     if(this.productService.operation == 1){
-      this.productService.getParcelsFromUser().subscribe(
+      this.productService.getEditParcelsFromUser().subscribe(
         (responseParcels) =>{
           if(!responseParcels){
             this.loading = false;
             this.petitionError = true;
           }else{
+
+            console.log(responseParcels);
             var productArray = responseParcels;
             for(let i=0; i<productArray.length; i++){
+              setTimeout( () => { /*Your Code*/ }, 3000 );
               if(productArray[i].parcelId == 1){
                 //DHL test6
                 if(productArray[i].economic != "n"){
@@ -884,7 +887,7 @@ export class AddParcelToClientComponent implements OnInit {
         );
         this.errorParcelData = false;
       }else if(this.productService.operation == 1){
-        this.productService.getParcelsFromUser().subscribe(
+        this.productService.getEditParcelsFromUser().subscribe(
           (responseParcels) =>{
             if(!responseParcels){
               this.loading = false;
@@ -892,6 +895,7 @@ export class AddParcelToClientComponent implements OnInit {
             }else{
               var productArray = responseParcels;
               this.userParcelRedPack = new User_Parcel();
+
               for (var i = 0; i < productArray.length; i++) {
                 if(productArray[i].parcelId == 2){
                   this.userParcelRedPack.userId = productArray[i].userId;
@@ -996,6 +1000,8 @@ export class AddParcelToClientComponent implements OnInit {
                     }
                     this.userParcelRedPack.percentageDeclared = productArray[i].percentageDeclared;
                     this.userParcelRedPack.reference = productArray[i].reference;
+                    console.log(productArray[i]);
+                    console.log(this.userParcelRedPack);
                   }
                 }
               }
@@ -1171,7 +1177,7 @@ export class AddParcelToClientComponent implements OnInit {
         );
         this.errorParcelData = false;
       }else if(this.productService.operation == 1){
-        this.productService.getParcelsFromUser().subscribe(
+        this.productService.getEditParcelsFromUser().subscribe(
           (responseParcels) =>{
             if(!responseParcels){
               this.loading = false;
@@ -1373,7 +1379,7 @@ export class AddParcelToClientComponent implements OnInit {
         );
         this.errorParcelData = false;
       }else if(this.productService.operation == 1){
-        this.productService.getParcelsFromUser().subscribe(
+        this.productService.getEditParcelsFromUser().subscribe(
           (responseParcels) =>{
             if(!responseParcels){
               this.loading = false;
@@ -1665,7 +1671,7 @@ export class AddParcelToClientComponent implements OnInit {
         );
         this.errorParcelData = false;
       }else if(this.productService.operation == 1){
-        this.productService.getParcelsFromUser().subscribe(
+        this.productService.getEditParcelsFromUser().subscribe(
           (responseParcels) =>{
             if(!responseParcels){
               this.loading = false;
@@ -1845,7 +1851,7 @@ export class AddParcelToClientComponent implements OnInit {
         );
         this.errorParcelData = false;
       }else if(this.productService.operation == 1){
-        this.productService.getParcelsFromUser().subscribe(
+        this.productService.getEditParcelsFromUser().subscribe(
           (responseParcels) =>{
             if(!responseParcels){
               this.loading = false;

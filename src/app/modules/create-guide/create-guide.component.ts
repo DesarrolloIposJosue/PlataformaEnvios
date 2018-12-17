@@ -9,10 +9,12 @@ import { User } from '../../classes/Client';
 import { DataAuxGuide } from '../../classes/DataAuxGuide';
 import { Shipment } from '../../classes/Shipment';
 import { GuideMPSResponse } from '../../classes/GuideMPSResponse';
+import { CreateGuideAuxInfo } from '../../classes/CreateGuideAuxInfo';
 
 import {CreateGuideService} from '../../services/create-guide-service/create-guide.service';
 import {DownloadGuideService} from '../../services/download-guide-service/download-guide.service';
 import { GuidesService } from '../../services/guides/guides.service';
+import { ClientService } from '../../services/client-service/client.service';
 import { RateService } from '../../services/rate-service/rate.service'
 
 declare var jQuery:any;
@@ -243,11 +245,14 @@ function trySetupAgain()
   //hideLoading();
 }
 
+declare var Materialize:any;
+
 @Component({
   selector: 'app-create-guide',
   templateUrl: './create-guide.component.html',
   styleUrls: ['./create-guide.component.css']
 })
+
 
 export class CreateGuideComponent implements OnInit {
 
@@ -291,14 +296,25 @@ export class CreateGuideComponent implements OnInit {
   private errorGuideModal:number = 0;
   private printing:string;
 
+  private dataCreateGuideAux:CreateGuideAuxInfo;
+  private dataToSaveAux:CreateGuideAuxInfo;
+  private dontExistPast:boolean = true;
+
+  private loadInfoOrigin:boolean = false;
+  private loadInfoDestiny:boolean = false;
+
+  private reference: string;
+
   constructor(
     private router: Router,
     private el: ElementRef,
     private createGuideservice:CreateGuideService,
     private download:DownloadGuideService,
     private guides:GuidesService,
-    private rateService:RateService
+    private rateService:RateService,
+    private clientService: ClientService
   ) {
+    console.log(this.clientService.clientReferences);
     $(document).ready(setup_web_print);
     this.router.events.subscribe((evt) => {
         if (!(evt instanceof NavigationEnd)) {
@@ -312,6 +328,16 @@ export class CreateGuideComponent implements OnInit {
       this.productId = createGuideservice.productId;
       this.parcelId = createGuideservice.parcelId;
       if(this.parcelId == 2){
+        if(this.clientService.clientReferences != null){
+          if(this.clientService.clientReferences.redPackReference != undefined){
+            this.reference = this.clientService.clientReferences.redPackReference;
+          }else{
+            this.reference = "";
+          }
+        }else{
+          this.reference = "";
+        }
+
         if(this.createGuideservice.printTypeRedPack =="P"){
           this.printing = "P";
           setTimeout( () =>{
@@ -324,6 +350,16 @@ export class CreateGuideComponent implements OnInit {
             element.checked = true; }, 500);
         }
       }else if(this.parcelId == 3){
+        if(this.clientService.clientReferences != undefined){
+          if(this.clientService.clientReferences.fedExReference != undefined){
+            this.reference = this.clientService.clientReferences.fedExReference;
+          }else{
+            this.reference = "";
+          }
+        }else{
+          this.reference = "";
+        }
+
         if(this.createGuideservice.printTypeFedEx  =="P"){
           this.printing = "P";
           setTimeout( () =>{
@@ -336,6 +372,16 @@ export class CreateGuideComponent implements OnInit {
             element.checked = true; }, 500);
         }
       }if(this.parcelId == 5){
+        if(this.clientService.clientReferences != null){
+          if(this.clientService.clientReferences.paquetexpressReference != undefined){
+            this.reference = this.clientService.clientReferences.paquetexpressReference;
+          }else{
+            this.reference = "";
+          }
+        }else{
+          this.reference = "";
+        }
+
         if(this.createGuideservice.printTypePaquete =="P"){
           this.printing = "P";
           setTimeout( () =>{
@@ -365,10 +411,38 @@ export class CreateGuideComponent implements OnInit {
         });
       });
       this.productName = this.createGuideservice.productName;
+
+      var obj = JSON.parse(sessionStorage.getItem('CreateGuideAux'));
+      console.log(obj);
+      if(obj != null){
+        if(obj.originState.length > 0){
+          this.dontExistPast = false;
+          this.dataCreateGuideAux = new CreateGuideAuxInfo(obj.originCompany, obj.originCountry, obj.originState, obj.originCity,
+          obj.originColony, obj.originAddress, obj.originAddress2, obj.originZip, obj.originPhone, obj.originName, obj.destinyCompany,
+          obj.destinyCountry, obj.destinyState, obj.destinyCity, obj.destinyColony, obj.destinyAddress, obj.destinyNumberAddress, obj.destinyAddress2,
+          obj.destinyZip, obj.destinyPhone, obj.destinyName, obj.email, obj.packageContent, obj.kindOfPackage, obj.reference);
+        }else{
+          this.dontExistPast = true;
+        }
+      }
+
+
    }
 
   ngOnInit() {
 
+  }
+
+  loadOrigin(){
+    this.loadInfoOrigin = true;
+  }
+
+  loadDestiny(){
+    this.loadInfoDestiny = true;
+    setTimeout(()=>{    //<<<---    using ()=> syntax
+
+      Materialize.updateTextFields();
+   }, 400);
   }
 
   createGuide(forma:NgForm){
@@ -399,6 +473,20 @@ export class CreateGuideComponent implements OnInit {
     this.createGuideservice.multipiecesData[i].width,this.createGuideservice.multipiecesData[i].height,this.createGuideservice.multipiecesData[i].insurance,new Date(),"","","Y","",0,0,
     forma.controls["printType"].value,this.productName, forma.controls["references"].value, sessionStorage.getItem('UserName'), this.createGuideservice.volumetricWeight,
     this.createGuideservice.outOfArea));
+    this.dataToSaveAux = new CreateGuideAuxInfo(
+      forma.controls["originCompany"].value, forma.controls["originCountry"].value,
+      this.createGuideservice.stateOriginCode, forma.controls["originCity"].value,
+      forma.controls["originColony"].value, forma.controls["originAddress"].value,
+      forma.controls["originAddress2"].value, this.createGuideservice.multipiecesData[i].originCP.toString(),
+      forma.controls["originPhoneNumber"].value, forma.controls["originUserName"].value,
+      forma.controls["destinyCompany"].value, forma.controls["destinyCountry"].value,
+      this.createGuideservice.stateCode, forma.controls["destinyCity"].value,
+      forma.controls["destinyColony"].value, forma.controls["destinyAddress"].value, forma.controls["numberAddress"].value,
+      forma.controls["destinyAddress2"].value, this.createGuideservice.multipiecesData[i].destinyCP.toString(),
+      forma.controls["destinyPhoneNumber"].value, forma.controls["destinyUserName"].value,
+      "", "", "", forma.controls["references"].value);
+
+    sessionStorage.setItem('CreateGuideAux', JSON.stringify(this.dataToSaveAux));
   }else if(this.parcelId == 5){
     this.createGuideservice.printTypePaquete = forma.controls["printType"].value;
     this.arrayShipment.push(new Shipment(0,this.client.id,this.parcelId,this.productId,this.totalAmount,this.amountDetail,forma.controls["originCompany"].value,
@@ -411,6 +499,19 @@ this.createGuideservice.multipiecesData[i].destinyCP,forma.controls["destinyCoun
 this.createGuideservice.multipiecesData[i].width,this.createGuideservice.multipiecesData[i].height,this.createGuideservice.multipiecesData[i].insurance,new Date(),"","","Y","",0,0,
 forma.controls["printType"].value,this.productName, forma.controls["references"].value, sessionStorage.getItem('UserName'), this.createGuideservice.volumetricWeight,
 this.createGuideservice.outOfArea))
+this.dataToSaveAux = new CreateGuideAuxInfo(
+  forma.controls["originCompany"].value, forma.controls["originCountry"].value,
+  this.createGuideservice.stateOriginCode, forma.controls["originCity"].value,
+  forma.controls["originColony"].value, forma.controls["originAddress"].value,
+  forma.controls["originAddress2"].value, this.createGuideservice.multipiecesData[i].originCP.toString(),
+  forma.controls["originPhoneNumber"].value, forma.controls["originUserName"].value,
+  forma.controls["destinyCompany"].value, forma.controls["destinyCountry"].value,
+  forma.controls["destinyState"].value, forma.controls["destinyCity"].value,
+  forma.controls["destinyColony"].value, forma.controls["destinyAddress"].value, forma.controls["numberAddress"].value,
+  forma.controls["destinyAddress2"].value, this.createGuideservice.multipiecesData[i].destinyCP.toString(),
+  forma.controls["destinyPhoneNumber"].value, forma.controls["destinyUserName"].value,
+  "", forma.controls["packageContent"].value, forma.controls["shpCode"].value, forma.controls["references"].value);
+sessionStorage.setItem('CreateGuideAux', JSON.stringify(this.dataToSaveAux));
 }else if(this.parcelId == 2){
   this.createGuideservice.printTypeRedPack = forma.controls["printType"].value
   this.arrayShipment.push(new Shipment(0,this.client.id,this.parcelId,this.productId,this.totalAmount,this.amountDetail,forma.controls["originCompany"].value,
@@ -423,6 +524,19 @@ this.createGuideservice.multipiecesData[i].destinyCP,forma.controls["destinyCoun
 this.createGuideservice.multipiecesData[i].width,this.createGuideservice.multipiecesData[i].height,this.createGuideservice.multipiecesData[i].insurance,new Date(),"","","Y","",0,0,
 forma.controls["printType"].value,this.productName, forma.controls["references"].value, sessionStorage.getItem('UserName'), this.createGuideservice.volumetricWeight,
 this.createGuideservice.outOfArea))
+this.dataToSaveAux = new CreateGuideAuxInfo(
+  forma.controls["originCompany"].value, forma.controls["originCountry"].value,
+  this.createGuideservice.stateOriginCode, forma.controls["originCity"].value,
+  forma.controls["originColony"].value, forma.controls["originAddress"].value,
+  forma.controls["originAddress2"].value, this.createGuideservice.multipiecesData[i].originCP.toString(),
+  forma.controls["originPhoneNumber"].value, forma.controls["originUserName"].value,
+  forma.controls["destinyCompany"].value, forma.controls["destinyCountry"].value,
+  forma.controls["destinyState"].value, forma.controls["destinyCity"].value,
+  forma.controls["destinyColony"].value, forma.controls["destinyAddress"].value, forma.controls["numberAddress"].value,
+  forma.controls["destinyAddress2"].value, this.createGuideservice.multipiecesData[i].destinyCP.toString(),
+  forma.controls["destinyPhoneNumber"].value, forma.controls["destinyUserName"].value,
+  forma.controls["email"].value, "", "", forma.controls["references"].value);
+sessionStorage.setItem('CreateGuideAux', JSON.stringify(this.dataToSaveAux));
 }else{
             this.arrayShipment.push(new Shipment(0,this.client.id,this.parcelId,this.productId,this.totalAmount,this.amountDetail,forma.controls["originCompany"].value,
           forma.controls["originAddress"].value,forma.controls["originAddress2"].value,forma.controls["originColony"].value,forma.controls["originCity"].value,
@@ -433,6 +547,20 @@ this.createGuideservice.outOfArea))
     "","Generando",this.createGuideservice.multipiecesData[i].weight,this.createGuideservice.multipiecesData[i].length,
     this.createGuideservice.multipiecesData[i].width,this.createGuideservice.multipiecesData[i].height,this.createGuideservice.multipiecesData[i].insurance,new Date(),"","","Y","",0,0,
     "P",this.productName, forma.controls["references"].value, sessionStorage.getItem('UserName'), this.createGuideservice.volumetricWeight, this.createGuideservice.outOfArea))
+    this.dataToSaveAux = new CreateGuideAuxInfo(
+      forma.controls["originCompany"].value, forma.controls["originCountry"].value,
+      this.createGuideservice.stateOriginCode, forma.controls["originCity"].value,
+      forma.controls["originColony"].value, forma.controls["originAddress"].value,
+      forma.controls["originAddress2"].value, this.createGuideservice.multipiecesData[i].originCP.toString(),
+      forma.controls["originPhoneNumber"].value, forma.controls["originUserName"].value,
+      forma.controls["destinyCompany"].value, forma.controls["destinyCountry"].value,
+      this.createGuideservice.stateCode, forma.controls["destinyCity"].value,
+      forma.controls["destinyColony"].value, forma.controls["destinyAddress"].value, forma.controls["numberAddress"].value,
+      forma.controls["destinyAddress2"].value, this.createGuideservice.multipiecesData[i].destinyCP.toString(),
+      forma.controls["destinyPhoneNumber"].value, forma.controls["destinyUserName"].value,
+      "", "", "", forma.controls["references"].value);
+    sessionStorage.setItem('CreateGuideAux', JSON.stringify(this.dataToSaveAux));
+
           }
 
         }
@@ -450,6 +578,19 @@ this.createGuideservice.outOfArea))
   "","Generando",this.dataGuide.weight,this.dataGuide.long,this.dataGuide.width,this.dataGuide.hight,this.dataGuide.insurance,new Date(),"","","N","",0,0,
   forma.controls["printType"].value,this.productName, forma.controls["references"].value, sessionStorage.getItem('UserName'), this.createGuideservice.volumetricWeight,
 this.createGuideservice.outOfArea);
+this.dataToSaveAux = new CreateGuideAuxInfo(
+  forma.controls["originCompany"].value, forma.controls["originCountry"].value,
+  this.createGuideservice.stateOriginCode, forma.controls["originCity"].value,
+  forma.controls["originColony"].value, forma.controls["originAddress"].value,
+  forma.controls["originAddress2"].value, forma.controls["originZip"].value,
+  forma.controls["originPhoneNumber"].value, forma.controls["originUserName"].value,
+  forma.controls["destinyCompany"].value, forma.controls["destinyCountry"].value,
+  this.createGuideservice.stateCode, forma.controls["destinyCity"].value,
+  forma.controls["destinyColony"].value, forma.controls["destinyAddress"].value, forma.controls["numberAddress"].value,
+  forma.controls["destinyAddress2"].value, forma.controls["destinyZip"].value,
+  forma.controls["destinyPhoneNumber"].value, forma.controls["destinyUserName"].value,
+  "", "", "", forma.controls["references"].value);
+sessionStorage.setItem('CreateGuideAux', JSON.stringify(this.dataToSaveAux));
 }else if(this.parcelId == 5){
   this.createGuideservice.printTypePaquete = forma.controls["printType"].value;
   this.shipment = new Shipment(0,this.client.id,this.parcelId,this.productId,this.totalAmount,this.amountDetail,forma.controls["originCompany"].value,
@@ -461,6 +602,19 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
 "","Generando",this.dataGuide.weight,this.dataGuide.long,this.dataGuide.width,this.dataGuide.hight,this.dataGuide.insurance,new Date(),"","","N","",0,0,
 forma.controls["printType"].value,this.productName, forma.controls["references"].value, sessionStorage.getItem('UserName'), this.createGuideservice.volumetricWeight,
 this.createGuideservice.outOfArea);
+this.dataToSaveAux = new CreateGuideAuxInfo(
+  forma.controls["originCompany"].value, forma.controls["originCountry"].value,
+  this.createGuideservice.stateOriginCode, forma.controls["originCity"].value,
+  forma.controls["originColony"].value, forma.controls["originAddress"].value,
+  forma.controls["originAddress2"].value, forma.controls["originZip"].value,
+  forma.controls["originPhoneNumber"].value, forma.controls["originUserName"].value,
+  forma.controls["destinyCompany"].value, forma.controls["destinyCountry"].value,
+  forma.controls["destinyState"].value, forma.controls["destinyCity"].value,
+  forma.controls["destinyColony"].value, forma.controls["destinyAddress"].value, forma.controls["numberAddress"].value,
+  forma.controls["destinyAddress2"].value, forma.controls["destinyZip"].value,
+  forma.controls["destinyPhoneNumber"].value, forma.controls["destinyUserName"].value,
+  "", forma.controls["packageContent"].value, forma.controls["shpCode"].value, forma.controls["references"].value);
+sessionStorage.setItem('CreateGuideAux', JSON.stringify(this.dataToSaveAux));
 }else if(this.parcelId == 2){
   this.createGuideservice.printTypeRedPack = forma.controls["printType"].value;
   this.shipment = new Shipment(0,this.client.id,this.parcelId,this.productId,this.totalAmount,this.amountDetail,forma.controls["originCompany"].value,
@@ -472,7 +626,19 @@ forma.controls["destinyZip"].value,forma.controls["destinyCountry"].value,forma.
 "","Generando",this.dataGuide.weight,this.dataGuide.long,this.dataGuide.width,this.dataGuide.hight,this.dataGuide.insurance,new Date(),"","","N","",0,0,
 forma.controls["printType"].value,this.productName, forma.controls["references"].value, sessionStorage.getItem('UserName'), this.createGuideservice.volumetricWeight,
 this.createGuideservice.outOfArea);
-
+this.dataToSaveAux = new CreateGuideAuxInfo(
+  forma.controls["originCompany"].value, forma.controls["originCountry"].value,
+  this.createGuideservice.stateOriginCode, forma.controls["originCity"].value,
+  forma.controls["originColony"].value, forma.controls["originAddress"].value,
+  forma.controls["originAddress2"].value, forma.controls["originZip"].value,
+  forma.controls["originPhoneNumber"].value, forma.controls["originUserName"].value,
+  forma.controls["destinyCompany"].value, forma.controls["destinyCountry"].value,
+  forma.controls["destinyState"].value, forma.controls["destinyCity"].value,
+  forma.controls["destinyColony"].value, forma.controls["destinyAddress"].value, forma.controls["numberAddress"].value,
+  forma.controls["destinyAddress2"].value, forma.controls["destinyZip"].value,
+  forma.controls["destinyPhoneNumber"].value, forma.controls["destinyUserName"].value,
+  forma.controls["email"].value, "", "", forma.controls["references"].value);
+sessionStorage.setItem('CreateGuideAux', JSON.stringify(this.dataToSaveAux));
 }else{
         this.shipment = new Shipment(0,this.client.id,this.parcelId,this.productId,this.totalAmount,this.amountDetail,forma.controls["originCompany"].value,
       forma.controls["originAddress"].value,forma.controls["originAddress2"].value,forma.controls["originColony"].value,forma.controls["originCity"].value,

@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, Output, EventEmitter  } from '@angular/core';
+import { Component, OnInit, ElementRef, Output, EventEmitter} from '@angular/core';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { NgForm } from '@angular/forms';
 import { Package } from '../../classes/Package';
@@ -27,7 +27,7 @@ declare var $:any;
   templateUrl: './quotation.component.html',
   styleUrls: ['./quotation.component.css']
 })
-export class QuotationComponent implements OnInit {
+export class QuotationComponent implements OnInit{
 
   profile: any;
   loading:boolean;
@@ -80,6 +80,10 @@ export class QuotationComponent implements OnInit {
   private maxWeightFedEx:number = -1;
   private maxWeightPaquete:number = -1;
 
+  private manualDestinyCP:boolean = false;
+  private manualOriginCP:boolean = false;
+
+
   constructor(
     private el: ElementRef,
     private auth: AuthService,
@@ -90,7 +94,6 @@ export class QuotationComponent implements OnInit {
     private productService: ProductService,
     private clientService: ClientService
   ) {
-
 
     this.router.events.subscribe((evt) => {
         if (!(evt instanceof NavigationEnd)) {
@@ -233,23 +236,32 @@ export class QuotationComponent implements OnInit {
 
   }
 
+
   checkIfCPExist(deviceValue){
-    if(deviceValue.length > 4){
+    if(deviceValue.length >= 4){
       this.rateService.getInfoByPostalCode(deviceValue).subscribe(
         (response) => {
           if(this.createGuideService.userActual.zip != deviceValue){
-            if(response.colonias.length < 1){
+            if(response.colonies.length < 1 && response.postalCode != null){
+              this.cpChange = true;
               this.noCPOrigin = true;
             }else{
               this.cpChange = true;
-              this.responseCPOrigin.postalCode = response.codigo_postal;
-              this.responseCPOrigin.colonies = response.colonias;
-              this.responseCPOrigin.municipality = response.municipio;
-              this.responseCPOrigin.state = response.estado;
+              this.responseCPOrigin.postalCode = response.postalCode;
+              this.responseCPOrigin.colonies = response.colonies;
+              this.responseCPOrigin.municipality = response.municipality;
+              this.responseCPOrigin.state = response.state;
               this.setOriginStateCodeFedEx(this.responseCPOrigin.state);
             }
           }else{
             this.cpChange = false;
+          }
+        },(error) =>{
+          if(this.createGuideService.userActual.zip != deviceValue){
+            this.cpChange = true;
+            this.responseCPOrigin.postalCode = deviceValue;
+            this.noCPOrigin = true;
+            this.manualOriginCP = true;
           }
         }
       )
@@ -307,15 +319,29 @@ export class QuotationComponent implements OnInit {
   }
 
   loseFocusDest(deviceValue){
-    if(deviceValue.length > 4){
+    if(deviceValue.length >= 4){
       this.rateService.getInfoByPostalCode(deviceValue).subscribe(
         (response) => {
-          this.responseCP.postalCode = response.codigo_postal;
-          this.responseCP.colonies = response.colonias;
-          this.responseCP.municipality = response.municipio;
-          this.responseCP.state = response.estado;
-          this.setStateCodeFedEx(this.responseCP.state);
-          if(response.colonias.length < 1){
+          if(response.postalCode != null){
+            this.responseCP.postalCode = response.postalCode;
+            this.responseCP.colonies = response.colonies;
+            this.responseCP.municipality = response.municipality;
+            this.responseCP.state = response.state;
+            this.setStateCodeFedEx(this.responseCP.state);
+            if(response.colonies.length < 1){
+              this.noCP = true;
+              this.manualDestinyCP = true;
+            }else{
+              this.manualDestinyCP = false;
+            }
+          }else{
+            this.noCP = true;
+            this.manualDestinyCP = true;
+          }
+
+        }, (error) =>{
+          if(deviceValue.length >= 4){
+            this.manualDestinyCP = true;
             this.noCP = true;
           }
         }
@@ -332,13 +358,25 @@ export class QuotationComponent implements OnInit {
     this.responseCP.colonies = [];
     this.rateService.getInfoByPostalCode(deviceValue).subscribe(
       (response) => {
-        this.responseCP.postalCode = response.codigo_postal;
-        this.responseCP.colonies = response.colonias;
-        this.responseCP.municipality = response.municipio;
-        this.responseCP.state = response.estado;
-        this.setStateCodeFedEx(this.responseCP.state);
+        if(response.postalCode){
+          this.responseCP.postalCode = response.postalCode;
+          this.responseCP.colonies = response.colonies;
+          this.responseCP.municipality = response.municipality;
+          this.responseCP.state = response.state;
+          this.setStateCodeFedEx(this.responseCP.state);
 
-        if(response.colonias.length < 1){
+          if(response.colonies.length < 1){
+            this.noCP = true;
+            this.manualDestinyCP = true;
+          }
+        }else{
+          this.noCP = true;
+          this.manualDestinyCP = true;
+        }
+
+      }, (error) =>{
+        if(deviceValue.length >= 4){
+          this.manualDestinyCP = true;
           this.noCP = true;
         }
       }
@@ -346,15 +384,25 @@ export class QuotationComponent implements OnInit {
   }
 
   loseFocusOrigin(deviceValue){
-    if(deviceValue.length > 4){
+    if(deviceValue.length >= 4){
       this.rateService.getInfoByPostalCode(deviceValue).subscribe(
         (response) => {
-          this.responseCPOrigin.postalCode = response.codigo_postal;
-          this.responseCPOrigin.colonies = response.colonias;
-          this.responseCPOrigin.municipality = response.municipio;
-          this.responseCPOrigin.state = response.estado;
-          this.setStateCodeFedEx(this.responseCPOrigin.state);
-          if(response.colonias.length < 1){
+          if(response.postalCode != null){
+            this.responseCPOrigin.postalCode = response.postalCode;
+            this.responseCPOrigin.colonies = response.colonies;
+            this.responseCPOrigin.municipality = response.municipality;
+            this.responseCPOrigin.state = response.state;
+            this.setStateCodeFedEx(this.responseCPOrigin.state);
+            if(response.colonies.length < 1){
+              this.noCPOrigin = true;
+            }
+          }else{
+            this.noCPOrigin = true;
+          }
+
+        }, (error) =>{
+          if(deviceValue.length >= 4){
+            this.manualOriginCP = true;
             this.noCPOrigin = true;
           }
         }
@@ -371,13 +419,23 @@ export class QuotationComponent implements OnInit {
     this.responseCPOrigin.colonies = [];
     this.rateService.getInfoByPostalCode(deviceValue).subscribe(
       (response) => {
-        this.responseCPOrigin.postalCode = response.codigo_postal;
-        this.responseCPOrigin.colonies = response.colonias;
-        this.responseCPOrigin.municipality = response.municipio;
-        this.responseCPOrigin.state = response.estado;
-        this.setOriginStateCodeFedEx(this.responseCPOrigin.state);
+        if(response.postalCode != null){
+          this.responseCPOrigin.postalCode = response.postalCode;
+          this.responseCPOrigin.colonies = response.colonies;
+          this.responseCPOrigin.municipality = response.municipality;
+          this.responseCPOrigin.state = response.state;
+          this.setOriginStateCodeFedEx(this.responseCPOrigin.state);
 
-        if(response.colonias.length < 1){
+          if(response.colonies.length < 1){
+            this.noCPOrigin = true;
+          }
+        }else{
+          this.noCPOrigin = true;
+        }
+
+      }, (error) =>{
+        if(deviceValue.length >= 4){
+          this.manualOriginCP = true;
           this.noCPOrigin = true;
         }
       }
@@ -418,6 +476,16 @@ export class QuotationComponent implements OnInit {
 
       this.invalidForm = false;
       if(this.multiPackActive){
+        if(this.noCP){
+          this.setStateCodeFedEx(forma.controls["dest_state"].value);
+          this.rateService.setPostalCode(forma.controls["postal_code_dest"].value, forma.controls["dest_city"].value, forma.controls["colonyDest"].value, forma.controls["dest_state"].value);
+
+        }
+
+        if(this.noCPOrigin){
+          this.setOriginStateCodeFedEx(forma.controls["origin_state"].value);
+          this.rateService.setPostalCode(forma.controls["postal_code_origin"].value, forma.controls["origin_city"].value, forma.controls["colonyOrigin"].value, forma.controls["origin_state"].value);
+        }
         if(this.objectCreateMultipieces.length > 0){
           let totalWeight:number = 0;
           let counter:number = 0;
@@ -514,6 +582,7 @@ export class QuotationComponent implements OnInit {
               this.rateService.dataCpDest.colony = forma.controls["colonyDest"].value;
             }else{
               this.rateService.dataCpDest.colony = forma.controls["anotherCol"].value;
+              this.rateService.setPostalCode(forma.controls["postal_code_dest"].value, forma.controls["dest_city"].value, forma.controls["anotherCol"].value, forma.controls["dest_state"].value)
             }
             this.rateService.dataCpDest.municipality = forma.controls["dest_city"].value;
             this.rateService.dataCpDest.postalCode = forma.controls["postal_code_dest"].value;
@@ -552,6 +621,17 @@ export class QuotationComponent implements OnInit {
         insurance = forma.controls["insurance"].value;
       }
 
+      if(this.noCP){
+        this.setStateCodeFedEx(forma.controls["dest_state"].value);
+
+        this.rateService.setPostalCode(forma.controls["postal_code_dest"].value, forma.controls["dest_city"].value, forma.controls["colonyDest"].value, forma.controls["dest_state"].value);
+      }
+
+      if(this.noCPOrigin){
+        this.setOriginStateCodeFedEx(forma.controls["origin_state"].value);
+
+        this.rateService.setPostalCode(forma.controls["postal_code_origin"].value, forma.controls["origin_city"].value, forma.controls["colonyOrigin"].value, forma.controls["origin_state"].value);
+      }
 
       let dataAux:DataAuxGuide = new DataAuxGuide(quotationData.postCodeOrigin, quotationData.postCodeDest, quotationData.originAddress,
       quotationData.destinationAddress, quotationData.kindPackage, quotationData.width, quotationData.long, quotationData.hight,
@@ -632,6 +712,7 @@ export class QuotationComponent implements OnInit {
               this.rateService.dataCpDest.colony = forma.controls["colonyDest"].value;
             }else{
               this.rateService.dataCpDest.colony = forma.controls["anotherCol"].value;
+              this.rateService.setPostalCode(forma.controls["postal_code_dest"].value, forma.controls["dest_city"].value, forma.controls["anotherCol"].value, forma.controls["dest_state"].value)
             }
             this.rateService.dataCpDest.municipality = forma.controls["dest_city"].value;
             this.rateService.dataCpDest.postalCode = forma.controls["postal_code_dest"].value;

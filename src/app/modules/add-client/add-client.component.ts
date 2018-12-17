@@ -92,18 +92,18 @@ export class AddClientComponent implements OnInit {
     if(deviceValue.length > 4){
       this.rateService.getInfoByPostalCode(deviceValue).subscribe(
         (response) => {
-          this.responseCP.postalCode = response.codigo_postal;
-          this.responseCP.colonies = response.colonias;
-          this.responseCP.municipality = response.municipio;
-          this.responseCP.state = response.estado;
+          this.responseCP.postalCode = response.postalCode;
+          this.responseCP.colonies = response.colonies;
+          this.responseCP.municipality = response.municipality;
+          this.responseCP.state = response.state;
 
 
-          if(response.colonias.length < 1){
+          if(response.colonies.length < 1){
             this.noCP = true;
-          }else if(response.colonias.length > 0 && this.clientService.operation == 1){
-            this.clientService.userEdit.state = response.estado;
-            this.clientService.userEdit.zip = response.codigo_postal;
-            this.clientService.userEdit.city = response.estado;
+          }else if(response.colonies.length > 0 && this.clientService.operation == 1){
+            this.clientService.userEdit.state = response.sate;
+            this.clientService.userEdit.zip = response.postalCode;
+            this.clientService.userEdit.city = response.municipality;
             this.clientService.userEdit.colony = "Elija una colonia";
           }
         }
@@ -120,17 +120,18 @@ export class AddClientComponent implements OnInit {
     this.responseCP.colonies = [];
     this.rateService.getInfoByPostalCode(deviceValue).subscribe(
       (response) => {
-        this.responseCP.postalCode = response.codigo_postal;
-        this.responseCP.colonies = response.colonias;
-        this.responseCP.municipality = response.municipio;
-        this.responseCP.state = response.estado;
+        console.log(response);
+        this.responseCP.postalCode = response.postalCode;
+        this.responseCP.colonies = response.colonies;
+        this.responseCP.municipality = response.municipality;
+        this.responseCP.state = response.state;
 
-        if(response.colonias.length < 1){
+        if(response.colonies.length < 1){
           this.noCP = true;
-        }else if(response.colonias.length > 0 && this.clientService.operation == 1){
-          this.clientService.userEdit.state = response.estado;
-          this.clientService.userEdit.zip = response.codigo_postal;
-          this.clientService.userEdit.city = response.estado;
+        }else if(response.colonies.length > 0 && this.clientService.operation == 1){
+          this.clientService.userEdit.state = response.sate;
+          this.clientService.userEdit.zip = response.postalCode;
+          this.clientService.userEdit.city = response.municipality;
           this.clientService.userEdit.colony = "Elija una colonia";
         }
       }

@@ -14,7 +14,7 @@ import '../../rxjs/index';
 export class RateService {
   private apiBase = 'http://162.248.52.104/WSGombar/Gombar.svc/';
   //private apiBase = 'http://localhost:55679/Gombar.svc/';
-  private postalCodeAPI = 'https://api-codigos-postales.herokuapp.com/v2/codigo_postal/';
+  private postalCodeAPI = 'http://162.248.52.104/WSGombar/Gombar.svc/';
 
   public dataProducts:Rate[] = [];
 
@@ -28,8 +28,22 @@ export class RateService {
   constructor(private http: Http) { }
 
   getInfoByPostalCode(postalCode:string){
-    let searchPostalCode:string = this.postalCodeAPI + postalCode;
-    return this.http.get(searchPostalCode).map((res:Response) => res.json());
+    let myHeaders = new Headers();
+    myHeaders.set('PostalCode', postalCode);
+    let options = new RequestOptions({ headers: myHeaders});
+    let searchPostalCode:string = this.postalCodeAPI + 'GetPostalCodeData';
+    return this.http.get(searchPostalCode, options).map((res:Response) => res.json());
+  }
+
+  setPostalCode(postalCode:string, municipality:string, state:string, colony:string){
+    let myHeaders = new Headers();
+    myHeaders.set('PostalCode', postalCode);
+    myHeaders.set('Municipality', municipality);
+    myHeaders.set('State', state);
+    myHeaders.set('Colony', colony);
+    let options = new RequestOptions({ headers: myHeaders});
+    let searchPostalCode:string = this.postalCodeAPI + 'PostPostalCode';
+    return this.http.get(searchPostalCode, options).map((res:Response) => res.json());
   }
 
   getQuotation(packageToSend:Package, insurance:number, extArea:number, extAreaPaquete:number, extAreaRedPack:number, deliveryType:number){

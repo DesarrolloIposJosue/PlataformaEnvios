@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { ClientReference } from '../../classes/ClienteReferences';
 import { Observable } from 'rxjs/Rx';
 import { User } from "../../classes/Client";
 import '../../rxjs/index';
@@ -8,6 +9,7 @@ import '../../rxjs/index';
 @Injectable()
 export class ClientService {
   private userLogged:boolean = false;
+  public clientReferences:ClientReference;
   private apiBase = 'http://162.248.52.104/WSGombar/Gombar.svc/';
   //private apiBase = 'http://localhost:55679/Gombar.svc/';
   public userEdit:User;
@@ -32,6 +34,10 @@ export class ClientService {
         if(sessionStorage.getItem('UserName')){
           this.userLogged = true;
           return Promise.resolve(true);
+        }
+        if(sessionStorage.getItem('ClientReference')){
+          var obj = JSON.parse(sessionStorage.getItem('ClientReference'));
+          this.clientReferences = new ClientReference(obj.redPackReference, obj.fedExReference, obj.paquetexpressReference);
         }
       }
       this.userLogged = false;
@@ -65,6 +71,11 @@ export class ClientService {
       myHeaders.set('Password', password);
       let options = new RequestOptions({ headers: myHeaders, search: myParams });
       return this.http.get(operation, options).map((res:Response) => res.json())
+    }
+
+    updatePostalCode(){
+      var operation:string = this.apiBase + 'UpdatePostalCodes';
+      return this.http.get(operation).map((res:Response) => res.json())
     }
 
     //Add client method

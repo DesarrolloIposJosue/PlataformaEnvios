@@ -47,6 +47,18 @@ export class ProductService {
     let myHeaders = new Headers();
     // Body or Search
     let myParams: URLSearchParams = new URLSearchParams();
+    myHeaders.set('UserId', sessionStorage.getItem('Id'));
+    let options = new RequestOptions({ headers: myHeaders, search: myParams });
+
+    return this.http.get(operation, options).map((res:Response) => res.json());
+  }
+
+  getEditParcelsFromUser(){
+    var operation:string = this.apiBase + 'GetParcelsFromUser';
+    // Headers
+    let myHeaders = new Headers();
+    // Body or Search
+    let myParams: URLSearchParams = new URLSearchParams();
     myHeaders.set('UserId', sessionStorage.getItem('NewUserId'));
     let options = new RequestOptions({ headers: myHeaders, search: myParams });
 

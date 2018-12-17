@@ -2010,6 +2010,9 @@ export class ReportsComponent implements OnInit {
     let insurancePerc:number = 0;
     let insuranceComi:number = 0;
     for(let item of data){
+      insuranceCost = 0;
+      insurancePerc = 0;
+      insuranceComi = 0;
       let parcel:string;
       switch(item.parcelId){
         case 1:
